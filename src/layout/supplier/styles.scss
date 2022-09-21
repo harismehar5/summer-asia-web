@@ -1,0 +1,22 @@
+.list {
+  display: flex;
+  width: 100%;
+  .list-container {
+    flex: 6;
+  }
+}
+.box {
+  display: flex;
+  width: 100%;
+  .box-container {
+    flex: 6;
+
+    .form-container {
+      flex: 5;
+      margin: 20px 20px;
+      padding: 20px 20px;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
