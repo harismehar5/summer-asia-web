@@ -3,9 +3,10 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import {userColumns} from "../../dataTableColumns"
-
+import { userColumns } from "../../dataTableColumns";
 import axios from "axios";
+
+import { GET_SUPPLIERS_LIST } from "../../utils/config";
 
 export default function GetSuppliersList() {
   const [data, setData] = useState([]);
@@ -16,10 +17,13 @@ export default function GetSuppliersList() {
 
   const getSuppliersList = () => {
     axios
-      .get("http://localhost:3000/supplier/get_suppliers")
+      .get(GET_SUPPLIERS_LIST)
       .then(function (response) {
-        console.log("response: " + JSON.stringify(response));
-        setData(response.data.suppliers);
+        if (response.data.error) {
+          console.log(response.data.error_msg)
+        } else {
+          setData(response.data.suppliers);
+        }
       })
       .catch(function (error) {
         console.log("error: " + error);
@@ -30,7 +34,9 @@ export default function GetSuppliersList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        {data.length !== 0 ? <DataTable data={data} columns={userColumns} /> : null}
+        {data.length !== 0 ? (
+          <DataTable data={data} columns={userColumns} pageTitle={"Supplier's List"}/>
+        ) : null}
       </div>
     </div>
   );

@@ -87,6 +87,12 @@ export default function SideBar() {
             </li>
           </Link>
           <p className="title">Product</p>
+          <Link to="/product/add" style={{ textDecoration: "none" }}>
+            <li>
+              <Inventory2OutlinedIcon className="icon" />
+              <span>Add Product</span>
+            </li>
+          </Link>
           <Link to="/product" style={{ textDecoration: "none" }}>
             <li>
               <Inventory2OutlinedIcon className="icon" />

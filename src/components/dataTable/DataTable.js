@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 
-const DataTable = ({ data, columns }) => {
+const DataTable = ({ data, columns, pageTitle, link }) => {
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));
   // };
@@ -41,7 +41,7 @@ const DataTable = ({ data, columns }) => {
   return (
     <div className="data-table">
       <div className="data-table-title">
-        Add New Customer
+        {pageTitle}
         <Link to="/users/new" className="link">
           Add New
         </Link>

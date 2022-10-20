@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3000/"
+export const BASE_URL = "https://summer-asia.herokuapp.com/"
 //Supplier URL
 export const SUPPLIER_BASE_URL = BASE_URL+"supplier/" 
 export const ADD_SUPPLIER = SUPPLIER_BASE_URL+"add_supplier"
@@ -26,18 +26,18 @@ export const ADD_CUSTOMER_CASH_IN = CUSTOMER_BASE_URL+"add_cash_in"
 export const ADD_CUSTOMER_CASH_OUT = CUSTOMER_BASE_URL+"add_cash_out"
 //Product URL 
 export const PRODUCT_BASE_URL = BASE_URL+"product/"
-export const GET_PRODUCTS_LIST = BASE_URL+"get_products"
-export const ADD_PRODUCT = BASE_URL+"add_product"
-export const DELETE_PRODUCT = BASE_URL
-export const UPDATE_PRODUCT_BY_ID = BASE_URL
-export const GET_PRODUCT_BY_ID = BASE_URL
-export const UPDATE_PRODUCT_STATUS_BY_ID = BASE_URL+"update_status"
+export const GET_PRODUCTS_LIST = PRODUCT_BASE_URL+"get_products"
+export const ADD_PRODUCT = PRODUCT_BASE_URL+"add_product"
+export const DELETE_PRODUCT = PRODUCT_BASE_URL
+export const UPDATE_PRODUCT_BY_ID = PRODUCT_BASE_URL
+export const GET_PRODUCT_BY_ID = PRODUCT_BASE_URL
+export const UPDATE_PRODUCT_STATUS_BY_ID = PRODUCT_BASE_URL+"update_status"
 
 //Expense URL
 export const EXPENSE_BASE_URL = BASE_URL+"expense/"
-export const GET_EXPENSES_LIST = BASE_URL+"get_expenses"
-export const ADD_EXPENSE = BASE_URL+"add_expense"
-export const DELETE_EXPENSE = BASE_URL
-export const UPDATE_EXPENSE_BY_ID = BASE_URL
-export const GET_EXPENSE_BY_ID = BASE_URL
-export const UPDATE_EXPENSE_STATUS_BY_ID = BASE_URL+"update_status"
+export const GET_EXPENSES_LIST = EXPENSE_BASE_URL+"get_expenses"
+export const ADD_EXPENSE = EXPENSE_BASE_URL+"add_expense"
+export const DELETE_EXPENSE = EXPENSE_BASE_URL
+export const UPDATE_EXPENSE_BY_ID = EXPENSE_BASE_URL
+export const GET_EXPENSE_BY_ID = EXPENSE_BASE_URL
+export const UPDATE_EXPENSE_STATUS_BY_ID = EXPENSE_BASE_URL+"update_status"

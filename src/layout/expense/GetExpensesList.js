@@ -3,9 +3,10 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import {expenseColumns} from "../../dataTableColumns"
-
+import { expenseColumns } from "../../dataTableColumns";
 import axios from "axios";
+
+import { GET_EXPENSES_LIST } from "../../utils/config";
 
 export default function GetExpensesList() {
   const [data, setData] = useState([]);
@@ -16,10 +17,13 @@ export default function GetExpensesList() {
 
   const getExpensesList = () => {
     axios
-      .get("http://localhost:3000/expense/get_expenses")
+      .get(GET_EXPENSES_LIST)
       .then(function (response) {
-        console.log("response: " + JSON.stringify(response));
-        setData(response.data.expenses);
+        if (response.data.error) {
+          console.log(response.data.error_msg);
+        } else {
+          setData(response.data.expenses);
+        }
       })
       .catch(function (error) {
         console.log("error: " + error);
@@ -30,7 +34,9 @@ export default function GetExpensesList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        {data.length !== 0 ? <DataTable data={data} columns={expenseColumns} /> : null}
+        {data.length !== 0 ? (
+          <DataTable data={data} columns={expenseColumns} pageTitle={"Expense's List"} />
+        ) : null}
       </div>
     </div>
   );

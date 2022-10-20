@@ -9,26 +9,26 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Alert, Button } from "@mui/material";
 import axios from "axios";
-import { ADD_EXPENSE } from "../../utils/config";
+import { ADD_PRODUCT } from "../../utils/config";
 
-export default function AddExpense() {
+export default function AddProduct() {
   const [name, setName] = useState("");
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [status, setStatus] = useState(true);
-  var expense = {
+  var product = {
     name: "",
     amount: "",
     description: "",
   };
-  const addExpense = () => {
-    expense = {
+  const addProduct = () => {
+    product = {
       name: name,
-      amount: amount,
-      description: description,
+      price: price,
+      quantity: quantity,
     };
     axios
-      .post(ADD_EXPENSE, expense)
+      .post(ADD_PRODUCT, product)
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
@@ -41,10 +41,10 @@ export default function AddExpense() {
       });
   };
   const validation = () => {
-    if (name.length === 0 || amount.length === 0 || description.length === 0) {
+    if (name.length === 0 || price.length === 0 || quantity.length === 0) {
       <Alert severity="error">Some Fields are missing</Alert>;
     } else {
-      addExpense();
+      addProduct();
     }
   };
   return (
@@ -54,7 +54,7 @@ export default function AddExpense() {
         <Navbar />
         <Paper className="form-container">
           <Typography variant="h6" gutterBottom>
-            Add Expense
+            Add Product
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
@@ -64,7 +64,6 @@ export default function AddExpense() {
                 name="name"
                 label="Name"
                 fullWidth
-                autoComplete="given-name"
                 variant="outlined"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
@@ -73,26 +72,24 @@ export default function AddExpense() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="amount"
-                name="amount"
-                label="Amount"
+                id="price"
+                name="price"
+                label="Price"
                 fullWidth
-                autoComplete="shipping address-line1"
                 variant="outlined"
-                value={amount}
-                onChange={(event) => setAmount(event.target.value)}
+                value={price}
+                onChange={(event) => setPrice(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField
-                id="description"
-                name="description"
-                label="Description"
+                id="quantity"
+                name="quantity"
+                label="Quantity"
                 fullWidth
-                autoComplete="shipping address-line2"
                 variant="outlined"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

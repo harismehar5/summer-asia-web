@@ -10,6 +10,7 @@ import AddSupplier from "./layout/supplier/AddSupplier";
 import EditSupplier from "./layout/supplier/EditSupplier";
 
 import GetProductStock from "./layout/product/GetProductStock";
+import AddProduct from "./layout/product/AddProduct";
 
 import GetExpensesList from "./layout/expense/GetExpensesList";
 import AddExpense from "./layout/expense/AddExpense";
@@ -38,6 +39,7 @@ function App() {
           </Route>
           <Route path="product">
             <Route index element={<GetProductStock />} />
+            <Route path="add" element={<AddProduct />} />
           </Route>
         </Route>
       </Routes>
