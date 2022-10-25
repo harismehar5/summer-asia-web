@@ -55,7 +55,6 @@ const DataTable = ({ data, columns, pageTitle, link, loading }) => {
       <div className="data-table-title">
         {pageTitle}
         <Button href={link} variant="contained">
-          {" "}
           Add New
         </Button>
       </div>
