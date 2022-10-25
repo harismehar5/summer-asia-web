@@ -60,6 +60,12 @@ export default function SideBar() {
               <span>Customer list</span>
             </li>
           </Link>
+          <Link to="/customer/cash_in" style={{ textDecoration: "none" }}>
+            <li>
+              <CurrencyExchangeRoundedIcon className="icon" />
+              <span>Cash Flow</span>
+            </li>
+          </Link>
           <p className="title">Supplier</p>
           <Link to="/supplier/add" style={{ textDecoration: "none" }}>
             <li>
@@ -67,10 +73,16 @@ export default function SideBar() {
               <span>Add Supplier</span>
             </li>
           </Link>
-          <Link to="/supplier" style={{ textDecoration: "none" }}>
+          <Link to="/supplier/cash_in" style={{ textDecoration: "none" }}>
             <li>
               <FormatListBulletedIcon className="icon" />
               <span>Supplier list</span>
+            </li>
+          </Link>
+          <Link to="/supplier" style={{ textDecoration: "none" }}>
+            <li>
+              <CurrencyExchangeRoundedIcon className="icon" />
+              <span>Cash Flow</span>
             </li>
           </Link>
           <p className="title">Expenses</p>
@@ -99,7 +111,7 @@ export default function SideBar() {
               <span>Stock</span>
             </li>
           </Link>
-          <p className="title">Payment</p>
+          {/* <p className="title">Payment</p>
           <li>
             <CurrencyExchangeRoundedIcon className="icon" />
             <span>Cash In</span>
@@ -107,7 +119,7 @@ export default function SideBar() {
           <li>
             <CurrencyExchangeRoundedIcon className="icon" />
             <span>Cash Out</span>
-          </li>
+          </li> */}
           <p className="title">Ledger</p>
           <li>
             <AccountBalanceRoundedIcon className="icon" />

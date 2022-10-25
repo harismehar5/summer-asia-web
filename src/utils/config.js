@@ -11,6 +11,8 @@ export const GET_SUPPLIER_CASH_IN_BY_ID = SUPPLIER_BASE_URL+"get_cash_in_by_id/"
 export const GET_CASH_OUT_BY_iD = SUPPLIER_BASE_URL+"get_cash_out_by_id/"
 export const ADD_SUPPLIER_CASH_IN = SUPPLIER_BASE_URL+"add_cash_in/"
 export const ADD_SUPPLIER_CASH_OUT = SUPPLIER_BASE_URL+"add_cash_out/"
+export const GET_ALL_SUPPLIER_CASH_IN = SUPPLIER_BASE_URL+"get_all_cash_in_supplier"
+export const GET_ALL_SUPPLIER_CASH_OUT = SUPPLIER_BASE_URL+"get_all_cash_out_supplier"
 
 //Customer URL
 export const CUSTOMER_BASE_URL = BASE_URL+"customer/"
@@ -22,8 +24,11 @@ export const DELETE_CUSTOMER_BY_ID = CUSTOMER_BASE_URL+""
 export const UPDATE_CUSTOMER_STATUS_BY_ID = CUSTOMER_BASE_URL+"update_status/"
 export const GET_CUSTOMER_CASH_IN_BY_ID = CUSTOMER_BASE_URL+"get_cash_in_by_id/"
 export const GET_CUSTOMER_CASH_OUT_BY_iD = CUSTOMER_BASE_URL+"get_cash_out_by_id/"
-export const ADD_CUSTOMER_CASH_IN = CUSTOMER_BASE_URL+"add_cash_in"
-export const ADD_CUSTOMER_CASH_OUT = CUSTOMER_BASE_URL+"add_cash_out"
+export const ADD_CUSTOMER_CASH_IN = CUSTOMER_BASE_URL+"add_cash_in/"
+export const ADD_CUSTOMER_CASH_OUT = CUSTOMER_BASE_URL+"add_cash_out/"
+export const GET_ALL_CUSTOMER_CASH_IN = CUSTOMER_BASE_URL+"get_all_cash_in_customer"
+export const GET_ALL_CUSTOMER_CASH_OUT = CUSTOMER_BASE_URL+"get_all_cash_out_customer"
+
 //Product URL 
 export const PRODUCT_BASE_URL = BASE_URL+"product/"
 export const GET_PRODUCTS_LIST = PRODUCT_BASE_URL+"get_products"

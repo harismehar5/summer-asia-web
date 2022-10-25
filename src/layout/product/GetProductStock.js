@@ -35,7 +35,7 @@ export default function GetProductStock() {
       <div className="list-container">
         <Navbar />
         {data.length !== 0 ? (
-          <DataTable data={data} columns={productColumns} pageTitle={"Product's List"}/>
+          <DataTable data={data} columns={productColumns} pageTitle={"Product's List"} link="/product/add"/>
         ) : null}
       </div>
     </div>
