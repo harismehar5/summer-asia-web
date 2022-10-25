@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./dataTable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -5,10 +6,12 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 
-const DataTable = ({ data, columns, pageTitle, link }) => {
+const DataTable = ({ data, columns, pageTitle, link, loading }) => {
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));
   // };
+
+  const [pageSize, setPageSize] = useState(10);
 
   const actionColumn = [
     {
@@ -21,7 +24,11 @@ const DataTable = ({ data, columns, pageTitle, link }) => {
             {/* <Link to="/users/test" style={{ textDecoration: "none" }}>
               <div className="view-button">View</div>
             </Link> */}
-            <Button size="small" variant="contained" startIcon={<RemoveRedEyeOutlinedIcon />}>
+            <Button
+              size="small"
+              variant="contained"
+              startIcon={<RemoveRedEyeOutlinedIcon />}
+            >
               View
             </Button>
             {/* <div
@@ -30,7 +37,12 @@ const DataTable = ({ data, columns, pageTitle, link }) => {
             >
               Delete
             </div> */}
-            <Button size="small" variant="contained" color="error" startIcon={<DeleteIcon />}>
+            <Button
+              size="small"
+              variant="contained"
+              color="error"
+              startIcon={<DeleteIcon />}
+            >
               Delete
             </Button>
           </div>
@@ -42,18 +54,21 @@ const DataTable = ({ data, columns, pageTitle, link }) => {
     <div className="data-table">
       <div className="data-table-title">
         {pageTitle}
-        <Link to="/users/new" className="link">
+        <Button href={link} variant="contained">
           Add New
-        </Link>
+        </Button>
       </div>
       <DataGrid
         className="datagrid"
         rows={data}
         columns={columns.concat(actionColumn)}
-        pageSize={9}
-        rowsPerPageOptions={[10]}
-        checkboxSelection
+        pageSize={pageSize}
+        rowsPerPageOptions={[5, 10]}
         getRowId={(row) => row._id}
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        loading={loading}
+        checkboxSelection
+        pagination
       />
     </div>
   );

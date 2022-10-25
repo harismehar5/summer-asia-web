@@ -111,3 +111,33 @@ export const expenseColumns = [
   },
 ];
 
+export const cashColumns = [
+  { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "amount",
+    headerName: "Amount",
+    width: 230,
+  },
+  {
+    field: "cash_type",
+    headerName: "Cash Type",
+    width: 230,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+  {
+    field: "payment_medium",
+    headerName: "Payment Medium",
+    width: 160,
+  },
+  {
+    field: "submit_date",
+    headerName: "Submit Date",
+    width: 160,
+  },
+];
+
+

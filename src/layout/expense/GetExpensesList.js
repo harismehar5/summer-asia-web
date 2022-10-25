@@ -35,7 +35,7 @@ export default function GetExpensesList() {
       <div className="list-container">
         <Navbar />
         {data.length !== 0 ? (
-          <DataTable data={data} columns={expenseColumns} pageTitle={"Expense's List"} />
+          <DataTable data={data} columns={expenseColumns} pageTitle={"Expense's List"} link="/expense/add"/>
         ) : null}
       </div>
     </div>

@@ -5,28 +5,31 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { userColumns } from "../../dataTableColumns";
+import { cashColumns } from "../../dataTableColumns";
 
-import { GET_CUSTOMERS_LIST } from "../../utils/config";
+import { GET_ALL_SUPPLIER_CASH_OUT } from "../../utils/config";
 
-export default function GetCustomersList() {
-  const [data, setData] = useState([]);
+export default function GetSupplierCashOut() {
   const [loading, setLoading] = useState(false);
+  var data = [];
 
   useEffect(() => {
-    getCustomersList();
-  }, []);
+    getSupplierCashOutList();
+  });
 
-  const getCustomersList = () => {
+  const getSupplierCashOutList = () => {
     setLoading(true);
     axios
-      .get(GET_CUSTOMERS_LIST)
+      .get(GET_ALL_SUPPLIER_CASH_OUT)
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
           setLoading(false);
         } else {
-          setData(response.data.customers);
+          for (var i = 0; i < response.data.data.length; i++) {
+            for (var k = 0; k < response.data.data[i].cash.length; k++)
+              data.push(response.data.data[i].cash[k]);
+          }
           setLoading(false);
         }
       })
@@ -43,14 +46,12 @@ export default function GetCustomersList() {
         {data.length !== 0 ? (
           <DataTable
             data={data}
-            columns={userColumns}
-            pageTitle={"Customer's List"}
+            columns={cashColumns}
+            pageTitle={"Cash In List"}
             loading={loading}
-            link="/customer/add"
+            link="/supplier/add"
           />
-        ) : (
-          null
-        )}
+        ) : null}
       </div>
     </div>
   );

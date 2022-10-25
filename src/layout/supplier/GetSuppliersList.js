@@ -35,7 +35,7 @@ export default function GetSuppliersList() {
       <div className="list-container">
         <Navbar />
         {data.length !== 0 ? (
-          <DataTable data={data} columns={userColumns} pageTitle={"Supplier's List"}/>
+          <DataTable data={data} columns={userColumns} pageTitle={"Supplier's List"} link="/supplier/add"/>
         ) : null}
       </div>
     </div>
