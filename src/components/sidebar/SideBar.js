@@ -73,13 +73,13 @@ export default function SideBar() {
               <span>Add Supplier</span>
             </li>
           </Link>
-          <Link to="/supplier/cash_in" style={{ textDecoration: "none" }}>
+          <Link to="/supplier" style={{ textDecoration: "none" }}>
             <li>
               <FormatListBulletedIcon className="icon" />
               <span>Supplier list</span>
             </li>
           </Link>
-          <Link to="/supplier" style={{ textDecoration: "none" }}>
+          <Link to="/supplier/cash_in" style={{ textDecoration: "none" }}>
             <li>
               <CurrencyExchangeRoundedIcon className="icon" />
               <span>Cash Flow</span>

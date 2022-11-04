@@ -1,34 +1,14 @@
-.list {
-  display: flex;
-  width: 100%;
-  .list-container {
-    flex: 6;
-  }
-}
-.box {
-  display: flex;
-  width: 100%;
-  .box-container {
-    flex: 6;
-
-    .form-container {
-      flex: 5;
-      margin: 20px 20px;
-      padding: 20px 20px;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-}
 .data-table-title {
-  width: 100%;
+//   width: 100%;
   font-size: 24px;
   color: gray;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+//   padding: 20px;
+  overflow: hidden;
+  background-color: blue;
   .link {
     text-decoration: none;
     color: green;

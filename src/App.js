@@ -21,6 +21,9 @@ import GetExpensesList from "./layout/expense/GetExpensesList";
 import AddExpense from "./layout/expense/AddExpense";
 import EditExpense from "./layout/expense/EditExpense";
 
+import "./App.scss"
+import AddSale from "./layout/sale/AddSale";
+
 function App() {
   return (
     <Router>
@@ -49,6 +52,10 @@ function App() {
           <Route path="product">
             <Route index element={<GetProductStock />} />
             <Route path="add" element={<AddProduct />} />
+          </Route>
+          <Route path="sale">
+            {/* <Route index element={<GetProductStock />} /> */}
+            <Route path="add" element={<AddSale />} />
           </Route>
         </Route>
       </Routes>

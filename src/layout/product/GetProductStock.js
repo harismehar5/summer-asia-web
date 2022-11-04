@@ -7,6 +7,8 @@ import { productColumns } from "../../dataTableColumns";
 import axios from "axios";
 
 import { GET_PRODUCTS_LIST } from "../../utils/config";
+import { Button } from "@mui/material";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetProductStock() {
   const [data, setData] = useState([]);
@@ -34,8 +36,17 @@ export default function GetProductStock() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <ListHeader
+          header={"Products List"}
+          firstButton={true}
+          firstButtonText={"Add New Product"}
+        />
         {data.length !== 0 ? (
-          <DataTable data={data} columns={productColumns} pageTitle={"Product's List"} link="/product/add"/>
+          <DataTable
+            data={data}
+            columns={productColumns}
+            isForTransaction={false}
+          />
         ) : null}
       </div>
     </div>

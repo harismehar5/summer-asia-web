@@ -8,6 +8,8 @@ import Navbar from "../../components/navbar/Navbar";
 import { userColumns } from "../../dataTableColumns";
 
 import { GET_CUSTOMERS_LIST } from "../../utils/config";
+import { Button } from "@mui/material";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetCustomersList() {
   const [data, setData] = useState([]);
@@ -40,17 +42,10 @@ export default function GetCustomersList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <ListHeader header={"Customers List"} firstButton={true} firstButtonText={"Add New Customer"}/>
         {data.length !== 0 ? (
-          <DataTable
-            data={data}
-            columns={userColumns}
-            pageTitle={"Customer's List"}
-            loading={loading}
-            link="/customer/add"
-          />
-        ) : (
-          null
-        )}
+          <DataTable data={data} columns={userColumns} loading={loading} isForTransaction={false} />
+        ) : null}
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import Navbar from "../../components/navbar/Navbar";
 import { cashColumns } from "../../dataTableColumns";
 
 import { GET_ALL_CUSTOMER_CASH_OUT } from "../../utils/config";
+import { Button } from "@mui/material";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetCustomerCashOut() {
   const [loading, setLoading] = useState(false);
@@ -43,13 +45,13 @@ export default function GetCustomerCashOut() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <ListHeader header={"Cash Out List"} firstButton={true} firstButtonText={"Cash Out"}/>
         {data.length !== 0 ? (
           <DataTable
             data={data}
             columns={cashColumns}
-            pageTitle={"Cash In List"}
             loading={loading}
-            link="/customer/cash_out"
+            isForTransaction={false}
           />
         ) : null}
       </div>

@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import { IconButton } from "@mui/material";
 
-const DataTable = ({ data, columns, pageTitle, link, loading }) => {
+const DataTable = ({ data, columns, loading, isForTransaction }) => {
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));
   // };
@@ -50,18 +51,33 @@ const DataTable = ({ data, columns, pageTitle, link, loading }) => {
       },
     },
   ];
+
+  const deleteColumn = [
+    {
+      field: "action",
+      headerName: "Action",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <div className="cell-action">
+            <IconButton aria-label="delete" size="large">
+              <DeleteIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+        );
+      },
+    },
+  ];
   return (
     <div className="data-table">
-      <div className="data-table-title">
-        {pageTitle}
-        <Button href={link} variant="contained">
-          Add New
-        </Button>
-      </div>
       <DataGrid
         className="datagrid"
         rows={data}
-        columns={columns.concat(actionColumn)}
+        columns={
+          isForTransaction
+            ? columns.concat(deleteColumn)
+            : columns.concat(actionColumn)
+        }
         pageSize={pageSize}
         rowsPerPageOptions={[5, 10]}
         getRowId={(row) => row._id}

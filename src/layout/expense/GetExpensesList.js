@@ -7,6 +7,8 @@ import { expenseColumns } from "../../dataTableColumns";
 import axios from "axios";
 
 import { GET_EXPENSES_LIST } from "../../utils/config";
+import { Button } from "@mui/material";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetExpensesList() {
   const [data, setData] = useState([]);
@@ -34,8 +36,13 @@ export default function GetExpensesList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <ListHeader
+          header={"Expenses List"}
+          firstButton={true}
+          firstButtonText={"Add Expense"}
+        />
         {data.length !== 0 ? (
-          <DataTable data={data} columns={expenseColumns} pageTitle={"Expense's List"} link="/expense/add"/>
+          <DataTable data={data} columns={expenseColumns} isForTransaction={false} />
         ) : null}
       </div>
     </div>

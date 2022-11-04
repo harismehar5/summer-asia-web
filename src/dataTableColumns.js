@@ -140,4 +140,27 @@ export const cashColumns = [
   },
 ];
 
+export const saleColumn = [
+  { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "name",
+    headerName: "Product Name",
+    width: 230,
+  },
+  {
+    field: "price",
+    headerName: "Price",
+    width: 100,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    width: 100,
+  },
+  {
+    field: "sub_total",
+    headerName: "Sub Total",
+    width: 100,
+  },
+];
 
