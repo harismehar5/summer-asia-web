@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./dataTable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -82,6 +82,7 @@ const DataTable = ({ data, columns, loading, isForTransaction }) => {
         rowsPerPageOptions={[5, 10]}
         getRowId={(row) => row._id}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        
         loading={loading}
         checkboxSelection
         pagination

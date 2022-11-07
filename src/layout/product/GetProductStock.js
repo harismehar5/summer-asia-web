@@ -41,13 +41,12 @@ export default function GetProductStock() {
           firstButton={true}
           firstButtonText={"Add New Product"}
         />
-        {data.length !== 0 ? (
-          <DataTable
-            data={data}
-            columns={productColumns}
-            isForTransaction={false}
-          />
-        ) : null}
+        <DataTable
+          data={data}
+          columns={productColumns}
+          isForTransaction={false}
+          loading={!data.length}
+        />
       </div>
     </div>
   );

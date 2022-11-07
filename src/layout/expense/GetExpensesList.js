@@ -41,9 +41,12 @@ export default function GetExpensesList() {
           firstButton={true}
           firstButtonText={"Add Expense"}
         />
-        {data.length !== 0 ? (
-          <DataTable data={data} columns={expenseColumns} isForTransaction={false} />
-        ) : null}
+        <DataTable
+          data={data}
+          columns={expenseColumns}
+          isForTransaction={false}
+          loading={!data.length}
+        />
       </div>
     </div>
   );

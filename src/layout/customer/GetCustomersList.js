@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
@@ -8,7 +9,6 @@ import Navbar from "../../components/navbar/Navbar";
 import { userColumns } from "../../dataTableColumns";
 
 import { GET_CUSTOMERS_LIST } from "../../utils/config";
-import { Button } from "@mui/material";
 import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetCustomersList() {
@@ -42,10 +42,17 @@ export default function GetCustomersList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <ListHeader header={"Customers List"} firstButton={true} firstButtonText={"Add New Customer"}/>
-        {data.length !== 0 ? (
-          <DataTable data={data} columns={userColumns} loading={loading} isForTransaction={false} />
-        ) : null}
+        <ListHeader
+          header={"Customers List"}
+          firstButton={true}
+          firstButtonText={"Add New Customer"}
+        />
+        <DataTable
+          data={data}
+          columns={userColumns}
+          loading={!data.length}
+          isForTransaction={false}
+        />
       </div>
     </div>
   );

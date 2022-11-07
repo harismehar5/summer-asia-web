@@ -18,10 +18,11 @@ import { saleColumn } from "../../dataTableColumns";
 export default function AddSale() {
   const [data, setData] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [productObject, setProductObject] = useState({});
 
   useEffect(() => {
     getStockList();
-  }, []);
+  }, [data]);
 
   const getStockList = () => {
     axios
@@ -30,84 +31,104 @@ export default function AddSale() {
         if (response.data.error) {
           console.log(response.data.error_msg);
         } else {
-          setData(response.data.products);
-          var productObject = {};
-          for (var i = 0; i < response.data.products.length; i++) {
-            productObject = {
-              label: response.data.products[i].name,
-              id: response.data.products[i]._id,
-            };
-            setProductList([productObject]);
-          }
+          setProductList(response.data.products);
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
       });
   };
+  const addProductIntoList = () => {
+    console.log(data.length);
+    var obj = {};
+    // for (var i = 0; i < data.length; i++) {
+      obj = {
+        _id: productObject._id,
+        name: productObject.name,
+        price: productObject.price,
+        quantity: productObject.quantity,
+        subTotal: productObject.price * productObject.quantity,
+        status: productObject.status,
+      };
+      setData(obj);
+    // }
+  };
   return (
     <div className="box">
       <SideBar />
       <div className="box-container">
         <Navbar />
-        <Grid container md={12} mt={3} px={2} sx={{ height: "90vh" }}>
+        <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}>
           <Grid item md={8}>
             <Grid item container md={12}>
               <Grid item md={11} px={4}>
                 <Autocomplete
+                  onChange={(event, newInputValue) => {
+                    setProductObject(newInputValue);
+                    console.log("New Input Value", newInputValue);
+                  }}
                   disablePortal
                   fullWidth
                   options={productList}
+                  getOptionLabel={(product, index) => product.name}
                   renderInput={(params) => (
                     <TextField {...params} label="Select Product" />
+                  )}
+                  renderOption={(props, product) => (
+                    <Box component="li" {...props} key={product._id}>
+                      {product.name}
+                    </Box>
                   )}
                 />
               </Grid>
               <Grid item md={1}>
-                <IconButton color="primary" size="large">
+                <IconButton
+                  color="primary"
+                  size="large"
+                  onClick={addProductIntoList}
+                >
                   <AddIcon fontSize="inherit" />
                 </IconButton>
               </Grid>
             </Grid>
             <Grid item md={12}>
-              {data.length !== 0 ? (
-                <DataTable
-                  data={data}
-                  columns={saleColumn}
-                  isForTransaction={true}
-                />
-              ) : null}
+              <DataTable
+                data={data}
+                columns={saleColumn}
+                isForTransaction={true}
+                loading={!data.length}
+              />
             </Grid>
           </Grid>
           <Grid item md={4} sx={{ height: "90vh" }}>
             <Grid container item md={12} px={2}>
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  sx={{ width: "100%" }}
-                  mt={2}
-                >
-                  <Typography>Total Amount</Typography>
-                  <Typography>RS 10000/-</Typography>
-                </Box>
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  sx={{ width: "100%" }}
-                  mt={2}
-                >
-                  <Typography>Total Bags</Typography>
-                  <Typography>10</Typography>
-                </Box>
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  sx={{ width: "100%" }}
-                  mt={2}
-                >
-                  <Typography>Total Products</Typography>
-                  <Typography>2</Typography>
-                </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Amount</Typography>
+                <Typography>RS 10000/-</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Bags</Typography>
+                <Typography>10</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Products</Typography>
+                <Typography>2</Typography>
+              </Box>
             </Grid>
           </Grid>
         </Grid>
