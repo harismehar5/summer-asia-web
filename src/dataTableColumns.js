@@ -156,6 +156,7 @@ export const saleColumn = [
     field: "quantity",
     headerName: "Quantity",
     width: 100,
+    editable: true,
   },
   {
     field: "sub_total",

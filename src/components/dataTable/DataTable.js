@@ -7,7 +7,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
 
-const DataTable = ({ data, columns, loading, isForTransaction }) => {
+const DataTable = ({
+  data,
+  columns,
+  loading,
+  isForTransaction,
+  experimentalFeatures,
+  onCellEditCommit,
+  editMode,
+}) => {
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));
   // };
@@ -71,6 +79,7 @@ const DataTable = ({ data, columns, loading, isForTransaction }) => {
   return (
     <div className="data-table">
       <DataGrid
+        editMode={editMode}
         className="datagrid"
         rows={data}
         columns={
@@ -82,9 +91,10 @@ const DataTable = ({ data, columns, loading, isForTransaction }) => {
         rowsPerPageOptions={[5, 10]}
         getRowId={(row) => row._id}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        
+        experimentalFeatures={experimentalFeatures}
+        onCellEditCommit={onCellEditCommit}
         loading={loading}
-        checkboxSelection
+        // checkboxSelection
         pagination
       />
     </div>
