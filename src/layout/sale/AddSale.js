@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
+import "./styles.scss"
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Paper } from "@material-ui/core";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
-import { Alert, Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import axios from "axios";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { GET_CUSTOMERS_LIST, GET_PRODUCTS_LIST } from "../../utils/config";
 import DataTable from "../../components/dataTable/DataTable";
 import { saleColumn } from "../../dataTableColumns";
@@ -105,9 +104,9 @@ export default function AddSale() {
       console.log("Already Existed");
     }
   };
-  const onCellEditCommit = (cellData) => {
-    console.log(cellData)
-  };
+  const handleRowEditCommit = React.useCallback((params) => {
+    console.log(params);
+  }, []);
   return (
     <div className="box">
       <SideBar />
@@ -148,16 +147,62 @@ export default function AddSale() {
                 </IconButton>
               </Grid>
             </Grid>
-            <Grid item md={12}>
-              <DataTable
+            <Grid item md={12} mt={5} ml={4}>
+              {/* <DataTable
                 editMode={"row"}
                 data={data}
                 columns={saleColumn}
                 isForTransaction={true}
                 loading={!data.length}
                 experimentalFeatures={{ newEditingApi: true }}
-                onCellEditCommit={onCellEditCommit}
-              />
+                onCellEditCommit={handleRowEditCommit}
+              /> */}
+              {data.map((product, index) => {
+                return (
+                  <>
+                    <Grid container flexDirection={"row"} justifyContent={"center"} alignItems={"center"} key={index}>
+                      <Grid item md={3} pr={2}>
+                        <TextField
+                          label="Product Name"
+                          variant="outlined"
+                          value={product.name}
+                          disabled
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item md={3} px={2}>
+                        <TextField
+                          label="Quantity"
+                          variant="outlined"
+                          value={product.quantity}
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item md={2} px={2}>
+                        <TextField
+                          label="price"
+                          variant="outlined"
+                          value={product.price}
+                          disabled
+                        />
+                      </Grid>
+                      <Grid item md={2} px={2}>
+                        <TextField
+                          label="Sub Total"
+                          variant="outlined"
+                          value={product.quantity * product.price}
+                          disabled
+                        />
+                      </Grid>
+                      <Grid item md={2} px={2}>
+                        <IconButton className="icon-button" >
+                          <DeleteOutlineOutlinedIcon />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  </>
+                );
+              })}
             </Grid>
           </Grid>
           <Grid item md={4} sx={{ height: "90vh" }}>
