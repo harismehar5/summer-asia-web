@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "./styles.scss"
+import "./styles.scss";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Navbar from "../../components/navbar/Navbar";
-import SideBar from "../../components/sidebar/SideBar";
 import { Box, Button, IconButton } from "@mui/material";
-import axios from "axios";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { GET_CUSTOMERS_LIST, GET_PRODUCTS_LIST } from "../../utils/config";
-import DataTable from "../../components/dataTable/DataTable";
-import { saleColumn } from "../../dataTableColumns";
+import axios from "axios";
+import { produce } from "immer";
+
+import Navbar from "../../components/navbar/Navbar";
+import SideBar from "../../components/sidebar/SideBar";
+import {
+  ADD_SALE,
+  GET_CUSTOMERS_LIST,
+  GET_PRODUCTS_LIST,
+} from "../../utils/config";
 
 export default function AddSale() {
   const [data, setData] = useState([]);
@@ -23,10 +27,19 @@ export default function AddSale() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [submittedDate, setSubmittedDate] = useState("");
+  const date = new Date();
+
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+
+  let currentDate = `${day}/${month}/${year}`;
 
   useEffect(() => {
     getStockList();
     getCustomersList();
+    calculateAmountAndBags(data);
   }, [data]);
 
   const getStockList = () => {
@@ -57,11 +70,39 @@ export default function AddSale() {
         console.log("error: " + error);
       });
   };
+  const postSale = () => {
+    var sale_detail = [];
+    for (var i = 0; i < data.length; i++) {
+      sale_detail.push({
+        quantity: parseInt(data[i].quantity),
+        amount: parseInt(data[i].price),
+        product: data[i]._id,
+      });
+    }
+    const sale_object = {
+      total_amount: totalAmount,
+      total_quantity: totalBags,
+      customer: customerObject._id,
+      submit_date: submittedDate,
+      order_details: sale_detail,
+    };
+    console.log(sale_detail);
+    axios
+      .post(ADD_SALE, sale_object)
+      .then(function (response) {
+        if (response.data.error) {
+          console.log(response.data.error_msg);
+        } else {
+          console.log(response);
+        }
+      })
+      .catch(function (error) {
+        console.log("error: " + error);
+      });
+  };
   const addProductIntoList = () => {
     var obj = {};
     var array = data;
-    let sum = 0;
-    var total_quantity = 0;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
     if (data.length === 0) {
       obj = {
@@ -74,14 +115,6 @@ export default function AddSale() {
       };
       array = [...array, obj];
       setData(array);
-
-      array.forEach(function (item) {
-        let total_amount = item.price * item.quantity;
-        sum += total_amount;
-        total_quantity += item.quantity;
-      });
-      setTotalAmount(sum);
-      setTotalBags(total_quantity);
     } else if (foundIndex === -1) {
       obj = {
         _id: productObject._id,
@@ -93,20 +126,33 @@ export default function AddSale() {
       };
       array = [...array, obj];
       setData(array);
-      array.forEach(function (item) {
-        let total_amount = item.price * item.quantity;
-        sum += total_amount;
-        total_quantity += item.quantity;
-      });
-      setTotalAmount(sum);
-      setTotalBags(total_quantity);
     } else {
       console.log("Already Existed");
     }
   };
-  const handleRowEditCommit = React.useCallback((params) => {
-    console.log(params);
-  }, []);
+
+  const calculateAmountAndBags = (array) => {
+    let sum = 0;
+    var total_quantity = 0;
+    array.forEach(function (item) {
+      console.log(typeof item.quantity);
+      let total_amount = item.price * item.quantity;
+      sum += total_amount;
+      total_quantity += parseInt(item.quantity);
+    });
+    setTotalAmount(sum);
+    setTotalBags(total_quantity);
+    setTotalProducts(array.length);
+  };
+
+  const handleRemoveFields = (id) => {
+    const arr = [...data];
+    arr.splice(
+      arr.findIndex((value) => value._id === id),
+      1
+    );
+    setData(arr);
+  };
   return (
     <div className="box">
       <SideBar />
@@ -139,9 +185,10 @@ export default function AddSale() {
               </Grid>
               <Grid item md={1}>
                 <IconButton
-                  color="primary"
+                  // color="primary"
                   size="large"
                   onClick={addProductIntoList}
+                  className="add-icon-button"
                 >
                   <AddIcon fontSize="inherit" />
                 </IconButton>
@@ -160,7 +207,14 @@ export default function AddSale() {
               {data.map((product, index) => {
                 return (
                   <>
-                    <Grid container flexDirection={"row"} justifyContent={"center"} alignItems={"center"} key={index}>
+                    <Grid
+                      container
+                      flexDirection={"row"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      key={index}
+                      mt={2}
+                    >
                       <Grid item md={3} pr={2}>
                         <TextField
                           label="Product Name"
@@ -175,12 +229,20 @@ export default function AddSale() {
                           label="Quantity"
                           variant="outlined"
                           value={product.quantity}
+                          onChange={(e) => {
+                            var quantity = e.target.value;
+                            setData((currentData) =>
+                              produce(currentData, (v) => {
+                                v[index].quantity = quantity;
+                              })
+                            );
+                          }}
                           fullWidth
                         />
                       </Grid>
                       <Grid item md={2} px={2}>
                         <TextField
-                          label="price"
+                          label="Price"
                           variant="outlined"
                           value={product.price}
                           disabled
@@ -195,7 +257,10 @@ export default function AddSale() {
                         />
                       </Grid>
                       <Grid item md={2} px={2}>
-                        <IconButton className="icon-button" >
+                        <IconButton
+                          className="delete-icon-button"
+                          onClick={() => handleRemoveFields(product._id)}
+                        >
                           <DeleteOutlineOutlinedIcon />
                         </IconButton>
                       </Grid>
@@ -240,6 +305,26 @@ export default function AddSale() {
                 sx={{ width: "100%" }}
                 mt={2}
               >
+                <TextField
+                  label="Select Date"
+                  type="date"
+                  defaultValue={currentDate}
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                    setSubmittedDate(event.target.value);
+                  }}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
                 <Typography>Total Amount</Typography>
                 <Typography>RS {totalAmount}</Typography>
               </Box>
@@ -260,6 +345,31 @@ export default function AddSale() {
               >
                 <Typography>Total Products</Typography>
                 <Typography>{totalProducts}</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"end"}
+                sx={{ width: "100%" }}
+                mt={2}
+                alignItems={"end"}
+              >
+                <Button
+                  variant="contained"
+                  size="medium"
+                  color="success"
+                  onClick={() => postSale()}
+                  sx={{ marginX: "10px" }}
+                >
+                  Save
+                </Button>
+                <Button
+                  // sx={{ marginLeft: "10px" }}
+                  variant="contained"
+                  size="medium"
+                  color="error"
+                >
+                  Cancel
+                </Button>
               </Box>
             </Grid>
           </Grid>

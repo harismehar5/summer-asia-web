@@ -23,6 +23,7 @@ import EditExpense from "./layout/expense/EditExpense";
 
 import "./App.scss"
 import AddSale from "./layout/sale/AddSale";
+import GetSaleList from "./layout/sale/GetSaleList";
 
 function App() {
   return (
@@ -55,7 +56,8 @@ function App() {
           </Route>
           <Route path="sale">
             {/* <Route index element={<GetProductStock />} /> */}
-            <Route path="add" element={<AddSale />} />
+            <Route index element={<GetCustomersList />} />
+            <Route path="add" element={<GetSaleList />} />
           </Route>
         </Route>
       </Routes>

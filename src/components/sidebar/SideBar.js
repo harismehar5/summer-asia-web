@@ -34,10 +34,12 @@ export default function SideBar() {
               <span>Add Sale</span>
             </li>
           </Link>
-          <li>
-            <FormatListBulletedIcon className="icon" />
-            <span>Sale List</span>
-          </li>
+          <Link to="/sale" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Sale List</span>
+            </li>
+          </Link>
           <p className="title">Purchase</p>
           <li>
             <ReceiptRoundedIcon className="icon" />
