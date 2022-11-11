@@ -21,9 +21,11 @@ import GetExpensesList from "./layout/expense/GetExpensesList";
 import AddExpense from "./layout/expense/AddExpense";
 import EditExpense from "./layout/expense/EditExpense";
 
-import "./App.scss"
+import "./App.scss";
 import AddSale from "./layout/sale/AddSale";
 import GetSaleList from "./layout/sale/GetSaleList";
+import AddPurchase from "./layout/purchase/AddPurchase";
+import GetPurchaseList from "./layout/purchase/GetPurchaseList";
 
 function App() {
   return (
@@ -55,9 +57,12 @@ function App() {
             <Route path="add" element={<AddProduct />} />
           </Route>
           <Route path="sale">
-            {/* <Route index element={<GetProductStock />} /> */}
-            <Route index element={<GetCustomersList />} />
-            <Route path="add" element={<GetSaleList />} />
+            <Route index element={<GetSaleList />} />
+            <Route path="add" element={<AddSale />} />
+          </Route>
+          <Route path="purchase">
+            <Route index element={<GetPurchaseList />} />
+            <Route path="add" element={<AddPurchase />} />
           </Route>
         </Route>
       </Routes>

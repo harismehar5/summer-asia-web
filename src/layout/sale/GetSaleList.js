@@ -5,27 +5,24 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { saleColumn, userColumns } from "../../dataTableColumns";
+import { saleColumn } from "../../dataTableColumns";
 
-import { GET_SALE_LIST } from "../../utils/config";
+import { GET_PURCHASE_LIST } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetSaleList() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getSaleList();
   }, []);
 
   const getSaleList = () => {
-    setLoading(true);
     axios
-      .get(GET_SALE_LIST)
+      .get(GET_PURCHASE_LIST)
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
-          setLoading(false);
         } else {
           var array = [];
           for (var i = 0; i < response.data.sales.length; i++) {
@@ -43,11 +40,9 @@ export default function GetSaleList() {
           }
           console.log(response.data.sales[0]._id);
           setData(array);
-          setLoading(false);
         }
       })
       .catch(function (error) {
-        setLoading(false);
         console.log("error: " + error);
       });
   };
