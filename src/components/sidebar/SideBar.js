@@ -34,19 +34,25 @@ export default function SideBar() {
               <span>Add Sale</span>
             </li>
           </Link>
-          <li>
-            <FormatListBulletedIcon className="icon" />
-            <span>Sale List</span>
-          </li>
+          <Link to="/sale" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Sale List</span>
+            </li>
+          </Link>
           <p className="title">Purchase</p>
-          <li>
-            <ReceiptRoundedIcon className="icon" />
-            <span>Add Purchase</span>
-          </li>
-          <li>
-            <FormatListBulletedIcon className="icon" />
-            <span>Purchase list</span>
-          </li>
+          <Link to="/purchase/add" style={{ textDecoration: "none" }}>
+            <li>
+              <ReceiptRoundedIcon className="icon" />
+              <span>Add Purchase</span>
+            </li>
+          </Link>
+          <Link to="/purchase" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Purchase list</span>
+            </li>
+          </Link>
           <p className="title">Customer</p>
           <Link to="/customer/add" style={{ textDecoration: "none" }}>
             <li>

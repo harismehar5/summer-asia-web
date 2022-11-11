@@ -143,25 +143,36 @@ export const cashColumns = [
 export const saleColumn = [
   { field: "_id", headerName: "ID", width: 230 },
   {
-    field: "name",
-    headerName: "Product Name",
+    field: "total_amount",
+    headerName: "Total Amount",
     width: 230,
   },
   {
-    field: "price",
-    headerName: "Price",
-    width: 100,
+    field: "total_quantity",
+    headerName: "Total Bags",
+    width: 230,
   },
   {
-    field: "quantity",
-    headerName: "Quantity",
-    width: 100,
+    field: "submit_date",
+    headerName: "Date",
+    width: 230,
     editable: true,
   },
   {
-    field: "sub_total",
-    headerName: "Sub Total",
-    width: 100,
+    field: "status",
+    headerName: "Status",
+    width: 160,
+    renderCell: (params) => {
+      return (
+        <>
+          {params.row.status === true ? (
+            <div className={`cell-with-status active`}>{"active"}</div>
+          ) : (
+            <div className={`cell-with-status passive`}>{"passive"}</div>
+          )}
+        </>
+      );
+    },
   },
 ];
 

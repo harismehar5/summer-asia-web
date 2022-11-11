@@ -1,4 +1,18 @@
-.icon-button {
+.add-icon-button{
+  border-radius: 5px !important;
+  background-color: #6439ff !important;
+  color: #fff !important;
+}
+.add-icon-button:hover{
+
+}
+.delete-icon-button {
   background: rgba(240, 101, 72, 0.1);
-  border-radius: 5 !important;
+  border-radius: 5px !important;
+  background-color: rgba(240, 101, 72, 0.1) !important;
+}
+.delete-icon-button:hover{
+  border-radius: 5px !important;
+  background-color: #f06548 !important;
+  color: #fff;
 }
