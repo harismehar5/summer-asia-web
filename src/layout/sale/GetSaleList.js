@@ -6,23 +6,30 @@ import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { saleColumn } from "../../dataTableColumns";
+import SnackBar from "../../components/alert/SnackBar";
 
-import { GET_PURCHASE_LIST } from "../../utils/config";
+import { GET_SALE_LIST } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetSaleList() {
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
 
   useEffect(() => {
     getSaleList();
   }, []);
 
-  const getSaleList = () => {
-    axios
-      .get(GET_PURCHASE_LIST)
+  const getSaleList = async () => {
+    await axios
+      .get(GET_SALE_LIST)
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           var array = [];
           for (var i = 0; i < response.data.sales.length; i++) {
@@ -30,6 +37,7 @@ export default function GetSaleList() {
               _id: response.data.sales[i]._id,
               total_amount: response.data.sales[i].total_amount,
               total_quantity: response.data.sales[i].total_quantity,
+              customer: response.data.sales[i].customer.name,
               submit_date: response.data.sales[i].submit_date,
               status: response.data.sales[i].status,
               order_details: response.data.sales[i].order_details,
@@ -44,7 +52,16 @@ export default function GetSaleList() {
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
   return (
     <div className="list">
@@ -59,10 +76,16 @@ export default function GetSaleList() {
         <DataTable
           data={data}
           columns={saleColumn}
-          loading={!data.length}
+          // loading={!data.length}
           isForTransaction={false}
         />
       </div>
+      <SnackBar
+        open={open}
+        severity={severity}
+        message={message}
+        handleClose={handleClose}
+      />
     </div>
   );
 }

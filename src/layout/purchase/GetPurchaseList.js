@@ -5,36 +5,39 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { saleColumn } from "../../dataTableColumns";
+import { purchaseColumn } from "../../dataTableColumns";
 
 import { GET_PURCHASE_LIST } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
+import SnackBar from "../../components/alert/SnackBar";
 
 export default function GetPurchaseList() {
   const [data, setData] = useState([]);
-  const [loading, isLoading] = useState(false);
-  useEffect(() => {
-    getPurchaseList()
-  });
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
 
-  const getPurchaseList = () => {
-    console.log("Hello")
-    // isLoading(!loading);
-    axios
+  useEffect(() => {
+    getPurchaseList();
+  }, []);
+
+  const getPurchaseList = async () => {
+    await axios
       .get(GET_PURCHASE_LIST)
       .then(function (response) {
         if (response.data.error) {
-          // isLoading(!loading);
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
-          // isLoading(!loading);
-
           var array = [];
           for (var i = 0; i < response.data.purchases.length; i++) {
             array.push({
               _id: response.data.purchases[i]._id,
               total_amount: response.data.purchases[i].total_amount,
               total_quantity: response.data.purchases[i].total_quantity,
+              supplier: response.data.purchases[i].supplier.name,
               submit_date: response.data.purchases[i].submit_date,
               status: response.data.purchases[i].status,
               order_details: response.data.purchases[i].order_details,
@@ -43,14 +46,21 @@ export default function GetPurchaseList() {
               __v: response.data.purchases[i].__v,
             });
           }
-          console.log(response.data.purchases[0]._id);
           setData(array);
         }
       })
       .catch(function (error) {
-        // isLoading(!loading);
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
   return (
     <div className="list">
@@ -64,11 +74,17 @@ export default function GetPurchaseList() {
         />
         <DataTable
           data={data}
-          columns={saleColumn}
-          loading={loading}
+          columns={purchaseColumn}
+          // loading={loading}
           isForTransaction={false}
         />
       </div>
+      <SnackBar
+        open={open}
+        severity={severity}
+        message={message}
+        handleClose={handleClose}
+      />
     </div>
   );
 }
