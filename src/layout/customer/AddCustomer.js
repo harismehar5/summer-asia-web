@@ -11,6 +11,7 @@ import SideBar from "../../components/sidebar/SideBar";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { ADD_CUSTOMER } from "../../utils/config";
+import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddCustomer() {
   const [name, setName] = useState("");
@@ -18,6 +19,9 @@ export default function AddCustomer() {
   const [address, setAddress] = useState("");
   const [openingBalance, setOpeningBalance] = useState("");
   const [status, setStatus] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   var customer = {
     name: "",
     phone: "",
@@ -37,12 +41,21 @@ export default function AddCustomer() {
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           console.log(response);
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
 
@@ -57,6 +70,12 @@ export default function AddCustomer() {
     } else {
       addCustomer();
     }
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
   return (
     <div className="box">
@@ -154,6 +173,12 @@ export default function AddCustomer() {
             </Grid>
           </Grid>
         </Paper>
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

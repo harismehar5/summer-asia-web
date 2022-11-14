@@ -17,6 +17,7 @@ import {
   GET_CUSTOMERS_LIST,
   GET_PRODUCTS_LIST,
 } from "../../utils/config";
+import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddSale() {
   const [data, setData] = useState([]);
@@ -28,6 +29,9 @@ export default function AddSale() {
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [submittedDate, setSubmittedDate] = useState("");
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   const date = new Date();
 
   let day = date.getDate();
@@ -48,12 +52,18 @@ export default function AddSale() {
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setProductList(response.data.products);
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
   const getCustomersList = () => {
@@ -62,12 +72,18 @@ export default function AddSale() {
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setCustomerList(response.data.customers);
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
   const postSale = () => {
@@ -86,18 +102,26 @@ export default function AddSale() {
       submit_date: submittedDate,
       order_details: sale_detail,
     };
-    console.log(sale_detail);
     axios
       .post(ADD_SALE, sale_object)
       .then(function (response) {
         if (response.data.error) {
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
           console.log(response.data.error_msg);
         } else {
           console.log(response);
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
   const addProductIntoList = () => {
@@ -153,6 +177,12 @@ export default function AddSale() {
     );
     setData(arr);
   };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
   return (
     <div className="box">
       <SideBar />
@@ -198,7 +228,7 @@ export default function AddSale() {
               {/* <DataTable
                 editMode={"row"}
                 data={data}
-                columns={saleColumn}
+                columns={tradingColumn}
                 isForTransaction={true}
                 loading={!data.length}
                 experimentalFeatures={{ newEditingApi: true }}
@@ -374,6 +404,12 @@ export default function AddSale() {
             </Grid>
           </Grid>
         </Grid>
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

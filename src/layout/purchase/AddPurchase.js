@@ -14,20 +14,24 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
   ADD_PURCHASE,
-  GET_CUSTOMERS_LIST,
+  GET_SUPPLIERS_LIST,
   GET_PRODUCTS_LIST,
 } from "../../utils/config";
+import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddPurchase() {
   const [data, setData] = useState([]);
   const [productList, setProductList] = useState([]);
-  const [customerList, setCustomerList] = useState([]);
+  const [supplierList, setSupplierList] = useState([]);
   const [productObject, setProductObject] = useState({});
-  const [customerObject, setCustomerObject] = useState({});
+  const [supplierObject, setSupplierObject] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [submittedDate, setSubmittedDate] = useState("");
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   const date = new Date();
 
   let day = date.getDate();
@@ -38,7 +42,7 @@ export default function AddPurchase() {
 
   useEffect(() => {
     getStockList();
-    getCustomersList();
+    getSupplierList();
     calculateAmountAndBags(data);
   }, [data]);
 
@@ -48,26 +52,38 @@ export default function AddPurchase() {
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setProductList(response.data.products);
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
-  const getCustomersList = () => {
+  const getSupplierList = () => {
     axios
-      .get(GET_CUSTOMERS_LIST)
+      .get(GET_SUPPLIERS_LIST)
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
-          setCustomerList(response.data.customers);
+          setSupplierList(response.data.suppliers);
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
   const postPurchase = () => {
@@ -82,7 +98,7 @@ export default function AddPurchase() {
     const purchase_object = {
       total_amount: totalAmount,
       total_quantity: totalBags,
-      customer: customerObject._id,
+      supplier: supplierObject._id,
       submit_date: submittedDate,
       order_details: purchase_detail,
     };
@@ -92,12 +108,21 @@ export default function AddPurchase() {
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
+          console.log(response.data.error_msg);
         } else {
           console.log(response);
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
   const addProductIntoList = () => {
@@ -153,6 +178,12 @@ export default function AddPurchase() {
     );
     setData(arr);
   };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
   return (
     <div className="box">
       <SideBar />
@@ -198,7 +229,7 @@ export default function AddPurchase() {
               {/* <DataTable
                 editMode={"row"}
                 data={data}
-                columns={saleColumn}
+                columns={tradingColumn}
                 isForTransaction={true}
                 loading={!data.length}
                 experimentalFeatures={{ newEditingApi: true }}
@@ -279,22 +310,22 @@ export default function AddPurchase() {
                 // mt={2}
               >
                 <Autocomplete
-                  options={customerList}
-                  getOptionLabel={(customer, index) => customer.name}
+                  options={supplierList}
+                  getOptionLabel={(supplier, index) => supplier.name}
                   disablePortal
                   fullWidth
                   isOptionEqualToValue={(option, value) =>
                     option._id === value._id
                   }
                   onChange={(event, newInputValue) => {
-                    setCustomerObject(newInputValue);
+                    setSupplierObject(newInputValue);
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Select Customer" />
+                    <TextField {...params} label="Select Supplier" />
                   )}
-                  renderOption={(props, customer) => (
-                    <Box component="li" {...props} key={customer._id}>
-                      {customer.name}
+                  renderOption={(props, supplier) => (
+                    <Box component="li" {...props} key={supplier._id}>
+                      {supplier.name}
                     </Box>
                   )}
                 />
@@ -374,6 +405,12 @@ export default function AddPurchase() {
             </Grid>
           </Grid>
         </Grid>
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

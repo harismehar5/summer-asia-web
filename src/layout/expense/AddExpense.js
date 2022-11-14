@@ -10,12 +10,16 @@ import SideBar from "../../components/sidebar/SideBar";
 import { Alert, Button } from "@mui/material";
 import axios from "axios";
 import { ADD_EXPENSE } from "../../utils/config";
+import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddExpense() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   var expense = {
     name: "",
     amount: "",
@@ -32,12 +36,21 @@ export default function AddExpense() {
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           console.log(response);
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
   const validation = () => {
@@ -46,6 +59,12 @@ export default function AddExpense() {
     } else {
       addExpense();
     }
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
   return (
     <div className="box">
@@ -129,6 +148,12 @@ export default function AddExpense() {
             </Grid>
           </Grid>
         </Paper>
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );
