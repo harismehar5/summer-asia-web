@@ -13,6 +13,7 @@ export const ADD_SUPPLIER_CASH_IN = SUPPLIER_BASE_URL+"add_cash_in/"
 export const ADD_SUPPLIER_CASH_OUT = SUPPLIER_BASE_URL+"add_cash_out/"
 export const GET_ALL_SUPPLIER_CASH_IN = SUPPLIER_BASE_URL+"get_all_cash_in_supplier"
 export const GET_ALL_SUPPLIER_CASH_OUT = SUPPLIER_BASE_URL+"get_all_cash_out_supplier"
+export const GET_SUPPLIERS_CASH_FLOW = SUPPLIER_BASE_URL+"get_suppliers_cash_flow"
 
 //Customer URL
 export const CUSTOMER_BASE_URL = BASE_URL+"customer/"
@@ -28,7 +29,7 @@ export const ADD_CUSTOMER_CASH_IN = CUSTOMER_BASE_URL+"add_cash_in/"
 export const ADD_CUSTOMER_CASH_OUT = CUSTOMER_BASE_URL+"add_cash_out/"
 export const GET_ALL_CUSTOMER_CASH_IN = CUSTOMER_BASE_URL+"get_all_cash_in_customer"
 export const GET_ALL_CUSTOMER_CASH_OUT = CUSTOMER_BASE_URL+"get_all_cash_out_customer"
-
+export const GET_CUSTOMERS_CASH_Flow = CUSTOMER_BASE_URL+"get_customers_cash_flow"
 //Product URL 
 export const PRODUCT_BASE_URL = BASE_URL+"product/"
 export const GET_PRODUCTS_LIST = PRODUCT_BASE_URL+"get_products"

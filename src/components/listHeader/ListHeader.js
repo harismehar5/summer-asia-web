@@ -1,5 +1,6 @@
-import { Box, Button, Typography } from "@mui/material";
 import React from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function ListHeader({
   firstButton,
@@ -8,6 +9,9 @@ export default function ListHeader({
   firstButtonText,
   secondButtonText,
   thirdButtonText,
+  firstLink,
+  secondLink,
+  thirdLink,
   header,
 }) {
   return (
@@ -29,7 +33,9 @@ export default function ListHeader({
             variant="contained"
             size="small"
             color="success"
-            onClick={() => console.log("Hello")}
+            component={Link}
+            to={firstLink}
+            sx={{ marginX: 1 }}
           >
             {firstButtonText}
           </Button>
@@ -39,7 +45,9 @@ export default function ListHeader({
             variant="contained"
             size="small"
             color="success"
-            onClick={() => console.log("Hello")}
+            component={Link}
+            to={secondLink}
+            sx={{ marginX: 1 }}
           >
             {secondButtonText}
           </Button>
@@ -49,7 +57,9 @@ export default function ListHeader({
             variant="contained"
             size="small"
             color="success"
-            onClick={() => console.log("Hello")}
+            component={Link}
+            to={thirdLink}
+            sx={{ marginX: 1  }}
           >
             {thirdButtonText}
           </Button>

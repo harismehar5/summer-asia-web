@@ -66,7 +66,7 @@ export default function SideBar() {
               <span>Customer list</span>
             </li>
           </Link>
-          <Link to="/customer/cash_in" style={{ textDecoration: "none" }}>
+          <Link to="/customer/cash_flow" style={{ textDecoration: "none" }}>
             <li>
               <CurrencyExchangeRoundedIcon className="icon" />
               <span>Cash Flow</span>
@@ -85,7 +85,7 @@ export default function SideBar() {
               <span>Supplier list</span>
             </li>
           </Link>
-          <Link to="/supplier/cash_in" style={{ textDecoration: "none" }}>
+          <Link to="/supplier/cash_flow" style={{ textDecoration: "none" }}>
             <li>
               <CurrencyExchangeRoundedIcon className="icon" />
               <span>Cash Flow</span>

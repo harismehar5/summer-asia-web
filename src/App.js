@@ -26,6 +26,12 @@ import AddSale from "./layout/sale/AddSale";
 import GetSaleList from "./layout/sale/GetSaleList";
 import AddPurchase from "./layout/purchase/AddPurchase";
 import GetPurchaseList from "./layout/purchase/GetPurchaseList";
+import GetCustomerCashFlow from "./layout/customer/GetCustomerCashFlow";
+import GetSupplierCashFlow from "./layout/supplier/GetSupplierCashFlow";
+import AddCustomerCashIn from "./layout/customer/AddCustomerCashIn";
+import AddCustomerCashOut from "./layout/customer/AddCustomerCashOut";
+import AddSupplierCashIn from "./layout/supplier/AddSupplierCashIn";
+import AddSupplierCashOut from "./layout/supplier/AddSupplierCashOut";
 
 function App() {
   return (
@@ -37,15 +43,21 @@ function App() {
             <Route index element={<GetCustomersList />} />
             <Route path="add" element={<AddCustomer />} />
             <Route path="edit/:id" element={<EditCustomer />} />
-            <Route path="cash_in" element={<GetCustomerCashIn />} />
-            <Route path="cash_out" element={<GetCustomerCashOut />} />
+            <Route path="add_cash_in" element={<AddCustomerCashIn />} />
+            <Route path="add_cash_out" element={<AddCustomerCashOut />} />
+            <Route path="get_cash_in" element={<GetCustomerCashIn />} />
+            <Route path="get_cash_out" element={<GetCustomerCashOut />} />
+            <Route path="cash_flow" element={<GetCustomerCashFlow />} />
           </Route>
           <Route path="supplier">
             <Route index element={<GetSuppliersList />} />
             <Route path="add" element={<AddSupplier />} />
             <Route path="edit/:id" element={<EditSupplier />} />
-            <Route path="cash_in" element={<GetSupplierCashIn />} />
-            <Route path="cash_out" element={<GetSupplierCashOut />} />
+            <Route path="add_cash_in" element={<AddSupplierCashIn />} />
+            <Route path="add_cash_out" element={<AddSupplierCashOut />} />
+            <Route path="get_cash_in" element={<GetSupplierCashIn />} />
+            <Route path="get_cash_out" element={<GetSupplierCashOut />} />
+            <Route path="cash_flow" element={<GetSupplierCashFlow />} />
           </Route>
           <Route path="expense">
             <Route index element={<GetExpensesList />} />

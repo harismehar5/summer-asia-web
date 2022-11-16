@@ -222,3 +222,36 @@ export const purchaseColumn = [
   },
 ];
 
+export const cashFlowColumn = [
+  { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "supplier_name",
+    headerName: "Supplier Name",
+    width: 230,
+  },
+  {
+    field: "cash_in_amount",
+    headerName: "Cash In Amount",
+    width: 230,
+  },
+  {
+    field: "cash_out_amount",
+    headerName: "Cash Out Amount",
+    width: 230,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+  {
+    field: "payment_medium",
+    headerName: "Medium",
+    width: 230,
+  },
+  {
+    field: "submit_date",
+    headerName: "Date",
+    width: 230,
+  },
+]
