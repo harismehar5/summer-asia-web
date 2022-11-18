@@ -14,6 +14,7 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
   ADD_SALE,
+  ADD_STOCK_LOG,
   GET_CUSTOMERS_LIST,
   GET_PRODUCTS_LIST,
 } from "../../utils/config";
@@ -23,7 +24,14 @@ export default function AddSale() {
   const [data, setData] = useState([]);
   const [productList, setProductList] = useState([]);
   const [customerList, setCustomerList] = useState([]);
-  const [productObject, setProductObject] = useState({});
+  const [productObject, setProductObject] = useState({
+    _id: "",
+    name: "",
+    price: "",
+    quantity: 0,
+    sub_total: "",
+    status: "",
+  });
   const [customerObject, setCustomerObject] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
@@ -111,6 +119,39 @@ export default function AddSale() {
           setSeverity("error");
           console.log(response.data.error_msg);
         } else {
+          // console.log(response);
+          // setOpen(true);
+          // setMessage(response.data.success_msg);
+          // setSeverity("success");
+          addStockLog();
+        }
+      })
+      .catch(function (error) {
+        console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+  const addStockLog = () => {
+    var stock_log = [];
+    for (var k = 0; k < data.length; k++) {
+      stock_log.push({
+        quantity: parseInt(data[k].quantity),
+        product: data[k]._id,
+        date: submittedDate,
+        stock_type: "Stock Out",
+      });
+    }
+    axios
+      .post(ADD_STOCK_LOG)
+      .then(function (response) {
+        if (response.data.error) {
+          console.log(response.data.error_msg);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
+          console.log(response.data.error_msg);
+        } else {
           console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
@@ -125,33 +166,39 @@ export default function AddSale() {
       });
   };
   const addProductIntoList = () => {
-    var obj = {};
-    var array = data;
-    var foundIndex = data.findIndex((item) => item._id === productObject._id);
-    if (data.length === 0) {
-      obj = {
-        _id: productObject._id,
-        name: productObject.name,
-        price: productObject.price,
-        quantity: 1,
-        sub_total: productObject.price,
-        status: productObject.status,
-      };
-      array = [...array, obj];
-      setData(array);
-    } else if (foundIndex === -1) {
-      obj = {
-        _id: productObject._id,
-        name: productObject.name,
-        price: productObject.price,
-        quantity: 1,
-        sub_total: productObject.price,
-        status: productObject.status,
-      };
-      array = [...array, obj];
-      setData(array);
+    if (productObject._id !== "") {
+      var obj = {};
+      var array = data;
+      var foundIndex = data.findIndex((item) => item._id === productObject._id);
+      if (data.length === 0) {
+        obj = {
+          _id: productObject._id,
+          name: productObject.name,
+          price: productObject.price,
+          quantity: 1,
+          sub_total: productObject.price,
+          status: productObject.status,
+        };
+        array = [...array, obj];
+        setData(array);
+      } else if (foundIndex === -1) {
+        obj = {
+          _id: productObject._id,
+          name: productObject.name,
+          price: productObject.price,
+          quantity: 1,
+          sub_total: productObject.price,
+          status: productObject.status,
+        };
+        array = [...array, obj];
+        setData(array);
+      } else {
+        console.log("Already Existed");
+      }
     } else {
-      console.log("Already Existed");
+      setOpen(true);
+      setMessage("Please select any product");
+      setSeverity("error");
     }
   };
 
@@ -183,6 +230,32 @@ export default function AddSale() {
     }
     setOpen(false);
   };
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      addProductIntoList();
+    }
+  };
+  const validate = () => {
+    if (data.length === 0) {
+      setOpen(true);
+      setMessage("Please select any product to sell");
+      setSeverity("error");
+    } else if (
+      customerObject._id === "" ||
+      customerObject._id === null ||
+      customerObject._id === undefined
+    ) {
+      setOpen(true);
+      setMessage("Please select any customer");
+      setSeverity("error");
+    } else if (submittedDate === "") {
+      setOpen(true);
+      setMessage("Please select date");
+      setSeverity("error");
+    } else {
+      postSale();
+    }
+  };
   return (
     <div className="box">
       <SideBar />
@@ -211,6 +284,7 @@ export default function AddSale() {
                       {product.name}
                     </Box>
                   )}
+                  onKeyDown={handleKeyPress}
                 />
               </Grid>
               <Grid item md={1}>
@@ -275,7 +349,14 @@ export default function AddSale() {
                           label="Price"
                           variant="outlined"
                           value={product.price}
-                          disabled
+                          onChange={(e) => {
+                            var price = e.target.value;
+                            setData((currentData) =>
+                              produce(currentData, (v) => {
+                                v[index].price = price;
+                              })
+                            );
+                          }}
                         />
                       </Grid>
                       <Grid item md={2} px={2}>
@@ -387,7 +468,7 @@ export default function AddSale() {
                   variant="contained"
                   size="medium"
                   color="success"
-                  onClick={() => postSale()}
+                  onClick={() => validate()}
                   sx={{ marginX: "10px" }}
                 >
                   Save

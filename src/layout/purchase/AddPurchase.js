@@ -16,6 +16,7 @@ import {
   ADD_PURCHASE,
   GET_SUPPLIERS_LIST,
   GET_PRODUCTS_LIST,
+  ADD_STOCK_LOG,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -23,7 +24,14 @@ export default function AddPurchase() {
   const [data, setData] = useState([]);
   const [productList, setProductList] = useState([]);
   const [supplierList, setSupplierList] = useState([]);
-  const [productObject, setProductObject] = useState({});
+  const [productObject, setProductObject] = useState({
+    _id: "",
+    name: "",
+    price: "",
+    quantity: 0,
+    sub_total: "",
+    status: "",
+  });
   const [supplierObject, setSupplierObject] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
@@ -88,11 +96,18 @@ export default function AddPurchase() {
   };
   const postPurchase = () => {
     var purchase_detail = [];
+    var stock_log = [];
     for (var i = 0; i < data.length; i++) {
       purchase_detail.push({
         quantity: parseInt(data[i].quantity),
         amount: parseInt(data[i].price),
         product: data[i]._id,
+      });
+      stock_log.push({
+        quantity: parseInt(data[i].quantity),
+        product: data[i]._id,
+        date: submittedDate,
+        stock_type: "Stock In",
       });
     }
     const purchase_object = {
@@ -102,9 +117,41 @@ export default function AddPurchase() {
       submit_date: submittedDate,
       order_details: purchase_detail,
     };
-    console.log(purchase_detail);
     axios
       .post(ADD_PURCHASE, purchase_object)
+      .then(function (response) {
+        if (response.data.error) {
+          console.log(response.data.error_msg);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
+          console.log(response.data.error_msg);
+        } else {
+          // console.log(response);
+          // setOpen(true);
+          // setMessage(response.data.success_msg);
+          // setSeverity("success");
+          addStockLog()
+        }
+      })
+      .catch(function (error) {
+        console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+  const addStockLog = () => {
+    var stock_log = [];
+    for (var k = 0; k < data.length; k++) {
+      stock_log.push({
+        quantity: parseInt(data[k].quantity),
+        product: data[k]._id,
+        date: submittedDate,
+        stock_type: "Stock In",
+      });
+    }
+    axios
+      .post(ADD_STOCK_LOG)
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
@@ -124,35 +171,43 @@ export default function AddPurchase() {
         setMessage("error: " + error);
         setSeverity("error");
       });
-  };
+  }
   const addProductIntoList = () => {
-    var obj = {};
-    var array = data;
-    var foundIndex = data.findIndex((item) => item._id === productObject._id);
-    if (data.length === 0) {
-      obj = {
-        _id: productObject._id,
-        name: productObject.name,
-        price: productObject.price,
-        quantity: 1,
-        sub_total: productObject.price,
-        status: productObject.status,
-      };
-      array = [...array, obj];
-      setData(array);
-    } else if (foundIndex === -1) {
-      obj = {
-        _id: productObject._id,
-        name: productObject.name,
-        price: productObject.price,
-        quantity: 1,
-        sub_total: productObject.price,
-        status: productObject.status,
-      };
-      array = [...array, obj];
-      setData(array);
+    console.log(productObject._id);
+    console.log(productObject._id !== "");
+    if (productObject._id !== "") {
+      var obj = {};
+      var array = data;
+      var foundIndex = data.findIndex((item) => item._id === productObject._id);
+      if (data.length === 0) {
+        obj = {
+          _id: productObject._id,
+          name: productObject.name,
+          price: productObject.price,
+          quantity: 1,
+          sub_total: productObject.price,
+          status: productObject.status,
+        };
+        array = [...array, obj];
+        setData(array);
+      } else if (foundIndex === -1) {
+        obj = {
+          _id: productObject._id,
+          name: productObject.name,
+          price: productObject.price,
+          quantity: 1,
+          sub_total: productObject.price,
+          status: productObject.status,
+        };
+        array = [...array, obj];
+        setData(array);
+      } else {
+        console.log("Already Existed");
+      }
     } else {
-      console.log("Already Existed");
+      setOpen(true);
+      setMessage("Please select any product");
+      setSeverity("error");
     }
   };
 
@@ -184,6 +239,32 @@ export default function AddPurchase() {
     }
     setOpen(false);
   };
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      addProductIntoList();
+    }
+  };
+  const validate = () => {
+    if (data.length === 0) {
+      setOpen(true);
+      setMessage("Please select any product to purchase");
+      setSeverity("error");
+    } else if (
+      supplierObject._id === "" ||
+      supplierObject._id === null ||
+      supplierObject._id === undefined
+    ) {
+      setOpen(true);
+      setMessage("Please select any supplier");
+      setSeverity("error");
+    } else if (submittedDate === "") {
+      setOpen(true);
+      setMessage("Please select date");
+      setSeverity("error");
+    } else {
+      postPurchase();
+    }
+  };
   return (
     <div className="box">
       <SideBar />
@@ -212,6 +293,7 @@ export default function AddPurchase() {
                       {product.name}
                     </Box>
                   )}
+                  onKeyDown={handleKeyPress}
                 />
               </Grid>
               <Grid item md={1}>
@@ -276,7 +358,14 @@ export default function AddPurchase() {
                           label="Price"
                           variant="outlined"
                           value={product.price}
-                          disabled
+                          onChange={(e) => {
+                            var price = e.target.value;
+                            setData((currentData) =>
+                              produce(currentData, (v) => {
+                                v[index].price = price;
+                              })
+                            );
+                          }}
                         />
                       </Grid>
                       <Grid item md={2} px={2}>
@@ -388,7 +477,7 @@ export default function AddPurchase() {
                   variant="contained"
                   size="medium"
                   color="success"
-                  onClick={() => postPurchase()}
+                  onClick={() => validate()}
                   sx={{ marginX: "10px" }}
                 >
                   Save
