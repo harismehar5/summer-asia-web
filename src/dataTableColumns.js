@@ -222,7 +222,7 @@ export const purchaseColumn = [
   },
 ];
 
-export const cashFlowColumn = [
+export const supplierCashFlowColumn = [
   { field: "_id", headerName: "ID", width: 230 },
   {
     field: "supplier_name",
@@ -255,3 +255,60 @@ export const cashFlowColumn = [
     width: 230,
   },
 ]
+
+export const customerCashFlowColumn = [
+  { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "customer_name",
+    headerName: "Customer Name",
+    width: 230,
+  },
+  {
+    field: "cash_in_amount",
+    headerName: "Cash In Amount",
+    width: 230,
+  },
+  {
+    field: "cash_out_amount",
+    headerName: "Cash Out Amount",
+    width: 230,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+  {
+    field: "payment_medium",
+    headerName: "Medium",
+    width: 230,
+  },
+  {
+    field: "submit_date",
+    headerName: "Date",
+    width: 230,
+  },
+]
+export const stockLogColumns = [
+  { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "product",
+    headerName: "Product",
+    width: 230,
+  },
+  {
+    field: "stock_type",
+    headerName: "Stock Type",
+    width: 230,
+  },
+  {
+    field: "quantity",
+    headerName: "quantity",
+    width: 230,
+  },
+  {
+    field: "date",
+    headerName: "Date",
+    width: 160,
+  },
+];

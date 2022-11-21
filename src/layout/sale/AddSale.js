@@ -17,6 +17,7 @@ import {
   ADD_STOCK_LOG,
   GET_CUSTOMERS_LIST,
   GET_PRODUCTS_LIST,
+  SUBTRACT_QUANTITY,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -59,7 +60,6 @@ export default function AddSale() {
       .get(GET_PRODUCTS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -68,7 +68,6 @@ export default function AddSale() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -79,7 +78,6 @@ export default function AddSale() {
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -88,7 +86,6 @@ export default function AddSale() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -115,11 +112,9 @@ export default function AddSale() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage("post " + response.data.error_msg);
           setSeverity("error");
-          console.log(response.data.error_msg);
         } else {
-          // console.log(response);
           // setOpen(true);
           // setMessage(response.data.success_msg);
           // setSeverity("success");
@@ -127,7 +122,6 @@ export default function AddSale() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -144,22 +138,49 @@ export default function AddSale() {
       });
     }
     axios
-      .post(ADD_STOCK_LOG)
+      .post(ADD_STOCK_LOG, { stock_log: stock_log })
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
-          setMessage(response.data.error_msg);
+          setMessage("stock " + response.data.response);
           setSeverity("error");
-          console.log(response.data.error_msg);
         } else {
-          console.log(response);
+          // setOpen(true);
+          // setMessage(response.data.success_msg);
+          // setSeverity("success");
+          subtractQuantity();
+        }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+  const subtractQuantity = () => {
+    var product_array = [];
+    for (var j = 0; j < data.length; j++) {
+      product_array.push({
+        quantity: parseInt(data[j].quantity),
+        product: data[j]._id,
+      });
+    }
+    axios
+      .post(SUBTRACT_QUANTITY, {
+        products: product_array,
+      })
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.error) {
+          setOpen(true);
+          setMessage("subtract " + response.data.response);
+          setSeverity("error");
+        } else {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -193,7 +214,9 @@ export default function AddSale() {
         array = [...array, obj];
         setData(array);
       } else {
-        console.log("Already Existed");
+        setOpen(true);
+        setMessage("Already existed");
+        setSeverity("error");
       }
     } else {
       setOpen(true);
@@ -206,7 +229,6 @@ export default function AddSale() {
     let sum = 0;
     var total_quantity = 0;
     array.forEach(function (item) {
-      console.log(typeof item.quantity);
       let total_amount = item.price * item.quantity;
       sum += total_amount;
       total_quantity += parseInt(item.quantity);
@@ -421,7 +443,6 @@ export default function AddSale() {
                   type="date"
                   defaultValue={currentDate}
                   onChange={(event) => {
-                    console.log(event.target.value);
                     setSubmittedDate(event.target.value);
                   }}
                   fullWidth

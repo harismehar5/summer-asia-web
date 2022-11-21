@@ -32,6 +32,7 @@ import AddCustomerCashIn from "./layout/customer/AddCustomerCashIn";
 import AddCustomerCashOut from "./layout/customer/AddCustomerCashOut";
 import AddSupplierCashIn from "./layout/supplier/AddSupplierCashIn";
 import AddSupplierCashOut from "./layout/supplier/AddSupplierCashOut";
+import StockLog from "./layout/product/StockLog";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
           <Route path="product">
             <Route index element={<GetProductStock />} />
             <Route path="add" element={<AddProduct />} />
+            <Route path="stock_log" element={<StockLog />} />
           </Route>
           <Route path="sale">
             <Route index element={<GetSaleList />} />

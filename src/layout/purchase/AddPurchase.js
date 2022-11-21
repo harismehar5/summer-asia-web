@@ -17,6 +17,7 @@ import {
   GET_SUPPLIERS_LIST,
   GET_PRODUCTS_LIST,
   ADD_STOCK_LOG,
+  ADD_QUANTITY
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -159,10 +160,11 @@ export default function AddPurchase() {
           setSeverity("error");
           console.log(response.data.error_msg);
         } else {
-          console.log(response);
-          setOpen(true);
-          setMessage(response.data.success_msg);
-          setSeverity("success");
+          // console.log(response);
+          // setOpen(true);
+          // setMessage(response.data.success_msg);
+          // setSeverity("success");
+          addQuantity()
         }
       })
       .catch(function (error) {
@@ -172,6 +174,36 @@ export default function AddPurchase() {
         setSeverity("error");
       });
   }
+  const addQuantity = () => {
+    var product_array = [];
+    for (var j = 0; j < data.length; j++) {
+      product_array.push({
+        quantity: parseInt(data[j].quantity),
+        product: data[j]._id,
+      });
+    }
+    axios
+      .post(ADD_QUANTITY, {
+        products: product_array,
+      })
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.error) {
+          setOpen(true);
+          setMessage("subtract " + response.data.response);
+          setSeverity("error");
+        } else {
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
+        }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
   const addProductIntoList = () => {
     console.log(productObject._id);
     console.log(productObject._id !== "");

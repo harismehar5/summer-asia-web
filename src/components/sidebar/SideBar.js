@@ -10,6 +10,8 @@ import LocalMallRoundedIcon from "@mui/icons-material/LocalMallRounded";
 import CurrencyExchangeRoundedIcon from "@mui/icons-material/CurrencyExchangeRounded";
 import AccountBalanceRoundedIcon from "@mui/icons-material/AccountBalanceRounded";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
+import BookIcon from "@mui/icons-material/Book";
+import BackpackIcon from '@mui/icons-material/Backpack';
 
 import { Link } from "react-router-dom";
 
@@ -107,7 +109,7 @@ export default function SideBar() {
           <p className="title">Product</p>
           <Link to="/product/add" style={{ textDecoration: "none" }}>
             <li>
-              <Inventory2OutlinedIcon className="icon" />
+              <BackpackIcon className="icon" />
               <span>Add Product</span>
             </li>
           </Link>
@@ -115,6 +117,12 @@ export default function SideBar() {
             <li>
               <Inventory2OutlinedIcon className="icon" />
               <span>Stock</span>
+            </li>
+          </Link>
+          <Link to="/product/stock_log" style={{ textDecoration: "none" }}>
+            <li>
+              <BookIcon className="icon" />
+              <span>Stock Log</span>
             </li>
           </Link>
           {/* <p className="title">Payment</p>

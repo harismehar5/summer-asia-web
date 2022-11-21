@@ -5,7 +5,7 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { cashFlowColumn } from "../../dataTableColumns";
+import { supplierCashFlowColumn } from "../../dataTableColumns";
 
 import { GET_SUPPLIERS_CASH_FLOW } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
@@ -51,7 +51,7 @@ export default function GetSupplierCashFlow() {
           secondLink={"/supplier/add_cash_out"}
         />
         {data.length !== 0 ? (
-          <DataTable data={data} columns={cashFlowColumn} loading={loading} isForTransaction={false} />
+          <DataTable data={data} columns={supplierCashFlowColumn} loading={loading} isForTransaction={false} />
         ) : null}
       </div>
     </div>

@@ -5,7 +5,7 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { cashFlowColumn } from "../../dataTableColumns";
+import { customerCashFlowColumn } from "../../dataTableColumns";
 
 import { GET_CUSTOMERS_CASH_Flow } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
@@ -53,7 +53,7 @@ export default function GetCustomerCashFlow() {
         {data.length !== 0 ? (
           <DataTable
             data={data}
-            columns={cashFlowColumn}
+            columns={customerCashFlowColumn}
             loading={loading}
             isForTransaction={false}
           />
