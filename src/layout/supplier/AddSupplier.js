@@ -116,14 +116,14 @@ export default function AddSupplier() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox color="secondary" name="status" value="false" />
                 }
                 label="Status"
                 value={status}
                 onChange={(event) => setStatus(event.target.value)}
-              />
+              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid

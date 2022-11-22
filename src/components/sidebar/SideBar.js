@@ -19,7 +19,7 @@ export default function SideBar() {
   return (
     <div className="sidebar">
       <div className="top">
-        <span className="logo">Asia</span>
+        <span className="logo">Summer Asia</span>
       </div>
       <hr />
       <div className="center">

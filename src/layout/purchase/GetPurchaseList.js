@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { IconButton } from "@mui/material";
 import axios from "axios";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
 
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
@@ -21,6 +24,41 @@ export default function GetPurchaseList() {
     getPurchaseList();
   }, []);
 
+  const actionColumn = [
+    {
+      field: "action",
+      headerName: "Action",
+      width: 250,
+      renderCell: (params) => {
+        return (
+          <div className="cell-action">
+            {/* <Link to="/users/test" style={{ textDecoration: "none" }}>
+              <div className="view-button">View</div>
+            </Link> */}
+            {/* <Button
+              size="small"
+              variant="contained"
+              startIcon={<RemoveRedEyeOutlinedIcon />}
+            >
+              View
+            </Button> */}
+            <IconButton aria-label="delete" size="medium">
+              <VisibilityIcon fontSize="inherit" />
+            </IconButton>
+            {/* <div
+              className="delete-button"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              Delete
+            </div> */}
+            <IconButton aria-label="delete" size="medium">
+              <EditIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+        );
+      },
+    },
+  ];
   const getPurchaseList = async () => {
     await axios
       .get(GET_PURCHASE_LIST)
@@ -74,7 +112,7 @@ export default function GetPurchaseList() {
         />
         <DataTable
           data={data}
-          columns={purchaseColumn}
+          columns={purchaseColumn.concat(actionColumn)}
           // loading={loading}
           isForTransaction={false}
         />

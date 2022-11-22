@@ -1,5 +1,5 @@
 export const userColumns = [
-  { field: "_id", headerName: "ID", width: 230 },
+  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "name",
     headerName: "Name",
@@ -40,7 +40,7 @@ export const userColumns = [
 ];
 
 export const productColumns = [
-  { field: "_id", headerName: "ID", width: 230 },
+  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "name",
     headerName: "Name",
@@ -57,26 +57,31 @@ export const productColumns = [
     headerName: "Quantity",
     width: 230,
   },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 160,
-    renderCell: (params) => {
-      return (
-        <>
-          {params.row.status === true ? (
-            <div className={`cell-with-status active`}>{"active"}</div>
-          ) : (
-            <div className={`cell-with-status passive`}>{"passive"}</div>
-          )}
-        </>
-      );
-    },
-  },
+  // {
+  //   field: "status",
+  //   headerName: "Status",
+  //   width: 160,
+  //   renderCell: (params) => {
+  //     return (
+  //       <>
+  //         {params.row.status === true ? (
+  //           <div className={`cell-with-status active`}>{"active"}</div>
+  //         ) : (
+  //           <div className={`cell-with-status passive`}>{"passive"}</div>
+  //         )}
+  //       </>
+  //     );
+  //   },
+  // },
 ];
 
 export const expenseColumns = [
   { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    width: 230,
+  },
   {
     field: "name",
     headerName: "Name",
@@ -143,6 +148,11 @@ export const cashColumns = [
 export const saleColumn = [
   { field: "_id", headerName: "ID", width: 230 },
   {
+    field: "submit_date",
+    headerName: "Date",
+    width: 230,
+  },
+  {
     field: "customer",
     headerName: "Customer Name",
     width: 230,
@@ -156,12 +166,6 @@ export const saleColumn = [
     field: "total_quantity",
     headerName: "Total Bags",
     width: 230,
-  },
-  {
-    field: "submit_date",
-    headerName: "Date",
-    width: 230,
-    editable: true,
   },
   {
     field: "status",
@@ -184,6 +188,11 @@ export const saleColumn = [
 export const purchaseColumn = [
   { field: "_id", headerName: "ID", width: 230 },
   {
+    field: "submit_date",
+    headerName: "Date",
+    width: 230,
+  },
+  {
     field: "supplier",
     headerName: "Supplier Name",
     width: 230,
@@ -197,12 +206,6 @@ export const purchaseColumn = [
     field: "total_quantity",
     headerName: "Total Bags",
     width: 230,
-  },
-  {
-    field: "submit_date",
-    headerName: "Date",
-    width: 230,
-    editable: true,
   },
   {
     field: "status",
@@ -225,19 +228,24 @@ export const purchaseColumn = [
 export const supplierCashFlowColumn = [
   { field: "_id", headerName: "ID", width: 230 },
   {
+    field: "submit_date",
+    headerName: "Date",
+    width: 230,
+  },
+  {
     field: "supplier_name",
     headerName: "Supplier Name",
     width: 230,
   },
   {
     field: "cash_in_amount",
-    headerName: "Cash In Amount",
-    width: 230,
+    headerName: "Cash In",
+    width: 160,
   },
   {
     field: "cash_out_amount",
-    headerName: "Cash Out Amount",
-    width: 230,
+    headerName: "Cash Out",
+    width: 160,
   },
   {
     field: "description",
@@ -249,15 +257,15 @@ export const supplierCashFlowColumn = [
     headerName: "Medium",
     width: 230,
   },
+];
+
+export const customerCashFlowColumn = [
+  { field: "_id", headerName: "ID", width: 230 },
   {
     field: "submit_date",
     headerName: "Date",
     width: 230,
   },
-]
-
-export const customerCashFlowColumn = [
-  { field: "_id", headerName: "ID", width: 230 },
   {
     field: "customer_name",
     headerName: "Customer Name",
@@ -265,13 +273,13 @@ export const customerCashFlowColumn = [
   },
   {
     field: "cash_in_amount",
-    headerName: "Cash In Amount",
-    width: 230,
+    headerName: "Cash In",
+    width: 160,
   },
   {
     field: "cash_out_amount",
-    headerName: "Cash Out Amount",
-    width: 230,
+    headerName: "Cash Out",
+    width: 160,
   },
   {
     field: "description",
@@ -283,14 +291,14 @@ export const customerCashFlowColumn = [
     headerName: "Medium",
     width: 230,
   },
+];
+export const stockLogColumns = [
+  // { field: "_id", headerName: "ID", width: 230 },
   {
-    field: "submit_date",
+    field: "date",
     headerName: "Date",
     width: 230,
   },
-]
-export const stockLogColumns = [
-  { field: "_id", headerName: "ID", width: 230 },
   {
     field: "product",
     headerName: "Product",
@@ -305,10 +313,5 @@ export const stockLogColumns = [
     field: "quantity",
     headerName: "quantity",
     width: 230,
-  },
-  {
-    field: "date",
-    headerName: "Date",
-    width: 160,
   },
 ];

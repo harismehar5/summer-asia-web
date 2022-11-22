@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+import { Alert, Button } from "@mui/material";
 import { Paper } from "@material-ui/core";
+import axios from "axios";
+
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
-import { Alert, Button } from "@mui/material";
-import axios from "axios";
 import { ADD_EXPENSE } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -16,7 +15,7 @@ export default function AddExpense() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState(true);
+  // const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -44,6 +43,9 @@ export default function AddExpense() {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
+          setName("");
+          setAmount("");
+          setDescription("");
         }
       })
       .catch(function (error) {

@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { Paper } from "@material-ui/core";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
@@ -15,46 +13,45 @@ import SnackBar from "../../components/alert/SnackBar";
 export default function AddProduct() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [status, setStatus] = useState(true);
+  // const [quantity, setQuantity] = useState(0);
+  // const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   var product = {
     name: "",
-    amount: "",
-    description: "",
+    price: "",
+    quantity: "",
   };
   const addProduct = () => {
     product = {
       name: name,
       price: price,
-      quantity: quantity,
+      quantity: 0,
     };
     axios
       .post(ADD_PRODUCT, product)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
+          setName("");
+          setPrice("");
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
       });
   };
   const validation = () => {
-    if (name.length === 0 || price.length === 0 || quantity.length === 0) {
+    if (name.length === 0 || price.length === 0) {
       <Alert severity="error">Some Fields are missing</Alert>;
     } else {
       addProduct();
@@ -100,7 +97,7 @@ export default function AddProduct() {
                 onChange={(event) => setPrice(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            {/* <Grid item xs={12} sm={12}>
               <TextField
                 id="quantity"
                 name="quantity"
@@ -110,7 +107,7 @@ export default function AddProduct() {
                 value={quantity}
                 onChange={(event) => setQuantity(event.target.value)}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6}>
               {/* <FormControlLabel
                 control={

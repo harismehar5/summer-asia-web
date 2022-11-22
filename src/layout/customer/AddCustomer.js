@@ -49,6 +49,10 @@ export default function AddCustomer() {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
+          setName("");
+          setPhone("");
+          setAddress("");
+          setOpeningBalance("");
         }
       })
       .catch(function (error) {
@@ -138,14 +142,14 @@ export default function AddCustomer() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox color="secondary" name="status" value="false" />
                 }
                 label="Status"
                 value={status}
                 onChange={(event) => setStatus(event.target.value)}
-              />
+              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid

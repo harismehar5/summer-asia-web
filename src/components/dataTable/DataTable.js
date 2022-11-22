@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./dataTable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
-import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
@@ -159,10 +158,10 @@ const DataTable = ({
         editMode={editMode}
         className="datagrid"
         rows={data}
-        columns={
-          isForTransaction
-            ? columns.concat(deleteColumn)
-            : columns.concat(actionColumn)
+        columns={columns
+          // isForTransaction
+          //   ? columns.concat(deleteColumn)
+          //   : columns.concat(actionColumn)
         }
         pageSize={pageSize}
         rowsPerPageOptions={[5, 10]}
