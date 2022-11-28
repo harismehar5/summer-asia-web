@@ -72,7 +72,6 @@ export default function AddSupplier() {
                 name="name"
                 label="Name"
                 fullWidth
-                autoComplete="given-name"
                 variant="outlined"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
@@ -85,7 +84,6 @@ export default function AddSupplier() {
                 name="phone"
                 label="Phone"
                 fullWidth
-                autoComplete="shipping address-line1"
                 variant="outlined"
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
@@ -97,7 +95,6 @@ export default function AddSupplier() {
                 name="address"
                 label="Address"
                 fullWidth
-                autoComplete="shipping address-line2"
                 variant="outlined"
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
@@ -109,7 +106,6 @@ export default function AddSupplier() {
                 name="openingBalance"
                 label="Opening Balance"
                 fullWidth
-                autoComplete="shipping address-level2"
                 variant="outlined"
                 value={openingBalance}
                 onChange={(event) => setOpeningBalance(event.target.value)}

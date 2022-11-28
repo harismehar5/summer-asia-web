@@ -17,7 +17,8 @@ import {
   GET_SUPPLIERS_LIST,
   GET_PRODUCTS_LIST,
   ADD_STOCK_LOG,
-  ADD_QUANTITY
+  ADD_QUANTITY,
+  ADD_SUPPLIER_CASH_OUT,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -37,11 +38,30 @@ export default function AddPurchase() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const date = new Date();
+
+  var purchaseObject = {
+    total_amount: "",
+    total_quantity: "",
+    supplier: "",
+    submit_date: "",
+    order_details: "",
+  };
+  var cashOut = {
+    amount: "",
+    description: "",
+    payment_medium: "",
+    submit_date: "",
+    cash_type: "",
+  };
+  var purchaseDetail = [];
+  var stockLog = [];
+  var productArray = [];
 
   let day = date.getDate();
   let month = date.getMonth() + 1;
@@ -55,12 +75,85 @@ export default function AddPurchase() {
     calculateAmountAndBags(data);
   }, [data]);
 
+  const dataEntry = () => {
+    for (var i = 0; i < data.length; i++) {
+      purchaseDetail.push({
+        quantity: parseInt(data[i].quantity),
+        amount: parseInt(data[i].price),
+        product: data[i]._id,
+      });
+      stockLog.push({
+        quantity: parseInt(data[i].quantity),
+        product: data[i]._id,
+        date: submittedDate,
+        stock_type: "Stock In",
+      });
+      productArray.push({
+        quantity: parseInt(data[i].quantity),
+        product: data[i]._id,
+      });
+    }
+    purchaseObject = {
+      total_amount: totalAmount,
+      total_quantity: totalBags,
+      supplier: supplierObject._id,
+      submit_date: submittedDate,
+      order_details: purchaseDetail,
+    };
+    cashOut = {
+      amount: amount,
+      description: "Purchase",
+      payment_medium: "Cash",
+      submit_date: submittedDate,
+      cash_type: "Cash Out",
+    };
+    try {
+      axios
+        .all([
+          axios.post(ADD_PURCHASE, purchaseObject),
+          axios.post(ADD_STOCK_LOG, { stock_log: stockLog }),
+          axios.post(ADD_QUANTITY, {
+            products: productArray,
+          }),
+          axios.patch(ADD_SUPPLIER_CASH_OUT + supplierObject._id, cashOut),
+        ])
+        .then(
+          axios.spread(
+            (firstResponse, secondResponse, thirdResponse, fourthResponse) => {
+              if (
+                !firstResponse.data.error &&
+                !secondResponse.data.error &&
+                !thirdResponse.data.error &&
+                !fourthResponse.data.error
+              ) {
+                setOpen(true);
+                setMessage("Data added successfully");
+                setSeverity("success");
+              } else {
+                setOpen(true);
+                setMessage("Something went wrong...!");
+                setSeverity("error");
+              }
+            }
+          )
+        )
+        .catch((error) => {
+          setOpen(true);
+          setMessage("error: " + error);
+          setSeverity("error");
+        });
+    } catch (error) {
+      setOpen(true);
+      setMessage("error: " + error);
+      setSeverity("error");
+    }
+  };
+
   const getStockList = () => {
     axios
       .get(GET_PRODUCTS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -69,7 +162,6 @@ export default function AddPurchase() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -80,7 +172,6 @@ export default function AddPurchase() {
       .get(GET_SUPPLIERS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -89,7 +180,6 @@ export default function AddPurchase() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -122,20 +212,13 @@ export default function AddPurchase() {
       .post(ADD_PURCHASE, purchase_object)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setMessage(response.data.error_msg);
           setSeverity("error");
-          console.log(response.data.error_msg);
         } else {
-          // console.log(response);
-          // setOpen(true);
-          // setMessage(response.data.success_msg);
-          // setSeverity("success");
-          addStockLog()
+          addStockLog();
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -155,25 +238,18 @@ export default function AddPurchase() {
       .post(ADD_STOCK_LOG)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setMessage(response.data.error_msg);
           setSeverity("error");
-          console.log(response.data.error_msg);
         } else {
-          // console.log(response);
-          // setOpen(true);
-          // setMessage(response.data.success_msg);
-          // setSeverity("success");
-          addQuantity()
+          addQuantity();
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
       });
-  }
+  };
   const addQuantity = () => {
     var product_array = [];
     for (var j = 0; j < data.length; j++) {
@@ -187,7 +263,6 @@ export default function AddPurchase() {
         products: product_array,
       })
       .then(function (response) {
-        console.log(response.data);
         if (response.data.error) {
           setOpen(true);
           setMessage("subtract " + response.data.response);
@@ -205,8 +280,6 @@ export default function AddPurchase() {
       });
   };
   const addProductIntoList = () => {
-    console.log(productObject._id);
-    console.log(productObject._id !== "");
     if (productObject._id !== "") {
       var obj = {};
       var array = data;
@@ -234,7 +307,9 @@ export default function AddPurchase() {
         array = [...array, obj];
         setData(array);
       } else {
-        console.log("Already Existed");
+        setOpen(true);
+        setMessage("Already existed");
+        setSeverity("error");
       }
     } else {
       setOpen(true);
@@ -242,12 +317,10 @@ export default function AddPurchase() {
       setSeverity("error");
     }
   };
-
   const calculateAmountAndBags = (array) => {
     let sum = 0;
     var total_quantity = 0;
     array.forEach(function (item) {
-      console.log(typeof item.quantity);
       let total_amount = item.price * item.quantity;
       sum += total_amount;
       total_quantity += parseInt(item.quantity);
@@ -256,7 +329,6 @@ export default function AddPurchase() {
     setTotalBags(total_quantity);
     setTotalProducts(array.length);
   };
-
   const handleRemoveFields = (id) => {
     const arr = [...data];
     arr.splice(
@@ -294,7 +366,7 @@ export default function AddPurchase() {
       setMessage("Please select date");
       setSeverity("error");
     } else {
-      postPurchase();
+      dataEntry()
     }
   };
   return (
@@ -340,15 +412,6 @@ export default function AddPurchase() {
               </Grid>
             </Grid>
             <Grid item md={12} mt={5} ml={4}>
-              {/* <DataTable
-                editMode={"row"}
-                data={data}
-                columns={tradingColumn}
-                isForTransaction={true}
-                loading={!data.length}
-                experimentalFeatures={{ newEditingApi: true }}
-                onCellEditCommit={handleRowEditCommit}
-              /> */}
               {data.map((product, index) => {
                 return (
                   <>
@@ -462,13 +525,28 @@ export default function AddPurchase() {
                   type="date"
                   defaultValue={currentDate}
                   onChange={(event) => {
-                    console.log(event.target.value);
                     setSubmittedDate(event.target.value);
                   }}
                   fullWidth
                   InputLabelProps={{
                     shrink: true,
                   }}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <TextField
+                  id="amount"
+                  name="amount"
+                  label="Enter Amount"
+                  fullWidth
+                  variant="outlined"
+                  value={amount}
+                  onChange={(event) => setAmount(event.target.value)}
                 />
               </Box>
               <Box

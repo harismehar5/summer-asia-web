@@ -32,28 +32,12 @@ export default function GetPurchaseList() {
       renderCell: (params) => {
         return (
           <div className="cell-action">
-            {/* <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="view-button">View</div>
-            </Link> */}
-            {/* <Button
-              size="small"
-              variant="contained"
-              startIcon={<RemoveRedEyeOutlinedIcon />}
-            >
-              View
-            </Button> */}
-            <IconButton aria-label="delete" size="medium">
+            <IconButton aria-label="view" size="medium">
               <VisibilityIcon fontSize="inherit" />
             </IconButton>
-            {/* <div
-              className="delete-button"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div> */}
-            <IconButton aria-label="delete" size="medium">
+            {/* <IconButton aria-label="edit" size="medium">
               <EditIcon fontSize="inherit" />
-            </IconButton>
+            </IconButton> */}
           </div>
         );
       },

@@ -20,6 +20,7 @@ export default function StockLog() {
     axios
       .get(GET_STOCK_LOG)
       .then(function (response) {
+        console.log(response.data);
         if (response.data.error) {
           console.log(response.data.error_msg);
         } else {

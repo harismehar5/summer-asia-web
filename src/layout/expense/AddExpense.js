@@ -85,7 +85,6 @@ export default function AddExpense() {
                 name="name"
                 label="Name"
                 fullWidth
-                autoComplete="given-name"
                 variant="outlined"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
@@ -98,7 +97,6 @@ export default function AddExpense() {
                 name="amount"
                 label="Amount"
                 fullWidth
-                autoComplete="shipping address-line1"
                 variant="outlined"
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
@@ -110,7 +108,6 @@ export default function AddExpense() {
                 name="description"
                 label="Description"
                 fullWidth
-                autoComplete="shipping address-line2"
                 variant="outlined"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}

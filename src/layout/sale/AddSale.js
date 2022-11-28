@@ -13,6 +13,7 @@ import { produce } from "immer";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
+  ADD_CUSTOMER_CASH_IN,
   ADD_SALE,
   ADD_STOCK_LOG,
   GET_CUSTOMERS_LIST,
@@ -37,12 +38,31 @@ export default function AddSale() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const date = new Date();
 
+  var cashIn = {
+    amount: "",
+    description: "",
+    payment_medium: "",
+    submit_date: "",
+    cash_type: "",
+  };
+  var saleObject = {
+    total_amount: "",
+    total_quantity: "",
+    customer: "",
+    submit_date: "",
+    order_details: "",
+  };
+  var saleDetail = [];
+  var stockLog = [];
+  var productArray = [];
+  
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
@@ -55,6 +75,79 @@ export default function AddSale() {
     calculateAmountAndBags(data);
   }, [data]);
 
+  const dataEntry = () => {
+    for (var i = 0; i < data.length; i++) {
+      saleDetail.push({
+        quantity: parseInt(data[i].quantity),
+        amount: parseInt(data[i].price),
+        product: data[i]._id,
+      });
+      stockLog.push({
+        quantity: parseInt(data[i].quantity),
+        product: data[i]._id,
+        date: submittedDate,
+        stock_type: "Stock Out",
+      });
+      productArray.push({
+        quantity: parseInt(data[i].quantity),
+        product: data[i]._id,
+      });
+    }
+    saleObject = {
+      total_amount: totalAmount,
+      total_quantity: totalBags,
+      customer: customerObject._id,
+      submit_date: submittedDate,
+      order_details: saleDetail,
+    };
+    cashIn = {
+      amount: amount,
+      description: "Sale",
+      payment_medium: "Cash",
+      submit_date: submittedDate,
+      cash_type: "Cash In",
+    };
+    try {
+      axios
+        .all([
+          axios.post(ADD_SALE, saleObject),
+          axios.post(ADD_STOCK_LOG, { stock_log: stockLog }),
+          axios.post(SUBTRACT_QUANTITY, {
+            products: productArray,
+          }),
+          axios.patch(ADD_CUSTOMER_CASH_IN + customerObject._id, cashIn),
+        ])
+        .then(
+          axios.spread(
+            (firstResponse, secondResponse, thirdResponse, fourthResponse) => {
+              if (
+                !firstResponse.data.error &&
+                !secondResponse.data.error &&
+                !thirdResponse.data.error &&
+                !fourthResponse.data.error
+              ) {
+                setOpen(true);
+                setMessage("Data added successfully");
+                setSeverity("success");
+              } else {
+                setOpen(true);
+                setMessage("Something went wrong...!");
+                setSeverity("error");
+              }
+            }
+          )
+        )
+        .catch((error) => {
+          setOpen(true);
+          setMessage("error: " + error);
+          setSeverity("error");
+        });
+    } catch (error) {
+      setOpen(true);
+      setMessage("error: " + error);
+      setSeverity("error");
+    }
+  };
   const getStockList = () => {
     axios
       .get(GET_PRODUCTS_LIST)
@@ -83,101 +176,6 @@ export default function AddSale() {
           setSeverity("error");
         } else {
           setCustomerList(response.data.customers);
-        }
-      })
-      .catch(function (error) {
-        setOpen(true);
-        setMessage("error: " + error);
-        setSeverity("error");
-      });
-  };
-  const postSale = () => {
-    var sale_detail = [];
-    for (var i = 0; i < data.length; i++) {
-      sale_detail.push({
-        quantity: parseInt(data[i].quantity),
-        amount: parseInt(data[i].price),
-        product: data[i]._id,
-      });
-    }
-    const sale_object = {
-      total_amount: totalAmount,
-      total_quantity: totalBags,
-      customer: customerObject._id,
-      submit_date: submittedDate,
-      order_details: sale_detail,
-    };
-    axios
-      .post(ADD_SALE, sale_object)
-      .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage("post " + response.data.error_msg);
-          setSeverity("error");
-        } else {
-          // setOpen(true);
-          // setMessage(response.data.success_msg);
-          // setSeverity("success");
-          addStockLog();
-        }
-      })
-      .catch(function (error) {
-        setOpen(true);
-        setMessage("error: " + error);
-        setSeverity("error");
-      });
-  };
-  const addStockLog = () => {
-    var stock_log = [];
-    for (var k = 0; k < data.length; k++) {
-      stock_log.push({
-        quantity: parseInt(data[k].quantity),
-        product: data[k]._id,
-        date: submittedDate,
-        stock_type: "Stock Out",
-      });
-    }
-    axios
-      .post(ADD_STOCK_LOG, { stock_log: stock_log })
-      .then(function (response) {
-        if (response.data.error) {
-          setMessage("stock " + response.data.response);
-          setSeverity("error");
-        } else {
-          // setOpen(true);
-          // setMessage(response.data.success_msg);
-          // setSeverity("success");
-          subtractQuantity();
-        }
-      })
-      .catch(function (error) {
-        setOpen(true);
-        setMessage("error: " + error);
-        setSeverity("error");
-      });
-  };
-  const subtractQuantity = () => {
-    var product_array = [];
-    for (var j = 0; j < data.length; j++) {
-      product_array.push({
-        quantity: parseInt(data[j].quantity),
-        product: data[j]._id,
-      });
-    }
-    axios
-      .post(SUBTRACT_QUANTITY, {
-        products: product_array,
-      })
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data.error) {
-          setOpen(true);
-          setMessage("subtract " + response.data.response);
-          setSeverity("error");
-        } else {
-          setOpen(true);
-          setMessage(response.data.success_msg);
-          setSeverity("success");
         }
       })
       .catch(function (error) {
@@ -275,7 +273,7 @@ export default function AddSale() {
       setMessage("Please select date");
       setSeverity("error");
     } else {
-      postSale();
+      dataEntry();
     }
   };
   return (
@@ -449,6 +447,22 @@ export default function AddSale() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <TextField
+                  id="amount"
+                  name="amount"
+                  label="Enter Amount"
+                  fullWidth
+                  variant="outlined"
+                  value={amount}
+                  onChange={(event) => setAmount(event.target.value)}
                 />
               </Box>
               <Box
