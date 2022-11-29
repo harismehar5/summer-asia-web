@@ -11,7 +11,7 @@ import CurrencyExchangeRoundedIcon from "@mui/icons-material/CurrencyExchangeRou
 import AccountBalanceRoundedIcon from "@mui/icons-material/AccountBalanceRounded";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import BookIcon from "@mui/icons-material/Book";
-import BackpackIcon from '@mui/icons-material/Backpack';
+import BackpackIcon from "@mui/icons-material/Backpack";
 
 import { Link } from "react-router-dom";
 
@@ -135,14 +135,18 @@ export default function SideBar() {
             <span>Cash Out</span>
           </li> */}
           <p className="title">Ledger</p>
-          <li>
-            <AccountBalanceRoundedIcon className="icon" />
-            <span>Customer Ledger</span>
-          </li>
+          <Link to="/customer/ledger" style={{ textDecoration: "none" }}>
+            <li>
+              <AccountBalanceRoundedIcon className="icon" />
+              <span>Customer Ledger</span>
+            </li>
+          </Link>
+          <Link to="/supplier/ledger" style={{ textDecoration: "none" }}>
           <li>
             <AccountBalanceRoundedIcon className="icon" />
             <span>Supplier Ledger</span>
           </li>
+          </Link>
         </ul>
       </div>
       {/* <div className="bottom">color options</div> */}

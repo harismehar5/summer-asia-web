@@ -315,3 +315,91 @@ export const stockLogColumns = [
     width: 230,
   },
 ];
+
+export const customerLedgerColumns = [
+  // { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "date",
+    headerName: "Date",
+    width: 160,
+  },
+  {
+    field: "sale_ref",
+    headerName: "Sale Ref",
+    width: 230,
+  },
+  {
+    field: "cash_ref",
+    headerName: "Cash Flow Ref",
+    width: 230,
+  },
+  {
+    field: "debit",
+    headerName: "Debit",
+    width: 160,
+  },
+  {
+    field: "credit",
+    headerName: "Credit",
+    width: 160,
+  },
+  {
+    field: "payment_medium",
+    headerName: "Payment Medium",
+    width: 230,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+  {
+    field: "total_amount",
+    headerName: "Balance",
+    width: 160,
+  },
+];
+
+export const supplierLedgerColumns = [
+  // { field: "_id", headerName: "ID", width: 230 },
+  {
+    field: "date",
+    headerName: "Date",
+    width: 160,
+  },
+  {
+    field: "purchase_ref",
+    headerName: "Purchase Ref",
+    width: 230,
+  },
+  {
+    field: "cash_ref",
+    headerName: "Cash Flow Ref",
+    width: 230,
+  },
+  {
+    field: "debit",
+    headerName: "Debit",
+    width: 160,
+  },
+  {
+    field: "credit",
+    headerName: "Credit",
+    width: 160,
+  },
+  {
+    field: "payment_medium",
+    headerName: "Payment Medium",
+    width: 230,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+  {
+    field: "total_amount",
+    headerName: "Balance",
+    width: 160,
+  },
+];

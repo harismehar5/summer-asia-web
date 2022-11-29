@@ -7,11 +7,11 @@ import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { customerCashFlowColumn } from "../../dataTableColumns";
 
-import { GET_CUSTOMERS_CASH_Flow } from "../../utils/config";
+import { GET_CUSTOMERS_CASH_FLOW } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetCustomerCashFlow() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function GetCustomerCashFlow() {
   const getCustomerCashFlowList = () => {
     // setLoading(true);
     axios
-      .get(GET_CUSTOMERS_CASH_Flow)
+      .get(GET_CUSTOMERS_CASH_FLOW)
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
@@ -54,7 +54,7 @@ export default function GetCustomerCashFlow() {
           <DataTable
             data={data}
             columns={customerCashFlowColumn}
-            loading={loading}
+            // loading={loading}
             isForTransaction={false}
           />
         ) : null}

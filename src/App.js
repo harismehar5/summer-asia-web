@@ -33,6 +33,8 @@ import AddCustomerCashOut from "./layout/customer/AddCustomerCashOut";
 import AddSupplierCashIn from "./layout/supplier/AddSupplierCashIn";
 import AddSupplierCashOut from "./layout/supplier/AddSupplierCashOut";
 import StockLog from "./layout/product/StockLog";
+import GetCustomerLedger from "./layout/customer/GetCustomerLedger";
+import GetSupplierLedger from "./layout/supplier/GetSupplierLedger";
 
 function App() {
   return (
@@ -49,6 +51,7 @@ function App() {
             <Route path="get_cash_in" element={<GetCustomerCashIn />} />
             <Route path="get_cash_out" element={<GetCustomerCashOut />} />
             <Route path="cash_flow" element={<GetCustomerCashFlow />} />
+            <Route path="ledger" element={<GetCustomerLedger />} />
           </Route>
           <Route path="supplier">
             <Route index element={<GetSuppliersList />} />
@@ -59,6 +62,7 @@ function App() {
             <Route path="get_cash_in" element={<GetSupplierCashIn />} />
             <Route path="get_cash_out" element={<GetSupplierCashOut />} />
             <Route path="cash_flow" element={<GetSupplierCashFlow />} />
+            <Route path="ledger" element={<GetSupplierLedger />} />
           </Route>
           <Route path="expense">
             <Route index element={<GetExpensesList />} />

@@ -10,7 +10,7 @@ export const UPDATE_SUPPLIER_STATUS_BY_ID =
   SUPPLIER_BASE_URL + "update_status/";
 export const GET_SUPPLIER_CASH_IN_BY_ID =
   SUPPLIER_BASE_URL + "get_cash_in_by_id/";
-export const GET_CASH_OUT_BY_iD = SUPPLIER_BASE_URL + "get_cash_out_by_id/";
+export const GET_CASH_OUT_BY_ID = SUPPLIER_BASE_URL + "get_cash_out_by_id/";
 export const ADD_SUPPLIER_CASH_IN = SUPPLIER_BASE_URL + "add_cash_in/";
 export const ADD_SUPPLIER_CASH_OUT = SUPPLIER_BASE_URL + "add_cash_out/";
 export const GET_ALL_SUPPLIER_CASH_IN =
@@ -19,7 +19,7 @@ export const GET_ALL_SUPPLIER_CASH_OUT =
   SUPPLIER_BASE_URL + "get_all_cash_out_supplier";
 export const GET_SUPPLIERS_CASH_FLOW =
   SUPPLIER_BASE_URL + "get_suppliers_cash_flow";
-
+export const GET_SUPPLIER_LEDGER = SUPPLIER_BASE_URL + "get_supplier_ledger/"
 //Customer URL
 export const CUSTOMER_BASE_URL = BASE_URL + "customer/";
 export const ADD_CUSTOMER = CUSTOMER_BASE_URL + "add_customer";
@@ -39,8 +39,9 @@ export const GET_ALL_CUSTOMER_CASH_IN =
   CUSTOMER_BASE_URL + "get_all_cash_in_customer";
 export const GET_ALL_CUSTOMER_CASH_OUT =
   CUSTOMER_BASE_URL + "get_all_cash_out_customer";
-export const GET_CUSTOMERS_CASH_Flow =
+export const GET_CUSTOMERS_CASH_FLOW =
   CUSTOMER_BASE_URL + "get_customers_cash_flow";
+export const GET_CUSTOMER_LEDGER = CUSTOMER_BASE_URL + "get_customer_ledger/"
 //Product URL
 export const PRODUCT_BASE_URL = BASE_URL + "product/";
 export const GET_PRODUCTS_LIST = PRODUCT_BASE_URL + "get_products";
