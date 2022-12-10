@@ -1,4 +1,6 @@
-export const BASE_URL = "https://summer-asia.herokuapp.com/";
+// export const BASE_URL = "https://summer-asia.herokuapp.com/";
+export const BASE_URL = "https://summer-asia-db-express.vercel.app/";
+
 //Supplier URL
 export const SUPPLIER_BASE_URL = BASE_URL + "supplier/";
 export const ADD_SUPPLIER = SUPPLIER_BASE_URL + "add_supplier";
