@@ -9,14 +9,18 @@ import { customerCashFlowColumn } from "../../dataTableColumns";
 
 import { GET_CUSTOMERS_CASH_FLOW } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
+import SnackBar from "../../components/alert/SnackBar";
 
 export default function GetCustomerCashFlow() {
   // const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
 
   useEffect(() => {
     getCustomerCashFlowList();
-  });
+  }, [data]);
 
   const getCustomerCashFlowList = () => {
     // setLoading(true);
@@ -24,17 +28,24 @@ export default function GetCustomerCashFlow() {
       .get(GET_CUSTOMERS_CASH_FLOW)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
-          //   setLoading(false);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setData(response.data.cash_flow);
-          //   setLoading(false);
         }
       })
       .catch(function (error) {
-        // setLoading(false);
-        console.log("error: " + error);
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
       });
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
   return (
     <div className="list">
@@ -50,14 +61,19 @@ export default function GetCustomerCashFlow() {
           secondButtonText="Cash Out"
           secondLink={"/customer/add_cash_out"}
         />
-        {data.length !== 0 ? (
-          <DataTable
-            data={data}
-            columns={customerCashFlowColumn}
-            // loading={loading}
-            isForTransaction={false}
-          />
-        ) : null}
+
+        <DataTable
+          data={data}
+          columns={customerCashFlowColumn}
+          // loading={loading}
+          isForTransaction={false}
+        />
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

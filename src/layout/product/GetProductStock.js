@@ -67,13 +67,17 @@ export default function GetProductStock() {
       .get(GET_PRODUCTS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setData(response.data.products);
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
       });
   };
   const deleteProduct = (id) => {
@@ -81,7 +85,6 @@ export default function GetProductStock() {
       .delete(DELETE_PRODUCT + id)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -92,7 +95,6 @@ export default function GetProductStock() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage(error);
         setSeverity("error");
@@ -113,12 +115,13 @@ export default function GetProductStock() {
           header={"Products List"}
           firstButton={true}
           firstButtonText={"Add New Product"}
+          firstLink={"/product/add"}
         />
         <DataTable
           data={data}
           columns={productColumns.concat(actionColumn)}
           isForTransaction={false}
-          loading={!data.length}
+          // loading={!data.length}
         />
         <SnackBar
           open={open}

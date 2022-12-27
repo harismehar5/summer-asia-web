@@ -26,7 +26,7 @@ export default function AddProduct() {
   const addProduct = () => {
     product = {
       name: name,
-      price: price,
+      price: 0,
       quantity: 0,
     };
     axios
@@ -51,8 +51,10 @@ export default function AddProduct() {
       });
   };
   const validation = () => {
-    if (name.length === 0 || price.length === 0) {
-      <Alert severity="error">Some Fields are missing</Alert>;
+    if (name.length === 0) {
+      setOpen(true);
+      setMessage("Name is required");
+      setSeverity("error");
     } else {
       addProduct();
     }
@@ -73,11 +75,9 @@ export default function AddProduct() {
             Add Product
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
                 required
-                id="name"
-                name="name"
                 label="Name"
                 fullWidth
                 variant="outlined"
@@ -85,7 +85,7 @@ export default function AddProduct() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 required
                 id="price"
@@ -96,7 +96,7 @@ export default function AddProduct() {
                 value={price}
                 onChange={(event) => setPrice(event.target.value)}
               />
-            </Grid>
+            </Grid> */}
             {/* <Grid item xs={12} sm={12}>
               <TextField
                 id="quantity"
@@ -134,7 +134,12 @@ export default function AddProduct() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => setName("")}
+                  >
                     Cancel
                   </Button>
                 </Grid>

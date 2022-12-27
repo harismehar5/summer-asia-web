@@ -89,13 +89,17 @@ export default function GetExpensesList() {
       .get(GET_EXPENSES_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setData(response.data.expenses);
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
       });
   };
   const deleteExpense = (id) => {
@@ -103,7 +107,6 @@ export default function GetExpensesList() {
       .delete(DELETE_EXPENSE + id)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -114,7 +117,6 @@ export default function GetExpensesList() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage(error);
         setSeverity("error");
@@ -130,24 +132,21 @@ export default function GetExpensesList() {
       .patch(UPDATE_EXPENSE_BY_ID + id, expense)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
           setName("");
           setAmount("");
           setDescription("");
-          setId("")
-          setOpenPopup(false)
+          setId("");
+          setOpenPopup(false);
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");

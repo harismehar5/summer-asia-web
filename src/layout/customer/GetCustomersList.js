@@ -52,16 +52,6 @@ export default function GetCustomersList() {
       renderCell: (params) => {
         return (
           <div className="cell-action">
-            {/* <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="view-button">View</div>
-            </Link> */}
-            {/* <Button
-              size="small"
-              variant="contained"
-              startIcon={<RemoveRedEyeOutlinedIcon />}
-            >
-              View
-            </Button> */}
             <IconButton
               aria-label="edit"
               size="medium"
@@ -76,12 +66,6 @@ export default function GetCustomersList() {
             >
               <DeleteIcon fontSize="inherit" />
             </IconButton>
-            {/* <div
-              className="delete-button"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div> */}
           </div>
         );
       },
@@ -94,16 +78,17 @@ export default function GetCustomersList() {
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
-          // setLoading(false);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setData(response.data.customers);
-          // setLoading(false);
         }
       })
       .catch(function (error) {
-        // setLoading(false);
-        console.log("error: " + error);
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
       });
   };
   const deleteCustomer = (id) => {
@@ -111,7 +96,6 @@ export default function GetCustomersList() {
       .delete(DELETE_CUSTOMER_BY_ID + id)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -122,7 +106,6 @@ export default function GetCustomersList() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage(error);
         setSeverity("error");
@@ -139,12 +122,10 @@ export default function GetCustomersList() {
       .patch(UPDATE_CUSTOMER_BY_ID + id, customer)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
@@ -157,7 +138,6 @@ export default function GetCustomersList() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");

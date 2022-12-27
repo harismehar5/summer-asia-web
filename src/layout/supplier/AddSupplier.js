@@ -10,6 +10,7 @@ import SideBar from "../../components/sidebar/SideBar";
 import { Alert, Button } from "@mui/material";
 import axios from "axios";
 import { ADD_SUPPLIER } from "../../utils/config";
+import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddSupplier() {
   const [name, setName] = useState("");
@@ -17,6 +18,9 @@ export default function AddSupplier() {
   const [address, setAddress] = useState("");
   const [openingBalance, setOpeningBalance] = useState("");
   const [status, setStatus] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   var supplier = {
     name: "",
     phone: "",
@@ -34,13 +38,19 @@ export default function AddSupplier() {
       .post(ADD_SUPPLIER, supplier)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
-          console.log(response);
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
       });
   };
   const validation = () => {
@@ -50,10 +60,18 @@ export default function AddSupplier() {
       address.length === 0 ||
       openingBalance.length === 0
     ) {
-      <Alert severity="error">Some Fields are missing</Alert>;
+      setOpen(true);
+      setMessage("Some fields are missing");
+      setSeverity("error");
     } else {
       addSupplier();
     }
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
   return (
     <div className="box">
@@ -147,6 +165,12 @@ export default function AddSupplier() {
             </Grid>
           </Grid>
         </Paper>
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

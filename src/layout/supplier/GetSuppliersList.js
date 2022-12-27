@@ -92,12 +92,18 @@ export default function GetSuppliersList() {
       .then(function (response) {
         if (response.data.error) {
           console.log(response.data.error_msg);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
         } else {
           setData(response.data.suppliers);
         }
       })
       .catch(function (error) {
         console.log("error: " + error);
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
       });
   };
   const deleteSupplier = (id) => {

@@ -48,7 +48,6 @@ export default function GetSaleList() {
       .get(GET_SALE_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -68,12 +67,10 @@ export default function GetSaleList() {
               __v: response.data.sales[i].__v,
             });
           }
-          console.log(response.data.sales[0]._id);
           setData(array);
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");

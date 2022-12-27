@@ -8,7 +8,11 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Autocomplete, Box, Button } from "@mui/material";
 import axios from "axios";
-import { ADD_CUSTOMER_CASH_IN, ADD_CUSTOMER_CASH_OUT, GET_CUSTOMERS_LIST } from "../../utils/config";
+import {
+  ADD_CUSTOMER_CASH_IN,
+  ADD_CUSTOMER_CASH_OUT,
+  GET_CUSTOMERS_LIST,
+} from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddCustomerCashOut() {
@@ -69,22 +73,19 @@ export default function AddCustomerCashOut() {
       cash_type: "Cash Out",
     };
     axios
-      .patch(ADD_CUSTOMER_CASH_OUT+customerObject._id, cashOut)
+      .patch(ADD_CUSTOMER_CASH_OUT + customerObject._id, cashOut)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -98,9 +99,13 @@ export default function AddCustomerCashOut() {
       submittedDate.length === 0 ||
       customerObject === {}
     ) {
-      <Alert severity="error">Some Fields are missing</Alert>;
+      setOpen(true);
+      setMessage("Some fields are missing");
+      setSeverity("error");
     } else if (parseInt(amount) <= 0) {
-      <Alert severity="error">Amount should be greater then 0</Alert>;
+      setOpen(true);
+      setMessage("Amount should be greater than 0");
+      setSeverity("error");
     } else {
       addCashOut();
     }
@@ -110,7 +115,6 @@ export default function AddCustomerCashOut() {
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -119,7 +123,6 @@ export default function AddCustomerCashOut() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -200,7 +203,6 @@ export default function AddCustomerCashOut() {
                 type="date"
                 defaultValue={currentDate}
                 onChange={(event) => {
-                  console.log(event.target.value);
                   setSubmittedDate(event.target.value);
                 }}
                 fullWidth

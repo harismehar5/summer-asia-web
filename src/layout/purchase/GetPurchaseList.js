@@ -48,7 +48,6 @@ export default function GetPurchaseList() {
       .get(GET_PURCHASE_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -72,7 +71,6 @@ export default function GetPurchaseList() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
