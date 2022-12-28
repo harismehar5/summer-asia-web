@@ -24,7 +24,6 @@ export default function GetSupplierCashFlow() {
       .get(GET_SUPPLIERS_CASH_FLOW)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
         //   setLoading(false);
         } else {
           setData(response.data.cash_flow)
@@ -33,7 +32,6 @@ export default function GetSupplierCashFlow() {
       })
       .catch(function (error) {
         // setLoading(false);
-        console.log("error: " + error);
       });
   };
   return (

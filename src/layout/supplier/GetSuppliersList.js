@@ -91,7 +91,6 @@ export default function GetSuppliersList() {
       .get(GET_SUPPLIERS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -100,7 +99,6 @@ export default function GetSuppliersList() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage(error);
         setSeverity("error");
@@ -111,7 +109,6 @@ export default function GetSuppliersList() {
       .delete(DELETE_SUPPLIER_BY_ID + id)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -122,7 +119,6 @@ export default function GetSuppliersList() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage(error);
         setSeverity("error");
@@ -139,12 +135,10 @@ export default function GetSuppliersList() {
       .patch(UPDATE_SUPPLIER_BY_ID + id, supplier)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
@@ -152,14 +146,13 @@ export default function GetSuppliersList() {
           setId("");
           setName("");
           setPhone("");
-          setAddress("");
+          // setAddress("");
           setOpeningBalance("");
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
-        setMessage("error: " + error);
+        setMessage(error);
         setSeverity("error");
       });
   };
@@ -168,7 +161,7 @@ export default function GetSuppliersList() {
     if (
       name.length === 0 ||
       phone.length === 0 ||
-      address.length === 0 ||
+      // address.length === 0 ||
       openingBalance.length === 0
     ) {
       setOpen(true);
@@ -189,7 +182,7 @@ export default function GetSuppliersList() {
     setId(customer._id);
     setName(customer.name);
     setPhone(customer.phone);
-    setAddress(customer.address);
+    // setAddress(customer.address);
     setOpeningBalance(customer.opening_balance);
   };
   return (
@@ -201,6 +194,7 @@ export default function GetSuppliersList() {
           header={"Suppliers List"}
           firstButton={true}
           firstButtonText={"Add New Supplier"}
+          firstLink={"/supplier/add"}
         />
         <DataTable
           data={data}
@@ -216,8 +210,6 @@ export default function GetSuppliersList() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="name"
-                name="name"
                 label="Name"
                 fullWidth
                 variant="outlined"
@@ -228,8 +220,6 @@ export default function GetSuppliersList() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="phone"
-                name="phone"
                 label="Phone"
                 fullWidth
                 variant="outlined"
@@ -237,21 +227,17 @@ export default function GetSuppliersList() {
                 onChange={(event) => setPhone(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
-                id="address"
-                name="address"
                 label="Address"
                 fullWidth
                 variant="outlined"
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> */}
+            <Grid item xs={12} sm={12}>
               <TextField
-                id="openingBalance"
-                name="openingBalance"
                 label="Opening Balance"
                 fullWidth
                 variant="outlined"
@@ -287,7 +273,19 @@ export default function GetSuppliersList() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => {
+                      setOpenPopup(false);
+                      setId("");
+                      setName("");
+                      setPhone("");
+                      // setAddress("");
+                      setOpeningBalance("");
+                    }}
+                  >
                     Cancel
                   </Button>
                 </Grid>

@@ -73,22 +73,19 @@ export default function AddSupplierCashOut() {
       cash_type: "Cash Out",
     };
     axios
-      .patch(ADD_SUPPLIER_CASH_OUT+supplierObject._id, cashOut)
+      .patch(ADD_SUPPLIER_CASH_OUT + supplierObject._id, cashOut)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -102,9 +99,13 @@ export default function AddSupplierCashOut() {
       submittedDate.length === 0 ||
       supplierObject === {}
     ) {
-      <Alert severity="error">Some Fields are missing</Alert>;
+      setOpen(true);
+      setMessage("Some fields are missing");
+      setSeverity("success");
     } else if (parseInt(amount) <= 0) {
-      <Alert severity="error">Amount should be greater then 0</Alert>;
+      setOpen(true);
+      setMessage("Amount should be greater then 0");
+      setSeverity("success");
     } else {
       addCashOut();
     }
@@ -114,7 +115,6 @@ export default function AddSupplierCashOut() {
       .get(GET_SUPPLIERS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -123,7 +123,6 @@ export default function AddSupplierCashOut() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -204,7 +203,6 @@ export default function AddSupplierCashOut() {
                 type="date"
                 defaultValue={currentDate}
                 onChange={(event) => {
-                  console.log(event.target.value);
                   setSubmittedDate(event.target.value);
                 }}
                 fullWidth

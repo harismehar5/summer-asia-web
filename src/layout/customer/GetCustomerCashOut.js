@@ -25,7 +25,6 @@ export default function GetCustomerCashOut() {
       .get(GET_ALL_CUSTOMER_CASH_OUT)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setLoading(false);
         } else {
           for (var i = 0; i < response.data.data.length; i++) {
@@ -37,7 +36,6 @@ export default function GetCustomerCashOut() {
       })
       .catch(function (error) {
         setLoading(false);
-        console.log("error: " + error);
       });
   };
   return (

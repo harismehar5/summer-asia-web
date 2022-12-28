@@ -25,19 +25,21 @@ export default function GetSupplierCashOut() {
       .get(GET_ALL_SUPPLIER_CASH_OUT)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
-          setLoading(false);
+          // setOpen(true);
+          // setMessage(response.data.error_msg);
+          // setSeverity("error");
         } else {
           for (var i = 0; i < response.data.data.length; i++) {
             for (var k = 0; k < response.data.data[i].cash.length; k++)
               data.push(response.data.data[i].cash[k]);
           }
-          setLoading(false);
         }
       })
       .catch(function (error) {
-        setLoading(false);
-        console.log("error: " + error);
+        // setLoading(false);
+        // setOpen(true);
+        // setMessage(error);
+        // setSeverity("error");
       });
   };
   return (
@@ -45,15 +47,17 @@ export default function GetSupplierCashOut() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <ListHeader header={"Cash Out List"} firstButton={true} firstButtonText={"Cash Out"}/>
-        {data.length !== 0 ? (
-          <DataTable
-            data={data}
-            columns={cashColumns}
-            loading={loading}
-            isForTransaction={false}
-          />
-        ) : null}
+        <ListHeader
+          header={"Cash Out List"}
+          firstButton={true}
+          firstButtonText={"Cash Out"}
+        />
+        <DataTable
+          data={data}
+          columns={cashColumns}
+          // loading={loading}
+          isForTransaction={false}
+        />
       </div>
     </div>
   );

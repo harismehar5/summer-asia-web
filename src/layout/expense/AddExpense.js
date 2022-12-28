@@ -34,12 +34,10 @@ export default function AddExpense() {
       .post(ADD_EXPENSE, expense)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
@@ -49,7 +47,6 @@ export default function AddExpense() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -57,7 +54,9 @@ export default function AddExpense() {
   };
   const validation = () => {
     if (name.length === 0 || amount.length === 0 || description.length === 0) {
-      <Alert severity="error">Some Fields are missing</Alert>;
+      setOpen(true);
+      setMessage("Amount should be greater then 0");
+      setSeverity("success");
     } else {
       addExpense();
     }

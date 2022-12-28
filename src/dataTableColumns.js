@@ -8,35 +8,34 @@ export const userColumns = [
   {
     field: "phone",
     headerName: "Phone",
-    width: 230,
+    width: 160,
   },
-
-  {
-    field: "address",
-    headerName: "Address",
-    width: 230,
-  },
+  // {
+  //   field: "address",
+  //   headerName: "Address",
+  //   width: 230,
+  // },
   {
     field: "opening_balance",
     headerName: "Opening Balance",
     width: 230,
   },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 160,
-    renderCell: (params) => {
-      return (
-        <>
-          {params.row.status === true ? (
-            <div className={`cell-with-status active`}>{"active"}</div>
-          ) : (
-            <div className={`cell-with-status passive`}>{"passive"}</div>
-          )}
-        </>
-      );
-    },
-  },
+  // {
+  //   field: "status",
+  //   headerName: "Status",
+  //   width: 160,
+  //   renderCell: (params) => {
+  //     return (
+  //       <>
+  //         {params.row.status === true ? (
+  //           <div className={`cell-with-status active`}>{"active"}</div>
+  //         ) : (
+  //           <div className={`cell-with-status passive`}>{"passive"}</div>
+  //         )}
+  //       </>
+  //     );
+  //   },
+  // },
 ];
 
 export const productColumns = [

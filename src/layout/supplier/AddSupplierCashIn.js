@@ -72,19 +72,16 @@ export default function AddSupplierCashIn() {
       .patch(ADD_SUPPLIER_CASH_IN+supplierObject._id, cashIn)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -110,7 +107,6 @@ export default function AddSupplierCashIn() {
       .get(GET_SUPPLIERS_LIST)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
@@ -119,7 +115,6 @@ export default function AddSupplierCashIn() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
@@ -200,7 +195,6 @@ export default function AddSupplierCashIn() {
                 type="date"
                 defaultValue={currentDate}
                 onChange={(event) => {
-                  console.log(event.target.value);
                   setSubmittedDate(event.target.value);
                 }}
                 fullWidth

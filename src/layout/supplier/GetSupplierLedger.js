@@ -42,7 +42,7 @@ export default function GetSupplierLedger() {
       })
       .catch(function (error) {
         setOpen(true);
-        setMessage("error: " + error);
+        setMessage(error);
         setSeverity("error");
       });
   };
@@ -52,17 +52,18 @@ export default function GetSupplierLedger() {
       .get(GET_SUPPLIER_LEDGER + id)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
-          //   setLoading(false);
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
           setData([])
         } else {
           setData(response.data.ledger);
-          //   setLoading(false);
         }
       })
       .catch(function (error) {
-        // setLoading(false);
-        console.log("error: " + error);
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
       });
   };
   const handleClose = (event, reason) => {

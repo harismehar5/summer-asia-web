@@ -148,7 +148,6 @@ export default function GetCustomersList() {
     if (
       name.length === 0 ||
       phone.length === 0 ||
-      address.length === 0 ||
       openingBalance.length === 0
     ) {
       setOpen(true);
@@ -169,7 +168,7 @@ export default function GetCustomersList() {
     setId(customer._id);
     setName(customer.name);
     setPhone(customer.phone);
-    setAddress(customer.address);
+    // setAddress(customer.address);
     setOpeningBalance(customer.opening_balance);
   };
   return (
@@ -181,6 +180,7 @@ export default function GetCustomersList() {
           header={"Customers List"}
           firstButton={true}
           firstButtonText={"Add New Customer"}
+          firstLink={"/customer/add"}
         />
         <DataTable
           data={data}
@@ -197,8 +197,6 @@ export default function GetCustomersList() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="name"
-                name="name"
                 label="Name"
                 fullWidth
                 variant="outlined"
@@ -209,8 +207,6 @@ export default function GetCustomersList() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="phone"
-                name="phone"
                 label="Phone"
                 fullWidth
                 variant="outlined"
@@ -218,21 +214,17 @@ export default function GetCustomersList() {
                 onChange={(event) => setPhone(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
-                id="address"
-                name="address"
                 label="Address"
                 fullWidth
                 variant="outlined"
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> */}
+            <Grid item xs={12} sm={12}>
               <TextField
-                id="openingBalance"
-                name="openingBalance"
                 label="Opening Balance"
                 fullWidth
                 variant="outlined"
@@ -268,7 +260,19 @@ export default function GetCustomersList() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => {
+                      setOpenPopup(false);
+                      setId("");
+                      setName("");
+                      setPhone("");
+                      setAddress("");
+                      setOpeningBalance("");
+                    }}
+                  >
                     Cancel
                   </Button>
                 </Grid>

@@ -24,7 +24,6 @@ export default function GetCustomerCashIn() {
       .get(GET_ALL_CUSTOMER_CASH_IN)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setLoading(false);
         } else {
           for (var i = 0; i < response.data.data.length; i++) {
@@ -36,7 +35,6 @@ export default function GetCustomerCashIn() {
       })
       .catch(function (error) {
         setLoading(false);
-        console.log("error: " + error);
       });
   };
   return (

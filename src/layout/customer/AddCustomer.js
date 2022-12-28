@@ -40,12 +40,10 @@ export default function AddCustomer() {
       .post(ADD_CUSTOMER, customer)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response);
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
@@ -56,9 +54,8 @@ export default function AddCustomer() {
         }
       })
       .catch(function (error) {
-        console.log("error: " + error);
         setOpen(true);
-        setMessage("error: " + error);
+        setMessage(error);
         setSeverity("error");
       });
   };
@@ -67,10 +64,11 @@ export default function AddCustomer() {
     if (
       name.length === 0 ||
       phone.length === 0 ||
-      address.length === 0 ||
       openingBalance.length === 0
     ) {
-      <Alert severity="error">Some Fields are missing</Alert>;
+      setOpen(true);
+      setMessage("Some fields are missing");
+      setSeverity("error");
     } else {
       addCustomer();
     }
@@ -94,8 +92,6 @@ export default function AddCustomer() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="name"
-                name="name"
                 label="Name"
                 fullWidth
                 variant="outlined"
@@ -106,8 +102,6 @@ export default function AddCustomer() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="phone"
-                name="phone"
                 label="Phone"
                 fullWidth
                 variant="outlined"
@@ -115,21 +109,17 @@ export default function AddCustomer() {
                 onChange={(event) => setPhone(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
-                id="address"
-                name="address"
                 label="Address"
                 fullWidth
                 variant="outlined"
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> */}
+            <Grid item xs={12} sm={12}>
               <TextField
-                id="openingBalance"
-                name="openingBalance"
                 label="Opening Balance"
                 fullWidth
                 variant="outlined"
@@ -165,7 +155,17 @@ export default function AddCustomer() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => {
+                      setName("");
+                      setPhone("");
+                      setAddress("");
+                      setOpeningBalance("");
+                    }}
+                  >
                     Cancel
                   </Button>
                 </Grid>

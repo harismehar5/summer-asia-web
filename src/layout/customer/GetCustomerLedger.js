@@ -52,7 +52,6 @@ export default function GetCustomerLedger() {
       .get(GET_CUSTOMER_LEDGER + id)
       .then(function (response) {
         if (response.data.error) {
-          console.log(response.data.error_msg);
           //   setLoading(false);
           setData([])
         } else {
@@ -62,7 +61,6 @@ export default function GetCustomerLedger() {
       })
       .catch(function (error) {
         // setLoading(false);
-        console.log("error: " + error);
       });
   };
   const handleClose = (event, reason) => {
