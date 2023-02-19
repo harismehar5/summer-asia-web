@@ -10,11 +10,13 @@ import Navbar from "../../components/navbar/Navbar";
 import { productColumns } from "../../dataTableColumns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 
 import {
   DELETE_PRODUCT,
   GET_PRODUCTS_LIST,
+  STOCK_IN,
+  STOCK_OUT,
   UPDATE_PRODUCT_BY_ID,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
@@ -24,11 +26,14 @@ import Popup from "../../components/popup/Popup";
 export default function GetProductStock() {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [id, setID] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const [openPopup, setOpenPopup] = useState(false);
+  const [openEditPopup, setEditOpenPopup] = useState(false);
+  const [openStockInPopup, setStockInOpenPopup] = useState(false);
+  const [openStockOutPopup, setStockOutOpenPopup] = useState(false);
 
   useEffect(() => {
     getStockList();
@@ -38,7 +43,7 @@ export default function GetProductStock() {
     {
       field: "action",
       headerName: "Action",
-      width: 250,
+      width: 160,
       renderCell: (params) => {
         return (
           <div className="cell-action">
@@ -47,8 +52,8 @@ export default function GetProductStock() {
               size="medium"
               onClick={() => {
                 setID(params.row._id);
-                setName(params.row.name)
-                setOpenPopup(true);
+                setName(params.row.name);
+                setEditOpenPopup(true);
               }}
             >
               <EditIcon fontSize="inherit" />
@@ -61,6 +66,41 @@ export default function GetProductStock() {
               <DeleteIcon fontSize="inherit" />
             </IconButton>
           </div>
+        );
+      },
+    },
+    {
+      field: "stock",
+      headerName: "Stock",
+      width: 250,
+      renderCell: (params) => {
+        return (
+          <Stack direction={"row"} spacing={1}>
+            <Button
+              variant="contained"
+              size="medium"
+              color="success"
+              onClick={() => {
+                setID(params.row._id);
+                setQuantity("");
+                setStockInOpenPopup(true);
+              }}
+            >
+              Stock In
+            </Button>
+            <Button
+              variant="contained"
+              size="medium"
+              color="success"
+              onClick={() => {
+                setID(params.row._id);
+                setQuantity("");
+                setStockOutOpenPopup(true);
+              }}
+            >
+              Stock Out
+            </Button>
+          </Stack>
         );
       },
     },
@@ -110,7 +150,7 @@ export default function GetProductStock() {
       price: 0,
       quantity: 0,
     };
-    console.log("URL", UPDATE_PRODUCT_BY_ID + id)
+    console.log("URL", UPDATE_PRODUCT_BY_ID + id);
     axios
       .patch(UPDATE_PRODUCT_BY_ID + id, product)
       .then(function (response) {
@@ -118,13 +158,70 @@ export default function GetProductStock() {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
-          setOpenPopup(false)
+          setEditOpenPopup(false);
         } else {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
           setName("");
-          setOpenPopup(false)
+          setEditOpenPopup(false);
+        }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
+      });
+  };
+  const stockIn = () => {
+    var stock_in = {
+      quantity: parseInt(quantity),
+    };
+    axios
+      .put(STOCK_IN + id, stock_in)
+      .then(function (response) {
+        console.log(response.data);
+
+        if (response.data.error) {
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
+          setStockInOpenPopup(false)
+          
+        } else {
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
+          setQuantity("");
+          setStockInOpenPopup(false)
+
+        }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage(error);
+        setSeverity("error");
+      });
+  };
+  const stockOut = () => {
+    var stock_out = {
+      quantity: parseInt(quantity),
+    };
+    axios
+      .put(STOCK_OUT + id, stock_out)
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.error) {
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
+          setStockOutOpenPopup(false)
+        } else {
+          setOpen(true);
+          setMessage(response.data.success_msg);
+          setSeverity("success");
+          setQuantity("");
+          setStockOutOpenPopup(false)
         }
       })
       .catch(function (error) {
@@ -167,8 +264,8 @@ export default function GetProductStock() {
         />
         <Popup
           title="Product Form"
-          openPopup={openPopup}
-          setOpenPopup={setOpenPopup}
+          openPopup={openEditPopup}
+          setOpenPopup={setEditOpenPopup}
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
@@ -237,7 +334,195 @@ export default function GetProductStock() {
                     onClick={() => {
                       setName("");
                       setID("");
-                      setOpenPopup(false);
+                      setEditOpenPopup(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Popup>
+        <Popup
+          title="Stock In"
+          openPopup={openStockInPopup}
+          setOpenPopup={setStockInOpenPopup}
+        >
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                label="Quantity"
+                fullWidth
+                variant="outlined"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+              />
+            </Grid>
+            {/* <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="price"
+                name="price"
+                label="Price"
+                fullWidth
+                variant="outlined"
+                value={price}
+                onChange={(event) => setPrice(event.target.value)}
+              />
+            </Grid> */}
+            {/* <Grid item xs={12} sm={12}>
+              <TextField
+                id="quantity"
+                name="quantity"
+                label="Quantity"
+                fullWidth
+                variant="outlined"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+              />
+            </Grid> */}
+            <Grid item xs={12} sm={6}>
+              {/* <FormControlLabel
+                control={
+                  <Checkbox color="secondary" name="saveAddress" value="yes" />
+                }
+                label="Status"
+              /> */}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Grid
+                justifyContent={"flex-end"}
+                container
+                spacing={1}
+                direction={"row"}
+              >
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="success"
+                    onClick={() => {
+                      if (quantity < 0) {
+                        setOpen(true);
+                        setMessage("Quantity should be greater then 0");
+                        setSeverity("error");
+                      } else if (quantity === "") {
+                        setOpen(true);
+                        setMessage("Please enter quantity");
+                        setSeverity("error");
+                      } else {
+                        stockIn();
+                      }
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => {
+                      setQuantity("");
+                      setID("");
+                      setStockInOpenPopup(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Popup>
+        <Popup
+          title="Stock Out"
+          openPopup={openStockOutPopup}
+          setOpenPopup={setStockOutOpenPopup}
+        >
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+            <TextField
+                required
+                label="Quantity"
+                fullWidth
+                variant="outlined"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+              />
+            </Grid>
+            {/* <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="price"
+                name="price"
+                label="Price"
+                fullWidth
+                variant="outlined"
+                value={price}
+                onChange={(event) => setPrice(event.target.value)}
+              />
+            </Grid> */}
+            {/* <Grid item xs={12} sm={12}>
+              <TextField
+                id="quantity"
+                name="quantity"
+                label="Quantity"
+                fullWidth
+                variant="outlined"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+              />
+            </Grid> */}
+            <Grid item xs={12} sm={6}>
+              {/* <FormControlLabel
+                control={
+                  <Checkbox color="secondary" name="saveAddress" value="yes" />
+                }
+                label="Status"
+              /> */}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Grid
+                justifyContent={"flex-end"}
+                container
+                spacing={1}
+                direction={"row"}
+              >
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="success"
+                    onClick={() => {
+                      if (quantity < 0) {
+                        setOpen(true);
+                        setMessage("Quantity should be greater then 0");
+                        setSeverity("error");
+                      } else if (quantity === "") {
+                        setOpen(true);
+                        setMessage("Please enter quantity");
+                        setSeverity("error");
+                      } else {
+                        stockOut();
+                      }
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => {
+                      setQuantity("");
+                      setID("");
+                      setStockOutOpenPopup(false);
                     }}
                   >
                     Cancel

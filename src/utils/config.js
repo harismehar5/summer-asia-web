@@ -54,6 +54,8 @@ export const GET_PRODUCT_BY_ID = PRODUCT_BASE_URL;
 export const UPDATE_PRODUCT_STATUS_BY_ID = PRODUCT_BASE_URL + "update_status";
 export const ADD_QUANTITY = PRODUCT_BASE_URL + "add_quantity"
 export const SUBTRACT_QUANTITY = PRODUCT_BASE_URL + "subtract_quantity"
+export const STOCK_IN = PRODUCT_BASE_URL + "stock_in/"
+export const STOCK_OUT = PRODUCT_BASE_URL + "stock_out/"
 
 //Expense URL
 export const EXPENSE_BASE_URL = BASE_URL + "expense/";
