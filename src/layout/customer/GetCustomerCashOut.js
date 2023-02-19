@@ -8,7 +8,6 @@ import Navbar from "../../components/navbar/Navbar";
 import { cashColumns } from "../../dataTableColumns";
 
 import { GET_ALL_CUSTOMER_CASH_OUT } from "../../utils/config";
-import { Button } from "@mui/material";
 import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetCustomerCashOut() {

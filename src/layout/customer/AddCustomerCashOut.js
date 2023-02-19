@@ -3,13 +3,11 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Paper } from "@material-ui/core";
-import Alert from "@mui/material/Alert";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Autocomplete, Box, Button } from "@mui/material";
 import axios from "axios";
 import {
-  ADD_CUSTOMER_CASH_IN,
   ADD_CUSTOMER_CASH_OUT,
   GET_CUSTOMERS_LIST,
 } from "../../utils/config";
@@ -40,7 +38,6 @@ export default function AddCustomerCashOut() {
     },
   ];
   const [paymentMediumObject, setPaymentMediumObject] = useState({});
-  //   const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");

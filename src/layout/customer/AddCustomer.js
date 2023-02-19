@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { Paper } from "@material-ui/core";
-import Alert from "@mui/material/Alert";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Button } from "@mui/material";
@@ -18,7 +15,6 @@ export default function AddCustomer() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [openingBalance, setOpeningBalance] = useState("");
-  const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -109,15 +105,6 @@ export default function AddCustomer() {
                 onChange={(event) => setPhone(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                label="Address"
-                fullWidth
-                variant="outlined"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextField
                 label="Opening Balance"
@@ -128,14 +115,6 @@ export default function AddCustomer() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="status" value="false" />
-                }
-                label="Status"
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid

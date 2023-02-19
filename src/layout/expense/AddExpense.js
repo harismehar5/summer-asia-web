@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Alert, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
 
@@ -15,7 +15,6 @@ export default function AddExpense() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  // const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -112,14 +111,7 @@ export default function AddExpense() {
                 onChange={(event) => setDescription(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="saveAddress" value="yes" />
-                }
-                label="Status"
-              /> */}
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}

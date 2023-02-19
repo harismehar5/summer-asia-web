@@ -12,7 +12,6 @@ import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function GetCustomerCashFlow() {
-  // const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -23,7 +22,6 @@ export default function GetCustomerCashFlow() {
   }, [data]);
 
   const getCustomerCashFlowList = () => {
-    // setLoading(true);
     axios
       .get(GET_CUSTOMERS_CASH_FLOW)
       .then(function (response) {
@@ -65,7 +63,6 @@ export default function GetCustomerCashFlow() {
         <DataTable
           data={data}
           columns={customerCashFlowColumn}
-          // loading={loading}
           isForTransaction={false}
         />
         <SnackBar

@@ -49,16 +49,6 @@ export default function GetExpensesList() {
       renderCell: (params) => {
         return (
           <div className="cell-action">
-            {/* <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="view-button">View</div>
-            </Link> */}
-            {/* <Button
-              size="small"
-              variant="contained"
-              startIcon={<RemoveRedEyeOutlinedIcon />}
-            >
-              View
-            </Button> */}
             <IconButton
               aria-label="edit"
               size="medium"
@@ -73,12 +63,6 @@ export default function GetExpensesList() {
             >
               <DeleteIcon fontSize="inherit" />
             </IconButton>
-            {/* <div
-              className="delete-button"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div> */}
           </div>
         );
       },
@@ -231,14 +215,7 @@ export default function GetExpensesList() {
                 onChange={(event) => setDescription(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="saveAddress" value="yes" />
-                }
-                label="Status"
-              /> */}
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}

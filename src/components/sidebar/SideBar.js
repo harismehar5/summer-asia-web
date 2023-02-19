@@ -125,15 +125,6 @@ export default function SideBar() {
               <span>Stock Log</span>
             </li>
           </Link>
-          {/* <p className="title">Payment</p>
-          <li>
-            <CurrencyExchangeRoundedIcon className="icon" />
-            <span>Cash In</span>
-          </li>
-          <li>
-            <CurrencyExchangeRoundedIcon className="icon" />
-            <span>Cash Out</span>
-          </li> */}
           <p className="title">Ledger</p>
           <Link to="/customer/ledger" style={{ textDecoration: "none" }}>
             <li>
@@ -142,14 +133,13 @@ export default function SideBar() {
             </li>
           </Link>
           <Link to="/supplier/ledger" style={{ textDecoration: "none" }}>
-          <li>
-            <AccountBalanceRoundedIcon className="icon" />
-            <span>Supplier Ledger</span>
-          </li>
+            <li>
+              <AccountBalanceRoundedIcon className="icon" />
+              <span>Supplier Ledger</span>
+            </li>
           </Link>
         </ul>
       </div>
-      {/* <div className="bottom">color options</div> */}
     </div>
   );
 }
