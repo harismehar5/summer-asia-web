@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IconButton } from "@mui/material";
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import EditIcon from "@mui/icons-material/Edit";
 
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
@@ -35,9 +34,6 @@ export default function GetPurchaseList() {
             <IconButton aria-label="view" size="medium">
               <VisibilityIcon fontSize="inherit" />
             </IconButton>
-            {/* <IconButton aria-label="edit" size="medium">
-              <EditIcon fontSize="inherit" />
-            </IconButton> */}
           </div>
         );
       },

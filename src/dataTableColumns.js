@@ -1,5 +1,12 @@
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+}
+
 export const userColumns = [
-  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "name",
     headerName: "Name",
@@ -10,36 +17,14 @@ export const userColumns = [
     headerName: "Phone",
     width: 160,
   },
-  // {
-  //   field: "address",
-  //   headerName: "Address",
-  //   width: 230,
-  // },
   {
     field: "opening_balance",
     headerName: "Opening Balance",
     width: 230,
   },
-  // {
-  //   field: "status",
-  //   headerName: "Status",
-  //   width: 160,
-  //   renderCell: (params) => {
-  //     return (
-  //       <>
-  //         {params.row.status === true ? (
-  //           <div className={`cell-with-status active`}>{"active"}</div>
-  //         ) : (
-  //           <div className={`cell-with-status passive`}>{"passive"}</div>
-  //         )}
-  //       </>
-  //     );
-  //   },
-  // },
 ];
 
 export const productColumns = [
-  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "name",
     headerName: "Name",
@@ -56,22 +41,6 @@ export const productColumns = [
     headerName: "Quantity",
     width: 230,
   },
-  // {
-  //   field: "status",
-  //   headerName: "Status",
-  //   width: 160,
-  //   renderCell: (params) => {
-  //     return (
-  //       <>
-  //         {params.row.status === true ? (
-  //           <div className={`cell-with-status active`}>{"active"}</div>
-  //         ) : (
-  //           <div className={`cell-with-status passive`}>{"passive"}</div>
-  //         )}
-  //       </>
-  //     );
-  //   },
-  // },
 ];
 
 export const expenseColumns = [
@@ -80,6 +49,13 @@ export const expenseColumns = [
     field: "createdAt",
     headerName: "Date",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
   },
   {
     field: "name",
@@ -141,6 +117,13 @@ export const cashColumns = [
     field: "submit_date",
     headerName: "Submit Date",
     width: 160,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.submit_date)}</div>
+        </>
+      );
+    },
   },
 ];
 
@@ -150,6 +133,13 @@ export const saleColumn = [
     field: "submit_date",
     headerName: "Date",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
   },
   {
     field: "customer",
@@ -190,6 +180,13 @@ export const purchaseColumn = [
     field: "submit_date",
     headerName: "Date",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.submit_date)}</div>
+        </>
+      );
+    },
   },
   {
     field: "supplier",
@@ -230,6 +227,13 @@ export const supplierCashFlowColumn = [
     field: "submit_date",
     headerName: "Date",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.submit_date)}</div>
+        </>
+      );
+    },
   },
   {
     field: "supplier_name",
@@ -264,6 +268,13 @@ export const customerCashFlowColumn = [
     field: "submit_date",
     headerName: "Date",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.submit_date)}</div>
+        </>
+      );
+    },
   },
   {
     field: "customer_name",
@@ -292,7 +303,6 @@ export const customerCashFlowColumn = [
   },
 ];
 export const stockLogColumns = [
-  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "date",
     headerName: "Date",
@@ -316,7 +326,6 @@ export const stockLogColumns = [
 ];
 
 export const customerLedgerColumns = [
-  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "date",
     headerName: "Date",
@@ -360,7 +369,6 @@ export const customerLedgerColumns = [
 ];
 
 export const supplierLedgerColumns = [
-  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "date",
     headerName: "Date",

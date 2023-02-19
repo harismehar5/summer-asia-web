@@ -57,7 +57,6 @@ export default function StockLog() {
           data={data}
           columns={stockLogColumns}
           isForTransaction={false}
-          //   loading={!data.length}
         />
         <SnackBar
           open={open}

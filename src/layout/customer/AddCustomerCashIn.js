@@ -36,7 +36,6 @@ export default function AddCustomerCashIn() {
     },
   ];
   const [paymentMediumObject, setPaymentMediumObject] = useState({});
-  //   const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");

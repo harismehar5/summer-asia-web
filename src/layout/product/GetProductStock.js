@@ -278,36 +278,7 @@ export default function GetProductStock() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="price"
-                name="price"
-                label="Price"
-                fullWidth
-                variant="outlined"
-                value={price}
-                onChange={(event) => setPrice(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={12}>
-              <TextField
-                id="quantity"
-                name="quantity"
-                label="Quantity"
-                fullWidth
-                variant="outlined"
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="saveAddress" value="yes" />
-                }
-                label="Status"
-              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid
@@ -360,36 +331,7 @@ export default function GetProductStock() {
                 onChange={(event) => setQuantity(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="price"
-                name="price"
-                label="Price"
-                fullWidth
-                variant="outlined"
-                value={price}
-                onChange={(event) => setPrice(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={12}>
-              <TextField
-                id="quantity"
-                name="quantity"
-                label="Quantity"
-                fullWidth
-                variant="outlined"
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="saveAddress" value="yes" />
-                }
-                label="Status"
-              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid
@@ -454,36 +396,7 @@ export default function GetProductStock() {
                 onChange={(event) => setQuantity(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="price"
-                name="price"
-                label="Price"
-                fullWidth
-                variant="outlined"
-                value={price}
-                onChange={(event) => setPrice(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={12}>
-              <TextField
-                id="quantity"
-                name="quantity"
-                label="Quantity"
-                fullWidth
-                variant="outlined"
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="saveAddress" value="yes" />
-                }
-                label="Status"
-              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid

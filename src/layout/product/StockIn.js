@@ -11,10 +11,7 @@ import { STOCK_IN } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function StockIn() {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState(0);
-  // const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -36,8 +33,6 @@ export default function StockIn() {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
-          setName("");
-          setPrice("");
         }
       })
       .catch(function (error) {
@@ -81,37 +76,7 @@ export default function StockIn() {
                 onChange={(event) => setQuantity(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="price"
-                name="price"
-                label="Price"
-                fullWidth
-                variant="outlined"
-                value={price}
-                onChange={(event) => setPrice(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={12}>
-              <TextField
-                id="quantity"
-                name="quantity"
-                label="Quantity"
-                fullWidth
-                variant="outlined"
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-              />
-            </Grid> */}
-            <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="saveAddress" value="yes" />
-                }
-                label="Status"
-              /> */}
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}
@@ -130,12 +95,7 @@ export default function StockIn() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => setName("")}
-                  >
+                  <Button variant="contained" size="medium" color="error">
                     Cancel
                   </Button>
                 </Grid>

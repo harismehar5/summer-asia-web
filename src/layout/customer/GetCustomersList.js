@@ -24,7 +24,6 @@ import Popup from "../../components/popup/Popup";
 
 export default function GetCustomersList() {
   const [data, setData] = useState([]);
-  // const [loading, setLoading] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
   const [id, setId] = useState("");
   const [name, setName] = useState("");
@@ -73,7 +72,6 @@ export default function GetCustomersList() {
   ];
 
   const getCustomersList = () => {
-    // setLoading(true);
     axios
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
@@ -168,7 +166,6 @@ export default function GetCustomersList() {
     setId(customer._id);
     setName(customer.name);
     setPhone(customer.phone);
-    // setAddress(customer.address);
     setOpeningBalance(customer.opening_balance);
   };
   return (
@@ -185,7 +182,6 @@ export default function GetCustomersList() {
         <DataTable
           data={data}
           columns={userColumns.concat(actionColumn)}
-          // loading={!data.length}
           isForTransaction={false}
         />
         <Popup
@@ -214,15 +210,6 @@ export default function GetCustomersList() {
                 onChange={(event) => setPhone(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                label="Address"
-                fullWidth
-                variant="outlined"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextField
                 label="Opening Balance"
@@ -233,14 +220,6 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="status" value="false" />
-                }
-                label="Status"
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={12}>
               <Grid

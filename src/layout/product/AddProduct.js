@@ -5,16 +5,13 @@ import TextField from "@mui/material/TextField";
 import { Paper } from "@material-ui/core";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
-import { Alert, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import axios from "axios";
 import { ADD_PRODUCT } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddProduct() {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  // const [quantity, setQuantity] = useState(0);
-  // const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -41,7 +38,6 @@ export default function AddProduct() {
           setMessage(response.data.success_msg);
           setSeverity("success");
           setName("");
-          setPrice("");
         }
       })
       .catch(function (error) {
@@ -85,37 +81,7 @@ export default function AddProduct() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="price"
-                name="price"
-                label="Price"
-                fullWidth
-                variant="outlined"
-                value={price}
-                onChange={(event) => setPrice(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={12}>
-              <TextField
-                id="quantity"
-                name="quantity"
-                label="Quantity"
-                fullWidth
-                variant="outlined"
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-              />
-            </Grid> */}
-            <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="saveAddress" value="yes" />
-                }
-                label="Status"
-              /> */}
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}

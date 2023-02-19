@@ -16,7 +16,6 @@ import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function GetCustomerLedger() {
-  // const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [customerList, setCustomerList] = useState([]);
   const [open, setOpen] = useState(false);

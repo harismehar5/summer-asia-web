@@ -7,13 +7,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function SnackBar({ open, message, severity, handleClose }) {
-  // const open = open;
-  // const handleClose = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-  //   isClose(false);
-  // };
   return (
     <Snackbar
       open={open}

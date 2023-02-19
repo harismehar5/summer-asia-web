@@ -62,7 +62,7 @@ export default function AddSale() {
   var saleDetail = [];
   var stockLog = [];
   var productArray = [];
-  
+
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
@@ -319,15 +319,6 @@ export default function AddSale() {
               </Grid>
             </Grid>
             <Grid item md={12} mt={5} ml={4}>
-              {/* <DataTable
-                editMode={"row"}
-                data={data}
-                columns={tradingColumn}
-                isForTransaction={true}
-                loading={!data.length}
-                experimentalFeatures={{ newEditingApi: true }}
-                onCellEditCommit={handleRowEditCommit}
-              /> */}
               {data.map((product, index) => {
                 return (
                   <>
@@ -407,7 +398,6 @@ export default function AddSale() {
                 display={"flex"}
                 justifyContent={"space-between"}
                 sx={{ width: "100%" }}
-                // mt={2}
               >
                 <Autocomplete
                   options={customerList}

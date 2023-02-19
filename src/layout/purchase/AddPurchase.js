@@ -185,100 +185,6 @@ export default function AddPurchase() {
         setSeverity("error");
       });
   };
-  const postPurchase = () => {
-    var purchase_detail = [];
-    var stock_log = [];
-    for (var i = 0; i < data.length; i++) {
-      purchase_detail.push({
-        quantity: parseInt(data[i].quantity),
-        amount: parseInt(data[i].price),
-        product: data[i]._id,
-      });
-      stock_log.push({
-        quantity: parseInt(data[i].quantity),
-        product: data[i]._id,
-        date: submittedDate,
-        stock_type: "Stock In",
-      });
-    }
-    const purchase_object = {
-      total_amount: totalAmount,
-      total_quantity: totalBags,
-      supplier: supplierObject._id,
-      submit_date: submittedDate,
-      order_details: purchase_detail,
-    };
-    axios
-      .post(ADD_PURCHASE, purchase_object)
-      .then(function (response) {
-        if (response.data.error) {
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          addStockLog();
-        }
-      })
-      .catch(function (error) {
-        setOpen(true);
-        setMessage("error: " + error);
-        setSeverity("error");
-      });
-  };
-  const addStockLog = () => {
-    var stock_log = [];
-    for (var k = 0; k < data.length; k++) {
-      stock_log.push({
-        quantity: parseInt(data[k].quantity),
-        product: data[k]._id,
-        date: submittedDate,
-        stock_type: "Stock In",
-      });
-    }
-    axios
-      .post(ADD_STOCK_LOG)
-      .then(function (response) {
-        if (response.data.error) {
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          addQuantity();
-        }
-      })
-      .catch(function (error) {
-        setOpen(true);
-        setMessage("error: " + error);
-        setSeverity("error");
-      });
-  };
-  const addQuantity = () => {
-    var product_array = [];
-    for (var j = 0; j < data.length; j++) {
-      product_array.push({
-        quantity: parseInt(data[j].quantity),
-        product: data[j]._id,
-      });
-    }
-    axios
-      .post(ADD_QUANTITY, {
-        products: product_array,
-      })
-      .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage("subtract " + response.data.response);
-          setSeverity("error");
-        } else {
-          setOpen(true);
-          setMessage(response.data.success_msg);
-          setSeverity("success");
-        }
-      })
-      .catch(function (error) {
-        setOpen(true);
-        setMessage("error: " + error);
-        setSeverity("error");
-      });
-  };
   const addProductIntoList = () => {
     if (productObject._id !== "") {
       var obj = {};
@@ -366,7 +272,7 @@ export default function AddPurchase() {
       setMessage("Please select date");
       setSeverity("error");
     } else {
-      dataEntry()
+      dataEntry();
     }
   };
   return (
