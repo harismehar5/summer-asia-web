@@ -33,12 +33,7 @@ export default function GetCustomersList() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  var customer = {
-    name: "",
-    phone: "",
-    address: "",
-    opening_balance: "",
-  };
+  
   useEffect(() => {
     getCustomersList();
   }, []);
@@ -110,14 +105,14 @@ export default function GetCustomersList() {
       });
   };
   const updateCustomer = () => {
-    customer = {
+    const updatedCustomer = {
       name: name,
       phone: phone,
       address: address,
       opening_balance: openingBalance,
     };
     axios
-      .patch(UPDATE_CUSTOMER_BY_ID + id, customer)
+      .patch(UPDATE_CUSTOMER_BY_ID + id, updatedCustomer)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -127,6 +122,15 @@ export default function GetCustomersList() {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
+          setData((prevData) => {
+            const updatedData = prevData.map((customer) => {
+              if (customer._id === id) {
+                return { ...customer, ...updatedCustomer };
+              }
+              return customer;
+            });
+            return updatedData;
+          });
           setOpenPopup(false);
           setId("");
           setName("");
