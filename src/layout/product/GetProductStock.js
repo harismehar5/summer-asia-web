@@ -37,7 +37,7 @@ export default function GetProductStock() {
 
   useEffect(() => {
     getStockList();
-  }, [data, name]);
+  }, []);
 
   const actionColumn = [
     {
