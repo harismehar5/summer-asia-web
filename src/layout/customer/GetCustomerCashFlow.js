@@ -19,7 +19,7 @@ export default function GetCustomerCashFlow() {
 
   useEffect(() => {
     getCustomerCashFlowList();
-  }, [data]);
+  }, []);
 
   const getCustomerCashFlowList = () => {
     axios

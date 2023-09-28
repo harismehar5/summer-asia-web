@@ -150,7 +150,6 @@ export default function GetProductStock() {
       price: 0,
       quantity: 0,
     };
-    console.log("URL", UPDATE_PRODUCT_BY_ID + id);
     axios
       .patch(UPDATE_PRODUCT_BY_ID + id, product)
       .then(function (response) {
@@ -180,21 +179,17 @@ export default function GetProductStock() {
     axios
       .put(STOCK_IN + id, stock_in)
       .then(function (response) {
-        console.log(response.data);
-
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
-          setStockInOpenPopup(false)
-          
+          setStockInOpenPopup(false);
         } else {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
           setQuantity("");
-          setStockInOpenPopup(false)
-
+          setStockInOpenPopup(false);
         }
       })
       .catch(function (error) {
@@ -210,18 +205,17 @@ export default function GetProductStock() {
     axios
       .put(STOCK_OUT + id, stock_out)
       .then(function (response) {
-        console.log(response.data);
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
-          setStockOutOpenPopup(false)
+          setStockOutOpenPopup(false);
         } else {
           setOpen(true);
           setMessage(response.data.success_msg);
           setSeverity("success");
           setQuantity("");
-          setStockOutOpenPopup(false)
+          setStockOutOpenPopup(false);
         }
       })
       .catch(function (error) {
@@ -278,8 +272,7 @@ export default function GetProductStock() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}
@@ -331,8 +324,7 @@ export default function GetProductStock() {
                 onChange={(event) => setQuantity(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}
@@ -387,7 +379,7 @@ export default function GetProductStock() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-            <TextField
+              <TextField
                 required
                 label="Quantity"
                 fullWidth
@@ -396,8 +388,7 @@ export default function GetProductStock() {
                 onChange={(event) => setQuantity(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}

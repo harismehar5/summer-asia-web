@@ -41,7 +41,7 @@ export default function GetSuppliersList() {
   };
   useEffect(() => {
     getSuppliersList();
-  }, [data]);
+  }, []);
 
   const actionColumn = [
     {

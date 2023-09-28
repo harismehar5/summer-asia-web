@@ -39,7 +39,7 @@ export default function GetExpensesList() {
   };
   useEffect(() => {
     getExpensesList();
-  }, [data]);
+  }, []);
 
   const actionColumn = [
     {
