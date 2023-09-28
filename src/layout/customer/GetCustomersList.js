@@ -41,7 +41,7 @@ export default function GetCustomersList() {
   };
   useEffect(() => {
     getCustomersList();
-  }, [data]);
+  }, []);
 
   const actionColumn = [
     {

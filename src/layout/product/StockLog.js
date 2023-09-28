@@ -17,7 +17,7 @@ export default function StockLog() {
   const [severity, setSeverity] = useState("");
   useEffect(() => {
     getStockList();
-  }, [data]);
+  }, []);
 
   const getStockList = () => {
     axios
