@@ -11,10 +11,10 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { userColumns } from "../../dataTableColumns";
+import { supplierColumn, userColumns } from "../../dataTableColumns";
 import {
   DELETE_SUPPLIER_BY_ID,
-  GET_SUPPLIERS_LIST,
+  GET_ALL_COMPANIES,
   UPDATE_SUPPLIER_BY_ID,
 } from "../../utils/config";
 
@@ -26,9 +26,15 @@ export default function GetSuppliersList() {
   const [data, setData] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
   const [id, setId] = useState("");
+  const [code, setCode] = useState("")
   const [name, setName] = useState("");
+  const [personName, setPersonName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [description, setDescription] = useState("");
+  const [license, setLicense] = useState("");
+  const [email, setEmail] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
   const [openingBalance, setOpeningBalance] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -88,15 +94,15 @@ export default function GetSuppliersList() {
   ];
   const getSuppliersList = () => {
     axios
-      .get(GET_SUPPLIERS_LIST)
+      .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          setData(response.data.suppliers);
-        }
+        // if (response.data.error) {
+          // setOpen(true);
+          // setMessage(response.data.error_msg);
+          // setSeverity("error");
+        // } else {
+          setData(response.data.data);
+        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -198,7 +204,7 @@ export default function GetSuppliersList() {
         />
         <DataTable
           data={data}
-          columns={userColumns.concat(actionColumn)}
+          columns={supplierColumn.concat(actionColumn)}
           isForTransaction={false}
         />
         <Popup
@@ -207,27 +213,57 @@ export default function GetSuppliersList() {
           setOpenPopup={setOpenPopup}
         >
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={8}>
+              {/* <TextField
+                required
+                label="Company Name"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              /> */}
+            </Grid>
+            <Grid item xs={12} sm={4}>
               <TextField
                 required
-                label="Name"
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                label="Company Name"
                 fullWidth
                 variant="outlined"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 required
-                label="Phone"
+                label="Contacted Person Name"
                 fullWidth
                 variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                value={personName}
+                onChange={(event) => setPersonName(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                label="Email"
+                fullWidth
+                variant="outlined"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
                 label="Address"
                 fullWidth
@@ -235,14 +271,41 @@ export default function GetSuppliersList() {
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
-            </Grid> */}
-            <Grid item xs={12} sm={12}>
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
-                label="Opening Balance"
+                label="Phone Number"
                 fullWidth
                 variant="outlined"
-                value={openingBalance}
-                onChange={(event) => setOpeningBalance(event.target.value)}
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="License Number"
+                fullWidth
+                variant="outlined"
+                value={license}
+                onChange={(event) => setLicense(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Account Number"
+                fullWidth
+                variant="outlined"
+                value={accountNumber}
+                onChange={(event) => setAccountNumber(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                label="Description"
+                fullWidth
+                variant="outlined"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -278,11 +341,8 @@ export default function GetSuppliersList() {
                     size="medium"
                     color="error"
                     onClick={() => {
-                      setOpenPopup(false);
-                      setId("");
                       setName("");
                       setPhone("");
-                      // setAddress("");
                       setOpeningBalance("");
                     }}
                   >

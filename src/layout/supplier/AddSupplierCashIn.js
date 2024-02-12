@@ -8,7 +8,7 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Autocomplete, Box, Button } from "@mui/material";
 import axios from "axios";
-import { ADD_SUPPLIER_CASH_IN, GET_SUPPLIERS_LIST } from "../../utils/config";
+import { ADD_SUPPLIER_CASH_IN, GET_ALL_COMPANIES } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddSupplierCashIn() {
@@ -104,15 +104,15 @@ export default function AddSupplierCashIn() {
   };
   const getSuppliersList = () => {
     axios
-      .get(GET_SUPPLIERS_LIST)
+      .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          setSupplierList(response.data.suppliers);
-        }
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
+          setSupplierList(response.data.data);
+        // }
       })
       .catch(function (error) {
         setOpen(true);

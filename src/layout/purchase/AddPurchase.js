@@ -14,11 +14,12 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
   ADD_PURCHASE,
-  GET_SUPPLIERS_LIST,
+  GET_ALL_COMPANIES,
   GET_PRODUCTS_LIST,
   ADD_STOCK_LOG,
   ADD_QUANTITY,
   ADD_SUPPLIER_CASH_OUT,
+  GET_ALL_PRODUCTS,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -40,6 +41,8 @@ export default function AddPurchase() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
+  const [code, setCode] = useState("")
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -151,15 +154,15 @@ export default function AddPurchase() {
 
   const getStockList = () => {
     axios
-      .get(GET_PRODUCTS_LIST)
+      .get(GET_ALL_PRODUCTS)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          setProductList(response.data.products);
-        }
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
+        setProductList(response.data.data);
+        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -169,15 +172,15 @@ export default function AddPurchase() {
   };
   const getSupplierList = () => {
     axios
-      .get(GET_SUPPLIERS_LIST)
+      .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          setSupplierList(response.data.suppliers);
-        }
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
+        setSupplierList(response.data.data);
+        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -397,7 +400,7 @@ export default function AddPurchase() {
                 display={"flex"}
                 justifyContent={"space-between"}
                 sx={{ width: "100%" }}
-                // mt={2}
+              // mt={2}
               >
                 <Autocomplete
                   options={supplierList}
