@@ -410,3 +410,154 @@ export const supplierLedgerColumns = [
     width: 160,
   },
 ];
+
+
+export const areaColumns = [
+  {
+    field: "createdAt",
+    headerName: "Date",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
+  },
+  { field: "code", headerName: "Code", width: 230 },
+  {
+    field: "abbreviation",
+    headerName: "Area",
+    width: 230,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+];
+
+
+export const customersColumns = [
+  {
+    field: "name",
+    headerName: "Name",
+    width: 230,
+  },
+  {
+    field: "phone",
+    headerName: "Phone",
+    width: 230,
+  },
+  {
+    field: "address",
+    headerName: "Address",
+    width: 230,
+  },
+  {
+    field: "gender",
+    headerName: "Gender",
+    width: 230,
+  },
+  {
+    field: "email",
+    headerName: "Email",
+    width: 230,
+  },
+  {
+    field: "code",
+    headerName: "Code",
+    width: 230,
+  },
+  {
+    field: "license",
+    headerName: "License",
+    width: 230,
+  },
+  {
+    field: "licenseExpiryDate",
+    headerName: "License expiry date",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "areaCode",
+    headerName: "Area code",
+    width: 230,
+    renderCell: (params) => {
+      if (params.row.areaCode && params.row.areaCode.code) {
+        return <div>{params.row.areaCode.code}</div>;
+      } else {
+        return <div>No Area Code</div>;
+      }
+    },
+  },
+  {
+    field: "bankAccount",
+    headerName: "Bank Account",
+    width: 230,
+  },
+];
+
+export const salesmenColumns = [
+  {
+    field: "name",
+    headerName: "Name",
+    width: 230,
+  },
+  {
+    field: "fatherName",
+    headerName: "Father name",
+    width: 230,
+  },
+  {
+    field: "address",
+    headerName: "Address",
+    width: 230,
+  },
+  {
+    field: "code",
+    headerName: "Code",
+    width: 230,
+  },
+  {
+    field: "qualification",
+    headerName: "Qualification",
+    width: 230,
+  },
+  {
+    field: "phoneNo",
+    headerName: "Phone",
+    width: 230,
+  },
+  { field: "areaCode", headerName: "Area code", width: 230 },
+  { field: "areaCommission", headerName: "Area commission", width: 230 },
+  { field: "target", headerName: "Target", width: 230 },
+  {
+    field: "dateOfJoin",
+    headerName: "Date of join",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
+  },
+  { field: "refPerson", headerName: "Reference person", width: 230 },
+  { field: "refPersonNumber", headerName: "reference Person number", width: 230 },
+  { field: "cnic", headerName: "CNIC", width: 230 },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+];

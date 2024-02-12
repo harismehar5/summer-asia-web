@@ -1,5 +1,5 @@
 // export const BASE_URL = "https://summer-asia.herokuapp.com/";
-export const BASE_URL = "https://summer-asia-db-express.vercel.app/";
+export const BASE_URL = "https://medical-app-backend-v2.vercel.app/api/";
 
 //Supplier URL
 export const SUPPLIER_BASE_URL = BASE_URL + "supplier/";
@@ -25,7 +25,7 @@ export const GET_SUPPLIER_LEDGER = SUPPLIER_BASE_URL + "get_supplier_ledger/"
 //Customer URL
 export const CUSTOMER_BASE_URL = BASE_URL + "customer/";
 export const ADD_CUSTOMER = CUSTOMER_BASE_URL + "add_customer";
-export const GET_CUSTOMERS_LIST = CUSTOMER_BASE_URL + "get_customers";
+// export const GET_CUSTOMERS_LIST = CUSTOMER_BASE_URL + "get_customers";
 export const GET_CUSTOMER_BY_ID = CUSTOMER_BASE_URL + "";
 export const UPDATE_CUSTOMER_BY_ID = CUSTOMER_BASE_URL + "";
 export const DELETE_CUSTOMER_BY_ID = CUSTOMER_BASE_URL + "";
@@ -80,3 +80,11 @@ export const GET_PURCHASE_LIST = PURCHASE_BASE_URL + "get_purchase";
 export const STOCK_BASE_URL = BASE_URL + "stock/";
 export const ADD_STOCK_LOG = STOCK_BASE_URL + "add_stock_log";
 export const GET_STOCK_LOG = STOCK_BASE_URL + "get_stock_log";
+
+
+//Area URL
+export const GET_AREA_LIST = BASE_URL + "areas";
+//CUSTOMERS URL
+export const GET_CUSTOMERS_LIST = BASE_URL + "customers";
+//SALESMEN URL
+export const GET_SALESMEN_LIST = BASE_URL + "salesmen";
