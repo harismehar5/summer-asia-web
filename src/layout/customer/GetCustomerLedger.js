@@ -11,9 +11,14 @@ import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { customerLedgerColumns } from "../../dataTableColumns";
 
-import { GET_CUSTOMERS_LIST, GET_CUSTOMER_LEDGER } from "../../utils/config";
+import {
+  BASE_URL,
+  GET_CUSTOMERS_LIST,
+  GET_CUSTOMER_LEDGER,
+} from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
+import { json } from "react-router-dom";
 
 export default function GetCustomerLedger() {
   const [data, setData] = useState([]);
@@ -36,7 +41,7 @@ export default function GetCustomerLedger() {
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          setCustomerList(response.data.customers);
+          setCustomerList(response?.data?.data);
         }
       })
       .catch(function (error) {
@@ -47,14 +52,16 @@ export default function GetCustomerLedger() {
   };
   const getCustomerLedgerList = (id) => {
     // setLoading(true);
+
     axios
       .get(GET_CUSTOMER_LEDGER + id)
       .then(function (response) {
         if (response.data.error) {
           //   setLoading(false);
-          setData([])
+          setData([]);
         } else {
-          setData(response.data.ledger);
+          setData(response.data.data);
+
           //   setLoading(false);
         }
       })
@@ -77,19 +84,24 @@ export default function GetCustomerLedger() {
         <Grid container item md={12} px={4}>
           <Autocomplete
             options={customerList}
-            getOptionLabel={(customer, index) => customer.name}
+            getOptionLabel={(customer) => (customer ? customer._id : "")}
             disablePortal
             fullWidth
-            isOptionEqualToValue={(option, value) => option._id === value._id}
+            isOptionEqualToValue={(option, value) =>
+              option && value && option._id === value._id
+            }
             onChange={(event, newInputValue) => {
-              setCustomerObject(newInputValue);
-              getCustomerLedgerList(newInputValue._id)
+              if (newInputValue && newInputValue._id) {
+                setCustomerObject(newInputValue);
+                getCustomerLedgerList(newInputValue._id);
+              }
             }}
+            value={customerObject.name}
             renderInput={(params) => (
-              <TextField {...params} label="Select Customer" />
+              <TextField {...params} label={"Select Customer"} />
             )}
             renderOption={(props, customer) => (
-              <Box component="li" {...props} key={customer._id}>
+              <Box component="li" {...props} key={customer ? customer._id : ""}>
                 {customer.name}
               </Box>
             )}

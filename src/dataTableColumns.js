@@ -383,20 +383,42 @@ export const stockLogColumns = [
 
 export const customerLedgerColumns = [
   {
-    field: "date",
+    field: "createdAt",
     headerName: "Date",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>
+            {formatDate(
+              params?.row?.createdAt ? params?.row?.createdAt : "No date"
+            )}
+          </p>
+        </>
+      );
+    },
     width: 160,
   },
   {
     field: "sale_ref",
     headerName: "Sale Ref",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>
+            {
+              params?.row?.saleId ? params?.row?.saleId : "N/A"
+            }
+          </p>
+        </>
+      );
+    },
     width: 230,
   },
-  {
-    field: "cash_ref",
-    headerName: "Cash Flow Ref",
-    width: 230,
-  },
+  // {
+  //   field: "cash_ref",
+  //   headerName: "Cash Flow Ref",
+  //   width: 230,
+  // },
   {
     field: "debit",
     headerName: "Debit",
@@ -405,21 +427,49 @@ export const customerLedgerColumns = [
   {
     field: "credit",
     headerName: "Credit",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.credit ? params?.row?.credit : 0}</p>
+        </>
+      );
+    },
     width: 160,
   },
   {
-    field: "payment_medium",
+    field: "paymentMode",
     headerName: "Payment Medium",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.paymentMode ? params?.row?.paymentMode : "N/A"}</p>
+        </>
+      );
+    },
     width: 230,
   },
   {
     field: "description",
     headerName: "Description",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.description ? params?.row?.description : "N/A"}</p>
+        </>
+      );
+    },
   },
   {
-    field: "total_amount",
+    field: "balance",
     headerName: "Balance",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.balance ? params?.row?.balance : 0}</p>
+        </>
+      );
+    },
     width: 160,
   },
 ];
