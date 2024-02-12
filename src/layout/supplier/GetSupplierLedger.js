@@ -48,24 +48,30 @@ export default function GetSupplierLedger() {
   };
   const getSupplierLedgerList = (id) => {
     // setLoading(true);
+    console.log("Fetching supplier ledger for ID:", id); // Log the ID being fetched
     axios
       .get(GET_SUPPLIER_LEDGER + id)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-          setData([])
-        } else {
-          setData(response.data.ledger);
-        }
+        console.log("Supplier ledger API response:", response.data); // Log the API response
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        //   setData([]);
+        // } else {
+          setData(response?.data?.data);
+          console.log("Updated data state:", response.data); // Log the updated data state
+        // }
       })
       .catch(function (error) {
         setOpen(true);
-        setMessage(error);
+        setMessage("Something went wrong");
         setSeverity("error");
+        setData([])
+        console.error("Error fetching supplier ledger:", error); // Log any errors that occur
       });
   };
+  
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -81,7 +87,7 @@ export default function GetSupplierLedger() {
         <Grid container item md={12} px={4}>
           <Autocomplete
             options={supplierList}
-            getOptionLabel={(supplier, index) => supplier.name}
+            getOptionLabel={(supplier) => supplier?.name}
             disablePortal
             fullWidth
             isOptionEqualToValue={(option, value) => option._id === value._id}
@@ -99,7 +105,7 @@ export default function GetSupplierLedger() {
             )}
           />
         </Grid>
-        {data.length !== 0 ? (
+        {data && data.length !== 0 ? (
           <DataTable
             data={data}
             columns={supplierLedgerColumns}

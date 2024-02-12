@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Dashboard from "./layout/dashboard/Dashboard";
 
-import GetCustomersList from "./layout/customer/GetCustomersList";
+import GetCustomerList from "./layout/customer/GetCustomersList";
 import AddCustomer from "./layout/customer/AddCustomer";
 import EditCustomer from "./layout/customer/EditCustomer";
 import GetCustomerCashIn from "./layout/customer/GetCustomerCashIn";
@@ -35,6 +35,12 @@ import AddSupplierCashOut from "./layout/supplier/AddSupplierCashOut";
 import StockLog from "./layout/product/StockLog";
 import GetCustomerLedger from "./layout/customer/GetCustomerLedger";
 import GetSupplierLedger from "./layout/supplier/GetSupplierLedger";
+import GetAreaList from "./layout/area/getAreaList";
+import AddArea from "./layout/area/addArea";
+import AddCustomers from "./layout/customers/addCustomers";
+import GetCustomersList from "./layout/customers/getCustomersList";
+import GetSalesmenList from "./layout/salesmen/getSalesmenList";
+import AddSalesmen from "./layout/salesmen/addSalesmen";
 
 function App() {
   return (
@@ -43,7 +49,7 @@ function App() {
         <Route path="/">
           <Route index element={<Dashboard />} />
           <Route path="customer">
-            <Route index element={<GetCustomersList />} />
+            <Route index element={<GetCustomerList />} />
             <Route path="add" element={<AddCustomer />} />
             <Route path="edit/:id" element={<EditCustomer />} />
             <Route path="add_cash_in" element={<AddCustomerCashIn />} />
@@ -81,6 +87,18 @@ function App() {
           <Route path="purchase">
             <Route index element={<GetPurchaseList />} />
             <Route path="add" element={<AddPurchase />} />
+          </Route>
+          <Route path="area">
+          <Route index element={<GetAreaList/>} />
+            <Route path="add" element={<AddArea />} />
+          </Route>
+          <Route path="customers">
+          <Route index element={<GetCustomersList/>} />
+            <Route path="add" element={<AddCustomers />} />
+          </Route>
+          <Route path="salesmen">
+          <Route index element={<GetSalesmenList/>} />
+            <Route path="add" element={<AddSalesmen/>} />
           </Route>
         </Route>
       </Routes>
