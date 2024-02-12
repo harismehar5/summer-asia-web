@@ -25,7 +25,7 @@ export const GET_SUPPLIER_LEDGER = SUPPLIER_BASE_URL + "get_supplier_ledger/"
 //Customer URL
 export const CUSTOMER_BASE_URL = BASE_URL + "customer/";
 export const ADD_CUSTOMER = CUSTOMER_BASE_URL + "add_customer";
-export const GET_CUSTOMERS_LIST = CUSTOMER_BASE_URL + "get_customers";
+// export const GET_CUSTOMERS_LIST = CUSTOMER_BASE_URL + "get_customers";
 export const GET_CUSTOMER_BY_ID = CUSTOMER_BASE_URL + "";
 export const UPDATE_CUSTOMER_BY_ID = CUSTOMER_BASE_URL + "";
 export const DELETE_CUSTOMER_BY_ID = CUSTOMER_BASE_URL + "";
@@ -91,3 +91,11 @@ export const ADD_COMPANY = BASE_URL + "companies"
 // export const PRODUCT_BASE_URL = BASE_URL + ""
 export const GET_ALL_PRODUCTS = BASE_URL + "products"
 export const ADD_PRODUCT = BASE_URL + "products"
+
+
+//Area URL
+export const GET_AREA_LIST = BASE_URL + "areas";
+//CUSTOMERS URL
+export const GET_CUSTOMERS_LIST = BASE_URL + "customers";
+//SALESMEN URL
+export const GET_SALESMEN_LIST = BASE_URL + "salesmen";
