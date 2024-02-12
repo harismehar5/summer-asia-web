@@ -29,6 +29,45 @@ export default function SideBar() {
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
           </li>
+          <p className="title">Area</p>
+          <Link to="/area/add/" style={{ textDecoration: "none" }}>
+            <li>
+              <PointOfSaleRoundedIcon className="icon" />
+              <span>Add Area</span>
+            </li>
+          </Link>
+          <Link to="/area" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Area List</span>
+            </li>
+          </Link>
+          <p className="title">Customers</p>
+          <Link to="/customers/add/" style={{ textDecoration: "none" }}>
+            <li>
+              <PointOfSaleRoundedIcon className="icon" />
+              <span>Add Customers</span>
+            </li>
+          </Link>
+          <Link to="/customers" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Customers List</span>
+            </li>
+          </Link>
+          <p className="title">Salesmen</p>
+          <Link to="/salesmen/add/" style={{ textDecoration: "none" }}>
+            <li>
+              <PointOfSaleRoundedIcon className="icon" />
+              <span>Add Salesmen</span>
+            </li>
+          </Link>
+          <Link to="/salesmen" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Salesmen List</span>
+            </li>
+          </Link>
           <p className="title">Sale</p>
           <Link to="/sale/add/" style={{ textDecoration: "none" }}>
             <li>
