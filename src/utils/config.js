@@ -47,7 +47,7 @@ export const GET_CUSTOMER_LEDGER = CUSTOMER_BASE_URL + "get_customer_ledger/"
 //Product URL
 export const PRODUCT_BASE_URL = BASE_URL + "product/";
 export const GET_PRODUCTS_LIST = PRODUCT_BASE_URL + "get_products";
-export const ADD_PRODUCT = PRODUCT_BASE_URL + "add_product";
+// export const ADD_PRODUCT = PRODUCT_BASE_URL + "add_product";
 export const DELETE_PRODUCT = PRODUCT_BASE_URL;
 export const UPDATE_PRODUCT_BY_ID = PRODUCT_BASE_URL;
 export const GET_PRODUCT_BY_ID = PRODUCT_BASE_URL;
@@ -72,15 +72,28 @@ export const ADD_SALE = SALE_BASE_URL + "add_sale";
 export const GET_SALE_LIST = SALE_BASE_URL + "get_sale";
 
 //Purchase URL
-export const PURCHASE_BASE_URL = BASE_URL + "purchase/";
-export const ADD_PURCHASE = PURCHASE_BASE_URL + "add_purchase";
+export const PURCHASE_BASE_URL = BASE_URL + "purchases";
+// export const ADD_PURCHASE = PURCHASE_BASE_URL + "add_purchase";
 export const GET_PURCHASE_LIST = PURCHASE_BASE_URL + "get_purchase";
 
 //Stock URL
 export const STOCK_BASE_URL = BASE_URL + "stock/";
 export const ADD_STOCK_LOG = STOCK_BASE_URL + "add_stock_log";
 export const GET_STOCK_LOG = STOCK_BASE_URL + "get_stock_log";
+//=====================================================================
 
+
+
+export const COMPANY_BASE_URL = BASE_URL + ""
+export const GET_ALL_COMPANIES = BASE_URL + "companies"
+export const ADD_COMPANY = BASE_URL + "companies"
+
+// export const PRODUCT_BASE_URL = BASE_URL + ""
+export const GET_ALL_PRODUCTS = BASE_URL + "products"
+export const ADD_PRODUCT = BASE_URL + "products"
+
+
+export const ADD_PURCHASE = BASE_URL + "purchases"
 
 //Area URL
 export const GET_AREA_LIST = BASE_URL + "areas";

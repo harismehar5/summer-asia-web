@@ -9,46 +9,71 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Alert, Button } from "@mui/material";
 import axios from "axios";
-import { ADD_SUPPLIER } from "../../utils/config";
+import { ADD_COMPANY } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddSupplier() {
+  const [code, setCode] = useState("")
   const [name, setName] = useState("");
+  const [personName, setPersonName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [description, setDescription] = useState("");
+  const [license, setLicense] = useState("");
+  const [email, setEmail] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+
   const [openingBalance, setOpeningBalance] = useState("");
   const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   var supplier = {
+    code: "",
     name: "",
-    phone: "",
+    person: "",
+    phoneNumber: "",
+    description: "",
+    license: "",
     address: "",
-    opening_balance: "",
+    email: "",
+    accountNumber: ""
   };
   const addSupplier = () => {
     supplier = {
+      code: code,
       name: name,
-      phone: phone,
+      person: personName,
+      phoneNumber: phone,
+      description: description,
+      license: license,
       address: address,
-      opening_balance: openingBalance,
+      email: email,
+      accountNumber: accountNumber
     };
+    
     axios
-      .post(ADD_SUPPLIER, supplier)
+      .post(ADD_COMPANY, supplier)
       .then(function (response) {
-        if (response.data.error) {
+        console.log(response)
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
           setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          setOpen(true);
-          setMessage(response.data.success_msg);
+          // setMessage(response.data.success_msg);
           setSeverity("success");
+          setCode("")
           setName("");
           setPhone("");
-          setOpeningBalance("");
-        }
+          setAccountNumber("")
+          setPersonName("")
+          setDescription("")
+          setAddress("")
+          setLicense("")
+          setEmail("")
+        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -59,8 +84,7 @@ export default function AddSupplier() {
   const validation = () => {
     if (
       name.length === 0 ||
-      phone.length === 0 ||
-      openingBalance.length === 0
+      phone.length === 0 
     ) {
       setOpen(true);
       setMessage("Some fields are missing");
@@ -85,27 +109,57 @@ export default function AddSupplier() {
             Add Supplier
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={8}>
+              {/* <TextField
+                required
+                label="Company Name"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              /> */}
+            </Grid>
+            <Grid item xs={12} sm={4}>
               <TextField
                 required
-                label="Name"
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                label="Company Name"
                 fullWidth
                 variant="outlined"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 required
-                label="Phone"
+                label="Contacted Person Name"
                 fullWidth
                 variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                value={personName}
+                onChange={(event) => setPersonName(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                label="Email"
+                fullWidth
+                variant="outlined"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
                 label="Address"
                 fullWidth
@@ -113,14 +167,41 @@ export default function AddSupplier() {
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
-            </Grid> */}
-            <Grid item xs={12} sm={12}>
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
-                label="Opening Balance"
+                label="Phone Number"
                 fullWidth
                 variant="outlined"
-                value={openingBalance}
-                onChange={(event) => setOpeningBalance(event.target.value)}
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="License Number"
+                fullWidth
+                variant="outlined"
+                value={license}
+                onChange={(event) => setLicense(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Account Number"
+                fullWidth
+                variant="outlined"
+                value={accountNumber}
+                onChange={(event) => setAccountNumber(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                label="Description"
+                fullWidth
+                variant="outlined"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

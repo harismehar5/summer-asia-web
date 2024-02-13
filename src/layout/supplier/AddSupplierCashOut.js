@@ -11,7 +11,7 @@ import axios from "axios";
 import {
   ADD_SUPPLIER_CASH_IN,
   ADD_SUPPLIER_CASH_OUT,
-  GET_SUPPLIERS_LIST,
+  GET_ALL_COMPANIES,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -112,15 +112,15 @@ export default function AddSupplierCashOut() {
   };
   const getSuppliersList = () => {
     axios
-      .get(GET_SUPPLIERS_LIST)
+      .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          setSupplierList(response.data.suppliers);
-        }
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
+          setSupplierList(response.data.data);
+        // }
       })
       .catch(function (error) {
         setOpen(true);

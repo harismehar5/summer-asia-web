@@ -12,33 +12,61 @@ import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddProduct() {
   const [name, setName] = useState("");
+  const [code, setCode] = useState("")
+  const [packing, setPacking] = useState("")
+  const [strength, setStrength] = useState("")
+  const [tradeRate, setTradeRate] = useState("")
+  const [purchaseRate, setPurchaseRate] = useState("")
+  const [maximumRetailPrice, setMaximumRetailPrice] = useState("")
+  const [distributerPrice, setDistributerPrice] = useState("")
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   var product = {
-    name: "",
-    price: "",
-    quantity: "",
+    "companyCode": "",
+    "code": "",
+    "name": "",
+    "packing": "",
+    "strength": "",
+    "tradeRate": "",
+    "purchaseRate": "",
+    "maximumRetailPrice": "",
+    "distributerPrice": ""
   };
   const addProduct = () => {
     product = {
-      name: name,
-      price: 0,
-      quantity: 0,
+      "code": code,
+      "name": name,
+      "packing": packing,
+      "strength": strength,
+      "tradeRate": tradeRate,
+      "purchaseRate": purchaseRate,
+      "maximumRetailPrice": maximumRetailPrice,
+      "distributerPrice": distributerPrice
     };
     axios
       .post(ADD_PRODUCT, product)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-        } else {
-          setOpen(true);
-          setMessage(response.data.success_msg);
-          setSeverity("success");
-          setName("");
-        }
+        console.log(response)
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
+        setOpen(true);
+        // setMessage(response.data.success_msg);
+        setSeverity("success");
+        setName("");
+        setCode("")
+        setName("")
+        setPacking("")
+        setStrength("")
+        setTradeRate("")
+        setPurchaseRate("")
+        setMaximumRetailPrice("")
+        setDistributerPrice("")
+        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -71,6 +99,26 @@ export default function AddProduct() {
             Add Product
           </Typography>
           <Grid container spacing={3}>
+            <Grid item xs={12} sm={8}>
+              {/* <TextField
+                required
+                label="Company Name"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              /> */}
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+              />
+            </Grid>
             <Grid item xs={12} sm={12}>
               <TextField
                 required
@@ -79,6 +127,66 @@ export default function AddProduct() {
                 variant="outlined"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                label="Packing"
+                fullWidth
+                variant="outlined"
+                value={packing}
+                onChange={(event) => setPacking(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                label="Strength"
+                fullWidth
+                variant="outlined"
+                value={strength}
+                onChange={(event) => setStrength(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                label="Trade Rate"
+                fullWidth
+                variant="outlined"
+                value={tradeRate}
+                onChange={(event) => setTradeRate(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                label="Purchase Rate"
+                fullWidth
+                variant="outlined"
+                value={purchaseRate}
+                onChange={(event) => setPurchaseRate(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                label="Retail Price (Max)"
+                fullWidth
+                variant="outlined"
+                value={maximumRetailPrice}
+                onChange={(event) => setMaximumRetailPrice(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                label="Distributer Price"
+                fullWidth
+                variant="outlined"
+                value={distributerPrice}
+                onChange={(event) => setDistributerPrice(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}></Grid>

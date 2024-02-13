@@ -24,22 +24,73 @@ export const userColumns = [
   },
 ];
 
+export const supplierColumn = [{
+  field: "code",
+  headerName: "Code",
+  width: 100,
+}, {
+  field: "name",
+  headerName: "Company Name",
+  width: 150,
+},
+{
+  field: "person",
+  headerName: "Person Name",
+  width: 150,
+}, {
+  field: "phoneNumber",
+  headerName: "Phone Number",
+  width: 150,
+}, {
+  field: "address",
+  headerName: "Address",
+  width: 230,
+}, {
+  field: "license",
+  headerName: "License Number",
+  width: 150,
+}
+]
 export const productColumns = [
+  {
+    field: "code",
+    headerName: "Code",
+    width: 100,
+  },
   {
     field: "name",
     headerName: "Name",
     width: 230,
   },
   {
-    field: "price",
-    headerName: "Price",
-    width: 230,
+    field: "packing",
+    headerName: "Packing",
+    width: 150,
   },
-
   {
-    field: "quantity",
-    headerName: "Quantity",
-    width: 230,
+    field: "strength",
+    headerName: "Strength",
+    width: 150,
+  },
+  {
+    field: "tradeRate",
+    headerName: "Trade Rate",
+    width: 150,
+  },
+  {
+    field: "purchaseRate",
+    headerName: "Purchase Rate",
+    width: 150,
+  },
+  {
+    field: "maximumRetailPrice",
+    headerName: "Retail Price (Max)",
+    width: 150,
+  },
+  {
+    field: "distributerPrice",
+    headerName: "Distributer Price",
+    width: 150,
   },
 ];
 
