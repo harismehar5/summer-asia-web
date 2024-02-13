@@ -399,14 +399,30 @@ export const customerLedgerColumns = [
     width: 160,
   },
   {
-    field: "sale_ref",
-    headerName: "Sale Ref",
+    field: "saleId",
+    headerName: "Sale id",
     renderCell: (params) => {
       return (
         <>
           <p>
             {
               params?.row?.saleId ? params?.row?.saleId : "N/A"
+            }
+          </p>
+        </>
+      );
+    },
+    width: 230,
+  },
+  {
+    field: "saleReturnId",
+    headerName: "Sale return id",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>
+            {
+              params?.row?.saleReturnId ? params?.row?.saleReturnId : "N/A"
             }
           </p>
         </>

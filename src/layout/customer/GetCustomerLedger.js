@@ -54,9 +54,10 @@ export default function GetCustomerLedger() {
     // setLoading(true);
 
     axios
-      .get(GET_CUSTOMER_LEDGER + id)
+      .get(GET_CUSTOMER_LEDGER +id)
       .then(function (response) {
-        if (response.data.error) {
+       console.log(response)
+        if (response.message == "Cash data not found") {
           //   setLoading(false);
           setData([]);
         } else {
@@ -84,7 +85,7 @@ export default function GetCustomerLedger() {
         <Grid container item md={12} px={4}>
           <Autocomplete
             options={customerList}
-            getOptionLabel={(customer) => (customer ? customer._id : "")}
+            getOptionLabel={(customer) => (customer ? customer.name : "")}
             disablePortal
             fullWidth
             isOptionEqualToValue={(option, value) =>

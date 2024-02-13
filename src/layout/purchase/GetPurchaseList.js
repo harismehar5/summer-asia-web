@@ -49,18 +49,18 @@ export default function GetPurchaseList() {
           setSeverity("error");
         } else {
           var array = [];
-          for (var i = 0; i < response.data.purchases.length; i++) {
+          for (var i = 0; i < response.data.purchaseDetail.length; i++) {
             array.push({
-              _id: response.data.purchases[i]._id,
-              total_amount: response.data.purchases[i].total_amount,
-              total_quantity: response.data.purchases[i].total_quantity,
-              supplier: response.data.purchases[i].supplier.name,
-              submit_date: response.data.purchases[i].submit_date,
-              status: response.data.purchases[i].status,
-              order_details: response.data.purchases[i].order_details,
-              createdAt: response.data.purchases[i].createdAt,
-              updatedAt: response.data.purchases[i].updatedAt,
-              __v: response.data.purchases[i].__v,
+              _id: response.data.purchaseDetail[i]._id,
+              total_amount: response.data.purchaseDetail[i].total_amount,
+              total_quantity: response.data.purchaseDetail[i].total_quantity,
+              supplier: response.data.purchaseDetail[i].supplier.name,
+              submit_date: response.data.purchaseDetail[i].submit_date,
+              status: response.data.purchaseDetail[i].status,
+              order_details: response.data.purchaseDetail[i].order_details,
+              createdAt: response.data.purchaseDetail[i].createdAt,
+              updatedAt: response.data.purchaseDetail[i].updatedAt,
+              __v: response.data.purchaseDetail[i].__v,
             });
           }
           setData(array);

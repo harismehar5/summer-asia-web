@@ -74,7 +74,7 @@ export const GET_SALE_LIST = SALE_BASE_URL + "get_sale";
 //Purchase URL
 export const PURCHASE_BASE_URL = BASE_URL + "purchase/";
 export const ADD_PURCHASE = PURCHASE_BASE_URL + "add_purchase";
-export const GET_PURCHASE_LIST = PURCHASE_BASE_URL + "get_purchase";
+export const GET_PURCHASE_LIST = BASE_URL + "purchases";
 
 //Stock URL
 export const STOCK_BASE_URL = BASE_URL + "stock/";
