@@ -72,8 +72,8 @@ export const ADD_SALE = SALE_BASE_URL + "add_sale";
 export const GET_SALE_LIST = SALE_BASE_URL + "get_sale";
 
 //Purchase URL
-export const PURCHASE_BASE_URL = BASE_URL + "purchase/";
-export const ADD_PURCHASE = PURCHASE_BASE_URL + "add_purchase";
+export const PURCHASE_BASE_URL = BASE_URL + "purchases";
+// export const ADD_PURCHASE = PURCHASE_BASE_URL + "add_purchase";
 export const GET_PURCHASE_LIST = PURCHASE_BASE_URL + "get_purchase";
 
 //Stock URL
@@ -92,6 +92,8 @@ export const ADD_COMPANY = BASE_URL + "companies"
 export const GET_ALL_PRODUCTS = BASE_URL + "products"
 export const ADD_PRODUCT = BASE_URL + "products"
 
+
+export const ADD_PURCHASE = BASE_URL + "purchases"
 
 //Area URL
 export const GET_AREA_LIST = BASE_URL + "areas";
