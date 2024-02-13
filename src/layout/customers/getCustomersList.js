@@ -7,6 +7,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormControl,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -264,7 +265,7 @@ export default function GetCustomersList() {
     setLicenseExpiryDate(
       new Date(customer.licenseExpiryDate).toISOString().split("T")[0]
     );
-    setAreaCode(customer.areaCode._id); // Extract _id from the areaCode object
+    setAreaCode(customer.areaCode._id);
     setBankAccount(customer.bankAccount);
     setId(customer._id);
     setCode(customer.code);
@@ -285,43 +286,8 @@ export default function GetCustomersList() {
         <Popup title="Customer Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
           <Grid container spacing={3}>
             {/* Form fields... */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="name"
-                name="name"
-                label="Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="phone"
-                name="phone"
-                label="Phone"
-                fullWidth
-                variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="address"
-                name="address"
-                label="Address"
-                fullWidth
-                variant="outlined"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
+            <FormControl fullWidth variant="outlined" required>
               <InputLabel id="gender-label">Gender</InputLabel>
               <Select
                 labelId="gender-label"
@@ -335,8 +301,36 @@ export default function GetCustomersList() {
                 <MenuItem value="Female">Female</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
               </Select>
+              </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="name"
+                name="name"
+                label="Name"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="phone"
+                name="phone"
+                label="Phone"
+                type="number" 
+                fullWidth
+                variant="outlined"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+            </Grid>
+
+
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="email"
@@ -348,19 +342,7 @@ export default function GetCustomersList() {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="code"
-                name="code"
-                label="Code"
-                fullWidth
-                variant="outlined"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="license"
@@ -372,7 +354,7 @@ export default function GetCustomersList() {
                 onChange={(event) => setLicense(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="licenseExpiryDate"
@@ -389,7 +371,8 @@ export default function GetCustomersList() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
+            <FormControl fullWidth variant="outlined" required>
   <InputLabel id="areaCodeLabel">Area Code</InputLabel>
   <Select
     labelId="areaCodeLabel"
@@ -405,10 +388,11 @@ export default function GetCustomersList() {
       </MenuItem>
     ))}
   </Select>
+  </FormControl>
 </Grid>
 
 
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="bankAccount"
@@ -418,6 +402,30 @@ export default function GetCustomersList() {
                 variant="outlined"
                 value={bankAccount}
                 onChange={(event) => setBankAccount(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="address"
+                name="address"
+                label="Address"
+                fullWidth
+                variant="outlined"
+                value={address}
+                onChange={(event) => setAddress(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="code"
+                name="code"
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}></Grid>

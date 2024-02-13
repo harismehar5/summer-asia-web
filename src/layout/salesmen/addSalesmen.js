@@ -72,7 +72,7 @@ export default function AddSalesmen() {
       })
       .catch(function (error) {
         console.error("Error adding customer:", error);
-        handleSnackbar("error", "Internal Server Error");
+        handleSnackbar("error",  error.response.data.error);
       });
   };
 
@@ -179,6 +179,19 @@ export default function AddSalesmen() {
             <Grid item xs={4} sm={3}>
               <TextField
                 required
+                id="cnic"
+                name="cnic"
+                label="CNIC"
+                fullWidth
+                type="number" 
+                variant="outlined"
+                value={cnic}
+                onChange={(event) => setCnic(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
                 id="qualification"
                 name="qualification"
                 label="Qualification"
@@ -186,6 +199,59 @@ export default function AddSalesmen() {
                 variant="outlined"
                 value={qualification}
                 onChange={(event) => setQualification(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="dateOfJoin"
+                name="dateOfJoin"
+                label="Date of Join"
+                type="date"
+                fullWidth
+                variant="outlined"
+                value={dateOfJoin}
+                onChange={(event) => setDateOfJoin(event.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="refPerson"
+                name="refPerson"
+                label="Reference Person"
+                fullWidth
+                variant="outlined"
+                value={refPerson}
+                onChange={(event) => setRefPerson(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="refPersonNumber"
+                name="refPersonNumber"
+                label="Reference Person Number"
+                fullWidth
+                type="number" 
+                variant="outlined"
+                value={refPersonNumber}
+                onChange={(event) => setRefPersonNumber(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                id="address"
+                name="address"
+                label="Address"
+                fullWidth
+                variant="outlined"
+                value={address}
+                onChange={(event) => setAddress(event.target.value)}
               />
             </Grid>
             <Grid item xs={4} sm={3}>
@@ -244,73 +310,8 @@ export default function AddSalesmen() {
                 onChange={(event) => setTarget(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="cnic"
-                name="cnic"
-                label="CNIC"
-                fullWidth
-                type="number" 
-                variant="outlined"
-                value={cnic}
-                onChange={(event) => setCnic(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="dateOfJoin"
-                name="dateOfJoin"
-                label="Date of Join"
-                type="date"
-                fullWidth
-                variant="outlined"
-                value={dateOfJoin}
-                onChange={(event) => setDateOfJoin(event.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="refPerson"
-                name="refPerson"
-                label="Reference Person"
-                fullWidth
-                variant="outlined"
-                value={refPerson}
-                onChange={(event) => setRefPerson(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="refPersonNumber"
-                name="refPersonNumber"
-                label="Reference Person Number"
-                fullWidth
-                type="number" 
-                variant="outlined"
-                value={refPersonNumber}
-                onChange={(event) => setRefPersonNumber(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="address"
-                name="address"
-                label="Address"
-                fullWidth
-                variant="outlined"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+
+            <Grid item xs={12} sm={12}>
               <TextField
                 required
                 id="description"

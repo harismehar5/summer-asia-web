@@ -198,7 +198,7 @@ export default function GetAreaList() {
         <Popup title="Area Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
           <Grid container spacing={3}>
             {/* Form fields... */}
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="code"
@@ -210,7 +210,7 @@ export default function GetAreaList() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="abbreviation"

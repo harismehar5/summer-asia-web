@@ -65,7 +65,7 @@ export default function AddCustomers() {
       })
       .catch(function (error) {
         console.error("Error adding customer:", error);
-        handleSnackbar("error", "Internal Server Error");
+        handleSnackbar("error",  error.response.data.error);
       });
   };
 
@@ -158,6 +158,7 @@ export default function AddCustomers() {
                 id="phone"
                 name="phone"
                 label="Phone"
+                type="number" 
                 fullWidth
                 variant="outlined"
                 value={phone}

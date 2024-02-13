@@ -36,8 +36,8 @@ export default function AddArea() {
         }
       })
       .catch(function (error) {
-        console.error("Error adding area:", error);
-        handleSnackbar("error", "Internal Server Error");
+        console.error("Error adding area:", error.response.data.error);
+        handleSnackbar("error", error.response.data.error);
       });
   };
 
@@ -102,7 +102,7 @@ export default function AddArea() {
                 onChange={(event) => setArea(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} sm={12   }>
               <TextField
                 id="description"
                 name="description"

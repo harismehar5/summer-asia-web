@@ -343,6 +343,7 @@ export default function GetSalesmenList() {
               <TextField
                 required
                 id="phoneNo"
+                type="number" 
                 name="phoneNo"
                 label="Phone Number"
                 fullWidth
@@ -356,6 +357,7 @@ export default function GetSalesmenList() {
     required
     id="cnic"
     name="cnic"
+    type="number" 
     label="CNIC"
     fullWidth
     variant="outlined"
@@ -410,6 +412,7 @@ export default function GetSalesmenList() {
                 id="refPersonNumber"
                 name="refPersonNumber"
                 label="Reference Person Number"
+                type="number" 
                 fullWidth
                 variant="outlined"
                 value={refPersonNumber}
@@ -465,6 +468,7 @@ export default function GetSalesmenList() {
                 id="areaCommission"
                 name="areaCommission"
                 label="Area Commission"
+                type="number" 
                 fullWidth
                 variant="outlined"
                 value={areaCommission}
@@ -476,6 +480,7 @@ export default function GetSalesmenList() {
                 required
                 id="target"
                 name="target"
+                type="number" 
                 label="Target"
                 fullWidth
                 variant="outlined"
