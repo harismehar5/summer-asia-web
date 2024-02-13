@@ -39,16 +39,16 @@ export default function AddCustomers() {
 
   const addCustomer = () => {
     const customerData = {
-      name:name,
-      phone:phone,
-      address:address,
-      gender:gender,
-      email:email,
-      license:license,
-      licenseExpiryDate:licenseExpiryDate,
-      areaCode:areaCode,
-      bankAccount:bankAccount,
-      code:code,
+      name: name,
+      phone: phone,
+      address: address,
+      gender: gender,
+      email: email,
+      license: license,
+      licenseExpiryDate: licenseExpiryDate,
+      areaCode: areaCode,
+      bankAccount: bankAccount,
+      code: code,
     };
 
     axios
@@ -79,8 +79,8 @@ export default function AddCustomers() {
       license.length === 0 ||
       licenseExpiryDate.length === 0 ||
       areaCode.length === 0 ||
-      bankAccount.length === 0 || 
-      code.length ===0
+      bankAccount.length === 0 ||
+      code.length === 0
     ) {
       handleSnackbar("error", "All fields are required");
     } else {
@@ -201,21 +201,21 @@ export default function AddCustomers() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-  <TextField
-    required
-    id="licenseExpiryDate"
-    name="licenseExpiryDate"
-    label="License Expiry Date"
-    type="date"
-    fullWidth
-    variant="outlined"
-    value={licenseExpiryDate}
-    onChange={(event) => setLicenseExpiryDate(event.target.value)}
-    InputLabelProps={{
-      shrink: true,
-    }}
-  />
-</Grid>
+              <TextField
+                required
+                id="licenseExpiryDate"
+                name="licenseExpiryDate"
+                label="License Expiry Date"
+                type="date"
+                fullWidth
+                variant="outlined"
+                value={licenseExpiryDate}
+                onChange={(event) => setLicenseExpiryDate(event.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="areaCode-label">Area Code</InputLabel>
@@ -281,7 +281,7 @@ export default function AddCustomers() {
                     variant="contained"
                     size="medium"
                     color="error"
-                    // onClick={() => setOpenPopup(false)}
+                  // onClick={() => setOpenPopup(false)}
                   >
                     Cancel
                   </Button>
