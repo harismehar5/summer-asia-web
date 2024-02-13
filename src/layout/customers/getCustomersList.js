@@ -251,6 +251,10 @@ export default function GetCustomersList() {
 
   const editCustomer = (customer) => {
     setOpenPopup(true);
+    // Log the area code to the console for debugging
+    console.log("Area Code:", customer.areaCode);
+    
+    // Set state values
     setName(customer.name);
     setPhone(customer.phone);
     setAddress(customer.address);
@@ -260,14 +264,13 @@ export default function GetCustomersList() {
     setLicenseExpiryDate(
       new Date(customer.licenseExpiryDate).toISOString().split("T")[0]
     );
-
-    // Make sure to set the correct area code value
-    setAreaCode(customer.areaCode);
-
+    setAreaCode(customer.areaCode._id); // Extract _id from the areaCode object
     setBankAccount(customer.bankAccount);
     setId(customer._id);
     setCode(customer.code);
   };
+  
+  
 
   return (
     <div className="list">
@@ -387,22 +390,23 @@ export default function GetCustomersList() {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <InputLabel id="areaCodeLabel">Area Code</InputLabel>
-              <Select
-                labelId="areaCodeLabel"
-                id="areaCode"
-                value={areaCode}
-                label="Area Code"
-                fullWidth
-                onChange={(event) => setAreaCode(event.target.value)}
-              >
-                {areas.map((area) => (
-                  <MenuItem key={area._id} value={area._id}>
-                    {area.code}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
+  <InputLabel id="areaCodeLabel">Area Code</InputLabel>
+  <Select
+    labelId="areaCodeLabel"
+    id="areaCode"
+    value={areaCode}
+    label="Area Code"
+    fullWidth
+    onChange={(event) => setAreaCode(event.target.value)}
+  >
+    {areas.map((area) => (
+      <MenuItem key={area._id} value={area._id}>
+        {area.code}
+      </MenuItem>
+    ))}
+  </Select>
+</Grid>
+
 
             <Grid item xs={12} sm={6}>
               <TextField
