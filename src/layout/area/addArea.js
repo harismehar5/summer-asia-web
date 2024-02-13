@@ -78,7 +78,7 @@ export default function AddArea() {
             Add Area
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="code"
@@ -90,7 +90,7 @@ export default function AddArea() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="area"

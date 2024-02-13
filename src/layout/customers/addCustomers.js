@@ -124,43 +124,7 @@ export default function AddCustomers() {
             Add Customer
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="name"
-                name="name"
-                label="Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="phone"
-                name="phone"
-                label="Phone"
-                fullWidth
-                variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="address"
-                name="address"
-                label="Address"
-                fullWidth
-                variant="outlined"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+          <Grid item xs={4} sm={3}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="gender-label">Gender</InputLabel>
                 <Select
@@ -176,7 +140,31 @@ export default function AddCustomers() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="name"
+                name="name"
+                label="Name"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="phone"
+                name="phone"
+                label="Phone"
+                fullWidth
+                variant="outlined"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="email"
@@ -188,7 +176,8 @@ export default function AddCustomers() {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="license"
@@ -200,7 +189,7 @@ export default function AddCustomers() {
                 onChange={(event) => setLicense(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
   <TextField
     required
     id="licenseExpiryDate"
@@ -216,7 +205,7 @@ export default function AddCustomers() {
     }}
   />
 </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="areaCode-label">Area Code</InputLabel>
                 <Select
@@ -234,7 +223,7 @@ export default function AddCustomers() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="bankAccount"
@@ -249,6 +238,18 @@ export default function AddCustomers() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
+                id="address"
+                name="address"
+                label="Address"
+                fullWidth
+                variant="outlined"
+                value={address}
+                onChange={(event) => setAddress(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
                 id="code"
                 name="code"
                 label="Code"
@@ -258,8 +259,8 @@ export default function AddCustomers() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}></Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}></Grid>
+            <Grid item xs={4} sm={3}>
               <Grid
                 justifyContent={"flex-end"}
                 container

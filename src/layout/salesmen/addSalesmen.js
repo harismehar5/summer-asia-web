@@ -2,31 +2,33 @@ import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Button, MenuItem, Paper, Select, InputLabel, FormControl } from "@mui/material";
+import { Button, Paper, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import SnackBar from "../../components/alert/SnackBar";
-import { GET_CUSTOMERS_LIST, GET_AREA_LIST } from "../../utils/config";
+import { GET_SALESMEN_LIST, GET_AREA_LIST } from "../../utils/config";
 
 export default function AddSalesmen() {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("");
-  const [email, setEmail] = useState("");
-  const [license, setLicense] = useState("");
-  const [licenseExpiryDate, setLicenseExpiryDate] = useState("");
   const [areaCode, setAreaCode] = useState("");
   const [code, setCode] = useState("");
-  const [areas, setAreas] = useState([]); // New state to store areas data
-  const [bankAccount, setBankAccount] = useState("");
+  const [areas, setAreas] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-
+  const [areaCommission, setAreaCommission] = useState();
+  const [cnic, setCnic] = useState();
+  const [dateOfJoin, setDateOfJoin] = useState("");
+  const [description, setDescription] = useState("");
+  const [fatherName, setFatherName] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [qualification, setQualification] = useState("");
+  const [refPerson, setRefPerson] = useState("");
+  const [refPersonNumber, setRefPersonNumber] = useState("");
+  const [target, setTarget] = useState();
   useEffect(() => {
-    // Fetch areas data from the API
     axios
       .get(GET_AREA_LIST)
       .then((response) => {
@@ -35,26 +37,30 @@ export default function AddSalesmen() {
       .catch((error) => {
         console.error("Error fetching areas:", error);
       });
-  }, []); // Run the effect only once on component mount
+  }, []);
 
   const addCustomer = () => {
     const customerData = {
-      name:name,
-      phone:phone,
-      address:address,
-      gender:gender,
-      email:email,
-      license:license,
-      licenseExpiryDate:licenseExpiryDate,
-      areaCode:areaCode,
-      bankAccount:bankAccount,
-      code:code,
+      name: name,
+      address: address,
+      areaCode: areaCode,
+      code: code,
+      areaCommission: areaCommission,
+      cnic: cnic,
+      dateOfJoin: dateOfJoin,
+      description: description,
+      fatherName: fatherName,
+      phoneNo: phoneNo,
+      qualification: qualification,
+      refPerson: refPerson,
+      refPersonNumber: refPersonNumber,
+      target: target,
     };
 
     axios
-      .post(GET_CUSTOMERS_LIST, customerData)
+      .post(GET_SALESMEN_LIST, customerData)
       .then(function (response) {
-        console.log("New Data :", customerData);
+       
         if (response.data.error) {
           handleSnackbar("error", response.data.error);
         } else {
@@ -62,6 +68,7 @@ export default function AddSalesmen() {
           resetForm();
         }
         console.log("New Data Success :", customerData);
+        console.log("Success Message :", response.data.message);
       })
       .catch(function (error) {
         console.error("Error adding customer:", error);
@@ -72,15 +79,19 @@ export default function AddSalesmen() {
   const validation = () => {
     if (
       name.length === 0 ||
-      phone.length === 0 ||
       address.length === 0 ||
-      gender.length === 0 ||
-      email.length === 0 ||
-      license.length === 0 ||
-      licenseExpiryDate.length === 0 ||
       areaCode.length === 0 ||
-      bankAccount.length === 0 || 
-      code.length ===0
+      code.length === 0 ||
+      areaCommission.length === 0 ||
+      cnic.length === 0 ||
+      dateOfJoin.length === 0 ||
+      description.length === 0 ||
+      fatherName.length === 0 ||
+      phoneNo.length === 0 ||
+      qualification.length === 0 ||
+      refPerson.length === 0 ||
+      refPersonNumber.length === 0 ||
+      target.length === 0
     ) {
       handleSnackbar("error", "All fields are required");
     } else {
@@ -103,15 +114,19 @@ export default function AddSalesmen() {
 
   const resetForm = () => {
     setName("");
-    setPhone("");
     setAddress("");
-    setGender("");
-    setEmail("");
-    setLicense("");
-    setLicenseExpiryDate("");
-    setAreaCode("");
-    setBankAccount("");
+    setAreaCode();
     setCode("");
+    setAreaCommission();
+    setCnic();
+    setDateOfJoin("");
+    setDescription("");
+    setFatherName("");
+    setPhoneNo();
+    setQualification("");
+    setRefPerson("");
+    setRefPersonNumber();
+    setTarget();
   };
 
   return (
@@ -121,10 +136,10 @@ export default function AddSalesmen() {
         <Navbar />
         <Paper className="form-container">
           <Typography variant="h6" gutterBottom>
-            Add Customer
+            Add Salesman
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="name"
@@ -136,16 +151,151 @@ export default function AddSalesmen() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
-                id="phone"
-                name="phone"
-                label="Phone"
+                id="fatherName"
+                name="fatherName"
+                label="Father's Name"
                 fullWidth
                 variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                value={fatherName}
+                onChange={(event) => setFatherName(event.target.value)}
+              />
+            </Grid>
+            <Grid item  xs={4} sm={3}>
+              <TextField
+                required
+                id="phoneNo"
+                name="phoneNo"
+                label="Phone No"
+                fullWidth
+                type="number" 
+                variant="outlined"
+                value={phoneNo}
+                onChange={(event) => setPhoneNo(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="qualification"
+                name="qualification"
+                label="Qualification"
+                fullWidth
+                variant="outlined"
+                value={qualification}
+                onChange={(event) => setQualification(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <FormControl fullWidth variant="outlined" required>
+                <InputLabel id="areaCode-label">Area Code</InputLabel>
+                <Select
+                  labelId="areaCode-label"
+                  id="areaCode"
+                  value={areaCode}
+                  onChange={(event) => setAreaCode(event.target.value)}
+                  label="Area Code"
+                >
+                  {areas.map((area) => (
+                    <MenuItem key={area._id} value={area._id}>
+                      {area.code}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="code"
+                name="code"
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="areaCommission"
+                name="areaCommission"
+                label="Area Commission"
+                fullWidth
+                type="number" 
+                variant="outlined"
+                value={areaCommission}
+                onChange={(event) => setAreaCommission(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="target"
+                name="target"
+                label="Target"
+                fullWidth
+                type="number" 
+                variant="outlined"
+                value={target}
+                onChange={(event) => setTarget(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="cnic"
+                name="cnic"
+                label="CNIC"
+                fullWidth
+                type="number" 
+                variant="outlined"
+                value={cnic}
+                onChange={(event) => setCnic(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="dateOfJoin"
+                name="dateOfJoin"
+                label="Date of Join"
+                type="date"
+                fullWidth
+                variant="outlined"
+                value={dateOfJoin}
+                onChange={(event) => setDateOfJoin(event.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="refPerson"
+                name="refPerson"
+                label="Reference Person"
+                fullWidth
+                variant="outlined"
+                value={refPerson}
+                onChange={(event) => setRefPerson(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="refPersonNumber"
+                name="refPersonNumber"
+                label="Reference Person Number"
+                fullWidth
+                type="number" 
+                variant="outlined"
+                value={refPersonNumber}
+                onChange={(event) => setRefPersonNumber(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -161,101 +311,15 @@ export default function AddSalesmen() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth variant="outlined" required>
-                <InputLabel id="gender-label">Gender</InputLabel>
-                <Select
-                  labelId="gender-label"
-                  id="gender"
-                  value={gender}
-                  onChange={(event) => setGender(event.target.value)}
-                  label="Gender"
-                >
-                  <MenuItem value="Male">Male</MenuItem>
-                  <MenuItem value="Female">Female</MenuItem>
-                  <MenuItem value="Other">Other</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="email"
-                name="email"
-                label="Email"
+                id="description"
+                name="description"
+                label="Description"
                 fullWidth
                 variant="outlined"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="license"
-                name="license"
-                label="License"
-                fullWidth
-                variant="outlined"
-                value={license}
-                onChange={(event) => setLicense(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-  <TextField
-    required
-    id="licenseExpiryDate"
-    name="licenseExpiryDate"
-    label="License Expiry Date"
-    type="date"
-    fullWidth
-    variant="outlined"
-    value={licenseExpiryDate}
-    onChange={(event) => setLicenseExpiryDate(event.target.value)}
-    InputLabelProps={{
-      shrink: true,
-    }}
-  />
-</Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth variant="outlined" required>
-                <InputLabel id="areaCode-label">Area Code</InputLabel>
-                <Select
-                  labelId="areaCode-label"
-                  id="areaCode"
-                  value={areaCode}
-                  onChange={(event) => setAreaCode(event.target.value)}
-                  label="Area Code"
-                >
-                  {areas.map((area) => (
-                    <MenuItem key={area._id} value={area.code}>
-                      {area.code}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="bankAccount"
-                name="bankAccount"
-                label="Bank Account"
-                fullWidth
-                variant="outlined"
-                value={bankAccount}
-                onChange={(event) => setBankAccount(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="code"
-                name="code"
-                label="Code"
-                fullWidth
-                variant="outlined"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
