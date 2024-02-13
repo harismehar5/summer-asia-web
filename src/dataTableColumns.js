@@ -535,17 +535,7 @@ export const supplierLedgerColumns = [
     width: 160,
   },
 
-  {
-    field: "balance",
-    headerName: "Balance",
-    width: 160,
-  },
-
-  {
-    field: "balance",
-    headerName: "Balance",
-    width: 160,
-  },
+  
 ];
 
 export const areaColumns = [

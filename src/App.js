@@ -41,6 +41,7 @@ import AddCustomers from "./layout/customers/addCustomers";
 import GetCustomersList from "./layout/customers/getCustomersList";
 import GetSalesmenList from "./layout/salesmen/getSalesmenList";
 import AddSalesmen from "./layout/salesmen/addSalesmen";
+import PurchaseReturn from "./layout/purchaseReturn/addPurchaseReturn";
 
 function App() {
   return (
@@ -99,6 +100,10 @@ function App() {
           <Route path="salesmen">
           <Route index element={<GetSalesmenList/>} />
             <Route path="add" element={<AddSalesmen/>} />
+          </Route>
+          <Route path="purchase-return">
+          {/* <Route index element={<GetSalesmenList/>} /> */}
+            <Route path="add" element={<PurchaseReturn/>} />
           </Route>
         </Route>
       </Routes>
