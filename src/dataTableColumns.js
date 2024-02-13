@@ -1,3 +1,5 @@
+import { Link, useNavigate } from "react-router-dom";
+
 function formatDate(dateStr) {
   const date = new Date(dateStr);
   const year = date.getFullYear();
@@ -5,7 +7,6 @@ function formatDate(dateStr) {
   const day = ("0" + date.getDate()).slice(-2);
   return `${year}-${month}-${day}`;
 }
-
 export const userColumns = [
   {
     field: "name",
@@ -184,9 +185,9 @@ export const cashColumns = [
 ];
 
 export const saleColumn = [
-  { field: "_id", headerName: "ID", width: 230 },
+  
   {
-    field: "submit_date",
+    field: "createdAt",
     headerName: "Date",
     width: 230,
     renderCell: (params) => {
@@ -201,79 +202,206 @@ export const saleColumn = [
     field: "customer",
     headerName: "Customer Name",
     width: 230,
-  },
-  {
-    field: "total_amount",
-    headerName: "Total Amount",
-    width: 230,
-  },
-  {
-    field: "total_quantity",
-    headerName: "Total Bags",
-    width: 230,
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 160,
     renderCell: (params) => {
       return (
         <>
-          {params.row.status === true ? (
-            <div className={`cell-with-status active`}>{"active"}</div>
-          ) : (
-            <div className={`cell-with-status passive`}>{"passive"}</div>
-          )}
+          <div>{params.row.customerCode.name}</div>
         </>
       );
     },
   },
+  {
+    field: "customer Email",
+    headerName: "Customer Email",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.customerCode.email}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "total",
+    headerName: "Total Amount",
+    width: 230,
+    
+  },
+  {
+    field: "paymentMode",
+    headerName: "Payment Method",
+    width: 230,
+  },
+  
 ];
 
-export const purchaseColumn = [
+export const saleReturnColumn = [
   { field: "_id", headerName: "ID", width: 230 },
   {
-    field: "submit_date",
+    field: "createdAt",
     headerName: "Date",
     width: 230,
     renderCell: (params) => {
       return (
         <>
-          <div>{formatDate(params.row.submit_date)}</div>
+          <div>{formatDate(params.row.createdAt)}</div>
         </>
       );
     },
   },
+
   {
-    field: "supplier",
-    headerName: "Supplier Name",
-    width: 230,
-  },
-  {
-    field: "total_amount",
+    field: "total",
     headerName: "Total Amount",
     width: 230,
+    
   },
   {
-    field: "total_quantity",
-    headerName: "Total Bags",
+    field: "paymentMode",
+    headerName: "Payment Method",
     width: 230,
   },
+  
+];
+
+
+export const saleDetailsColumn = [
+  { field: "_id", headerName: "ID", width: 250 },
   {
-    field: "status",
-    headerName: "Status",
-    width: 160,
+    field: "expiryDate",
+    headerName: "expiry date",
+    width: 230,
     renderCell: (params) => {
       return (
         <>
-          {params.row.status === true ? (
-            <div className={`cell-with-status active`}>{"active"}</div>
-          ) : (
-            <div className={`cell-with-status passive`}>{"passive"}</div>
-          )}
+          <div>{formatDate(params.row.expiryDate)}</div>
         </>
       );
     },
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+
+    width: 150,
+  },
+  {
+    field: "tradeRate",
+    headerName: "Trade rate",
+    width: 150,
+  },
+  {
+    field: "bonus",
+    headerName: "Bonus",
+    width: 150,
+  },
+  {
+    field: "discount",
+    headerName: "Discount",
+    width: 160,
+  },
+  {
+    field: "batchCode",
+    headerName: "Batch code",
+    width: 160,
+  },
+
+  {
+    field: "salesTax",
+    headerName: "Sales Tax",
+    width: 160,
+  },
+  {
+    field: "netTotal",
+    headerName: "Total amount",
+    width: 160,
+  },
+];
+
+
+
+export const purchaseColumn = [
+  {
+    field: "createdAt",
+    headerName: "Date",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "name",
+    headerName: "Supplier Name",
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.companyCode.name}</div>
+        </>
+      );
+    },
+    width: 300,
+  },
+  {
+    field: "total",
+    headerName: "Total Amount",
+    width: 230,
+  },
+];
+export const purchaseDetailsColumn = [
+  { field: "_id", headerName: "ID", width: 250 },
+  {
+    field: "expiryDate",
+    headerName: "expiry date",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.expiryDate)}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+
+    width: 150,
+  },
+  {
+    field: "tradeRate",
+    headerName: "Trade rate",
+    width: 150,
+  },
+  {
+    field: "bonus",
+    headerName: "Bonus",
+    width: 150,
+  },
+  {
+    field: "discount",
+    headerName: "Discount",
+    width: 160,
+  },
+  {
+    field: "batchCode",
+    headerName: "Batch code",
+    width: 160,
+  },
+
+  {
+    field: "salesTax",
+    headerName: "Sales Tax",
+    width: 160,
+  },
+  {
+    field: "netTotal",
+    headerName: "Total amount",
+    width: 160,
   },
 ];
 
@@ -404,11 +532,7 @@ export const customerLedgerColumns = [
     renderCell: (params) => {
       return (
         <>
-          <p>
-            {
-              params?.row?.saleId ? params?.row?.saleId : "N/A"
-            }
-          </p>
+          <p>{params?.row?.saleId ? params?.row?.saleId : "N/A"}</p>
         </>
       );
     },
@@ -420,11 +544,7 @@ export const customerLedgerColumns = [
     renderCell: (params) => {
       return (
         <>
-          <p>
-            {
-              params?.row?.saleReturnId ? params?.row?.saleReturnId : "N/A"
-            }
-          </p>
+          <p>{params?.row?.saleReturnId ? params?.row?.saleReturnId : "N/A"}</p>
         </>
       );
     },
