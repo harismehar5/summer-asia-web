@@ -177,6 +177,12 @@ export default function SideBar() {
               <span>Supplier Ledger</span>
             </li>
           </Link>
+          <Link to="/salesmen/ledger" style={{ textDecoration: "none" }}>
+            <li>
+              <AccountBalanceRoundedIcon className="icon" />
+              <span>Salesman Ledger</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </div>

@@ -669,3 +669,122 @@ export const salesmenColumns = [
     width: 230,
   },
 ];
+
+export const salesmanLedgerColumns = [
+ 
+  {
+    field: "saleId",
+    headerName: "Sale Id",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>
+            {
+              params?.row?.saleId ? params?.row?.saleId : "N/A"
+            }
+          </p>
+        </>
+      );
+    },
+    width: 230,
+  },
+  {
+    field: "saleReturnId",
+    headerName: "Sale Return Id",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>
+            {
+              params?.row?.saleReturnId ? params?.row?.saleReturnId : "N/A"
+            }
+          </p>
+        </>
+      );
+    },
+    width: 230,
+  },
+  // {
+  //   field: "cash_ref",
+  //   headerName: "Cash Flow Ref",
+  //   width: 230,
+  // },
+
+  {
+    field: "debit",
+    headerName: "Debit",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.debit ? params?.row?.debit : 0}</p>
+        </>
+      );
+    },
+    width: 160,
+  },
+  {
+    field: "credit",
+    headerName: "Credit",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.credit ? params?.row?.credit : 0}</p>
+        </>
+      );
+    },
+    width: 160,
+  },
+  {
+    field: "paymentMode",
+    headerName: "Payment Medium",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.paymentMode ? params?.row?.paymentMode : "N/A"}</p>
+        </>
+      );
+    },
+    width: 230,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.description ? params?.row?.description : "N/A"}</p>
+        </>
+      );
+    },
+  },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>
+            {formatDate(
+              params?.row?.createdAt ? params?.row?.createdAt : "No date"
+            )}
+          </p>
+        </>
+      );
+    },
+    width: 160,
+  },
+  {
+    field: "balance",
+    headerName: "Balance",
+    renderCell: (params) => {
+      return (
+        <>
+          <p>{params?.row?.balance ? params?.row?.balance : 0}</p>
+        </>
+      );
+    },
+    width: 160,
+  },
+  
+];
