@@ -100,7 +100,7 @@ export default function AddSalesmen() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === "click away") {
       return;
     }
     setOpen(false);

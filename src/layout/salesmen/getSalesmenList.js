@@ -230,7 +230,7 @@ export default function GetSalesmenList() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason !== "clickaway") {
+    if (reason !== "click away") {
       setOpen(false);
     }
   };

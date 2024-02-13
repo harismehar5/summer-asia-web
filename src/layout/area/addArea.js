@@ -50,7 +50,7 @@ export default function AddArea() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === "click away") {
       return;
     }
     setOpen(false);

@@ -11,9 +11,6 @@ import Navbar from "../../components/navbar/Navbar";
 import { areaColumns } from "../../dataTableColumns";
 import {
   GET_AREA_LIST,
-  DELETE_EXPENSE,
-  UPDATE_EXPENSE_BY_ID,
-  ADD_EXPENSE,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
@@ -31,7 +28,7 @@ export default function GetAreaList() {
 
   useEffect(() => {
     refreshData();
-  }, []);
+  });
 
   const actionColumn = [
     {
@@ -165,7 +162,7 @@ export default function GetAreaList() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason !== "clickaway") {
+    if (reason !== "click away") {
       setOpen(false);
     }
   };
