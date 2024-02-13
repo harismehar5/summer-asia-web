@@ -267,6 +267,7 @@ export default function AddPurchase() {
       <SideBar />
       <div className="box-container">
         <Navbar />
+        <Typography variant="h6" gutterBottom style={{marginLeft:"2%", marginTop:"2%"}}>Add Purchase Return</Typography>
         {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
