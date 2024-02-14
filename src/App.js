@@ -103,7 +103,6 @@ function App() {
             <Route path="add" element={<AddSalesmen/>} />
           </Route>
           <Route path="sale-return">
-            <Route path="add" element={<AddSaleReturn/>} />
             <Route path="adds" element={<AddSalesReturn/>} />
           </Route>
         </Route>
