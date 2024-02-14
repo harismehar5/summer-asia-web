@@ -612,45 +612,66 @@ export const customerLedgerColumns = [
 
 export const supplierLedgerColumns = [
   {
-    field: "date",
+    field: "createdAt",
     headerName: "Date",
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params?.row?.createdAt)}</div>
+        </>
+      );
+    },
     width: 160,
   },
   {
-    field: "purchase_ref",
-    headerName: "Purchase Ref",
-    width: 230,
+    field: "purchaseId",
+    headerName: "Purchase ID",
+    width: 300,
   },
   {
-    field: "cash_ref",
-    headerName: "Cash Flow Ref",
-    width: 230,
+    field: "purchaseReturnId",
+    headerName: "Purchase ReturnID",
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.purchaseReturnId || "N/A"}</div>
+        </>
+      );
+    },
+    width: 250,
   },
+
   {
     field: "debit",
     headerName: "Debit",
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.debit || "N/A"}</div>
+        </>
+      );
+    },
     width: 160,
   },
   {
     field: "credit",
     headerName: "Credit",
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.credit || "N/A"}</div>
+        </>
+      );
+    },
     width: 160,
   },
   {
-    field: "payment_medium",
-    headerName: "Payment Medium",
-    width: 230,
-  },
-  {
-    field: "description",
-    headerName: "Description",
-    width: 230,
-  },
-  {
-    field: "total_amount",
+    field: "balance",
     headerName: "Balance",
     width: 160,
   },
+
+  
 ];
 
 export const areaColumns = [

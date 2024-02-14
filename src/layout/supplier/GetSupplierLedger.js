@@ -16,7 +16,6 @@ import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function GetSupplierLedger() {
-  // const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [supplierList, setSupplierList] = useState([]);
   const [open, setOpen] = useState(false);
@@ -26,19 +25,13 @@ export default function GetSupplierLedger() {
 
   useEffect(() => {
     getSupplierList();
-  }, [data]);
+  }, []);
 
   const getSupplierList = () => {
     axios
       .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
-          setSupplierList(response.data.data);
-        // }
+        setSupplierList(response.data.data);
       })
       .catch(function (error) {
         setOpen(true);
@@ -46,32 +39,32 @@ export default function GetSupplierLedger() {
         setSeverity("error");
       });
   };
+
   const getSupplierLedgerList = (id) => {
-    // setLoading(true);
     axios
       .get(GET_SUPPLIER_LEDGER + id)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-          setData([])
-        } else {
-          setData(response.data.ledger);
-        }
+        setData(response?.data?.data || []); // Set data to empty array if there is no data
       })
       .catch(function (error) {
-        setOpen(true);
-        setMessage(error);
-        setSeverity("error");
+        if (data.length === 0) { // Check if data array is empty
+          setOpen(true);
+          setMessage("Something went wrong");
+          setSeverity("error");
+        }
+        setData([]);
+        console.error("Error fetching supplier ledger:", error);
       });
   };
+  
+  
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+
   return (
     <div className="list">
       <Sidebar />
@@ -81,13 +74,13 @@ export default function GetSupplierLedger() {
         <Grid container item md={12} px={4}>
           <Autocomplete
             options={supplierList}
-            getOptionLabel={(supplier, index) => supplier.name}
+            getOptionLabel={(supplier) => supplier?.name}
             disablePortal
             fullWidth
             isOptionEqualToValue={(option, value) => option._id === value._id}
             onChange={(event, newInputValue) => {
               setSupplierObject(newInputValue);
-              getSupplierLedgerList(newInputValue._id)
+              getSupplierLedgerList(newInputValue?._id)
             }}
             renderInput={(params) => (
               <TextField {...params} label="Select Supplier" />
@@ -99,14 +92,11 @@ export default function GetSupplierLedger() {
             )}
           />
         </Grid>
-        {data.length !== 0 ? (
-          <DataTable
-            data={data}
-            columns={supplierLedgerColumns}
-            // loading={loading}
-            isForTransaction={false}
-          />
-        ) : null}
+        <DataTable
+          data={data}
+          columns={supplierLedgerColumns}
+          isForTransaction={false}
+        />
         <SnackBar
           open={open}
           severity={severity}

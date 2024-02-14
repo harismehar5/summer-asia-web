@@ -45,7 +45,7 @@ import PurchaseDetails from "./layout/purchase/PurchaseDetails";
 import SalesDetails from "./layout/sale/SalesDetails";
 import SalesReturn from "./layout/sale/SalesReturn";
 import SalesReturnDetails from "./layout/sale/SalesReturn";
-
+import PurchaseReturn from "./layout/purchaseReturn/addPurchaseReturn";
 
 function App() {
   return (
@@ -108,6 +108,10 @@ function App() {
           <Route path="salesmen">
           <Route index element={<GetSalesmenList/>} />
             <Route path="add" element={<AddSalesmen/>} />
+          </Route>
+          <Route path="purchase-return">
+          {/* <Route index element={<GetSalesmenList/>} /> */}
+            <Route path="add" element={<PurchaseReturn/>} />
           </Route>
         </Route>
       </Routes>

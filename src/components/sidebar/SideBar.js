@@ -100,6 +100,18 @@ export default function SideBar() {
               <span>Purchase list</span>
             </li>
           </Link>
+
+
+          <p className="title">Purchase Return</p>
+          <Link to="/purchase-return/add" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>addPurchase Return</span>
+            </li>
+          </Link>
+          
+
+
           <p className="title">Customer</p>
           <Link to="/customer/add" style={{ textDecoration: "none" }}>
             <li>
