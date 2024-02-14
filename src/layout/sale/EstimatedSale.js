@@ -130,13 +130,7 @@ export default function EstimateSale() {
     axios
       .get(GET_ALL_PRODUCTS)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setProductList(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -153,13 +147,7 @@ export default function EstimateSale() {
       })
       .then(function (response) {
         console.log("Response", response);
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setBatchList(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -171,13 +159,7 @@ export default function EstimateSale() {
     axios
       .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setSupplierList(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -187,11 +169,9 @@ export default function EstimateSale() {
   };
   const addProductIntoList = () => {
     console.log("Product Object", productObject);
-    // if (productObject._id !== "") {
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
-    // if (data.length === 0) {
     obj = {
       tradeRate: productObject.tradeRate,
       quantity: 1,
@@ -199,35 +179,14 @@ export default function EstimateSale() {
       discount: 0,
       salesTax: productObject.salesTax,
       tradeRate: productObject.tradeRate,
-      // netTotal: productObject.tradeRate,
       netTotal: "",
       status: productObject.status,
       productCode: productObject.code,
     };
     array = [...array, obj];
     setData(array);
-    // } else if (foundIndex === -1) {
-    //   obj = {
-    //     _id: productObject._id,
-    //     name: productObject.name,
-    //     tradeRate: productObject.tradeRate,
-    //     quantity: 1,
-    //     netTotal: productObject.tradeRate,
-    //     status: productObject.status,
-    //   };
-    //   array = [...array, obj];
-    //   setData(array);
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Already existed");
-    //   setSeverity("error");
-    // }
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Please select any product");
-    //   setSeverity("error");
-    // }
   };
+
   const calculateAmountAndBags = (array) => {
     let sum = 0;
     var total_quantity = 0;
@@ -274,33 +233,12 @@ export default function EstimateSale() {
       total: totalAmount,
     };
     console.log("Data", purchaseObject);
-
-    // if (data.length === 0) {
-    //   setOpen(true);
-    //   setMessage("Please select any product to purchase");
-    //   setSeverity("error");
-    // } else if (
-    //   supplierObject._id === "" ||
-    //   supplierObject._id === null ||
-    //   supplierObject._id === undefined
-    // ) {
-    //   setOpen(true);
-    //   setMessage("Please select any supplier");
-    //   setSeverity("error");
-    // } else if (submittedDate === "") {
-    //   setOpen(true);
-    //   setMessage("Please select date");
-    //   setSeverity("error");
-    // } else {
-    // dataEntry(purchaseObject);
-    // }
   };
   return (
     <div className="box">
       <SideBar />
       <div className="box-container">
         <Navbar />
-        {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
@@ -353,7 +291,6 @@ export default function EstimateSale() {
                   <Grid
                     container
                     flexDirection={"row"}
-                    // justifyContent={"center"}
                     alignItems={"center"}
                     key={index}
                     mt={2}
