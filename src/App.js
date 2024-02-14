@@ -41,7 +41,6 @@ import AddCustomers from "./layout/customers/addCustomers";
 import GetCustomersList from "./layout/customers/getCustomersList";
 import GetSalesmenList from "./layout/salesmen/getSalesmenList";
 import AddSalesmen from "./layout/salesmen/addSalesmen";
-import AddSaleReturn from "./layout/saleReturn/addSaleReturn";
 import AddSalesReturn from "./layout/saleReturn/addSalesReturn";
 
 function App() {

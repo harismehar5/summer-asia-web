@@ -38,7 +38,6 @@ export default function AddSalesReturn() {
     tradeRate: 0,
     netTotal: "",
     productCode: "",
-    subtotal:"",
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
