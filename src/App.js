@@ -34,6 +34,7 @@ import AddSupplierCashIn from "./layout/supplier/AddSupplierCashIn";
 import AddSupplierCashOut from "./layout/supplier/AddSupplierCashOut";
 import StockLog from "./layout/product/StockLog";
 import GetCustomerLedger from "./layout/customer/GetCustomerLedger";
+import GetSalesmenLedger from "./layout/salesmen/GetSalesmenLedger";
 import GetSupplierLedger from "./layout/supplier/GetSupplierLedger";
 import GetAreaList from "./layout/area/getAreaList";
 import AddArea from "./layout/area/addArea";
@@ -108,6 +109,7 @@ function App() {
           <Route path="salesmen">
           <Route index element={<GetSalesmenList/>} />
             <Route path="add" element={<AddSalesmen/>} />
+            <Route path="ledger" element={<GetSalesmenLedger />} />
           </Route>
           <Route path="purchase-return">
           {/* <Route index element={<GetSalesmenList/>} /> */}
