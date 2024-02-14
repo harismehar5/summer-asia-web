@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./styles.scss";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -22,8 +22,15 @@ import {
   GET_ALL_PRODUCTS,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
+import { useReactToPrint } from "react-to-print";
 
 export default function AddPurchase() {
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   const [productList, setProductList] = useState([]);
   const [supplierList, setSupplierList] = useState([]);
   const [productObject, setProductObject] = useState({
@@ -36,7 +43,7 @@ export default function AddPurchase() {
     tradeRate: 0,
     netTotal: "",
     status: "",
-    productCode: ""
+    productCode: "",
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
@@ -45,7 +52,7 @@ export default function AddPurchase() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
-  const [code, setCode] = useState("")
+  const [code, setCode] = useState("");
   const paymentMediumList = [
     {
       id: 1,
@@ -100,14 +107,12 @@ export default function AddPurchase() {
     calculateAmountAndBags(data);
   }, [data]);
 
-
   const dataEntry = (data) => {
     axios
       .post(ADD_PURCHASE, data)
-      .then(response => {
-        console.log("Response", response)
-      }
-      )
+      .then((response) => {
+        console.log("Response", response);
+      })
       .catch((error) => {
         setOpen(true);
         setMessage("error: " + error);
@@ -152,12 +157,12 @@ export default function AddPurchase() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject)
-    // if (productObject._id !== "") {
+    console.log("Product Object", productObject);
+
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
-    // if (data.length === 0) {
+
     obj = {
       tradeRate: productObject.tradeRate,
       quantity: 1,
@@ -168,7 +173,7 @@ export default function AddPurchase() {
       // netTotal: productObject.tradeRate,
       netTotal: "",
       status: productObject.status,
-      productCode: productObject.code
+      productCode: productObject.code,
     };
     array = [...array, obj];
     setData(array);
@@ -226,20 +231,20 @@ export default function AddPurchase() {
     }
   };
   const validate = () => {
-    var companyCode = supplierObject._id
-    var paymentMode = paymentMediumObject.name
-    var totalAmount = 0
+    var companyCode = supplierObject._id;
+    var paymentMode = paymentMediumObject.name;
+    var totalAmount = 0;
     for (let i = 0; i < data.length; i++) {
-      totalAmount = totalAmount + data[i].netTotal
+      totalAmount = totalAmount + data[i].netTotal;
     }
 
     var purchaseObject = {
       purchaseDetail: data,
       companyCode: companyCode,
       paymentMode: paymentMode,
-      total: totalAmount
-    }
-    console.log("Data", purchaseObject)
+      total: totalAmount,
+    };
+    console.log("Data", purchaseObject);
 
     // if (data.length === 0) {
     //   setOpen(true);
@@ -502,6 +507,12 @@ export default function AddPurchase() {
             mr={4}
             alignItems={"end"}
           >
+            {/* ////// */}
+            <div style={{ display: "none" }}>
+              <ComponentToPrint data={data} ref={componentRef} />
+            </div>
+            {/* ////////////////// */}
+
             <Button
               variant="contained"
               size="medium"
@@ -512,134 +523,16 @@ export default function AddPurchase() {
               Save
             </Button>
             <Button
-              // sx={{ marginLeft: "10px" }}
+              onClick={handlePrint}
               variant="contained"
               size="medium"
               color="error"
             >
-              Cancel
+              Print
             </Button>
           </Box>
         </Grid>
-        {/* <Grid item md={4} sx={{ height: "90vh" }}>
-            <Grid container item md={12} px={2}>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-              // mt={2}
-              >
-                <Autocomplete
-                  options={supplierList}
-                  getOptionLabel={(supplier, index) => supplier.name}
-                  disablePortal
-                  fullWidth
-                  isOptionEqualToValue={(option, value) =>
-                    option._id === value._id
-                  }
-                  onChange={(event, newInputValue) => {
-                    setSupplierObject(newInputValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select Supplier" />
-                  )}
-                  renderOption={(props, supplier) => (
-                    <Box component="li" {...props} key={supplier._id}>
-                      {supplier.name}
-                    </Box>
-                  )}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  label="Select Date"
-                  type="date"
-                  defaultValue={currentDate}
-                  onChange={(event) => {
-                    setSubmittedDate(event.target.value);
-                  }}
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  id="amount"
-                  name="amount"
-                  label="Enter Amount"
-                  fullWidth
-                  variant="outlined"
-                  value={amount}
-                  onChange={(event) => setAmount(event.target.value)}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Amount</Typography>
-                <Typography>RS {totalAmount}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Bags</Typography>
-                <Typography>{totalBags}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Products</Typography>
-                <Typography>{totalProducts}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"end"}
-                sx={{ width: "100%" }}
-                mt={2}
-                alignItems={"end"}
-              >
-                <Button
-                  variant="contained"
-                  size="medium"
-                  color="success"
-                  onClick={() => validate()}
-                  sx={{ marginX: "10px" }}
-                >
-                  Save
-                </Button>
-                <Button
-                  // sx={{ marginLeft: "10px" }}
-                  variant="contained"
-                  size="medium"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Grid>
-          </Grid> */}
-        {/* </Grid> */}
+
         <SnackBar
           open={open}
           severity={severity}
@@ -650,3 +543,159 @@ export default function AddPurchase() {
     </div>
   );
 }
+
+const ComponentToPrint = React.forwardRef(({ data }, ref) => {
+  let totalQuantity = 0;
+  let totalBonus = 0;
+  let totalDiscount = 0;
+  let totalSalesTax = 0;
+  let totalTradeRate = 0;
+
+  data.map((item) => (totalQuantity += Number(item.quantity)));
+  data.map((item) => (totalBonus += Number(item.bonus)));
+  data.map((item) => (totalDiscount += Number(item.discount)));
+  data.map((item) => (totalSalesTax += Number(item.salesTax)));
+  data.map((item) => (totalTradeRate += Number(item.tradeRate)));
+
+  console.log("total Quantity ", totalQuantity);
+  console.log("total Bonus ", totalBonus);
+  console.log("total Discount ", totalDiscount);
+  console.log("total Sales Tax ", totalSalesTax);
+  console.log("total Trade Rate ", totalTradeRate);
+  return (
+    <div ref={ref}>
+      <header class="header">
+        <h1>PHARMA NET</h1>
+        <p>
+          Jamia Farqania Road Sarfaraz Colony Opp. SK Products Factory
+          Gujranwala
+        </p>
+        <p>
+          PH:-055-4294521-2-0300-7492093-0302-6162633 E-mail pharmanet@yahoo.com
+        </p>
+        <p>License No. = 09-341-0135-010397 D NTN = 7351343-8</p>
+      </header>
+
+      <div class="flex evenly">
+        <div>
+          <p>M/S</p>
+          <p>005 0034</p>
+          <p>Azhar M/S</p>
+          <p>FREED TOWN (PASROOR ROAD GRW)</p>
+          <p>FREED TOWN (PASROOR ROAD GRW)</p>
+        </div>
+        <div>
+          <p>INVOICE</p>
+          <p>License No = 843/GRW</p>
+          <p>NTN NO : 34101-2610040-5</p>
+          <p>CNIC NO:</p>
+          <p>S/TAX No:</p>
+        </div>
+        <div>
+          <p>Inv No: 1327</p>
+          <p>Inv Date: 07/02/2024</p>
+          <p>Page No: 1 of 1</p>
+          <p>Salesman: 1 sohail tahir</p>
+          <p>Sales Type: 1 Supply Sale</p>
+        </div>
+      </div>
+
+      <div class="gap">
+        <table>
+          <thead>
+            <tr>
+              <th>QTY</th>
+              <th>Name of Item</th>
+              <th>Packing</th>
+              <th>Batch No</th>
+              <th>Rate</th>
+              <th>Gross Amount</th>
+              <th>Discount %</th>
+              <th>Sales Tax</th>
+              <th>Additional Tax</th>
+              <th>Advace Tax</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {data.map((item) => {
+              return (
+                <tr>
+                  <td>{item.quantity}</td>
+                  <td>{item.productCode}</td>
+                  <td>{item.bonus}</td>
+                  <td>{item.batchCode}</td>
+                  <td>{item.tradeRate}</td>
+                  <td>{item.status}</td>
+                  <td>{item.discount}</td>
+                  <td>{item.expiryDate}</td>
+                  <td>{item.salesTax}</td>
+                  <td>{item.netTotal}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Total of STAR LABORATORIES</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>Gross</th>
+              <th>4,267.00</th>
+              <th>Dis.%</th>
+              <th>0.90 S/Tax</th>
+              <th>0.00 AdS/Tax</th>
+              <th>0.00</th>
+              <th>4,267.6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>No of ltems: 4</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Gross</td>
+              <td>4,267.00</td>
+              <td>Dis.%</td>
+              <td>0.00 S/Tax</td>
+              <td>0.00 AdS/Tax</td>
+              <td>0.00</td>
+              <td>4,267.0</td>
+            </tr>
+            <tr>
+              <td>Total Qty: 53</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="last">
+          <thead>
+            <tr>
+              <td></td>
+              <td>Add Tax US 236-H @ 0.50</td>
+              <td>21.34</td>
+            </tr>
+            <tr>
+              <td>Four Thousand Two Hundred Eighty Eight</td>
+              <td>Total Net Value</td>
+              <td>4,288.0</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  );
+});

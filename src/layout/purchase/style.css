@@ -1,0 +1,54 @@
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+p {
+  margin: 0;
+  font-size: 14px;
+  margin: 2px;
+  font-weight: 600;
+}
+
+.gap {
+  margin: 2rem 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  align-items: center;
+}
+
+table {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+thead {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+td,
+th {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.last td {
+  font-weight: bold;
+}
+
+.flex {
+  display: flex;
+}
+
+.evenly {
+  justify-content: space-around;
+}
