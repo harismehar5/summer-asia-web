@@ -14,6 +14,7 @@ import { produce } from "immer";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
+  ESTIMATE_SALE,
   ADD_PURCHASE,
   GET_ALL_COMPANIES,
   GET_PRODUCTS_LIST,
@@ -21,11 +22,12 @@ import {
   ADD_QUANTITY,
   ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
+  GET_BATCH_LIST,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
 
-export default function AddPurchase() {
+export default function EstimateSale() {
   const componentRef = useRef();
 
   const handlePrint = useReactToPrint({
@@ -34,6 +36,7 @@ export default function AddPurchase() {
 
   const [productList, setProductList] = useState([]);
   const [supplierList, setSupplierList] = useState([]);
+  const [batchList, setBatchList] = useState([]);
   const [productObject, setProductObject] = useState({
     batchCode: "",
     expiryDate: "",
@@ -48,6 +51,8 @@ export default function AddPurchase() {
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
+  const [batchObject, setBatchObject] = useState({});
+
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -110,7 +115,7 @@ export default function AddPurchase() {
 
   const dataEntry = (data) => {
     axios
-      .post(ADD_PURCHASE, data)
+      .post(ESTIMATE_SALE, data)
       .then((response) => {
         console.log("Response", response);
       })
@@ -125,13 +130,24 @@ export default function AddPurchase() {
     axios
       .get(GET_ALL_PRODUCTS)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setProductList(response.data.data);
-        // }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+
+  const getBatchList = (productCode) => {
+    console.log("Product Code", productCode);
+    axios
+      .post(GET_BATCH_LIST, {
+        productCode: productCode,
+      })
+      .then(function (response) {
+        console.log("Response", response);
+        setBatchList(response.data.data);
       })
       .catch(function (error) {
         setOpen(true);
@@ -143,13 +159,7 @@ export default function AddPurchase() {
     axios
       .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setSupplierList(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -159,11 +169,9 @@ export default function AddPurchase() {
   };
   const addProductIntoList = () => {
     console.log("Product Object", productObject);
-
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
-
     obj = {
       tradeRate: productObject.tradeRate,
       quantity: 1,
@@ -171,35 +179,14 @@ export default function AddPurchase() {
       discount: 0,
       salesTax: productObject.salesTax,
       tradeRate: productObject.tradeRate,
-      // netTotal: productObject.tradeRate,
       netTotal: "",
       status: productObject.status,
       productCode: productObject.code,
     };
     array = [...array, obj];
     setData(array);
-    // } else if (foundIndex === -1) {
-    //   obj = {
-    //     _id: productObject._id,
-    //     name: productObject.name,
-    //     tradeRate: productObject.tradeRate,
-    //     quantity: 1,
-    //     netTotal: productObject.tradeRate,
-    //     status: productObject.status,
-    //   };
-    //   array = [...array, obj];
-    //   setData(array);
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Already existed");
-    //   setSeverity("error");
-    // }
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Please select any product");
-    //   setSeverity("error");
-    // }
   };
+
   const calculateAmountAndBags = (array) => {
     let sum = 0;
     var total_quantity = 0;
@@ -247,32 +234,13 @@ export default function AddPurchase() {
     };
     console.log("Data", purchaseObject);
 
-    // if (data.length === 0) {
-    //   setOpen(true);
-    //   setMessage("Please select any product to purchase");
-    //   setSeverity("error");
-    // } else if (
-    //   supplierObject._id === "" ||
-    //   supplierObject._id === null ||
-    //   supplierObject._id === undefined
-    // ) {
-    //   setOpen(true);
-    //   setMessage("Please select any supplier");
-    //   setSeverity("error");
-    // } else if (submittedDate === "") {
-    //   setOpen(true);
-    //   setMessage("Please select date");
-    //   setSeverity("error");
-    // } else {
     dataEntry(purchaseObject);
-    // }
   };
   return (
     <div className="box">
       <SideBar />
       <div className="box-container">
         <Navbar />
-        {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
@@ -325,7 +293,6 @@ export default function AddPurchase() {
                   <Grid
                     container
                     flexDirection={"row"}
-                    // justifyContent={"center"}
                     alignItems={"center"}
                     key={index}
                     mt={2}
@@ -347,6 +314,7 @@ export default function AddPurchase() {
                               v[index].productCode = productObject._id;
                             })
                           );
+                          getBatchList(productObject._id);
                         }}
                         renderInput={(params) => (
                           <TextField {...params} label="Select Product" />
@@ -360,19 +328,32 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1.5} px={1}>
-                      <TextField
-                        label="Batch Code"
-                        variant="outlined"
-                        value={product.batchCode}
-                        onChange={(e) => {
-                          var batchCode = e.target.value;
+                      <Autocomplete
+                        options={batchList}
+                        getOptionLabel={(batch, index) => batch.batchCode}
+                        disablePortal
+                        fullWidth
+                        isOptionEqualToValue={(option, value) =>
+                          option.id === value.id
+                        }
+                        onChange={(event, newInputValue) => {
+                          // setProductObject(newInputValue);
+                          var batchObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
-                              v[index].batchCode = batchCode;
+                              v[index].productCode = batchObject.batchCode;
                             })
                           );
                         }}
-                        fullWidth
+                        renderInput={(params) => (
+                          <TextField {...params} label="Select Batch" />
+                        )}
+                        renderOption={(props, batch) => (
+                          <Box component="li" {...props} key={batch._id}>
+                            {batch.batchCode}
+                          </Box>
+                        )}
+                        onKeyDown={handleKeyPress}
                       />
                     </Grid>
                     <Grid item md={1.5} px={1}>
@@ -508,12 +489,6 @@ export default function AddPurchase() {
             mr={4}
             alignItems={"end"}
           >
-            {/* ////// */}
-            <div style={{ display: "none" }}>
-              <ComponentToPrint data={data} ref={componentRef} />
-            </div>
-            {/* ////////////////// */}
-
             <Button
               variant="contained"
               size="medium"
@@ -525,6 +500,7 @@ export default function AddPurchase() {
             </Button>
             <Button
               onClick={handlePrint}
+              // sx={{ marginLeft: "10px" }}
               variant="contained"
               size="medium"
               color="error"
@@ -533,13 +509,135 @@ export default function AddPurchase() {
             </Button>
           </Box>
         </Grid>
-
+        {/* <Grid item md={4} sx={{ height: "90vh" }}>
+            <Grid container item md={12} px={2}>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+              // mt={2}
+              >
+                <Autocomplete
+                  options={supplierList}
+                  getOptionLabel={(supplier, index) => supplier.name}
+                  disablePortal
+                  fullWidth
+                  isOptionEqualToValue={(option, value) =>
+                    option._id === value._id
+                  }
+                  onChange={(event, newInputValue) => {
+                    setSupplierObject(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select Supplier" />
+                  )}
+                  renderOption={(props, supplier) => (
+                    <Box component="li" {...props} key={supplier._id}>
+                      {supplier.name}
+                    </Box>
+                  )}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <TextField
+                  label="Select Date"
+                  type="date"
+                  defaultValue={currentDate}
+                  onChange={(event) => {
+                    setSubmittedDate(event.target.value);
+                  }}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <TextField
+                  id="amount"
+                  name="amount"
+                  label="Enter Amount"
+                  fullWidth
+                  variant="outlined"
+                  value={amount}
+                  onChange={(event) => setAmount(event.target.value)}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Amount</Typography>
+                <Typography>RS {totalAmount}</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Bags</Typography>
+                <Typography>{totalBags}</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Products</Typography>
+                <Typography>{totalProducts}</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"end"}
+                sx={{ width: "100%" }}
+                mt={2}
+                alignItems={"end"}
+              >
+                <Button
+                  variant="contained"
+                  size="medium"
+                  color="success"
+                  onClick={() => validate()}
+                  sx={{ marginX: "10px" }}
+                >
+                  Save
+                </Button>
+                <Button
+                  // sx={{ marginLeft: "10px" }}
+                  variant="contained"
+                  size="medium"
+                  color="error"
+                >
+                  Cancel
+                </Button>
+              </Box>
+            </Grid>
+          </Grid> */}
+        {/* </Grid> */}
         <SnackBar
           open={open}
           severity={severity}
           message={message}
           handleClose={handleClose}
         />
+
+        <div style={{ display: "none" }}>
+          <ComponentToPrint data={data} ref={componentRef} />
+        </div>
       </div>
     </div>
   );

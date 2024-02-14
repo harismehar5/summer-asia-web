@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import "./style.css";
 import "./styles.scss";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -27,8 +28,15 @@ import {
   ADD_SALES_SERVICES,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
+import { useReactToPrint } from "react-to-print";
 
 export default function AddSale() {
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   const [productList, setProductList] = useState([]);
   const [supplierList, setSupplierList] = useState([]);
   const [batchList, setBatchList] = useState([]);
@@ -45,8 +53,7 @@ export default function AddSale() {
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
-  const [DateAndQuantityObject, setDateAndQuantityObject] = useState({});
-  const [SalesManList, setSalesManList] = useState([]);
+  const [batchObject, setBatchObject] = useState({});
 
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
@@ -73,9 +80,6 @@ export default function AddSale() {
     },
   ];
   const [paymentMediumObject, setPaymentMediumObject] = useState({});
-  const [SaleManObject, setSaleManObject] = useState({});
-  const [ProductId, setProductId] = useState(null);
-  const [BatchId, setBatchId] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -108,7 +112,6 @@ export default function AddSale() {
   useEffect(() => {
     getStockList();
     getSupplierList();
-    getSalesManList();
     calculateAmountAndBags(data);
   }, []);
 
@@ -453,7 +456,7 @@ export default function AddSale() {
                           option.id === value.id
                         }
                         onChange={(event, newInputValue) => {
-                          setProductId(newInputValue._id);
+                          // setProductObject(newInputValue);
                           var productObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
@@ -655,12 +658,13 @@ export default function AddSale() {
               Save
             </Button>
             <Button
+              onClick={handlePrint}
               // sx={{ marginLeft: "10px" }}
               variant="contained"
               size="medium"
               color="error"
             >
-              Cancel
+              Print
             </Button>
           </Box>
         </Grid>
@@ -789,7 +793,167 @@ export default function AddSale() {
           message={message}
           handleClose={handleClose}
         />
+
+        <div style={{ display: "none" }}>
+          <ComponentToPrint data={data} ref={componentRef} />
+        </div>
       </div>
     </div>
   );
 }
+
+const ComponentToPrint = React.forwardRef(({ data }, ref) => {
+  let totalQuantity = 0;
+  let totalBonus = 0;
+  let totalDiscount = 0;
+  let totalSalesTax = 0;
+  let totalTradeRate = 0;
+
+  data.map((item) => (totalQuantity += Number(item.quantity)));
+  data.map((item) => (totalBonus += Number(item.bonus)));
+  data.map((item) => (totalDiscount += Number(item.discount)));
+  data.map((item) => (totalSalesTax += Number(item.salesTax)));
+  data.map((item) => (totalTradeRate += Number(item.tradeRate)));
+
+  console.log("total Quantity ", totalQuantity);
+  console.log("total Bonus ", totalBonus);
+  console.log("total Discount ", totalDiscount);
+  console.log("total Sales Tax ", totalSalesTax);
+  console.log("total Trade Rate ", totalTradeRate);
+  return (
+    <div ref={ref}>
+      <header class="header">
+        <h1>PHARMA NET</h1>
+        <p>
+          Jamia Farqania Road Sarfaraz Colony Opp. SK Products Factory
+          Gujranwala
+        </p>
+        <p>
+          PH:-055-4294521-2-0300-7492093-0302-6162633 E-mail pharmanet@yahoo.com
+        </p>
+        <p>License No. = 09-341-0135-010397 D NTN = 7351343-8</p>
+      </header>
+
+      <div class="flex evenly">
+        <div>
+          <p>M/S</p>
+          <p>005 0034</p>
+          <p>Azhar M/S</p>
+          <p>FREED TOWN (PASROOR ROAD GRW)</p>
+          <p>FREED TOWN (PASROOR ROAD GRW)</p>
+        </div>
+        <div>
+          <p>INVOICE</p>
+          <p>License No = 843/GRW</p>
+          <p>NTN NO : 34101-2610040-5</p>
+          <p>CNIC NO:</p>
+          <p>S/TAX No:</p>
+        </div>
+        <div>
+          <p>Inv No: 1327</p>
+          <p>Inv Date: 07/02/2024</p>
+          <p>Page No: 1 of 1</p>
+          <p>Salesman: 1 sohail tahir</p>
+          <p>Sales Type: 1 Supply Sale</p>
+        </div>
+      </div>
+
+      <div class="gap">
+        <table>
+          <thead>
+            <tr>
+              <th>QTY</th>
+              <th>Name of Item</th>
+              <th>Packing</th>
+              <th>Batch No</th>
+              <th>Rate</th>
+              <th>Gross Amount</th>
+              <th>Discount %</th>
+              <th>Sales Tax</th>
+              <th>Additional Tax</th>
+              <th>Advace Tax</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {data.map((item) => {
+              return (
+                <tr>
+                  <td>{item.quantity}</td>
+                  <td>{item.productCode}</td>
+                  <td>{item.bonus}</td>
+                  <td>{item.batchCode}</td>
+                  <td>{item.tradeRate}</td>
+                  <td>{item.status}</td>
+                  <td>{item.discount}</td>
+                  <td>{item.expiryDate}</td>
+                  <td>{item.salesTax}</td>
+                  <td>{item.netTotal}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Total of STAR LABORATORIES</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>Gross</th>
+              <th>4,267.00</th>
+              <th>Dis.%</th>
+              <th>0.90 S/Tax</th>
+              <th>0.00 AdS/Tax</th>
+              <th>0.00</th>
+              <th>4,267.6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>No of ltems: 4</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Gross</td>
+              <td>4,267.00</td>
+              <td>Dis.%</td>
+              <td>0.00 S/Tax</td>
+              <td>0.00 AdS/Tax</td>
+              <td>0.00</td>
+              <td>4,267.0</td>
+            </tr>
+            <tr>
+              <td>Total Qty: 53</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="last">
+          <thead>
+            <tr>
+              <td></td>
+              <td>Add Tax US 236-H @ 0.50</td>
+              <td>21.34</td>
+            </tr>
+            <tr>
+              <td>Four Thousand Two Hundred Eighty Eight</td>
+              <td>Total Net Value</td>
+              <td>4,288.0</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  );
+});

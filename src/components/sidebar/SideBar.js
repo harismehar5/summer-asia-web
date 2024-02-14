@@ -95,6 +95,18 @@ export default function SideBar() {
               <span>Sale Return List</span>
             </li>
           </Link>
+
+          {/* //////////////////////////////// Test Code Aaliyan //////////////////////////// */}
+
+          <Link to="/sale/sale_estimated/" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Estimated Sale</span>
+            </li>
+          </Link>
+
+          {/* //////////////////////////////// Test Code Aaliyan //////////////////////////// */}
+
           <p className="title">Purchase</p>
           <Link to="/purchase/add" style={{ textDecoration: "none" }}>
             <li>
@@ -109,7 +121,6 @@ export default function SideBar() {
             </li>
           </Link>
 
-
           <p className="title">Purchase Return</p>
           <Link to="/purchase-return/add" style={{ textDecoration: "none" }}>
             <li>
@@ -117,8 +128,6 @@ export default function SideBar() {
               <span>addPurchase Return</span>
             </li>
           </Link>
-          
-
 
           <p className="title">Customer</p>
           <Link to="/customer/add" style={{ textDecoration: "none" }}>

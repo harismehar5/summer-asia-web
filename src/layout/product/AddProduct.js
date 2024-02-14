@@ -12,43 +12,44 @@ import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddProduct() {
   const [name, setName] = useState("");
-  const [code, setCode] = useState("")
-  const [packing, setPacking] = useState("")
-  const [strength, setStrength] = useState("")
-  const [tradeRate, setTradeRate] = useState("")
-  const [purchaseRate, setPurchaseRate] = useState("")
-  const [maximumRetailPrice, setMaximumRetailPrice] = useState("")
-  const [distributerPrice, setDistributerPrice] = useState("")
+  const [code, setCode] = useState("");
+  const [packing, setPacking] = useState("");
+  const [strength, setStrength] = useState("");
+  const [tradeRate, setTradeRate] = useState("");
+  const [purchaseRate, setPurchaseRate] = useState("");
+  const [maximumRetailPrice, setMaximumRetailPrice] = useState("");
+  const [distributerPrice, setDistributerPrice] = useState("");
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+
   var product = {
-    "companyCode": "",
-    "code": "",
-    "name": "",
-    "packing": "",
-    "strength": "",
-    "tradeRate": "",
-    "purchaseRate": "",
-    "maximumRetailPrice": "",
-    "distributerPrice": ""
+    companyCode: "",
+    code: "",
+    name: "",
+    packing: "",
+    strength: "",
+    tradeRate: "",
+    purchaseRate: "",
+    maximumRetailPrice: "",
+    distributerPrice: "",
   };
   const addProduct = () => {
     product = {
-      "code": code,
-      "name": name,
-      "packing": packing,
-      "strength": strength,
-      "tradeRate": tradeRate,
-      "purchaseRate": purchaseRate,
-      "maximumRetailPrice": maximumRetailPrice,
-      "distributerPrice": distributerPrice
+      code: code,
+      name: name,
+      packing: packing,
+      strength: strength,
+      tradeRate: tradeRate,
+      purchaseRate: purchaseRate,
+      maximumRetailPrice: maximumRetailPrice,
+      distributerPrice: distributerPrice,
     };
     axios
       .post(ADD_PRODUCT, product)
       .then(function (response) {
-        console.log(response)
+        console.log(response);
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
@@ -58,14 +59,14 @@ export default function AddProduct() {
         // setMessage(response.data.success_msg);
         setSeverity("success");
         setName("");
-        setCode("")
-        setName("")
-        setPacking("")
-        setStrength("")
-        setTradeRate("")
-        setPurchaseRate("")
-        setMaximumRetailPrice("")
-        setDistributerPrice("")
+        setCode("");
+        setName("");
+        setPacking("");
+        setStrength("");
+        setTradeRate("");
+        setPurchaseRate("");
+        setMaximumRetailPrice("");
+        setDistributerPrice("");
         // }
       })
       .catch(function (error) {

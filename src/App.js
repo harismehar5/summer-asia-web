@@ -24,6 +24,7 @@ import EditExpense from "./layout/expense/EditExpense";
 import "./App.scss";
 import AddSale from "./layout/sale/AddSale";
 import GetSaleList from "./layout/sale/GetSaleList";
+import EstimatedSale from "./layout/sale/EstimatedSale";
 import AddPurchase from "./layout/purchase/AddPurchase";
 import GetPurchaseList from "./layout/purchase/GetPurchaseList";
 import GetCustomerCashFlow from "./layout/customer/GetCustomerCashFlow";
@@ -91,8 +92,12 @@ function App() {
             <Route index element={<GetSaleList />} />
             <Route path="sale_details/:id" element={<SalesDetails />} />
             <Route path="add" element={<AddSale />} />
-            <Route path="sale_return_details/:id" element={<SalesReturnDetails />} />
+            <Route
+              path="sale_return_details/:id"
+              element={<SalesReturnDetails />}
+            />
             <Route path="sale_return" element={<SalesReturn />} />
+            <Route path="sale_estimated" element={<EstimatedSale />} />
           </Route>
           <Route path="purchase">
             <Route index element={<GetPurchaseList />} />
@@ -100,24 +105,24 @@ function App() {
             <Route path="purchase_details/:id" element={<PurchaseDetails />} />
           </Route>
           <Route path="area">
-          <Route index element={<GetAreaList/>} />
+            <Route index element={<GetAreaList />} />
             <Route path="add" element={<AddArea />} />
           </Route>
           <Route path="customers">
-          <Route index element={<GetCustomersList/>} />
+            <Route index element={<GetCustomersList />} />
             <Route path="add" element={<AddCustomers />} />
           </Route>
           <Route path="salesmen">
-          <Route index element={<GetSalesmenList/>} />
-            <Route path="add" element={<AddSalesmen/>} />
+            <Route index element={<GetSalesmenList />} />
+            <Route path="add" element={<AddSalesmen />} />
             <Route path="ledger" element={<GetSalesmenLedger />} />
           </Route>
           <Route path="purchase-return">
-          {/* <Route index element={<GetSalesmenList/>} /> */}
-            <Route path="add" element={<PurchaseReturn/>} />
+            {/* <Route index element={<GetSalesmenList/>} /> */}
+            <Route path="add" element={<PurchaseReturn />} />
           </Route>
           <Route path="sale-return">
-            <Route path="adds" element={<AddSalesReturn/>} />
+            <Route path="adds" element={<AddSalesReturn />} />
           </Route>
         </Route>
       </Routes>

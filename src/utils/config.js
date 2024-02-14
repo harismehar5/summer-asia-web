@@ -52,10 +52,10 @@ export const DELETE_PRODUCT = PRODUCT_BASE_URL;
 export const UPDATE_PRODUCT_BY_ID = PRODUCT_BASE_URL;
 export const GET_PRODUCT_BY_ID = PRODUCT_BASE_URL;
 export const UPDATE_PRODUCT_STATUS_BY_ID = PRODUCT_BASE_URL + "update_status";
-export const ADD_QUANTITY = PRODUCT_BASE_URL + "add_quantity"
-export const SUBTRACT_QUANTITY = PRODUCT_BASE_URL + "subtract_quantity"
-export const STOCK_IN = PRODUCT_BASE_URL + "stock_in/"
-export const STOCK_OUT = PRODUCT_BASE_URL + "stock_out/"
+export const ADD_QUANTITY = PRODUCT_BASE_URL + "add_quantity";
+export const SUBTRACT_QUANTITY = PRODUCT_BASE_URL + "subtract_quantity";
+export const STOCK_IN = PRODUCT_BASE_URL + "stock_in/";
+export const STOCK_OUT = PRODUCT_BASE_URL + "stock_out/";
 
 //Expense URL
 export const EXPENSE_BASE_URL = BASE_URL + "expense/";
@@ -67,9 +67,10 @@ export const GET_EXPENSE_BY_ID = EXPENSE_BASE_URL;
 export const UPDATE_EXPENSE_STATUS_BY_ID = EXPENSE_BASE_URL + "update_status";
 
 //Sale URL
-export const SALE_BASE_URL = BASE_URL + "sales/"
+export const SALE_BASE_URL = BASE_URL + "sales/";
 export const ADD_SALE = SALE_BASE_URL + "add_sale";
-export const GET_BATCH_LIST = SALE_BASE_URL + "get_batch"
+export const ESTIMATE_SALE = SALE_BASE_URL + "dummysales";
+export const GET_BATCH_LIST = SALE_BASE_URL + "get_batch";
 export const GET_SALE_LIST = BASE_URL + "sales";
 export const GET_SALE_RETURN_LIST = BASE_URL + "salereturns";
 
@@ -83,18 +84,15 @@ export const STOCK_BASE_URL = BASE_URL + "stock/";
 export const ADD_STOCK_LOG = STOCK_BASE_URL + "add_stock_log";
 export const GET_STOCK_LOG = STOCK_BASE_URL + "get_stock_log";
 
-
-
-export const COMPANY_BASE_URL = BASE_URL + ""
-export const GET_ALL_COMPANIES = BASE_URL + "companies"
-export const ADD_COMPANY = BASE_URL + "companies"
+export const COMPANY_BASE_URL = BASE_URL + "";
+export const GET_ALL_COMPANIES = BASE_URL + "companies";
+export const ADD_COMPANY = BASE_URL + "companies";
 
 // export const PRODUCT_BASE_URL = BASE_URL + ""
-export const GET_ALL_PRODUCTS = BASE_URL + "products"
-export const ADD_PRODUCT = BASE_URL + "products"
+export const GET_ALL_PRODUCTS = BASE_URL + "products";
+export const ADD_PRODUCT = BASE_URL + "products";
 
-
-export const ADD_PURCHASE = BASE_URL + "purchases"
+export const ADD_PURCHASE = BASE_URL + "purchases";
 
 export const ADD_SALES_SERVICES = BASE_URL + "sales"
 
@@ -104,7 +102,6 @@ export const GET_AREA_LIST = BASE_URL + "areas";
 export const GET_CUSTOMERS_LIST = BASE_URL + "customers";
 //SALESMEN URL
 export const GET_SALESMEN_LIST = BASE_URL + "salesmen";
-export const GET_QUANTITY_AND_EXPIRY_LIST = BASE_URL + "sales/getquantityandexpiry";
 //PURCHASERETURN URL
 
 //SALESMEN URL
