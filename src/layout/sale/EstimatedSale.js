@@ -233,6 +233,8 @@ export default function EstimateSale() {
       total: totalAmount,
     };
     console.log("Data", purchaseObject);
+
+    dataEntry(purchaseObject);
   };
   return (
     <div className="box">
@@ -266,7 +268,7 @@ export default function EstimateSale() {
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
                 options={paymentMediumList}
-                getOptionLabel={(payment, index) => payment}
+                getOptionLabel={(payment, index) => payment.name}
                 disablePortal
                 fullWidth
                 isOptionEqualToValue={(option, value) => option.id === value.id}

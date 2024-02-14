@@ -327,7 +327,7 @@ export default function AddSale() {
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
                 options={paymentMediumList}
-                getOptionLabel={(payment, index) => payment}
+                getOptionLabel={(payment, index) => payment.name}
                 disablePortal
                 fullWidth
                 isOptionEqualToValue={(option, value) => option.id === value.id}
