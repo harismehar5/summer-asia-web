@@ -68,6 +68,20 @@ export default function SideBar() {
               <span>Salesmen List</span>
             </li>
           </Link>
+          <p className="title">SaleReturn</p>
+          <Link to="/sale-return/add/" style={{ textDecoration: "none" }}>
+            <li>
+              <PointOfSaleRoundedIcon className="icon" />
+              <span>Add SaleReturn</span>
+            </li>
+          </Link>
+          <Link to="/sale-return/adds/" style={{ textDecoration: "none" }}>
+            <li>
+              <PointOfSaleRoundedIcon className="icon" />
+              <span>Add SalesReturn</span>
+            </li>
+          </Link>
+
           <p className="title">Sale</p>
           <Link to="/sale/add/" style={{ textDecoration: "none" }}>
             <li>
