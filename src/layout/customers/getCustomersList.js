@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { IconButton, Grid, TextField, Button } from "@mui/material";
+import {
+  IconButton,
+  Grid,
+  TextField,
+  Button,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
@@ -9,7 +18,7 @@ import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { customersColumns } from "../../dataTableColumns";
-import {  GET_CUSTOMERS_LIST } from "../../utils/config";
+import { ADD_EXPENSE, GET_AREA_LIST, GET_CUSTOMERS_LIST } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
 
@@ -30,10 +39,42 @@ export default function GetCustomersList() {
   const [code, setCode] = useState("");
   const [bankAccount, setBankAccount] = useState("");
   const [id, setId] = useState("");
+  const [areas, setAreas] = useState([]);
 
   useEffect(() => {
-    refreshData();
-  }, []);
+    // Fetch areas on component mount
+    axios
+      .get(GET_AREA_LIST)
+      .then((response) => {
+        setAreas(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching areas:", error);
+      });
+
+    // Fetch customers data
+    axios
+      .get(GET_CUSTOMERS_LIST)
+      .then(function (response) {
+        console.log("Customers list:", response.data);
+        if (response.data.error) {
+          handleSnackbar("error", response.data.error_msg);
+        } else {
+          // Map through the response data and format the date
+          const formattedData = response.data.data.map((customer) => ({
+            ...customer,
+            licenseExpiryDate: new Date(customer.licenseExpiryDate)
+              .toISOString()
+              .split("T")[0],
+          }));
+          setData(formattedData);
+        }
+      })
+      .catch(function (error) {
+        console.error("Error fetching data:", error);
+        handleSnackbar("error", "Error: " + error);
+      });
+  }, []); // Empty dependency array ensures the effect runs only once on mount
 
   const actionColumn = [
     {
@@ -61,24 +102,6 @@ export default function GetCustomersList() {
     },
   ];
 
-  const refreshData = () => {
-    console.log("Refreshing data...");
-    axios
-      .get(GET_CUSTOMERS_LIST)
-      .then(function (response) {
-        console.log("Customers list:", response.data);
-        if (response.data.error) {
-          handleSnackbar("error", response.data.error_msg);
-        } else {
-          setData(response.data.data);
-        }
-      })
-      .catch(function (error) {
-        console.error("Error refreshing data:", error);
-        handleSnackbar("error", "Error: " + error);
-      });
-  };
-  
   const deleteCustomer = (id) => {
     axios
       .delete(GET_CUSTOMERS_LIST + `/${id}`)
@@ -90,7 +113,10 @@ export default function GetCustomersList() {
             : response.data.success_msg
         );
         if (!response.data.error) {
-          refreshData();
+          // Remove refreshData call
+          setData((prevData) =>
+            prevData.filter((customer) => customer._id !== id)
+          );
         }
       })
       .catch(function (error) {
@@ -106,12 +132,13 @@ export default function GetCustomersList() {
       gender: gender,
       email: email,
       license: license,
-      licenseExpiryDate: licenseExpiryDate,
-      areaCode: { code: areaCode },
+      // Format the date for the server (assuming it expects a standard format)
+      licenseExpiryDate: new Date(licenseExpiryDate).toISOString(),
+      areaCode: areaCode,
       bankAccount: bankAccount,
       code: code,
     };
-  
+
     axios
       .put(GET_CUSTOMERS_LIST + `/${id}`, updatedCustomer)
       .then(function (response) {
@@ -122,7 +149,6 @@ export default function GetCustomersList() {
             : response.data.success_msg
         );
         if (!response.data.error) {
-          refreshData();
           setOpenPopup(false);
           resetForm();
         }
@@ -131,9 +157,7 @@ export default function GetCustomersList() {
         handleSnackbar("error", "Error: " + error);
       });
   };
-  
-  
-  
+
   const addCustomer = () => {
     const newCustomer = {
       name: name,
@@ -145,10 +169,10 @@ export default function GetCustomersList() {
       licenseExpiryDate: licenseExpiryDate,
       areaCode: areaCode,
       bankAccount: bankAccount,
-      code:code,
+      code: code,
     };
     axios
-      .post(GET_CUSTOMERS_LIST, newCustomer)
+      .post(ADD_EXPENSE, newCustomer)
       .then(function (response) {
         handleSnackbar(
           response.data.error ? "error" : "success",
@@ -158,7 +182,7 @@ export default function GetCustomersList() {
         );
         if (!response.data.error) {
           setOpenPopup(false);
-          refreshData(); // Move refreshData inside the success block
+          setData((prevData) => [...prevData, response.data.data]);
           resetForm();
         }
       })
@@ -166,7 +190,6 @@ export default function GetCustomersList() {
         handleSnackbar("error", "Error: " + error);
       });
   };
-  
 
   const handleSnackbar = (severity, message) => {
     setOpen(true);
@@ -176,6 +199,16 @@ export default function GetCustomersList() {
 
   const validation = () => {
     if (
+      !name ||
+      !phone ||
+      !address ||
+      !gender ||
+      !email ||
+      !license ||
+      !licenseExpiryDate ||
+      !areaCode ||
+      !bankAccount ||
+      !code ||
       name.length === 0 ||
       phone.length === 0 ||
       address.length === 0 ||
@@ -198,7 +231,7 @@ export default function GetCustomersList() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason !== "clickaway") {
+    if (reason !== "click away") {
       setOpen(false);
     }
   };
@@ -219,26 +252,27 @@ export default function GetCustomersList() {
 
   const editCustomer = (customer) => {
     setOpenPopup(true);
+    // Log the area code to the console for debugging
+    console.log("Area Code:", customer.areaCode);
+    
+    // Set state values
     setName(customer.name);
     setPhone(customer.phone);
     setAddress(customer.address);
     setGender(customer.gender);
     setEmail(customer.email);
     setLicense(customer.license);
-    setLicenseExpiryDate(customer.licenseExpiryDate);
-    
-
-    if (customer.areaCode && customer.areaCode.code) {
-      setAreaCode(customer.areaCode.code);
-    } else {
-      setAreaCode(""); 
-    }
-    
+    setLicenseExpiryDate(
+      new Date(customer.licenseExpiryDate).toISOString().split("T")[0]
+    );
+    setAreaCode(customer.areaCode._id);
     setBankAccount(customer.bankAccount);
     setId(customer._id);
     setCode(customer.code);
   };
   
+  
+
   return (
     <div className="list">
       <Sidebar />
@@ -252,7 +286,24 @@ export default function GetCustomersList() {
         <Popup title="Customer Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
           <Grid container spacing={3}>
             {/* Form fields... */}
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
+            <FormControl fullWidth variant="outlined" required>
+              <InputLabel id="gender-label">Gender</InputLabel>
+              <Select
+                labelId="gender-label"
+                id="gender"
+                value={gender}
+                label="Gender"
+                fullWidth
+                onChange={(event) => setGender(event.target.value)}
+              >
+                <MenuItem value="Male">Male</MenuItem>
+                <MenuItem value="Female">Female</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="name"
@@ -264,16 +315,93 @@ export default function GetCustomersList() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="phone"
                 name="phone"
                 label="Phone"
+                type="number" 
                 fullWidth
                 variant="outlined"
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
+              />
+            </Grid>
+
+
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="email"
+                name="email"
+                label="Email"
+                fullWidth
+                variant="outlined"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="license"
+                name="license"
+                label="License"
+                fullWidth
+                variant="outlined"
+                value={license}
+                onChange={(event) => setLicense(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="licenseExpiryDate"
+                name="licenseExpiryDate"
+                label="License Expiry Date"
+                type="date"
+                fullWidth
+                variant="outlined"
+                value={licenseExpiryDate}
+                onChange={(event) => setLicenseExpiryDate(event.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={4} sm={3}>
+            <FormControl fullWidth variant="outlined" required>
+  <InputLabel id="areaCodeLabel">Area Code</InputLabel>
+  <Select
+    labelId="areaCodeLabel"
+    id="areaCode"
+    value={areaCode}
+    label="Area Code"
+    fullWidth
+    onChange={(event) => setAreaCode(event.target.value)}
+  >
+    {areas.map((area) => (
+      <MenuItem key={area._id} value={area._id}>
+        {area.code}
+      </MenuItem>
+    ))}
+  </Select>
+  </FormControl>
+</Grid>
+
+
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="bankAccount"
+                name="bankAccount"
+                label="Bank Account"
+                fullWidth
+                variant="outlined"
+                value={bankAccount}
+                onChange={(event) => setBankAccount(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -288,31 +416,7 @@ export default function GetCustomersList() {
                 onChange={(event) => setAddress(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="gender"
-                name="gender"
-                label="Gender"
-                fullWidth
-                variant="outlined"
-                value={gender}
-                onChange={(event) => setGender(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="email"
-                name="email"
-                label="Email"
-                fullWidth
-                variant="outlined"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="code"
@@ -324,64 +428,26 @@ export default function GetCustomersList() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="license"
-                name="license"
-                label="License"
-                fullWidth
-                variant="outlined"
-                value={license}
-                onChange={(event) => setLicense(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="licenseExpiryDate"
-                name="licenseExpiryDate"
-                label="License expiry date"
-                fullWidth
-                variant="outlined"
-                value={licenseExpiryDate}
-                onChange={(event) => setLicenseExpiryDate(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="areaCode"
-                name="areaCode"
-                label="Area code"
-                fullWidth
-                variant="outlined"
-                value={areaCode}
-                onChange={(event) => setAreaCode(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="bankAccount"
-                name="bankAccount"
-                label="Bank Account"
-                fullWidth
-                variant="outlined"
-                value={bankAccount}
-                onChange={(event) => setBankAccount(event.target.value)}
-              />
-            </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid container spacing={1} direction="row" justifyContent="flex-end">
                 <Grid item>
-                  <Button variant="contained" size="medium" color="success" onClick={validation}>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="success"
+                    onClick={validation}
+                  >
                     {id ? "Update" : "Add"}
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error" onClick={() => setOpenPopup(false)}>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => setOpenPopup(false)}
+                  >
                     Cancel
                   </Button>
                 </Grid>
@@ -389,7 +455,12 @@ export default function GetCustomersList() {
             </Grid>
           </Grid>
         </Popup>
-        <SnackBar open={open} severity={severity} message={message} handleClose={handleClose} />
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

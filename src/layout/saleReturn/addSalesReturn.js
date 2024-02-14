@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./style.css";
+import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box, Button, IconButton } from "@mui/material";
@@ -14,26 +12,22 @@ import { produce } from "immer";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
-  ADD_PURCHASE,
-  GET_ALL_COMPANIES,
+  GET_SALESRETURN_LIST,
+  GET_CUSTOMERS_LIST,
   GET_PRODUCTS_LIST,
   ADD_STOCK_LOG,
   ADD_QUANTITY,
   ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
+  GET_SALESMEN_LIST,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
-import { useReactToPrint } from "react-to-print";
 
-export default function AddPurchase() {
-  const componentRef = useRef();
-
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
-
+export default function AddSalesReturn() {
+    
   const [productList, setProductList] = useState([]);
-  const [supplierList, setSupplierList] = useState([]);
+  const [customerCode, setCustomerCode] = useState([]);
+  const [salesmen, setSalesmen] = useState([]);
   const [productObject, setProductObject] = useState({
     batchCode: "",
     expiryDate: "",
@@ -43,17 +37,18 @@ export default function AddPurchase() {
     salesTax: 0,
     tradeRate: 0,
     netTotal: "",
-    status: "",
     productCode: "",
+    subtotal:"",
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
+  const [customerObject, setCustomerObject] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("")
   const paymentMediumList = [
     {
       id: 1,
@@ -104,16 +99,19 @@ export default function AddPurchase() {
 
   useEffect(() => {
     getStockList();
-    getSupplierList();
+    getCustomerList();
+    getSalesmenList();
     calculateAmountAndBags(data);
   }, []);
 
+
   const dataEntry = (data) => {
     axios
-      .post(ADD_PURCHASE, data)
-      .then((response) => {
-        console.log("Response", response);
-      })
+      .post(GET_SALESRETURN_LIST, data)
+      .then(response => {
+        console.log("Response", response)
+      }
+      )
       .catch((error) => {
         setOpen(true);
         setMessage("error: " + error);
@@ -139,16 +137,34 @@ export default function AddPurchase() {
         setSeverity("error");
       });
   };
-  const getSupplierList = () => {
+  const getCustomerList = () => {
     axios
-      .get(GET_ALL_COMPANIES)
+      .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
         //   setSeverity("error");
         // } else {
-        setSupplierList(response.data.data);
+        setCustomerCode(response.data.data);
+        // }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+  const getSalesmenList = () => {
+    axios
+      .get(GET_SALESMEN_LIST)
+      .then(function (response) {
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
+        setSalesmen(response.data.data);
         // }
       })
       .catch(function (error) {
@@ -158,12 +174,12 @@ export default function AddPurchase() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject);
-
+    console.log("Product Object", productObject)
+    // if (productObject._id !== "") {
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
-
+    // if (data.length === 0) {
     obj = {
       tradeRate: productObject.tradeRate,
       quantity: 1,
@@ -174,7 +190,7 @@ export default function AddPurchase() {
       // netTotal: productObject.tradeRate,
       netTotal: "",
       status: productObject.status,
-      productCode: productObject.code,
+      productCode: productObject.code
     };
     array = [...array, obj];
     setData(array);
@@ -232,20 +248,22 @@ export default function AddPurchase() {
     }
   };
   const validate = () => {
-    var companyCode = supplierObject._id;
-    var paymentMode = paymentMediumObject.name;
-    var totalAmount = 0;
+    var customerCode = customerObject._id
+    var salesmenCode = supplierObject._id
+    var paymentMode = paymentMediumObject.name
+    var totalAmount = 0
     for (let i = 0; i < data.length; i++) {
-      totalAmount = totalAmount + data[i].netTotal;
+      totalAmount = totalAmount + data[i].netTotal
     }
 
     var purchaseObject = {
-      purchaseDetail: data,
-      companyCode: companyCode,
+      salesReturnDetail: data,
+      customerCode: customerCode,
+      salesmenCode:salesmenCode,
       paymentMode: paymentMode,
-      total: totalAmount,
-    };
-    console.log("Data", purchaseObject);
+      total: totalAmount
+    }
+    console.log("Data", purchaseObject)
 
     // if (data.length === 0) {
     //   setOpen(true);
@@ -277,7 +295,29 @@ export default function AddPurchase() {
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
-                options={supplierList}
+                options={customerCode}
+                getOptionLabel={(supplier, index) => supplier.name}
+                disablePortal
+                fullWidth
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value._id
+                }
+                onChange={(event, newInputValue) => {
+                  setCustomerObject(newInputValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Customer" />
+                )}
+                renderOption={(props, supplier) => (
+                  <Box component="li" {...props} key={supplier._id}>
+                    {supplier.name}
+                  </Box>
+                )}
+              />
+            </Grid>
+            <Grid item md={12} px={2} py={1}>
+              <Autocomplete
+                options={salesmen}
                 getOptionLabel={(supplier, index) => supplier.name}
                 disablePortal
                 fullWidth
@@ -288,7 +328,7 @@ export default function AddPurchase() {
                   setSupplierObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Company" />
+                  <TextField {...params} label="Select Salesman" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -508,12 +548,6 @@ export default function AddPurchase() {
             mr={4}
             alignItems={"end"}
           >
-            {/* ////// */}
-            <div style={{ display: "none" }}>
-              <ComponentToPrint data={data} ref={componentRef} />
-            </div>
-            {/* ////////////////// */}
-
             <Button
               variant="contained"
               size="medium"
@@ -524,16 +558,134 @@ export default function AddPurchase() {
               Save
             </Button>
             <Button
-              onClick={handlePrint}
+              // sx={{ marginLeft: "10px" }}
               variant="contained"
               size="medium"
               color="error"
             >
-              Print
+              Cancel
             </Button>
           </Box>
         </Grid>
-
+        {/* <Grid item md={4} sx={{ height: "90vh" }}>
+            <Grid container item md={12} px={2}>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+              // mt={2}
+              >
+                <Autocomplete
+                  options={customerCode}
+                  getOptionLabel={(supplier, index) => supplier.name}
+                  disablePortal
+                  fullWidth
+                  isOptionEqualToValue={(option, value) =>
+                    option._id === value._id
+                  }
+                  onChange={(event, newInputValue) => {
+                    setSupplierObject(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select Supplier" />
+                  )}
+                  renderOption={(props, supplier) => (
+                    <Box component="li" {...props} key={supplier._id}>
+                      {supplier.name}
+                    </Box>
+                  )}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <TextField
+                  label="Select Date"
+                  type="date"
+                  defaultValue={currentDate}
+                  onChange={(event) => {
+                    setSubmittedDate(event.target.value);
+                  }}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <TextField
+                  id="amount"
+                  name="amount"
+                  label="Enter Amount"
+                  fullWidth
+                  variant="outlined"
+                  value={amount}
+                  onChange={(event) => setAmount(event.target.value)}
+                />
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Amount</Typography>
+                <Typography>RS {totalAmount}</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Bags</Typography>
+                <Typography>{totalBags}</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ width: "100%" }}
+                mt={2}
+              >
+                <Typography>Total Products</Typography>
+                <Typography>{totalProducts}</Typography>
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent={"end"}
+                sx={{ width: "100%" }}
+                mt={2}
+                alignItems={"end"}
+              >
+                <Button
+                  variant="contained"
+                  size="medium"
+                  color="success"
+                  onClick={() => validate()}
+                  sx={{ marginX: "10px" }}
+                >
+                  Save
+                </Button>
+                <Button
+                  // sx={{ marginLeft: "10px" }}
+                  variant="contained"
+                  size="medium"
+                  color="error"
+                >
+                  Cancel
+                </Button>
+              </Box>
+            </Grid>
+          </Grid> */}
+        {/* </Grid> */}
         <SnackBar
           open={open}
           severity={severity}
@@ -544,159 +696,3 @@ export default function AddPurchase() {
     </div>
   );
 }
-
-const ComponentToPrint = React.forwardRef(({ data }, ref) => {
-  let totalQuantity = 0;
-  let totalBonus = 0;
-  let totalDiscount = 0;
-  let totalSalesTax = 0;
-  let totalTradeRate = 0;
-
-  data.map((item) => (totalQuantity += Number(item.quantity)));
-  data.map((item) => (totalBonus += Number(item.bonus)));
-  data.map((item) => (totalDiscount += Number(item.discount)));
-  data.map((item) => (totalSalesTax += Number(item.salesTax)));
-  data.map((item) => (totalTradeRate += Number(item.tradeRate)));
-
-  console.log("total Quantity ", totalQuantity);
-  console.log("total Bonus ", totalBonus);
-  console.log("total Discount ", totalDiscount);
-  console.log("total Sales Tax ", totalSalesTax);
-  console.log("total Trade Rate ", totalTradeRate);
-  return (
-    <div ref={ref}>
-      <header class="header">
-        <h1>PHARMA NET</h1>
-        <p>
-          Jamia Farqania Road Sarfaraz Colony Opp. SK Products Factory
-          Gujranwala
-        </p>
-        <p>
-          PH:-055-4294521-2-0300-7492093-0302-6162633 E-mail pharmanet@yahoo.com
-        </p>
-        <p>License No. = 09-341-0135-010397 D NTN = 7351343-8</p>
-      </header>
-
-      <div class="flex evenly">
-        <div>
-          <p>M/S</p>
-          <p>005 0034</p>
-          <p>Azhar M/S</p>
-          <p>FREED TOWN (PASROOR ROAD GRW)</p>
-          <p>FREED TOWN (PASROOR ROAD GRW)</p>
-        </div>
-        <div>
-          <p>INVOICE</p>
-          <p>License No = 843/GRW</p>
-          <p>NTN NO : 34101-2610040-5</p>
-          <p>CNIC NO:</p>
-          <p>S/TAX No:</p>
-        </div>
-        <div>
-          <p>Inv No: 1327</p>
-          <p>Inv Date: 07/02/2024</p>
-          <p>Page No: 1 of 1</p>
-          <p>Salesman: 1 sohail tahir</p>
-          <p>Sales Type: 1 Supply Sale</p>
-        </div>
-      </div>
-
-      <div class="gap">
-        <table>
-          <thead>
-            <tr>
-              <th>QTY</th>
-              <th>Name of Item</th>
-              <th>Packing</th>
-              <th>Batch No</th>
-              <th>Rate</th>
-              <th>Gross Amount</th>
-              <th>Discount %</th>
-              <th>Sales Tax</th>
-              <th>Additional Tax</th>
-              <th>Advace Tax</th>
-              <th>Total Amount</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {data.map((item) => {
-              return (
-                <tr>
-                  <td>{item.quantity}</td>
-                  <td>{item.productCode}</td>
-                  <td>{item.bonus}</td>
-                  <td>{item.batchCode}</td>
-                  <td>{item.tradeRate}</td>
-                  <td>{item.status}</td>
-                  <td>{item.discount}</td>
-                  <td>{item.expiryDate}</td>
-                  <td>{item.salesTax}</td>
-                  <td>{item.netTotal}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Total of STAR LABORATORIES</th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th>Gross</th>
-              <th>4,267.00</th>
-              <th>Dis.%</th>
-              <th>0.90 S/Tax</th>
-              <th>0.00 AdS/Tax</th>
-              <th>0.00</th>
-              <th>4,267.6</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>No of ltems: 4</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>Gross</td>
-              <td>4,267.00</td>
-              <td>Dis.%</td>
-              <td>0.00 S/Tax</td>
-              <td>0.00 AdS/Tax</td>
-              <td>0.00</td>
-              <td>4,267.0</td>
-            </tr>
-            <tr>
-              <td>Total Qty: 53</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table class="last">
-          <thead>
-            <tr>
-              <td></td>
-              <td>Add Tax US 236-H @ 0.50</td>
-              <td>21.34</td>
-            </tr>
-            <tr>
-              <td>Four Thousand Two Hundred Eighty Eight</td>
-              <td>Total Net Value</td>
-              <td>4,288.0</td>
-            </tr>
-          </thead>
-        </table>
-      </div>
-    </div>
-  );
-});
