@@ -256,7 +256,7 @@ export default function AddSalesReturn() {
     }
 
     var purchaseObject = {
-      salesReturnDetail: data,
+      saleReturnDetail: data,
       customerCode: customerCode,
       salesmenCode:salesmenCode,
       paymentMode: paymentMode,

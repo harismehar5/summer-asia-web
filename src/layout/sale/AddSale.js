@@ -61,6 +61,10 @@ export default function AddSale() {
   const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
   const [code, setCode] = useState("");
+  const [SalesManList, setSalesManList] = useState([]);
+  const [ProductId, setProductId] = useState(null);
+  const [DateAndQuantityObject, setDateAndQuantityObject] = useState([]);
+  const [SaleManObject, setSaleManObject] = useState({});
   const paymentMediumList = [
     {
       id: 1,
@@ -111,6 +115,7 @@ export default function AddSale() {
 
   useEffect(() => {
     getStockList();
+    getSalesManList();
     getSupplierList();
     calculateAmountAndBags(data);
   }, []);
@@ -122,6 +127,7 @@ export default function AddSale() {
         console.log("response ==", JSON.stringify(response, null, 2));
         if (response.status == 200) {
           setOpen(true);
+          setSeverity("success");
           setMessage(response.data.message);
         } else {
           setOpen(true);
@@ -264,7 +270,7 @@ export default function AddSale() {
     axios
       .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
       .then(function (response) {
-        console.log(JSON.stringify(response.data,null,2))
+        console.log(JSON.stringify("quantity and expiry date == ",response.data, null, 2));
         setDateAndQuantityObject(response.data);
         setData((currentData) =>
           produce(currentData, (v) => {
@@ -457,6 +463,8 @@ export default function AddSale() {
                         }
                         onChange={(event, newInputValue) => {
                           // setProductObject(newInputValue);
+                          setProductId(newInputValue._id)
+                          console.log(newInputValue)
                           var productObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
