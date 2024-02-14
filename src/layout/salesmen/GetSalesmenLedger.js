@@ -9,18 +9,18 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { customerLedgerColumns } from "../../dataTableColumns";
+import { salesmanLedgerColumns } from "../../dataTableColumns";
 
 import {
   BASE_URL,
-  GET_CUSTOMERS_LIST,
+  GET_SALESMEN_LIST,
   GET_CUSTOMER_LEDGER,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import { json } from "react-router-dom";
 
-export default function GetCustomerLedger() {
+export default function GetSalesmenLedger() {
   const [data, setData] = useState([]);
   const [customerList, setCustomerList] = useState([]);
   const [open, setOpen] = useState(false);
@@ -28,13 +28,17 @@ export default function GetCustomerLedger() {
   const [severity, setSeverity] = useState("");
   const [customerObject, setCustomerObject] = useState({});
 
+  const [cashInBalance, setCashInBalance] = useState(0);
+  const [cashOutBalance, setCashOutBalance] = useState(0);
+  const [currentBalance, setCurrentBalance] = useState(0);
+
   useEffect(() => {
     getCustomersList();
   }, [data]);
 
   const getCustomersList = () => {
     axios
-      .get(GET_CUSTOMERS_LIST)
+      .get(GET_SALESMEN_LIST)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -50,38 +54,86 @@ export default function GetCustomerLedger() {
         setSeverity("error");
       });
   };
-  const getCustomerLedgerList = (id) => {
-    // setLoading(true);
+  // const getCustomerLedgerList = (id) => {
+  //   // setLoading(true);
+  //   axios
+  //     .get(GET_CUSTOMER_LEDGER + id)
+  //     .then(function (response) {
+  //       if (response.data.error) {
+  //         //   setLoading(false);
+  //         setData([]);
+  //       } else {
+  //         setData(response.data.data);
 
+  //         //   setLoading(false);
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       // setLoading(false);
+  //     });
+  // };
+
+  const getCustomerLedgerList = (id) => {
     axios
-      .get(GET_CUSTOMER_LEDGER +id)
+      .get(GET_CUSTOMER_LEDGER + id)
       .then(function (response) {
-       console.log(response)
-        if (response.message == "Cash data not found") {
-          //   setLoading(false);
-          setData([]);
+        if (response.data.error) {
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
+          setData([]); // Clear data in case of error
+          setCashInBalance(0);
+          setCashOutBalance(0);
+          setCurrentBalance(0);
         } else {
           setData(response.data.data);
-
-          //   setLoading(false);
+          setCashInBalance(response.data.cashInBalance || 0);
+          setCashOutBalance(response.data.cashOutBalance || 0);
+          setCurrentBalance(response.data.currentBalance || 0);
         }
       })
       .catch(function (error) {
-        // setLoading(false);
+        setOpen(true);
+        setMessage("Error: Data not found"); // Adjust the error message
+        setSeverity("error");
+        setData([]); // Clear data in case of error
+        setCashInBalance(0);
+        setCashOutBalance(0);
+        setCurrentBalance(0);
       });
   };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+
+  // const BalancesSection = () => (
+  //   <div className="balances-container">
+  //     <h2>Balances</h2>
+  //     <div className="balance-item">
+  //       <span>Cash In:</span>
+  //       <span>${cashInBalance}</span>
+  //     </div>
+  //     <div className="balance-item">
+  //       <span>Cash Out:</span>
+  //       <span>${cashOutBalance}</span>
+  //     </div>
+  //     <div className="balance-item">
+  //       <span>Current Balance:</span>
+  //       <span>${currentBalance}</span>
+  //     </div>
+  //   </div>
+  // );
+
   return (
     <div className="list">
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <ListHeader header={"Customer Ledger"} />
+        <ListHeader header={"Salesman Ledger"} />
         <Grid container item md={12} px={4}>
           <Autocomplete
             options={customerList}
@@ -99,7 +151,7 @@ export default function GetCustomerLedger() {
             }}
             value={customerObject.name}
             renderInput={(params) => (
-              <TextField {...params} label={"Select Customer"} />
+              <TextField {...params} label={"Select Salesman"} />
             )}
             renderOption={(props, customer) => (
               <Box component="li" {...props} key={customer ? customer._id : ""}>
@@ -109,12 +161,15 @@ export default function GetCustomerLedger() {
           />
         </Grid>
         {data.length !== 0 ? (
-          <DataTable
-            data={data}
-            columns={customerLedgerColumns}
-            // loading={loading}
-            isForTransaction={false}
-          />
+          <>
+            <DataTable
+              data={data}
+              columns={salesmanLedgerColumns}
+              // loading={loading}
+              isForTransaction={false}
+            />
+            {/* <BalancesSection /> */}
+          </>
         ) : null}
         <SnackBar
           open={open}

@@ -11,9 +11,6 @@ import Navbar from "../../components/navbar/Navbar";
 import { areaColumns } from "../../dataTableColumns";
 import {
   GET_AREA_LIST,
-  DELETE_EXPENSE,
-  UPDATE_EXPENSE_BY_ID,
-  ADD_EXPENSE,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
@@ -31,7 +28,7 @@ export default function GetAreaList() {
 
   useEffect(() => {
     refreshData();
-  }, []);
+  });
 
   const actionColumn = [
     {
@@ -165,7 +162,7 @@ export default function GetAreaList() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason !== "clickaway") {
+    if (reason !== "click away") {
       setOpen(false);
     }
   };
@@ -198,7 +195,7 @@ export default function GetAreaList() {
         <Popup title="Area Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
           <Grid container spacing={3}>
             {/* Form fields... */}
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="code"
@@ -210,7 +207,7 @@ export default function GetAreaList() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="abbreviation"

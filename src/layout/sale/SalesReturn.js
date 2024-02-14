@@ -7,21 +7,22 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { purchaseColumn } from "../../dataTableColumns";
-
-import { GET_PURCHASE_LIST } from "../../utils/config";
-import ListHeader from "../../components/listHeader/ListHeader";
+import { saleColumn, saleReturnColumn } from "../../dataTableColumns";
 import SnackBar from "../../components/alert/SnackBar";
-import { Link } from "react-router-dom";
 
-export default function GetPurchaseList() {
+import { GET_SALE_LIST, GET_SALE_RETURN_LIST } from "../../utils/config";
+import ListHeader from "../../components/listHeader/ListHeader";
+import { Link } from "react-router-dom";
+import SideBar from "../../components/sidebar/SideBar";
+
+export default function SalesReturnDetails() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
   useEffect(() => {
-    getPurchaseList();
+    getSaleReturnDetailsList();
   }, []);
 
   const actionColumn = [
@@ -34,7 +35,7 @@ export default function GetPurchaseList() {
           <>
             <Link
               to={{
-                pathname: "purchase_details/" + params.row._id,
+                pathname: "sale_return_details/" + params.row._id,
                 state: { list: params.row._id },
               }}
             >
@@ -59,10 +60,11 @@ export default function GetPurchaseList() {
       },
     },
   ];
-  const getPurchaseList = async () => {
+  const getSaleReturnDetailsList = async () => {
     await axios
-      .get(GET_PURCHASE_LIST)
+      .get(GET_SALE_RETURN_LIST)
       .then(function (response) {
+     
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
@@ -85,18 +87,17 @@ export default function GetPurchaseList() {
   };
   return (
     <div className="list">
-      <Sidebar />
+      <SideBar />
       <div className="list-container">
         <Navbar />
         <ListHeader
-          header={"Purchase List"}
+          header={"Sale Return List"}
           firstButton={true}
-          firstButtonText={"Add New Purchase"}
+          firstButtonText={"Add New Sale"}
         />
         <DataTable
           data={data}
-          columns={purchaseColumn.concat(actionColumn)}
-          // loading={loading}
+          columns={saleReturnColumn.concat(actionColumn)}
           isForTransaction={false}
         />
       </div>

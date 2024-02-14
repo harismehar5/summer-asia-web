@@ -68,6 +68,14 @@ export default function SideBar() {
               <span>Salesmen List</span>
             </li>
           </Link>
+          <p className="title">SaleReturn</p>
+          <Link to="/sale-return/adds/" style={{ textDecoration: "none" }}>
+            <li>
+              <PointOfSaleRoundedIcon className="icon" />
+              <span>Add SalesReturn</span>
+            </li>
+          </Link>
+
           <p className="title">Sale</p>
           <Link to="/sale/add/" style={{ textDecoration: "none" }}>
             <li>
@@ -79,6 +87,12 @@ export default function SideBar() {
             <li>
               <FormatListBulletedIcon className="icon" />
               <span>Sale List</span>
+            </li>
+          </Link>
+          <Link to="/sale/sale_return/" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Sale Return List</span>
             </li>
           </Link>
           <p className="title">Purchase</p>
@@ -94,6 +108,18 @@ export default function SideBar() {
               <span>Purchase list</span>
             </li>
           </Link>
+
+
+          <p className="title">Purchase Return</p>
+          <Link to="/purchase-return/add" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>addPurchase Return</span>
+            </li>
+          </Link>
+          
+
+
           <p className="title">Customer</p>
           <Link to="/customer/add" style={{ textDecoration: "none" }}>
             <li>
@@ -175,6 +201,12 @@ export default function SideBar() {
             <li>
               <AccountBalanceRoundedIcon className="icon" />
               <span>Supplier Ledger</span>
+            </li>
+          </Link>
+          <Link to="/salesmen/ledger" style={{ textDecoration: "none" }}>
+            <li>
+              <AccountBalanceRoundedIcon className="icon" />
+              <span>Salesman Ledger</span>
             </li>
           </Link>
         </ul>

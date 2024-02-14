@@ -12,6 +12,7 @@ import SnackBar from "../../components/alert/SnackBar";
 
 import { GET_SALE_LIST } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
+import { Link } from "react-router-dom";
 
 export default function GetSaleList() {
   const [data, setData] = useState([]);
@@ -24,6 +25,25 @@ export default function GetSaleList() {
   }, []);
 
   const actionColumn = [
+    {
+      field: "_id",
+      headerName: "ID",
+      width: 300,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link
+              to={{
+                pathname: "sale_details/" + params.row._id,
+                state: { list: params.row._id },
+              }}
+            >
+              {params.row._id}
+            </Link>
+          </>
+        );
+      },
+    },
     {
       field: "action",
       headerName: "Action",
@@ -48,22 +68,7 @@ export default function GetSaleList() {
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          var array = [];
-          for (var i = 0; i < response.data.sales.length; i++) {
-            array.push({
-              _id: response.data.sales[i]._id,
-              total_amount: response.data.sales[i].total_amount,
-              total_quantity: response.data.sales[i].total_quantity,
-              customer: response.data.sales[i].customer.name,
-              submit_date: response.data.sales[i].submit_date,
-              status: response.data.sales[i].status,
-              order_details: response.data.sales[i].order_details,
-              createdAt: response.data.sales[i].createdAt,
-              updatedAt: response.data.sales[i].updatedAt,
-              __v: response.data.sales[i].__v,
-            });
-          }
-          setData(array);
+          setData(response.data.data);
         }
       })
       .catch(function (error) {
