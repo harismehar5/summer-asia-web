@@ -15,18 +15,36 @@ import ListHeader from "../../components/listHeader/ListHeader";
 import { Link } from "react-router-dom";
 import SideBar from "../../components/sidebar/SideBar";
 
-export default function SalesReturn() {
+export default function SalesReturnDetails() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
   useEffect(() => {
-    getSaleReturnList();
+    getSaleReturnDetailsList();
   }, []);
 
   const actionColumn = [
-
+    {
+      field: "_id",
+      headerName: "ID",
+      width: 300,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link
+              to={{
+                pathname: "sale_return_details/" + params.row._id,
+                state: { list: params.row._id },
+              }}
+            >
+              {params.row._id}
+            </Link>
+          </>
+        );
+      },
+    },
     {
       field: "action",
       headerName: "Action",
@@ -42,7 +60,7 @@ export default function SalesReturn() {
       },
     },
   ];
-  const getSaleReturnList = async () => {
+  const getSaleReturnDetailsList = async () => {
     await axios
       .get(GET_SALE_RETURN_LIST)
       .then(function (response) {

@@ -81,7 +81,7 @@ export default function SideBar() {
               <span>Sale List</span>
             </li>
           </Link>
-          <Link to="/sale/sale_return" style={{ textDecoration: "none" }}>
+          <Link to="/sale/sale_return/" style={{ textDecoration: "none" }}>
             <li>
               <FormatListBulletedIcon className="icon" />
               <span>Sale Return List</span>
