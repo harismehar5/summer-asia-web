@@ -96,6 +96,8 @@ export const ADD_PRODUCT = BASE_URL + "products"
 
 export const ADD_PURCHASE = BASE_URL + "purchases"
 
+export const ADD_SALES_SERVICES = BASE_URL + "sales"
+
 //Area URL
 export const GET_AREA_LIST = BASE_URL + "areas";
 //CUSTOMERS URL

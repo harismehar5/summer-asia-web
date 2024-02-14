@@ -23,6 +23,8 @@ import {
   GET_BATCH_LIST,
   GET_SALESMEN_LIST,
   GET_QUANTITY_AND_EXPIRY_LIST,
+  ADD_SALE,
+  ADD_SALES_SERVICES,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -39,7 +41,6 @@ export default function AddSale() {
     salesTax: 0,
     tradeRate: 0,
     netTotal: "",
-    status: "",
     productCode: "",
   });
   const [data, setData] = useState([productObject]);
@@ -112,17 +113,23 @@ export default function AddSale() {
   }, []);
 
   const dataEntry = (data) => {
- 
-    // axios
-    //   .post(ADD_PURCHASE, data)
-    //   .then((response) => {
-    //   //  console.log("response ==",JSON.stringify(response,null,2))
-    //   })
-    //   .catch((error) => {
-    //     setOpen(true);
-    //     setMessage("error: " + error);
-    //     setSeverity("error");
-    //   });
+    axios
+      .post(ADD_SALES_SERVICES, data)
+      .then((response) => {
+        console.log("response ==", JSON.stringify(response, null, 2));
+        if (response.status == 200) {
+          setOpen(true);
+          setMessage(response.data.message);
+        } else {
+          setOpen(true);
+          setMessage(response.error);
+        }
+      })
+      .catch((error) => {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
   };
 
   const getStockList = () => {
@@ -145,13 +152,11 @@ export default function AddSale() {
   };
 
   const getBatchList = (productCode) => {
-    console.log("Product Code", productCode);
     axios
       .post(GET_BATCH_LIST, {
         productCode: productCode,
       })
       .then(function (response) {
-        console.log("Response", response);
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
@@ -185,23 +190,21 @@ export default function AddSale() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject);
     // if (productObject._id !== "") {
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
     // if (data.length === 0) {
     obj = {
-                productCode: productObject.productCode,
-                quantity: productObject.quantity,
-                tradeRate: productObject.tradeRate,
-                expiryDate: productObject.expiryDate,
-                batchCode: productObject.batchCode,
-                bonus: productObject.bonus,
-                discount: productObject.discount,
-                salesTax:productObject.salesTax,
-                netTotal: productObject.netTotal
-    
+      productCode: productObject.productCode,
+      quantity: productObject.quantity,
+      tradeRate: productObject.tradeRate,
+      expiryDate: productObject.expiryDate,
+      batchCode: productObject.batchCode,
+      bonus: productObject.bonus,
+      discount: productObject.discount,
+      salesTax: productObject.salesTax,
+      netTotal: productObject.netTotal,
     };
     array = [...array, obj];
     setData(array);
@@ -249,33 +252,32 @@ export default function AddSale() {
         // handleSnackbar("error", "Error: " + error);
       });
   };
-  const getQuantityAndExpiryObject = (batchId) => {
+  const getQuantityAndExpiryObject = (batchId, index) => {
     let payload = {
       productCode: ProductId,
       batchCode: batchId,
     };
-  
+
     axios
-    .post(GET_QUANTITY_AND_EXPIRY_LIST,payload)
-    .then(function (response) {
-      setDateAndQuantityObject(response.data)
-      //setSalesManList(response.data.data)
-      // if (response.data.error) {
-      //   handleSnackbar("error", response.data.error_msg);
-      // } else {
-      //   const formattedData = response.data.data.map((salesman) => ({
-      //     ...salesman,
-      //     dateOfJoin: salesman.dateOfJoin
-      //       ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
-      //       : null,
-      //   }));
-      //   setData(formattedData);
-      // }
-    })
-    .catch(function (error) {
-      console.error("Error fetching data:", error);
-      // handleSnackbar("error", "Error: " + error);
-    });
+      .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data,null,2))
+        setDateAndQuantityObject(response.data);
+        setData((currentData) =>
+          produce(currentData, (v) => {
+            v[index].expiryDate = response.data.expiryDate;
+          })
+        );
+        setData((currentData) =>
+          produce(currentData, (v) => {
+            v[index].quantity = response.data.quantity;
+          })
+        );
+      })
+      .catch(function (error) {
+        console.error("Error fetching data:", error);
+        // handleSnackbar("error", "Error: " + error);
+      });
   };
   const calculateAmountAndBags = (array) => {
     let sum = 0;
@@ -317,13 +319,12 @@ export default function AddSale() {
     }
 
     var purchaseObject = {
-      purchaseDetail: data,
+      saleDetail: data,
       companyCode: companyCode,
       paymentMode: paymentMode,
-      saleman:SaleManObject._id,
+      salesman: SaleManObject._id,
       total: totalAmount,
     };
-    console.log("Data ===", JSON.stringify(purchaseObject,null,2));
 
     // if (data.length === 0) {
     //   setOpen(true);
@@ -346,19 +347,17 @@ export default function AddSale() {
     // }
   };
   // Function to format date to "yyyy-MM-dd" format
-function formatDate(date) {
-  const d = new Date(date);
-  let month = '' + (d.getMonth() + 1);
-  let day = '' + d.getDate();
-  const year = d.getFullYear();
+  function formatDate(date) {
+    const d = new Date(date);
+    let month = "" + (d.getMonth() + 1);
+    let day = "" + d.getDate();
+    const year = d.getFullYear();
 
-  if (month.length < 2) 
-    month = '0' + month;
-  if (day.length < 2) 
-    day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-  return [year, month, day].join('-');
-}
+    return [year, month, day].join("-");
+  }
   return (
     <div className="box">
       <SideBar />
@@ -420,7 +419,6 @@ function formatDate(date) {
                 }
                 onChange={(event, newInputValue) => {
                   setSaleManObject(newInputValue);
-            
                 }}
                 renderInput={(params) => (
                   <TextField {...params} label="Select Salesmen" />
@@ -459,7 +457,7 @@ function formatDate(date) {
                           var productObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
-                              v[index].productCode = productObject._id;
+                              v[index].productCode = newInputValue._id;
                             })
                           );
                           getBatchList(productObject._id);
@@ -485,14 +483,16 @@ function formatDate(date) {
                           option.id === value.id
                         }
                         onChange={(event, newInputValue) => {
-                          setBatchId(newInputValue.batchCode);
-                          var batchObject = newInputValue;
+                          getQuantityAndExpiryObject(
+                            newInputValue.batchCode,
+                            index
+                          );
+
                           setData((currentData) =>
                             produce(currentData, (v) => {
-                              v[index].productCode = batchObject.batchCode;
+                              v[index].batchCode = newInputValue.batchCode;
                             })
                           );
-                          getQuantityAndExpiryObject(newInputValue.batchCode);
                         }}
                         renderInput={(params) => (
                           <TextField {...params} label="Select Batch" />
@@ -507,9 +507,13 @@ function formatDate(date) {
                     </Grid>
                     <Grid item md={1.5} px={1}>
                       <TextField
-                        label={ "Select Date"}
+                        label={"Select Date"}
                         type="date"
-                        value={DateAndQuantityObject.expiryDate ? formatDate(DateAndQuantityObject.expiryDate) : ''}
+                        value={
+                          DateAndQuantityObject.expiryDate
+                            ? formatDate(DateAndQuantityObject.expiryDate)
+                            : ""
+                        }
                         // defaultValue={currentDate}
                         onChange={(e) => {
                           var expiryDate = e.target.value;
@@ -529,7 +533,9 @@ function formatDate(date) {
                       <TextField
                         label="Quantity"
                         variant="outlined"
-                        value={DateAndQuantityObject?.quantity||product.quantity}
+                        value={
+                          DateAndQuantityObject?.quantity || product.quantity
+                        }
                         onChange={(e) => {
                           var quantity = e.target.value;
                           setData((currentData) =>
