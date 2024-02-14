@@ -41,9 +41,9 @@ export const GET_ALL_CUSTOMER_CASH_IN =
   CUSTOMER_BASE_URL + "get_all_cash_in_customer";
 export const GET_ALL_CUSTOMER_CASH_OUT =
   CUSTOMER_BASE_URL + "get_all_cash_out_customer";
-export const GET_CUSTOMERS_CASH_FLOW =
-  CUSTOMER_BASE_URL + "get_customers_cash_flow";
-export const GET_CUSTOMER_LEDGER = BASE_URL+"cash/search?keyword="
+// export const GET_CUSTOMERS_CASH_FLOW =
+//   CUSTOMER_BASE_URL + "get_customers_cash_flow";
+export const GET_CUSTOMER_LEDGER = CUSTOMER_BASE_URL + "get_customer_ledger/"
 //Product URL
 export const PRODUCT_BASE_URL = BASE_URL + "product/";
 export const GET_PRODUCTS_LIST = PRODUCT_BASE_URL + "get_products";
@@ -106,7 +106,15 @@ export const GET_CUSTOMERS_LIST = BASE_URL + "customers";
 export const GET_SALESMEN_LIST = BASE_URL + "salesmen";
 export const GET_QUANTITY_AND_EXPIRY_LIST = BASE_URL + "sales/getquantityandexpiry";
 //PURCHASERETURN URL
-export const GET_PURCHASERETURN = BASE_URL + "purchasereturns";
+
 //SALESMEN URL
 export const GET_SALESRETURN_LIST = BASE_URL + "salereturns";
 
+//PURCHASERETURN URL
+export const GET_PURCHASERETURN = BASE_URL + "purchasereturns";
+//CUSTOMER CASH FLOW URL
+export const GET_CUSTOMERS_CASH_FLOW = BASE_URL + "cash";
+//CUSTOMER CASH IN URL
+export const GET_CUSTOMERS_CASH_IN = BASE_URL + "cashin";
+//CUSTOMER CASH IN URL
+export const GET_CUSTOMERS_CASH_OUT = BASE_URL + "cashout";
