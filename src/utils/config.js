@@ -103,3 +103,6 @@ export const GET_CUSTOMERS_LIST = BASE_URL + "customers";
 export const GET_SALESMEN_LIST = BASE_URL + "salesmen";
 //PURCHASERETURN URL
 export const GET_PURCHASERETURN = BASE_URL + "purchasereturns";
+//SALESMEN URL
+export const GET_SALESRETURN_LIST = BASE_URL + "salereturns";
+

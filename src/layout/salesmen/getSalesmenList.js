@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IconButton, Grid, TextField, Button } from "@mui/material";
+import { IconButton, Grid, TextField, Button, InputLabel, Select, MenuItem, FormControl } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
@@ -9,7 +9,7 @@ import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { salesmenColumns } from "../../dataTableColumns";
-import {  GET_SALESMEN_LIST } from "../../utils/config";
+import { GET_AREA_LIST, GET_SALESMEN_LIST } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
 
@@ -20,20 +20,55 @@ export default function GetSalesmenList() {
   const [severity, setSeverity] = useState("");
   const [openPopup, setOpenPopup] = useState(false);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("");
-  const [email, setEmail] = useState("");
-  const [license, setLicense] = useState("");
-  const [licenseExpiryDate, setLicenseExpiryDate] = useState("");
   const [areaCode, setAreaCode] = useState("");
   const [code, setCode] = useState("");
-  const [bankAccount, setBankAccount] = useState("");
   const [id, setId] = useState("");
+  const [fatherName, setFatherName] = useState("");
+  const [qualification, setQualification] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [areaCommission, setAreaCommission] = useState("");
+  const [target, setTarget] = useState("");
+  const [dateOfJoin, setDateOfJoin] = useState("");
+  const [refPerson, setRefPerson] = useState("");
+  const [refPersonNumber, setRefPersonNumber] = useState("");
+  const [cnic, setCnic] = useState("");
+  const [description, setDescription] = useState("");
+  const [areas, setAreas] = useState([]);
 
   useEffect(() => {
-    refreshData();
-  }, []);
+    // Fetch areas on component mount
+    axios
+      .get(GET_AREA_LIST)
+      .then((response) => {
+        setAreas(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching areas:", error);
+      });
+
+    // Fetch salesmen data
+    axios
+      .get(GET_SALESMEN_LIST)
+      .then(function (response) {
+        console.log("Salesmen list:", response.data);
+        if (response.data.error) {
+          handleSnackbar("error", response.data.error_msg);
+        } else {
+          const formattedData = response.data.data.map((salesman) => ({
+            ...salesman,
+            dateOfJoin: salesman.dateOfJoin
+              ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
+              : null,
+          }));
+          setData(formattedData);
+        }
+      })
+      .catch(function (error) {
+        console.error("Error fetching data:", error);
+        handleSnackbar("error", "Error: " + error);
+      });
+  }, []); 
 
   const actionColumn = [
     {
@@ -52,7 +87,7 @@ export default function GetSalesmenList() {
           <IconButton
             aria-label="delete"
             size="medium"
-            onClick={() => deleteCustomer(params.row._id)}
+            onClick={() => deleteSalesmen(params.row._id)}
           >
             <DeleteIcon fontSize="inherit" />
           </IconButton>
@@ -61,25 +96,7 @@ export default function GetSalesmenList() {
     },
   ];
 
-  const refreshData = () => {
-    console.log("Refreshing data...");
-    axios
-      .get(GET_SALESMEN_LIST)
-      .then(function (response) {
-        console.log("Salesmen list:", response.data);
-        if (response.data.error) {
-          handleSnackbar("error", response.data.error_msg);
-        } else {
-          setData(response.data.data);
-        }
-      })
-      .catch(function (error) {
-        console.error("Error refreshing data:", error);
-        handleSnackbar("error", "Error: " + error);
-      });
-  };
-  
-  const deleteCustomer = (id) => {
+  const deleteSalesmen = (id) => {
     axios
       .delete(GET_SALESMEN_LIST + `/${id}`)
       .then(function (response) {
@@ -99,21 +116,25 @@ export default function GetSalesmenList() {
   };
 
   const updateSalesmen = () => {
-    const updatedCustomer = {
+    const updatedSalesmen = {
       name: name,
-      phone: phone,
+      fatherName: fatherName,
       address: address,
-      gender: gender,
-      email: email,
-      license: license,
-      licenseExpiryDate: licenseExpiryDate,
       areaCode: areaCode,
-      bankAccount: bankAccount,
-      code:code,
+      code: code,
+      qualification: qualification,
+      phoneNo: phoneNo,
+      areaCommission: areaCommission,
+      target: target,
+      dateOfJoin: dateOfJoin,
+      refPerson: refPerson,
+      refPersonNumber: refPersonNumber,
+      cnic: cnic,
+      description: description,
     };
-  
+
     axios
-      .put(GET_SALESMEN_LIST + `/${id}`, updatedCustomer)
+      .put(GET_SALESMEN_LIST + `/${id}`, updatedSalesmen)
       .then(function (response) {
         handleSnackbar(
           response.data.error ? "error" : "success",
@@ -124,27 +145,30 @@ export default function GetSalesmenList() {
         if (!response.data.error) {
           refreshData();
           setOpenPopup(false);
-          resetForm(); // Move resetForm after refreshData
+          resetForm();
         }
       })
       .catch(function (error) {
         handleSnackbar("error", "Error: " + error);
       });
   };
-  
-  
+
   const addSalesmen = () => {
     const newSalesmen = {
       name: name,
-      phone: phone,
+      fatherName: fatherName,
       address: address,
-      gender: gender,
-      email: email,
-      license: license,
-      licenseExpiryDate: licenseExpiryDate,
       areaCode: areaCode,
-      bankAccount: bankAccount,
-      code:code,
+      code: code,
+      qualification: qualification,
+      phoneNo: phoneNo,
+      areaCommission: areaCommission,
+      target: target,
+      dateOfJoin: dateOfJoin,
+      refPerson: refPerson,
+      refPersonNumber: refPersonNumber,
+      cnic: cnic,
+      description: description,
     };
     axios
       .post(GET_SALESMEN_LIST, newSalesmen)
@@ -157,7 +181,7 @@ export default function GetSalesmenList() {
         );
         if (!response.data.error) {
           setOpenPopup(false);
-          refreshData(); // Move refreshData inside the success block
+          refreshData();
           resetForm();
         }
       })
@@ -165,7 +189,6 @@ export default function GetSalesmenList() {
         handleSnackbar("error", "Error: " + error);
       });
   };
-  
 
   const handleSnackbar = (severity, message) => {
     setOpen(true);
@@ -174,18 +197,28 @@ export default function GetSalesmenList() {
   };
 
   const validation = () => {
-    if (
-      name.length === 0 ||
-      phone.length === 0 ||
-      address.length === 0 ||
-      gender.length === 0 ||
-      email.length === 0 ||
-      license.length === 0 ||
-      licenseExpiryDate.length === 0 ||
-      areaCode.length === 0 ||
-      bankAccount.length === 0 ||
-      code.length === 0
-    ) {
+    const salesmenData = {
+      name: name,
+      fatherName: fatherName,
+      address: address,
+      areaCode: areaCode,
+      code: code,
+      qualification: qualification,
+      phoneNo: phoneNo,
+      areaCommission: areaCommission,
+      target: target,
+      dateOfJoin: dateOfJoin,
+      refPerson: refPerson,
+      refPersonNumber: refPersonNumber,
+      cnic: cnic,
+      description: description,
+    };
+
+    const isMissingField = Object.values(salesmenData).some(
+      (field) => field === undefined || field.length === 0
+    );
+
+    if (isMissingField) {
       handleSnackbar("error", "Some fields are missing");
     } else {
       if (id) {
@@ -197,38 +230,75 @@ export default function GetSalesmenList() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason !== "clickaway") {
+    if (reason !== "click away") {
       setOpen(false);
     }
   };
 
   const resetForm = () => {
     setName("");
-    setPhone("");
     setAddress("");
-    setGender("");
-    setEmail("");
-    setLicense("");
-    setLicenseExpiryDate("");
     setAreaCode("");
-    setBankAccount("");
-    setId("");
     setCode("");
+    setFatherName("");
+    setQualification("");
+    setPhoneNo("");
+    setAreaCommission("");
+    setTarget("");
+    setDateOfJoin("");
+    setRefPerson("");
+    setRefPersonNumber("");
+    setCnic("");
+    setDescription("");
   };
 
-  const editSalesmen = (customer) => {
+  const editSalesmen = (salesman) => {
     setOpenPopup(true);
-    setName(customer.name);
-    setPhone(customer.phone);
-    setAddress(customer.address);
-    setGender(customer.gender);
-    setEmail(customer.email);
-    setLicense(customer.license);
-    setLicenseExpiryDate(customer.licenseExpiryDate);
-    setAreaCode(customer.areaCode);
-    setBankAccount(customer.bankAccount);
-    setId(customer._id);
-    setCode(customer.Code);
+    setId(salesman._id);
+    setName(salesman.name);
+    setFatherName(salesman.fatherName);
+    setAddress(salesman.address);
+    setAreaCode(salesman?.areaCode?._id || "");
+  
+    setCode(salesman.code);
+    setQualification(salesman.qualification);
+    setPhoneNo(salesman.phoneNo);
+    setAreaCommission(salesman.areaCommission);
+    setTarget(salesman.target);
+    setDateOfJoin(
+      salesman.dateOfJoin
+        ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
+        : ""
+    ); 
+    setRefPerson(salesman.refPerson);
+    setRefPersonNumber(salesman.refPersonNumber);
+    setCnic(salesman.cnic);
+    setDescription(salesman.description);
+  };
+  
+
+  const refreshData = () => {
+    console.log("Refreshing data...");
+    axios
+      .get(GET_SALESMEN_LIST)
+      .then(function (response) {
+        console.log("Salesmen list:", response.data);
+        if (response.data.error) {
+          handleSnackbar("error", response.data.error_msg);
+        } else {
+          const formattedData = response.data.data.map((salesman) => ({
+            ...salesman,
+            dateOfJoin: salesman.dateOfJoin
+              ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
+              : null,
+          }));
+          setData(formattedData);
+        }
+      })
+      .catch(function (error) {
+        console.error("Error refreshing data:", error);
+        handleSnackbar("error", "Error: " + error);
+      });
   };
 
   return (
@@ -241,10 +311,11 @@ export default function GetSalesmenList() {
           columns={salesmenColumns.concat(actionColumn)}
           isForTransaction={false}
         />
-        <Popup title="Customer Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <Popup title="Salesmen Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+          {/* Form fields... */}
           <Grid container spacing={3}>
             {/* Form fields... */}
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="name"
@@ -256,19 +327,99 @@ export default function GetSalesmenList() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
-                id="phone"
-                name="phone"
-                label="Phone"
+                id="fatherName"
+                name="fatherName"
+                label="Father's Name"
                 fullWidth
                 variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                value={fatherName}
+                onChange={(event) => setFatherName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="phoneNo"
+                type="number" 
+                name="phoneNo"
+                label="Phone Number"
+                fullWidth
+                variant="outlined"
+                value={phoneNo}
+                onChange={(event) => setPhoneNo(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+  <TextField
+    required
+    id="cnic"
+    name="cnic"
+    type="number" 
+    label="CNIC"
+    fullWidth
+    variant="outlined"
+    value={cnic}
+    onChange={(event) => setCnic(event.target.value)}
+  />
+</Grid>
+<Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="qualification"
+                name="qualification"
+                label="Qualification"
+                fullWidth
+                variant="outlined"
+                value={qualification}
+                onChange={(event) => setQualification(event.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="dateOfJoin"
+                name="dateOfJoin"
+                label="Date of Join"
+                type="date"
+                fullWidth
+                variant="outlined"
+                value={dateOfJoin}
+                onChange={(event) => setDateOfJoin(event.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="refPerson"
+                name="refPerson"
+                label="Reference Person"
+                fullWidth
+                variant="outlined"
+                value={refPerson}
+                onChange={(event) => setRefPerson(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="refPersonNumber"
+                name="refPersonNumber"
+                label="Reference Person Number"
+                type="number" 
+                fullWidth
+                variant="outlined"
+                value={refPersonNumber}
+                onChange={(event) => setRefPersonNumber(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <TextField
                 required
                 id="address"
@@ -280,31 +431,26 @@ export default function GetSalesmenList() {
                 onChange={(event) => setAddress(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="gender"
-                name="gender"
-                label="Gender"
+            <Grid item xs={4} sm={3}>
+            <FormControl fullWidth variant="outlined" required>
+              <InputLabel id="areaCodeLabel">Area Code</InputLabel>
+              <Select
+                labelId="areaCodeLabel"
+                id="areaCode"
+                value={areaCode}
+                label="Area Code"
                 fullWidth
-                variant="outlined"
-                value={gender}
-                onChange={(event) => setGender(event.target.value)}
-              />
+                onChange={(event) => setAreaCode(event.target.value)}
+              >
+                {areas.map((area) => (
+                  <MenuItem key={area._id} value={area._id}>
+                    {area.code}
+                  </MenuItem>
+                ))}
+              </Select>
+</FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="email"
-                name="email"
-                label="Email"
-                fullWidth
-                variant="outlined"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="code"
@@ -316,72 +462,74 @@ export default function GetSalesmenList() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
-                id="license"
-                name="license"
-                label="License"
+                id="areaCommission"
+                name="areaCommission"
+                label="Area Commission"
+                type="number" 
                 fullWidth
                 variant="outlined"
-                value={license}
-                onChange={(event) => setLicense(event.target.value)}
+                value={areaCommission}
+                onChange={(event) => setAreaCommission(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
-                id="licenseExpiryDate"
-                name="licenseExpiryDate"
-                label="License expiry date"
+                id="target"
+                name="target"
+                type="number" 
+                label="Target"
                 fullWidth
                 variant="outlined"
-                value={licenseExpiryDate}
-                onChange={(event) => setLicenseExpiryDate(event.target.value)}
+                value={target}
+                onChange={(event) => setTarget(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
                 required
-                id="areaCode"
-                name="areaCode"
-                label="Area code"
+                id="description"
+                name="description"
+                label="Description"
                 fullWidth
                 variant="outlined"
-                value={areaCode}
-                onChange={(event) => setAreaCode(event.target.value)}
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="bankAccount"
-                name="bankAccount"
-                label="Bank Account"
-                fullWidth
-                variant="outlined"
-                value={bankAccount}
-                onChange={(event) => setBankAccount(event.target.value)}
-              />
+          </Grid>
+          <Grid container spacing={1} direction="row" justifyContent="flex-end">
+            <Grid item>
+              <Button
+                variant="contained"
+                size="medium"
+                color="success"
+                onClick={validation}
+              >
+                {id ? "Update" : "Add"}
+              </Button>
             </Grid>
-            <Grid item xs={12} sm={6}></Grid>
-            <Grid item xs={12} sm={6}>
-              <Grid container spacing={1} direction="row" justifyContent="flex-end">
-                <Grid item>
-                  <Button variant="contained" size="medium" color="success" onClick={validation}>
-                    {id ? "Update" : "Add"}
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="contained" size="medium" color="error" onClick={() => setOpenPopup(false)}>
-                    Cancel
-                  </Button>
-                </Grid>
-              </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                size="medium"
+                color="error"
+                onClick={() => setOpenPopup(false)}
+              >
+                Cancel
+              </Button>
             </Grid>
           </Grid>
         </Popup>
-        <SnackBar open={open} severity={severity} message={message} handleClose={handleClose} />
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

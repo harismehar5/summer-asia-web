@@ -36,8 +36,8 @@ export default function AddArea() {
         }
       })
       .catch(function (error) {
-        console.error("Error adding area:", error);
-        handleSnackbar("error", "Internal Server Error");
+        console.error("Error adding area:", error.response.data.error);
+        handleSnackbar("error", error.response.data.error);
       });
   };
 
@@ -50,7 +50,7 @@ export default function AddArea() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === "click away") {
       return;
     }
     setOpen(false);
@@ -78,7 +78,7 @@ export default function AddArea() {
             Add Area
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="code"
@@ -90,7 +90,7 @@ export default function AddArea() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="area"
@@ -102,7 +102,7 @@ export default function AddArea() {
                 onChange={(event) => setArea(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} sm={12   }>
               <TextField
                 id="description"
                 name="description"

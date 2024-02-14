@@ -47,6 +47,7 @@ import SalesDetails from "./layout/sale/SalesDetails";
 import SalesReturn from "./layout/sale/SalesReturn";
 import SalesReturnDetails from "./layout/sale/SalesReturn";
 import PurchaseReturn from "./layout/purchaseReturn/addPurchaseReturn";
+import AddSalesReturn from "./layout/saleReturn/addSalesReturn";
 
 function App() {
   return (
@@ -114,6 +115,9 @@ function App() {
           <Route path="purchase-return">
           {/* <Route index element={<GetSalesmenList/>} /> */}
             <Route path="add" element={<PurchaseReturn/>} />
+          </Route>
+          <Route path="sale-return">
+            <Route path="adds" element={<AddSalesReturn/>} />
           </Route>
         </Route>
       </Routes>

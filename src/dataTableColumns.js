@@ -743,11 +743,12 @@ export const customersColumns = [
     renderCell: (params) => {
       return (
         <>
-          <div>{formatDate(params.row.createdAt)}</div>
+          <div>{formatDate(params.row.licenseExpiryDate)}</div>
         </>
       );
     },
   },
+  
   {
     field: "areaCode",
     headerName: "Area code",
@@ -798,7 +799,18 @@ export const salesmenColumns = [
     headerName: "Phone",
     width: 230,
   },
-  { field: "areaCode", headerName: "Area code", width: 230 },
+  {
+    field: "areaCode",
+    headerName: "Area code",
+    width: 230,
+    renderCell: (params) => {
+      if (params.row.areaCode && params.row.areaCode.code) {
+        return <div>{params.row.areaCode.code}</div>;
+      } else {
+        return <div>No Area Code</div>;
+      }
+    },
+  },
   { field: "areaCommission", headerName: "Area commission", width: 230 },
   { field: "target", headerName: "Target", width: 230 },
   {
