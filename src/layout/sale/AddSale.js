@@ -21,13 +21,15 @@ import {
   ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_BATCH_LIST,
+  GET_SALESMEN_LIST,
+  GET_QUANTITY_AND_EXPIRY_LIST,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddSale() {
   const [productList, setProductList] = useState([]);
   const [supplierList, setSupplierList] = useState([]);
-  const [batchList, setBatchList] = useState([])
+  const [batchList, setBatchList] = useState([]);
   const [productObject, setProductObject] = useState({
     batchCode: "",
     expiryDate: "",
@@ -38,18 +40,19 @@ export default function AddSale() {
     tradeRate: 0,
     netTotal: "",
     status: "",
-    productCode: ""
+    productCode: "",
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
-  const [batchObject, setBatchObject] = useState({})
+  const [DateAndQuantityObject, setDateAndQuantityObject] = useState({});
+  const [SalesManList, setSalesManList] = useState([]);
 
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
-  const [code, setCode] = useState("")
+  const [code, setCode] = useState("");
   const paymentMediumList = [
     {
       id: 1,
@@ -69,6 +72,9 @@ export default function AddSale() {
     },
   ];
   const [paymentMediumObject, setPaymentMediumObject] = useState({});
+  const [SaleManObject, setSaleManObject] = useState({});
+  const [ProductId, setProductId] = useState(null);
+  const [BatchId, setBatchId] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -101,22 +107,22 @@ export default function AddSale() {
   useEffect(() => {
     getStockList();
     getSupplierList();
+    getSalesManList();
     calculateAmountAndBags(data);
   }, []);
 
-
   const dataEntry = (data) => {
-    axios
-      .post(ADD_PURCHASE, data)
-      .then(response => {
-        console.log("Response", response)
-      }
-      )
-      .catch((error) => {
-        setOpen(true);
-        setMessage("error: " + error);
-        setSeverity("error");
-      });
+ 
+    // axios
+    //   .post(ADD_PURCHASE, data)
+    //   .then((response) => {
+    //   //  console.log("response ==",JSON.stringify(response,null,2))
+    //   })
+    //   .catch((error) => {
+    //     setOpen(true);
+    //     setMessage("error: " + error);
+    //     setSeverity("error");
+    //   });
   };
 
   const getStockList = () => {
@@ -139,13 +145,13 @@ export default function AddSale() {
   };
 
   const getBatchList = (productCode) => {
-    console.log("Product Code", productCode)
+    console.log("Product Code", productCode);
     axios
       .post(GET_BATCH_LIST, {
-        productCode: productCode
+        productCode: productCode,
       })
       .then(function (response) {
-        console.log("Response", response)
+        console.log("Response", response);
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
@@ -179,23 +185,23 @@ export default function AddSale() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject)
+    console.log("Product Object", productObject);
     // if (productObject._id !== "") {
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
     // if (data.length === 0) {
     obj = {
-      tradeRate: productObject.tradeRate,
-      quantity: 1,
-      bonus: 0,
-      discount: 0,
-      salesTax: productObject.salesTax,
-      tradeRate: productObject.tradeRate,
-      // netTotal: productObject.tradeRate,
-      netTotal: "",
-      status: productObject.status,
-      productCode: productObject.code
+                productCode: productObject.productCode,
+                quantity: productObject.quantity,
+                tradeRate: productObject.tradeRate,
+                expiryDate: productObject.expiryDate,
+                batchCode: productObject.batchCode,
+                bonus: productObject.bonus,
+                discount: productObject.discount,
+                salesTax:productObject.salesTax,
+                netTotal: productObject.netTotal
+    
     };
     array = [...array, obj];
     setData(array);
@@ -220,6 +226,56 @@ export default function AddSale() {
     //   setMessage("Please select any product");
     //   setSeverity("error");
     // }
+  };
+  const getSalesManList = () => {
+    axios
+      .get(GET_SALESMEN_LIST)
+      .then(function (response) {
+        setSalesManList(response.data.data);
+        // if (response.data.error) {
+        //   handleSnackbar("error", response.data.error_msg);
+        // } else {
+        //   const formattedData = response.data.data.map((salesman) => ({
+        //     ...salesman,
+        //     dateOfJoin: salesman.dateOfJoin
+        //       ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
+        //       : null,
+        //   }));
+        //   setData(formattedData);
+        // }
+      })
+      .catch(function (error) {
+        console.error("Error fetching data:", error);
+        // handleSnackbar("error", "Error: " + error);
+      });
+  };
+  const getQuantityAndExpiryObject = (batchId) => {
+    let payload = {
+      productCode: ProductId,
+      batchCode: batchId,
+    };
+  
+    axios
+    .post(GET_QUANTITY_AND_EXPIRY_LIST,payload)
+    .then(function (response) {
+      setDateAndQuantityObject(response.data)
+      //setSalesManList(response.data.data)
+      // if (response.data.error) {
+      //   handleSnackbar("error", response.data.error_msg);
+      // } else {
+      //   const formattedData = response.data.data.map((salesman) => ({
+      //     ...salesman,
+      //     dateOfJoin: salesman.dateOfJoin
+      //       ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
+      //       : null,
+      //   }));
+      //   setData(formattedData);
+      // }
+    })
+    .catch(function (error) {
+      console.error("Error fetching data:", error);
+      // handleSnackbar("error", "Error: " + error);
+    });
   };
   const calculateAmountAndBags = (array) => {
     let sum = 0;
@@ -253,20 +309,21 @@ export default function AddSale() {
     }
   };
   const validate = () => {
-    var companyCode = supplierObject._id
-    var paymentMode = paymentMediumObject.name
-    var totalAmount = 0
+    var companyCode = supplierObject._id;
+    var paymentMode = paymentMediumObject.name;
+    var totalAmount = 0;
     for (let i = 0; i < data.length; i++) {
-      totalAmount = totalAmount + data[i].netTotal
+      totalAmount = totalAmount + data[i].netTotal;
     }
 
     var purchaseObject = {
       purchaseDetail: data,
       companyCode: companyCode,
       paymentMode: paymentMode,
-      total: totalAmount
-    }
-    console.log("Data", purchaseObject)
+      saleman:SaleManObject._id,
+      total: totalAmount,
+    };
+    console.log("Data ===", JSON.stringify(purchaseObject,null,2));
 
     // if (data.length === 0) {
     //   setOpen(true);
@@ -288,6 +345,20 @@ export default function AddSale() {
     dataEntry(purchaseObject);
     // }
   };
+  // Function to format date to "yyyy-MM-dd" format
+function formatDate(date) {
+  const d = new Date(date);
+  let month = '' + (d.getMonth() + 1);
+  let day = '' + d.getDate();
+  const year = d.getFullYear();
+
+  if (month.length < 2) 
+    month = '0' + month;
+  if (day.length < 2) 
+    day = '0' + day;
+
+  return [year, month, day].join('-');
+}
   return (
     <div className="box">
       <SideBar />
@@ -321,7 +392,7 @@ export default function AddSale() {
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
                 options={paymentMediumList}
-                getOptionLabel={(payment, index) => payment}
+                getOptionLabel={(payment, index) => payment.name}
                 disablePortal
                 fullWidth
                 isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -334,6 +405,29 @@ export default function AddSale() {
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id}>
                     {payment.name}
+                  </Box>
+                )}
+              />
+            </Grid>
+            <Grid item md={12} px={2} py={1}>
+              <Autocomplete
+                options={SalesManList}
+                getOptionLabel={(saleMen, index) => saleMen.name}
+                disablePortal
+                fullWidth
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value._id
+                }
+                onChange={(event, newInputValue) => {
+                  setSaleManObject(newInputValue);
+            
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Salesmen" />
+                )}
+                renderOption={(props, saleMan) => (
+                  <Box component="li" {...props} key={saleMan._id}>
+                    {saleMan.name}
                   </Box>
                 )}
               />
@@ -361,14 +455,14 @@ export default function AddSale() {
                           option.id === value.id
                         }
                         onChange={(event, newInputValue) => {
-                          // setProductObject(newInputValue);
+                          setProductId(newInputValue._id);
                           var productObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
                               v[index].productCode = productObject._id;
                             })
                           );
-                          getBatchList(productObject._id)
+                          getBatchList(productObject._id);
                         }}
                         renderInput={(params) => (
                           <TextField {...params} label="Select Product" />
@@ -391,13 +485,14 @@ export default function AddSale() {
                           option.id === value.id
                         }
                         onChange={(event, newInputValue) => {
-                          // setProductObject(newInputValue);
+                          setBatchId(newInputValue.batchCode);
                           var batchObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
                               v[index].productCode = batchObject.batchCode;
                             })
                           );
+                          getQuantityAndExpiryObject(newInputValue.batchCode);
                         }}
                         renderInput={(params) => (
                           <TextField {...params} label="Select Batch" />
@@ -412,8 +507,9 @@ export default function AddSale() {
                     </Grid>
                     <Grid item md={1.5} px={1}>
                       <TextField
-                        label="Select Date"
+                        label={ "Select Date"}
                         type="date"
+                        value={DateAndQuantityObject.expiryDate ? formatDate(DateAndQuantityObject.expiryDate) : ''}
                         // defaultValue={currentDate}
                         onChange={(e) => {
                           var expiryDate = e.target.value;
@@ -433,7 +529,7 @@ export default function AddSale() {
                       <TextField
                         label="Quantity"
                         variant="outlined"
-                        value={product.quantity}
+                        value={DateAndQuantityObject?.quantity||product.quantity}
                         onChange={(e) => {
                           var quantity = e.target.value;
                           setData((currentData) =>

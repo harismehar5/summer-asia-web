@@ -102,6 +102,7 @@ export const GET_AREA_LIST = BASE_URL + "areas";
 export const GET_CUSTOMERS_LIST = BASE_URL + "customers";
 //SALESMEN URL
 export const GET_SALESMEN_LIST = BASE_URL + "salesmen";
+export const GET_QUANTITY_AND_EXPIRY_LIST = BASE_URL + "sales/getquantityandexpiry";
 //PURCHASERETURN URL
 export const GET_PURCHASERETURN = BASE_URL + "purchasereturns";
 //SALESMEN URL
