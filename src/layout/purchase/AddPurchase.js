@@ -98,7 +98,7 @@ export default function AddPurchase() {
     getStockList();
     getSupplierList();
     calculateAmountAndBags(data);
-  }, [data]);
+  }, []);
 
 
   const dataEntry = (data) => {

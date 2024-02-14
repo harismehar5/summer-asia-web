@@ -67,9 +67,10 @@ export const GET_EXPENSE_BY_ID = EXPENSE_BASE_URL;
 export const UPDATE_EXPENSE_STATUS_BY_ID = EXPENSE_BASE_URL + "update_status";
 
 //Sale URL
-export const SALE_BASE_URL = BASE_URL + "sale/";
+export const SALE_BASE_URL = BASE_URL + "sales/"
 export const ADD_SALE = SALE_BASE_URL + "add_sale";
 export const GET_SALE_LIST = SALE_BASE_URL + "get_sale";
+export const GET_BATCH_LIST = SALE_BASE_URL + "get_batch"
 
 //Purchase URL
 export const PURCHASE_BASE_URL = BASE_URL + "purchases";
