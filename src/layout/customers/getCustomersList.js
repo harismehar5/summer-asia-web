@@ -18,7 +18,11 @@ import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { customersColumns } from "../../dataTableColumns";
-import { ADD_EXPENSE, GET_AREA_LIST, GET_CUSTOMERS_LIST } from "../../utils/config";
+import {
+  ADD_EXPENSE,
+  GET_AREA_LIST,
+  GET_CUSTOMERS_LIST,
+} from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
 
@@ -51,7 +55,10 @@ export default function GetCustomersList() {
       .catch((error) => {
         console.error("Error fetching areas:", error);
       });
+    GetCustomerService();
+  }, []); // Empty dependency array ensures the effect runs only once on mount
 
+  const GetCustomerService = () => {
     // Fetch customers data
     axios
       .get(GET_CUSTOMERS_LIST)
@@ -74,8 +81,7 @@ export default function GetCustomersList() {
         console.error("Error fetching data:", error);
         handleSnackbar("error", "Error: " + error);
       });
-  }, []); // Empty dependency array ensures the effect runs only once on mount
-
+  };
   const actionColumn = [
     {
       field: "action",
@@ -149,6 +155,7 @@ export default function GetCustomersList() {
             : response.data.success_msg
         );
         if (!response.data.error) {
+          GetCustomerService();
           setOpenPopup(false);
           resetForm();
         }
@@ -254,7 +261,7 @@ export default function GetCustomersList() {
     setOpenPopup(true);
     // Log the area code to the console for debugging
     console.log("Area Code:", customer.areaCode);
-    
+
     // Set state values
     setName(customer.name);
     setPhone(customer.phone);
@@ -270,8 +277,6 @@ export default function GetCustomersList() {
     setId(customer._id);
     setCode(customer.code);
   };
-  
-  
 
   return (
     <div className="list">
@@ -283,24 +288,28 @@ export default function GetCustomersList() {
           columns={customersColumns.concat(actionColumn)}
           isForTransaction={false}
         />
-        <Popup title="Customer Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <Popup
+          title="Customer Form"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+        >
           <Grid container spacing={3}>
             {/* Form fields... */}
             <Grid item xs={4} sm={3}>
-            <FormControl fullWidth variant="outlined" required>
-              <InputLabel id="gender-label">Gender</InputLabel>
-              <Select
-                labelId="gender-label"
-                id="gender"
-                value={gender}
-                label="Gender"
-                fullWidth
-                onChange={(event) => setGender(event.target.value)}
-              >
-                <MenuItem value="Male">Male</MenuItem>
-                <MenuItem value="Female">Female</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
-              </Select>
+              <FormControl fullWidth variant="outlined" required>
+                <InputLabel id="gender-label">Gender</InputLabel>
+                <Select
+                  labelId="gender-label"
+                  id="gender"
+                  value={gender}
+                  label="Gender"
+                  fullWidth
+                  onChange={(event) => setGender(event.target.value)}
+                >
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                </Select>
               </FormControl>
             </Grid>
             <Grid item xs={4} sm={3}>
@@ -321,14 +330,13 @@ export default function GetCustomersList() {
                 id="phone"
                 name="phone"
                 label="Phone"
-                type="number" 
+                type="number"
                 fullWidth
                 variant="outlined"
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
               />
             </Grid>
-
 
             <Grid item xs={4} sm={3}>
               <TextField
@@ -372,25 +380,24 @@ export default function GetCustomersList() {
             </Grid>
 
             <Grid item xs={4} sm={3}>
-            <FormControl fullWidth variant="outlined" required>
-  <InputLabel id="areaCodeLabel">Area Code</InputLabel>
-  <Select
-    labelId="areaCodeLabel"
-    id="areaCode"
-    value={areaCode}
-    label="Area Code"
-    fullWidth
-    onChange={(event) => setAreaCode(event.target.value)}
-  >
-    {areas.map((area) => (
-      <MenuItem key={area._id} value={area._id}>
-        {area.code}
-      </MenuItem>
-    ))}
-  </Select>
-  </FormControl>
-</Grid>
-
+              <FormControl fullWidth variant="outlined" required>
+                <InputLabel id="areaCodeLabel">Area Code</InputLabel>
+                <Select
+                  labelId="areaCodeLabel"
+                  id="areaCode"
+                  value={areaCode}
+                  label="Area Code"
+                  fullWidth
+                  onChange={(event) => setAreaCode(event.target.value)}
+                >
+                  {areas.map((area) => (
+                    <MenuItem key={area._id} value={area._id}>
+                      {area.code}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
 
             <Grid item xs={4} sm={3}>
               <TextField
@@ -430,7 +437,12 @@ export default function GetCustomersList() {
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
-              <Grid container spacing={1} direction="row" justifyContent="flex-end">
+              <Grid
+                container
+                spacing={1}
+                direction="row"
+                justifyContent="flex-end"
+              >
                 <Grid item>
                   <Button
                     variant="contained"

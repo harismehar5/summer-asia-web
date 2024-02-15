@@ -2,7 +2,7 @@
 export const BASE_URL = "https://medical-app-backend-v2.vercel.app/api/";
 
 //Supplier URL
-export const SUPPLIER_BASE_URL = BASE_URL + "supplier/";
+export const SUPPLIER_BASE_URL = BASE_URL + "companies/";
 export const ADD_SUPPLIER = SUPPLIER_BASE_URL + "add_supplier";
 export const GET_SUPPLIERS_LIST = SUPPLIER_BASE_URL + "get_suppliers";
 export const GET_SUPPLIER_BY_ID = SUPPLIER_BASE_URL;
