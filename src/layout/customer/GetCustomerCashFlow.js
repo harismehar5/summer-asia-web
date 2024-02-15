@@ -51,7 +51,6 @@ export default function GetCustomerCashFlow() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <h1>{data.cashInBalance}</h1>
         <ListHeader
           header={"Cash Flow List"}
           firstButton={true}

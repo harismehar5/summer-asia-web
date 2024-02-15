@@ -412,6 +412,37 @@ export default function AddPurchase() {
                     </Grid>
                     <Grid item md={1} px={1}>
                       <TextField
+                        label="Bonus"
+                        variant="outlined"
+                        value={product.bonus}
+                        onChange={(e) => {
+                          var bonus = e.target.value;
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].bonus = bonus;
+                            })
+                          );
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item md={1.2} px={1}>
+                      <TextField
+                        label="Trade Rate"
+                        variant="outlined"
+                        value={product.tradeRate}
+                        onChange={(e) => {
+                          var tradeRate = e.target.value;
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].tradeRate = tradeRate;
+                            })
+                          );
+                        }}
+                      />
+                    </Grid>
+                    <Grid item md={1} px={1}>
+                      <TextField
                         label="Discount"
                         variant="outlined"
                         value={product.discount}
@@ -428,22 +459,6 @@ export default function AddPurchase() {
                     </Grid>
                     <Grid item md={1} px={1}>
                       <TextField
-                        label="Bonus"
-                        variant="outlined"
-                        value={product.bonus}
-                        onChange={(e) => {
-                          var bonus = e.target.value;
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].bonus = bonus;
-                            })
-                          );
-                        }}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item md={1} px={1}>
-                      <TextField
                         label="Sales Tax"
                         variant="outlined"
                         value={product.salesTax}
@@ -452,21 +467,6 @@ export default function AddPurchase() {
                           setData((currentData) =>
                             produce(currentData, (v) => {
                               v[index].salesTax = salesTax;
-                            })
-                          );
-                        }}
-                      />
-                    </Grid>
-                    <Grid item md={1.2} px={1}>
-                      <TextField
-                        label="Trade Rate"
-                        variant="outlined"
-                        value={product.tradeRate}
-                        onChange={(e) => {
-                          var tradeRate = e.target.value;
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].tradeRate = tradeRate;
                             })
                           );
                         }}

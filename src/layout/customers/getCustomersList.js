@@ -35,7 +35,7 @@ export default function GetCustomersList() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("");
+  // const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [license, setLicense] = useState("");
   const [licenseExpiryDate, setLicenseExpiryDate] = useState("");
@@ -44,7 +44,7 @@ export default function GetCustomersList() {
   const [bankAccount, setBankAccount] = useState("");
   const [id, setId] = useState("");
   const [areas, setAreas] = useState([]);
-
+  const [ntn, setNtn] = useState("");
   useEffect(() => {
     // Fetch areas on component mount
     axios
@@ -135,7 +135,8 @@ export default function GetCustomersList() {
       name: name,
       phone: phone,
       address: address,
-      gender: gender,
+      // gender: gender,
+      ntn:ntn,
       email: email,
       license: license,
       // Format the date for the server (assuming it expects a standard format)
@@ -170,7 +171,8 @@ export default function GetCustomersList() {
       name: name,
       phone: phone,
       address: address,
-      gender: gender,
+      // gender: gender,
+      ntn:ntn,
       email: email,
       license: license,
       licenseExpiryDate: licenseExpiryDate,
@@ -209,7 +211,8 @@ export default function GetCustomersList() {
       !name ||
       !phone ||
       !address ||
-      !gender ||
+      // !gender ||
+      !ntn ||
       !email ||
       !license ||
       !licenseExpiryDate ||
@@ -219,7 +222,8 @@ export default function GetCustomersList() {
       name.length === 0 ||
       phone.length === 0 ||
       address.length === 0 ||
-      gender.length === 0 ||
+      // gender.length === 0 ||
+      ntn.length === 0 ||
       email.length === 0 ||
       license.length === 0 ||
       licenseExpiryDate.length === 0 ||
@@ -247,7 +251,8 @@ export default function GetCustomersList() {
     setName("");
     setPhone("");
     setAddress("");
-    setGender("");
+    // setGender("");
+    setNtn("");
     setEmail("");
     setLicense("");
     setLicenseExpiryDate("");
@@ -266,7 +271,8 @@ export default function GetCustomersList() {
     setName(customer.name);
     setPhone(customer.phone);
     setAddress(customer.address);
-    setGender(customer.gender);
+    // setGender(customer.gender);
+    setNtn(customer.ntn);
     setEmail(customer.email);
     setLicense(customer.license);
     setLicenseExpiryDate(
@@ -295,7 +301,7 @@ export default function GetCustomersList() {
         >
           <Grid container spacing={3}>
             {/* Form fields... */}
-            <Grid item xs={4} sm={3}>
+            {/* <Grid item xs={4} sm={3}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="gender-label">Gender</InputLabel>
                 <Select
@@ -311,6 +317,18 @@ export default function GetCustomersList() {
                   <MenuItem value="Other">Other</MenuItem>
                 </Select>
               </FormControl>
+            </Grid> */}
+                        <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="ntn"
+                name="ntn"
+                label="Ntn"
+                fullWidth
+                variant="outlined"
+                value={ntn}
+                onChange={(event) => setNtn(event.target.value)}
+              />
             </Grid>
             <Grid item xs={4} sm={3}>
               <TextField
