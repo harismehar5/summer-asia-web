@@ -92,13 +92,13 @@ export default function GetSupplierLedger() {
             )}
           />
         </Grid>
-        {data.length !== 0 ? (
+       
         <DataTable
           data={data}
           columns={supplierLedgerColumns}
           isForTransaction={false}
         />
-            ) : null}
+        
         <SnackBar
           open={open}
           severity={severity}

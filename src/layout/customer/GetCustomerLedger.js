@@ -108,14 +108,14 @@ export default function GetCustomerLedger() {
             )}
           />
         </Grid>
-        {data.length !== 0 ? (
+       
           <DataTable
             data={data}
             columns={customerLedgerColumns}
             // loading={loading}
             isForTransaction={false}
           />
-        ) : null}
+       
         <SnackBar
           open={open}
           severity={severity}
