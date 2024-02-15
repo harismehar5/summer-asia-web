@@ -69,6 +69,7 @@ export default function GetPurchaseList() {
           setSeverity("error");
         } else {
           setData(response.data.data);
+          
         }
       })
       .catch(function (error) {

@@ -51,7 +51,7 @@ export default function GetSalesManList() {
     axios
       .get(GET_salesman_LIST)
       .then(function (response) {
-        console.log("salesman list:", response.data);
+        console.log("salesman list:",JSON.stringify(response,null,2));
         if (response.data.error) {
           handleSnackbar("error", response.data.error_msg);
         } else {
