@@ -340,7 +340,7 @@ export const purchaseColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{params.row.companyCode.name}</div>
+          <div>{params?.row?.companyCode?.name || "N/A"}</div>
         </>
       );
     },
@@ -768,7 +768,7 @@ export const customersColumns = [
   },
 ];
 
-export const salesmenColumns = [
+export const salesmanColumns = [
   {
     field: "name",
     headerName: "Name",

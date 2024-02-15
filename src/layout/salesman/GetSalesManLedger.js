@@ -13,14 +13,14 @@ import { salesmanLedgerColumns } from "../../dataTableColumns";
 
 import {
   BASE_URL,
-  GET_SALESMEN_LIST,
+  GET_salesman_LIST,
   GET_CUSTOMER_LEDGER,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import { json } from "react-router-dom";
 
-export default function GetSalesmenLedger() {
+export default function GetsalesmanLedger() {
   const [data, setData] = useState([]);
   const [customerList, setCustomerList] = useState([]);
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function GetSalesmenLedger() {
 
   const getCustomersList = () => {
     axios
-      .get(GET_SALESMEN_LIST)
+      .get(GET_salesman_LIST)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);

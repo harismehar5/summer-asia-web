@@ -8,12 +8,12 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { salesmenColumns } from "../../dataTableColumns";
-import { GET_AREA_LIST, GET_SALESMEN_LIST } from "../../utils/config";
+import { salesmanColumns } from "../../dataTableColumns";
+import { GET_AREA_LIST, GET_salesman_LIST } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
 
-export default function GetSalesmenList() {
+export default function GetSalesManList() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -47,11 +47,11 @@ export default function GetSalesmenList() {
         console.error("Error fetching areas:", error);
       });
 
-    // Fetch salesmen data
+    // Fetch salesman data
     axios
-      .get(GET_SALESMEN_LIST)
+      .get(GET_salesman_LIST)
       .then(function (response) {
-        console.log("Salesmen list:", response.data);
+        console.log("salesman list:", response.data);
         if (response.data.error) {
           handleSnackbar("error", response.data.error_msg);
         } else {
@@ -68,7 +68,7 @@ export default function GetSalesmenList() {
         console.error("Error fetching data:", error);
         handleSnackbar("error", "Error: " + error);
       });
-  }, []); 
+  }, []);
 
   const actionColumn = [
     {
@@ -80,14 +80,14 @@ export default function GetSalesmenList() {
           <IconButton
             aria-label="edit"
             size="medium"
-            onClick={() => editSalesmen(params.row)}
+            onClick={() => editsalesman(params.row)}
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
           <IconButton
             aria-label="delete"
             size="medium"
-            onClick={() => deleteSalesmen(params.row._id)}
+            onClick={() => deletesalesman(params.row._id)}
           >
             <DeleteIcon fontSize="inherit" />
           </IconButton>
@@ -96,9 +96,9 @@ export default function GetSalesmenList() {
     },
   ];
 
-  const deleteSalesmen = (id) => {
+  const deletesalesman = (id) => {
     axios
-      .delete(GET_SALESMEN_LIST + `/${id}`)
+      .delete(GET_salesman_LIST + `/${id}`)
       .then(function (response) {
         handleSnackbar(
           response.data.error ? "error" : "success",
@@ -115,8 +115,8 @@ export default function GetSalesmenList() {
       });
   };
 
-  const updateSalesmen = () => {
-    const updatedSalesmen = {
+  const updatesalesman = () => {
+    const updatedsalesman = {
       name: name,
       fatherName: fatherName,
       address: address,
@@ -134,7 +134,7 @@ export default function GetSalesmenList() {
     };
 
     axios
-      .put(GET_SALESMEN_LIST + `/${id}`, updatedSalesmen)
+      .put(GET_salesman_LIST + `/${id}`, updatedsalesman)
       .then(function (response) {
         handleSnackbar(
           response.data.error ? "error" : "success",
@@ -153,8 +153,8 @@ export default function GetSalesmenList() {
       });
   };
 
-  const addSalesmen = () => {
-    const newSalesmen = {
+  const addsalesman = () => {
+    const newsalesman = {
       name: name,
       fatherName: fatherName,
       address: address,
@@ -171,7 +171,7 @@ export default function GetSalesmenList() {
       description: description,
     };
     axios
-      .post(GET_SALESMEN_LIST, newSalesmen)
+      .post(GET_salesman_LIST, newsalesman)
       .then(function (response) {
         handleSnackbar(
           response.data.error ? "error" : "success",
@@ -197,7 +197,7 @@ export default function GetSalesmenList() {
   };
 
   const validation = () => {
-    const salesmenData = {
+    const salesmanData = {
       name: name,
       fatherName: fatherName,
       address: address,
@@ -214,7 +214,7 @@ export default function GetSalesmenList() {
       description: description,
     };
 
-    const isMissingField = Object.values(salesmenData).some(
+    const isMissingField = Object.values(salesmanData).some(
       (field) => field === undefined || field.length === 0
     );
 
@@ -222,9 +222,9 @@ export default function GetSalesmenList() {
       handleSnackbar("error", "Some fields are missing");
     } else {
       if (id) {
-        updateSalesmen();
+        updatesalesman();
       } else {
-        addSalesmen();
+        addsalesman();
       }
     }
   };
@@ -252,14 +252,14 @@ export default function GetSalesmenList() {
     setDescription("");
   };
 
-  const editSalesmen = (salesman) => {
+  const editsalesman = (salesman) => {
     setOpenPopup(true);
     setId(salesman._id);
     setName(salesman.name);
     setFatherName(salesman.fatherName);
     setAddress(salesman.address);
     setAreaCode(salesman?.areaCode?._id || "");
-  
+
     setCode(salesman.code);
     setQualification(salesman.qualification);
     setPhoneNo(salesman.phoneNo);
@@ -269,20 +269,20 @@ export default function GetSalesmenList() {
       salesman.dateOfJoin
         ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
         : ""
-    ); 
+    );
     setRefPerson(salesman.refPerson);
     setRefPersonNumber(salesman.refPersonNumber);
     setCnic(salesman.cnic);
     setDescription(salesman.description);
   };
-  
+
 
   const refreshData = () => {
     console.log("Refreshing data...");
     axios
-      .get(GET_SALESMEN_LIST)
+      .get(GET_salesman_LIST)
       .then(function (response) {
-        console.log("Salesmen list:", response.data);
+        console.log("salesman list:", response.data);
         if (response.data.error) {
           handleSnackbar("error", response.data.error_msg);
         } else {
@@ -308,10 +308,10 @@ export default function GetSalesmenList() {
         <Navbar />
         <DataTable
           data={data}
-          columns={salesmenColumns.concat(actionColumn)}
+          columns={salesmanColumns.concat(actionColumn)}
           isForTransaction={false}
         />
-        <Popup title="Salesmen Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <Popup title="salesman Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
           {/* Form fields... */}
           <Grid container spacing={3}>
             {/* Form fields... */}
@@ -343,7 +343,7 @@ export default function GetSalesmenList() {
               <TextField
                 required
                 id="phoneNo"
-                type="number" 
+                type="number"
                 name="phoneNo"
                 label="Phone Number"
                 fullWidth
@@ -353,19 +353,19 @@ export default function GetSalesmenList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-  <TextField
-    required
-    id="cnic"
-    name="cnic"
-    type="number" 
-    label="CNIC"
-    fullWidth
-    variant="outlined"
-    value={cnic}
-    onChange={(event) => setCnic(event.target.value)}
-  />
-</Grid>
-<Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="cnic"
+                name="cnic"
+                type="number"
+                label="CNIC"
+                fullWidth
+                variant="outlined"
+                value={cnic}
+                onChange={(event) => setCnic(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="qualification"
@@ -412,7 +412,7 @@ export default function GetSalesmenList() {
                 id="refPersonNumber"
                 name="refPersonNumber"
                 label="Reference Person Number"
-                type="number" 
+                type="number"
                 fullWidth
                 variant="outlined"
                 value={refPersonNumber}
@@ -432,23 +432,23 @@ export default function GetSalesmenList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-            <FormControl fullWidth variant="outlined" required>
-              <InputLabel id="areaCodeLabel">Area Code</InputLabel>
-              <Select
-                labelId="areaCodeLabel"
-                id="areaCode"
-                value={areaCode}
-                label="Area Code"
-                fullWidth
-                onChange={(event) => setAreaCode(event.target.value)}
-              >
-                {areas.map((area) => (
-                  <MenuItem key={area._id} value={area._id}>
-                    {area.code}
-                  </MenuItem>
-                ))}
-              </Select>
-</FormControl>
+              <FormControl fullWidth variant="outlined" required>
+                <InputLabel id="areaCodeLabel">Area Code</InputLabel>
+                <Select
+                  labelId="areaCodeLabel"
+                  id="areaCode"
+                  value={areaCode}
+                  label="Area Code"
+                  fullWidth
+                  onChange={(event) => setAreaCode(event.target.value)}
+                >
+                  {areas.map((area) => (
+                    <MenuItem key={area._id} value={area._id}>
+                      {area.code}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={4} sm={3}>
               <TextField
@@ -468,7 +468,7 @@ export default function GetSalesmenList() {
                 id="areaCommission"
                 name="areaCommission"
                 label="Area Commission"
-                type="number" 
+                type="number"
                 fullWidth
                 variant="outlined"
                 value={areaCommission}
@@ -480,7 +480,7 @@ export default function GetSalesmenList() {
                 required
                 id="target"
                 name="target"
-                type="number" 
+                type="number"
                 label="Target"
                 fullWidth
                 variant="outlined"

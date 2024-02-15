@@ -13,12 +13,7 @@ import { produce } from "immer";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
-  ADD_PURCHASE,
   GET_ALL_COMPANIES,
-  GET_PRODUCTS_LIST,
-  ADD_STOCK_LOG,
-  ADD_QUANTITY,
-  ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_PURCHASERETURN,
 } from "../../utils/config";

@@ -22,6 +22,10 @@ import {
   ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_BATCH_LIST,
+  GET_salesman_LIST,
+  GET_QUANTITY_AND_EXPIRY_LIST,
+  ADD_SALE,
+  ADD_SALES_SERVICES,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
@@ -58,6 +62,10 @@ export default function AddSale() {
   const [amount, setAmount] = useState("");
   const [submittedDate, setSubmittedDate] = useState("");
   const [code, setCode] = useState("");
+  const [SalesManList, setSalesManList] = useState([]);
+  const [ProductId, setProductId] = useState(null);
+  const [DateAndQuantityObject, setDateAndQuantityObject] = useState([]);
+  const [SaleManObject, setSaleManObject] = useState({});
   const paymentMediumList = [
     {
       id: 1,
@@ -108,15 +116,24 @@ export default function AddSale() {
 
   useEffect(() => {
     getStockList();
+    getSalesManList();
     getSupplierList();
     calculateAmountAndBags(data);
   }, []);
 
   const dataEntry = (data) => {
     axios
-      .post(ADD_PURCHASE, data)
+      .post(ADD_SALES_SERVICES, data)
       .then((response) => {
-        console.log("Response", response);
+        console.log("response ==", JSON.stringify(response, null, 2));
+        if (response.status == 200) {
+          setOpen(true);
+          setSeverity("success");
+          setMessage(response.data.message);
+        } else {
+          setOpen(true);
+          setMessage(response.error);
+        }
       })
       .catch((error) => {
         setOpen(true);
@@ -192,16 +209,15 @@ export default function AddSale() {
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
     // if (data.length === 0) {
     obj = {
+      productCode: productObject.productCode,
+      quantity: productObject.quantity,
       tradeRate: productObject.tradeRate,
-      quantity: 1,
-      bonus: 0,
-      discount: 0,
+      expiryDate: productObject.expiryDate,
+      batchCode: productObject.batchCode,
+      bonus: productObject.bonus,
+      discount: productObject.discount,
       salesTax: productObject.salesTax,
-      tradeRate: productObject.tradeRate,
-      // netTotal: productObject.tradeRate,
-      netTotal: "",
-      status: productObject.status,
-      productCode: productObject.code,
+      netTotal: productObject.netTotal,
     };
     array = [...array, obj];
     setData(array);
@@ -226,6 +242,55 @@ export default function AddSale() {
     //   setMessage("Please select any product");
     //   setSeverity("error");
     // }
+  };
+  const getSalesManList = () => {
+    axios
+      .get(GET_salesman_LIST)
+      .then(function (response) {
+        setSalesManList(response.data.data);
+        // if (response.data.error) {
+        //   handleSnackbar("error", response.data.error_msg);
+        // } else {
+        //   const formattedData = response.data.data.map((salesman) => ({
+        //     ...salesman,
+        //     dateOfJoin: salesman.dateOfJoin
+        //       ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
+        //       : null,
+        //   }));
+        //   setData(formattedData);
+        // }
+      })
+      .catch(function (error) {
+        console.error("Error fetching data:", error);
+        // handleSnackbar("error", "Error: " + error);
+      });
+  };
+  const getQuantityAndExpiryObject = (batchId, index) => {
+    let payload = {
+      productCode: ProductId,
+      batchCode: batchId,
+    };
+
+    axios
+      .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data, null, 2));
+        setDateAndQuantityObject(response.data);
+        setData((currentData) =>
+          produce(currentData, (v) => {
+            v[index].expiryDate = response.data.expiryDate;
+          })
+        );
+        setData((currentData) =>
+          produce(currentData, (v) => {
+            v[index].quantity = response.data.quantity;
+          })
+        );
+      })
+      .catch(function (error) {
+        console.error("Error fetching data:", error);
+        // handleSnackbar("error", "Error: " + error);
+      });
   };
   const calculateAmountAndBags = (array) => {
     let sum = 0;
@@ -270,9 +335,9 @@ export default function AddSale() {
       purchaseDetail: data,
       companyCode: companyCode,
       paymentMode: paymentMode,
+      salesman: SaleManObject._id,
       total: totalAmount,
     };
-    console.log("Data", purchaseObject);
 
     // if (data.length === 0) {
     //   setOpen(true);
@@ -294,11 +359,24 @@ export default function AddSale() {
     dataEntry(purchaseObject);
     // }
   };
+  // Function to format date to "yyyy-MM-dd" format
+  function formatDate(date) {
+    const d = new Date(date);
+    let month = "" + (d.getMonth() + 1);
+    let day = "" + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   return (
     <div className="box">
       <SideBar />
       <div className="box-container">
         <Navbar />
+
         {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
@@ -344,6 +422,28 @@ export default function AddSale() {
                 )}
               />
             </Grid>
+            <Grid item md={12} px={2} py={1}>
+              <Autocomplete
+                options={SalesManList}
+                getOptionLabel={(saleMen, index) => saleMen.name}
+                disablePortal
+                fullWidth
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value._id
+                }
+                onChange={(event, newInputValue) => {
+                  setSaleManObject(newInputValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select salesman" />
+                )}
+                renderOption={(props, saleMan) => (
+                  <Box component="li" {...props} key={saleMan._id}>
+                    {saleMan.name}
+                  </Box>
+                )}
+              />
+            </Grid>
           </Grid>
           <Grid item md={12} mt={2} ml={4}>
             {data.map((product, index) => {
@@ -368,6 +468,8 @@ export default function AddSale() {
                         }
                         onChange={(event, newInputValue) => {
                           // setProductObject(newInputValue);
+                          setProductId(newInputValue._id);
+                          console.log(newInputValue);
                           var productObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
@@ -397,8 +499,11 @@ export default function AddSale() {
                           option.id === value.id
                         }
                         onChange={(event, newInputValue) => {
-                          // setProductObject(newInputValue);
-                          var batchObject = newInputValue;
+                          getQuantityAndExpiryObject(
+                            newInputValue.batchCode,
+                            index
+                          );
+
                           setData((currentData) =>
                             produce(currentData, (v) => {
                               v[index].productCode = batchObject.batchCode;
@@ -418,8 +523,13 @@ export default function AddSale() {
                     </Grid>
                     <Grid item md={1.5} px={1}>
                       <TextField
-                        label="Select Date"
+                        label={"Select Date"}
                         type="date"
+                        value={
+                          DateAndQuantityObject.expiryDate
+                            ? formatDate(DateAndQuantityObject.expiryDate)
+                            : ""
+                        }
                         // defaultValue={currentDate}
                         onChange={(e) => {
                           var expiryDate = e.target.value;
@@ -439,7 +549,9 @@ export default function AddSale() {
                       <TextField
                         label="Quantity"
                         variant="outlined"
-                        value={product.quantity}
+                        value={
+                          DateAndQuantityObject?.quantity || product.quantity
+                        }
                         onChange={(e) => {
                           var quantity = e.target.value;
                           setData((currentData) =>
@@ -716,11 +828,6 @@ const ComponentToPrint = React.forwardRef(({ data }, ref) => {
   data.map((item) => (totalSalesTax += Number(item.salesTax)));
   data.map((item) => (totalTradeRate += Number(item.tradeRate)));
 
-  console.log("total Quantity ", totalQuantity);
-  console.log("total Bonus ", totalBonus);
-  console.log("total Discount ", totalDiscount);
-  console.log("total Sales Tax ", totalSalesTax);
-  console.log("total Trade Rate ", totalTradeRate);
   return (
     <div ref={ref}>
       <header class="header">
