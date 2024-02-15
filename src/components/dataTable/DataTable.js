@@ -104,7 +104,7 @@ const DataTable = ({
         onCellEditCommit={onCellEditCommit}
         loading={loading}
         pagination
-      />
+      />  
     </div>
   );
 };

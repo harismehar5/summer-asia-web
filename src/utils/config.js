@@ -107,3 +107,12 @@ export const GET_PURCHASERETURN = BASE_URL + "purchasereturns";
 //SALESMEN URL
 export const GET_SALESRETURN_LIST = BASE_URL + "salereturns";
 
+//Inventory URL
+export const GET_INVENTORY_LIST = BASE_URL + "inventories";
+
+//Inventory StockIn URL
+export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
+
+//Inventory StockOut URL
+export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
+

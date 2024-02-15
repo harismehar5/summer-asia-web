@@ -190,6 +190,16 @@ export default function SideBar() {
               <span>Stock Log</span>
             </li>
           </Link>
+
+          <p className="title">Inventory</p>
+          <Link to="/inventory" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Inventory list</span>
+            </li>
+          </Link>
+
+
           <p className="title">Ledger</p>
           <Link to="/customer/ledger" style={{ textDecoration: "none" }}>
             <li>
