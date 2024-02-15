@@ -743,6 +743,133 @@ export const supplierLedgerColumns = [
   },
 ];
 
+export const salesReportsColumns = [
+  {
+    field: "product",
+    headerName: "Product",
+    width: 180,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.productCode?.code||"N/A"}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "batchCode",
+    headerName: "Batch",
+    width: 180,
+  },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    renderCell: (params) => {
+      return (
+        <>
+         <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
+    width: 160,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    width: 180,
+  },
+
+  {
+    field: "discount",
+    headerName: "Discount",
+    width: 180,
+  },
+  {
+    field: "bonus",
+    headerName: "Bonus",
+    width: 180,
+  },
+  {
+    field: "salesTax",
+    headerName: "Sales Tax",
+    width: 180,
+  },
+  {
+    field: "tradeRate",
+    headerName: "Trade Rate",
+    width: 180,
+  },
+  {
+    field: "netTotal",
+    headerName: "Sub Total",
+    width: 180,
+  },
+
+];
+export const purchaseReportsColumns = [
+  {
+    field: "productCode",
+    headerName: "Product",
+    width: 180,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.productCode?.code||"N/A"}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "batchCode",
+    headerName: "Batch",
+    width: 180,
+  },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.createdAt)}</div>
+        </>
+      );
+    },
+    width: 160,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    width: 180,
+  },
+
+  {
+    field: "discount",
+    headerName: "Discount",
+    width: 180,
+  },
+  {
+    field: "bonus",
+    headerName: "Bonus",
+    width: 180,
+  },
+  {
+    field: "salesTax",
+    headerName: "Sales Tax",
+    width: 180,
+  },
+  {
+    field: "tradeRate",
+    headerName: "Trade Rate",
+    width: 180,
+  },
+  {
+    field: "netTotal",
+    headerName: "Sub Total",
+    width: 180,
+  },
+
+];
+
 export const areaColumns = [
   {
     field: "createdAt",

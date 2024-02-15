@@ -223,6 +223,21 @@ export default function SideBar() {
               <span>Salesman Ledger</span>
             </li>
           </Link>
+
+          <p className="title">Reports</p>
+          <Link to="/salesReports" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Sales Reports</span>
+            </li>
+          </Link>
+
+          <Link to="/purchaseReposts" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Purchase Reports</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </div>

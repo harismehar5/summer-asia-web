@@ -130,3 +130,14 @@ export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
 
 //Inventory StockOut URL
 export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
+
+
+//Purchase Report Detail URL
+export const GET_Purchase_Reports = BASE_URL + "purchases/detail";
+
+//Sales Report Detail URL
+export const GET_Sales_Reports = BASE_URL + "sales/detail";
+
+
+
+

@@ -220,7 +220,7 @@ setExpiryDate(ConvertedDate)
           header={"Inventory List"}
           firstButton={true}
           firstButtonText={"Add Inventory Item"}
-          firstLink={"/product/add"}
+          // firstLink={"/product/add"}
         />
         <DataTable
           data={data}

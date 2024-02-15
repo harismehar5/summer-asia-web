@@ -53,6 +53,8 @@ import Inventory from "./layout/Inventory";
 import AddExpenseCatagory from "./components/expenseCatagory/AddExpenseCatagory";
 import ExpenseCatagoryList from "./components/expenseCatagory/ExpenseCatagoryList";
 // import AddExpenseCatagory from "./components/expenseCatagory/addExpenseCatagory";
+import SalesReports from "./layout/SalesReports/salesReports";
+import PurchaseReports from "./layout/PurchaseReports/purchaseReports";
 
 function App() {
   return (
@@ -134,6 +136,13 @@ function App() {
             <Route index element={<GetSalesManList />} />
             <Route path="add" element={<AddSalesMan />} />
             <Route path="ledger" element={<GetSalesManLedger />} />
+          </Route>
+          <Route path="salesReports">
+          <Route index element={<SalesReports/>} />
+          </Route>
+
+          <Route path="purchaseReposts">
+          <Route index element={<PurchaseReports/>} />
           </Route>
           <Route path="purchase-return">
             {/* <Route index element={<GetsalesmanList/>} /> */}
