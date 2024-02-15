@@ -58,13 +58,17 @@ export const STOCK_IN = PRODUCT_BASE_URL + "stock_in/";
 export const STOCK_OUT = PRODUCT_BASE_URL + "stock_out/";
 
 //Expense URL
-export const EXPENSE_BASE_URL = BASE_URL + "expense/";
-export const GET_EXPENSES_LIST = EXPENSE_BASE_URL + "get_expenses";
+// export const EXPENSE_BASE_URL = BASE_URL + "expense/";
+export const EXPENSE_BASE_URL = BASE_URL + "expenses";
+export const GET_EXPENSES_LIST = BASE_URL + "expenses";
 export const ADD_EXPENSE = EXPENSE_BASE_URL + "add_expense";
 export const DELETE_EXPENSE = EXPENSE_BASE_URL;
 export const UPDATE_EXPENSE_BY_ID = EXPENSE_BASE_URL;
 export const GET_EXPENSE_BY_ID = EXPENSE_BASE_URL;
 export const UPDATE_EXPENSE_STATUS_BY_ID = EXPENSE_BASE_URL + "update_status";
+
+//Expense Catagory
+export const EXPENSE_CATAGORY_BASE_URL = BASE_URL + "expensecategories/";
 
 //Sale URL
 export const SALE_BASE_URL = BASE_URL + "sales/";
@@ -126,4 +130,3 @@ export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
 
 //Inventory StockOut URL
 export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
-

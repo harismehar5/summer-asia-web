@@ -165,6 +165,13 @@ export const expenseColumns = [
     field: "name",
     headerName: "Name",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.expenseCategory?.name || "N/A"}</div>
+        </>
+      );
+    },
   },
   {
     field: "description",
@@ -177,6 +184,31 @@ export const expenseColumns = [
     headerName: "Amount",
     width: 230,
   },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 160,
+    renderCell: (params) => {
+      return (
+        <>
+          {params.row.status === true ? (
+            <div className={`cell-with-status active`}>{"active"}</div>
+          ) : (
+            <div className={`cell-with-status passive`}>{"passive"}</div>
+          )}
+        </>
+      );
+    },
+  },
+];
+
+export const expenseCatagoryColumns = [
+  {
+    field: "name",
+    headerName: "Name",
+    width: 230,
+  },
+
   {
     field: "status",
     headerName: "Status",
