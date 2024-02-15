@@ -518,45 +518,120 @@ export const supplierCashFlowColumn = [
 ];
 
 export const customerCashFlowColumn = [
-  { field: "_id", headerName: "ID", width: 230 },
   {
-    field: "submit_date",
-    headerName: "Date",
+    field: "customerId",
+    headerName: "Customer",
     width: 230,
     renderCell: (params) => {
       return (
         <>
-          <div>{formatDate(params.row.submit_date)}</div>
+          <div>{params?.row?.name || "NA"}</div>
         </>
       );
     },
   },
   {
-    field: "customer_name",
-    headerName: "Customer Name",
+    field: "companyId",
+    headerName: "Company",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.companyId || "NA"}</div>
+        </>
+      );
+    },
   },
-  {
-    field: "cash_in_amount",
-    headerName: "Cash In",
-    width: 160,
+  { field: "debit", headerName: "Debit", width: 230 ,
+  renderCell: (params) => {
+    return (
+      <>
+        <div>{params?.row?.debit || "NA"}</div>
+      </>
+    );
   },
-  {
-    field: "cash_out_amount",
-    headerName: "Cash Out",
-    width: 160,
+},
+  { field: "credit", headerName: "Credit", width: 230,
+  renderCell: (params) => {
+    return (
+      <>
+        <div>{params?.row?.credit || "NA"}</div>
+      </>
+    );
   },
+},
+  { field: "balance", headerName: "Balance", width: 230,
+  renderCell: (params) => {
+    return (
+      <>
+        <div>{params?.row?.balance || "NA"}</div>
+      </>
+    );
+  }, 
+},
   {
-    field: "description",
-    headerName: "Description",
+    field: "createdAt",
+    headerName: "Date",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.value ? formatDate(params.value) : "NA"}</div>
+        </>
+      );
+    },
   },
-  {
-    field: "payment_medium",
-    headerName: "Medium",
-    width: 230,
-  },
+  { field: "description", headerName: "Description", width: 230,
+  renderCell: (params) => {
+    return (
+      <>
+        <div>{params?.row?.description || "NA"}</div>
+      </>
+    );
+  }, 
+},
+  { field: "expenseId", headerName: "Expense Id", width: 230 , 
+   renderCell: (params) => {
+    return (
+      <>
+        <div>{params?.row?.expenseId || "NA"}</div>
+      </>
+    );
+  },  },
+  { field: "purchaseId", headerName: "Purchase Id", width: 230, 
+  renderCell: (params) => {
+   return (
+     <>
+       <div>{params?.row?.purchaseId || "NA"}</div>
+     </>
+   );
+ }, },
+  { field: "purchaseReturnId", headerName: "Purchase return Id", width: 230, 
+  renderCell: (params) => {
+   return (
+     <>
+       <div>{params?.row?.purchaseReturnId || "NA"}</div>
+     </>
+   );
+ }, },
+  { field: "saleId", headerName: "Sale Id", width: 230, 
+  renderCell: (params) => {
+   return (
+     <>
+       <div>{params?.row?.saleId || "NA"}</div>
+     </>
+   );
+ }, },
+  { field: "saleReturnId", headerName: "Purchase return Id", width: 230, 
+  renderCell: (params) => {
+   return (
+     <>
+       <div>{params?.row?.saleReturnId || "NA"}</div>
+     </>
+   );
+ },  },
 ];
+
 export const stockLogColumns = [
   {
     field: "date",
