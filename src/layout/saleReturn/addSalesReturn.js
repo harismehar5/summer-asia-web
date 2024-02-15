@@ -19,7 +19,7 @@ import {
   ADD_QUANTITY,
   ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
-  GET_SALESMEN_LIST,
+  GET_salesman_LIST,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -27,7 +27,7 @@ export default function AddSalesReturn() {
     
   const [productList, setProductList] = useState([]);
   const [customerCode, setCustomerCode] = useState([]);
-  const [salesmen, setSalesmen] = useState([]);
+  const [salesman, setsalesman] = useState([]);
   const [productObject, setProductObject] = useState({
     batchCode: "",
     expiryDate: "",
@@ -99,7 +99,7 @@ export default function AddSalesReturn() {
   useEffect(() => {
     getStockList();
     getCustomerList();
-    getSalesmenList();
+    getsalesmanList();
     calculateAmountAndBags(data);
   }, []);
 
@@ -154,16 +154,16 @@ export default function AddSalesReturn() {
         setSeverity("error");
       });
   };
-  const getSalesmenList = () => {
+  const getsalesmanList = () => {
     axios
-      .get(GET_SALESMEN_LIST)
+      .get(GET_salesman_LIST)
       .then(function (response) {
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
         //   setSeverity("error");
         // } else {
-        setSalesmen(response.data.data);
+        setsalesman(response.data.data);
         // }
       })
       .catch(function (error) {
@@ -248,7 +248,7 @@ export default function AddSalesReturn() {
   };
   const validate = () => {
     var customerCode = customerObject._id
-    var salesmenCode = supplierObject._id
+    var salesmanCode = supplierObject._id
     var paymentMode = paymentMediumObject.name
     var totalAmount = 0
     for (let i = 0; i < data.length; i++) {
@@ -258,7 +258,7 @@ export default function AddSalesReturn() {
     var purchaseObject = {
       salesReturnDetail: data,
       customerCode: customerCode,
-      salesmenCode:salesmenCode,
+      salesmanCode:salesmanCode,
       paymentMode: paymentMode,
       total: totalAmount
     }
@@ -316,7 +316,7 @@ export default function AddSalesReturn() {
             </Grid>
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
-                options={salesmen}
+                options={salesman}
                 getOptionLabel={(supplier, index) => supplier.name}
                 disablePortal
                 fullWidth

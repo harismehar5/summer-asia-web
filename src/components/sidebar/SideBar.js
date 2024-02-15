@@ -55,24 +55,30 @@ export default function SideBar() {
               <span>Customers List</span>
             </li>
           </Link>
-          <p className="title">Salesmen</p>
-          <Link to="/salesmen/add/" style={{ textDecoration: "none" }}>
+          <Link to="/customer/cash_flow" style={{ textDecoration: "none" }}>
+            <li>
+              <CurrencyExchangeRoundedIcon className="icon" />
+              <span>Cash Flow</span>
+            </li>
+          </Link>
+          <p className="title">Sales Man</p>
+          <Link to="/salesman/add/" style={{ textDecoration: "none" }}>
             <li>
               <PointOfSaleRoundedIcon className="icon" />
-              <span>Add Salesmen</span>
+              <span>Add Sales Man</span>
             </li>
           </Link>
-          <Link to="/salesmen" style={{ textDecoration: "none" }}>
+          <Link to="/salesman" style={{ textDecoration: "none" }}>
             <li>
               <FormatListBulletedIcon className="icon" />
-              <span>Salesmen List</span>
+              <span>Sales Man List</span>
             </li>
           </Link>
-          <p className="title">SaleReturn</p>
+          <p className="title">Sale Return</p>
           <Link to="/sale-return/adds/" style={{ textDecoration: "none" }}>
             <li>
               <PointOfSaleRoundedIcon className="icon" />
-              <span>Add SalesReturn</span>
+              <span>Add Sales Return</span>
             </li>
           </Link>
 
@@ -114,29 +120,7 @@ export default function SideBar() {
           <Link to="/purchase-return/add" style={{ textDecoration: "none" }}>
             <li>
               <FormatListBulletedIcon className="icon" />
-              <span>addPurchase Return</span>
-            </li>
-          </Link>
-          
-
-
-          <p className="title">Customer</p>
-          <Link to="/customer/add" style={{ textDecoration: "none" }}>
-            <li>
-              <PermIdentityIcon className="icon" />
-              <span>Add Customer</span>
-            </li>
-          </Link>
-          <Link to="/customer" style={{ textDecoration: "none" }}>
-            <li>
-              <FormatListBulletedIcon className="icon" />
-              <span>Customer list</span>
-            </li>
-          </Link>
-          <Link to="/customer/cash_flow" style={{ textDecoration: "none" }}>
-            <li>
-              <CurrencyExchangeRoundedIcon className="icon" />
-              <span>Cash Flow</span>
+              <span>Add Purchase Return</span>
             </li>
           </Link>
           <p className="title">Supplier</p>
@@ -203,7 +187,7 @@ export default function SideBar() {
               <span>Supplier Ledger</span>
             </li>
           </Link>
-          <Link to="/salesmen/ledger" style={{ textDecoration: "none" }}>
+          <Link to="/salesman/ledger" style={{ textDecoration: "none" }}>
             <li>
               <AccountBalanceRoundedIcon className="icon" />
               <span>Salesman Ledger</span>

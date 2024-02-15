@@ -21,7 +21,7 @@ import {
   ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_BATCH_LIST,
-  GET_SALESMEN_LIST,
+  GET_salesman_LIST,
   GET_QUANTITY_AND_EXPIRY_LIST,
   ADD_SALE,
   ADD_SALES_SERVICES,
@@ -232,7 +232,7 @@ export default function AddSale() {
   };
   const getSalesManList = () => {
     axios
-      .get(GET_SALESMEN_LIST)
+      .get(GET_salesman_LIST)
       .then(function (response) {
         setSalesManList(response.data.data);
         // if (response.data.error) {
@@ -261,7 +261,7 @@ export default function AddSale() {
     axios
       .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
       .then(function (response) {
-        console.log(JSON.stringify(response.data,null,2))
+        console.log(JSON.stringify(response.data, null, 2))
         setDateAndQuantityObject(response.data);
         setData((currentData) =>
           produce(currentData, (v) => {
@@ -363,6 +363,7 @@ export default function AddSale() {
       <SideBar />
       <div className="box-container">
         <Navbar />
+
         {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
@@ -421,7 +422,7 @@ export default function AddSale() {
                   setSaleManObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Salesmen" />
+                  <TextField {...params} label="Select salesman" />
                 )}
                 renderOption={(props, saleMan) => (
                   <Box component="li" {...props} key={saleMan._id}>
