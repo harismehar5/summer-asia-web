@@ -35,14 +35,14 @@ import AddSupplierCashIn from "./layout/supplier/AddSupplierCashIn";
 import AddSupplierCashOut from "./layout/supplier/AddSupplierCashOut";
 import StockLog from "./layout/product/StockLog";
 import GetCustomerLedger from "./layout/customer/GetCustomerLedger";
-import GetSalesmenLedger from "./layout/salesmen/GetSalesmenLedger";
+import GetSalesManLedger from "./layout/salesman/GetSalesManLedger";
 import GetSupplierLedger from "./layout/supplier/GetSupplierLedger";
 import GetAreaList from "./layout/area/getAreaList";
 import AddArea from "./layout/area/addArea";
 import AddCustomers from "./layout/customers/addCustomers";
 import GetCustomersList from "./layout/customers/getCustomersList";
-import GetSalesmenList from "./layout/salesmen/getSalesmenList";
-import AddSalesmen from "./layout/salesmen/addSalesmen";
+import GetSalesManList from "./layout/salesman/GetSalesManList";
+import AddSalesMan from "./layout/salesman/AddSalesMan";
 import PurchaseDetails from "./layout/purchase/PurchaseDetails";
 import SalesDetails from "./layout/sale/SalesDetails";
 import SalesReturn from "./layout/sale/SalesReturn";
@@ -112,14 +112,14 @@ function App() {
             <Route index element={<GetCustomersList />} />
             <Route path="add" element={<AddCustomers />} />
           </Route>
-          <Route path="salesmen">
-            <Route index element={<GetSalesmenList />} />
-            <Route path="add" element={<AddSalesmen />} />
-            <Route path="ledger" element={<GetSalesmenLedger />} />
+          <Route path="salesman">
+          <Route index element={<GetSalesManList/>} />
+            <Route path="add" element={<AddSalesMan/>} />
+            <Route path="ledger" element={<GetSalesManLedger />} />
           </Route>
           <Route path="purchase-return">
-            {/* <Route index element={<GetSalesmenList/>} /> */}
-            <Route path="add" element={<PurchaseReturn />} />
+          {/* <Route index element={<GetsalesmanList/>} /> */}
+            <Route path="add" element={<PurchaseReturn/>} />
           </Route>
           <Route path="sale-return">
             <Route path="adds" element={<AddSalesReturn />} />

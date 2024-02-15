@@ -776,7 +776,7 @@ export const customersColumns = [
   },
 ];
 
-export const salesmenColumns = [
+export const salesmanColumns = [
   {
     field: "name",
     headerName: "Name",

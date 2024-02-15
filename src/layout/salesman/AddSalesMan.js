@@ -7,9 +7,9 @@ import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import SnackBar from "../../components/alert/SnackBar";
-import { GET_SALESMEN_LIST, GET_AREA_LIST } from "../../utils/config";
+import { GET_salesman_LIST, GET_AREA_LIST } from "../../utils/config";
 
-export default function AddSalesmen() {
+export default function AddSalesMan() {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [areaCode, setAreaCode] = useState("");
@@ -58,9 +58,9 @@ export default function AddSalesmen() {
     };
 
     axios
-      .post(GET_SALESMEN_LIST, customerData)
+      .post(GET_salesman_LIST, customerData)
       .then(function (response) {
-       
+
         if (response.data.error) {
           handleSnackbar("error", response.data.error);
         } else {
@@ -72,7 +72,7 @@ export default function AddSalesmen() {
       })
       .catch(function (error) {
         console.error("Error adding customer:", error);
-        handleSnackbar("error",  error.response.data.error);
+        handleSnackbar("error", error.response.data.error);
       });
   };
 
@@ -136,10 +136,23 @@ export default function AddSalesmen() {
         <Navbar />
         <Paper className="form-container">
           <Typography variant="h6" gutterBottom>
-            Add Salesman
+            Add Sales Man
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={4} sm={3}>
+            <Grid xs={6} sm={6} md={6} />
+            <Grid item xs={6} sm={6} md={6}>
+              <TextField
+                required
+                id="code"
+                name="code"
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="name"
@@ -151,7 +164,7 @@ export default function AddSalesmen() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="fatherName"
@@ -163,33 +176,33 @@ export default function AddSalesmen() {
                 onChange={(event) => setFatherName(event.target.value)}
               />
             </Grid>
-            <Grid item  xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="phoneNo"
                 name="phoneNo"
                 label="Phone No"
                 fullWidth
-                type="number" 
+                type="number"
                 variant="outlined"
                 value={phoneNo}
                 onChange={(event) => setPhoneNo(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="cnic"
                 name="cnic"
                 label="CNIC"
                 fullWidth
-                type="number" 
+                type="number"
                 variant="outlined"
                 value={cnic}
                 onChange={(event) => setCnic(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="qualification"
@@ -201,7 +214,7 @@ export default function AddSalesmen() {
                 onChange={(event) => setQualification(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="dateOfJoin"
@@ -217,7 +230,7 @@ export default function AddSalesmen() {
                 }}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="refPerson"
@@ -229,14 +242,14 @@ export default function AddSalesmen() {
                 onChange={(event) => setRefPerson(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="refPersonNumber"
                 name="refPersonNumber"
                 label="Reference Person Number"
                 fullWidth
-                type="number" 
+                type="number"
                 variant="outlined"
                 value={refPersonNumber}
                 onChange={(event) => setRefPersonNumber(event.target.value)}
@@ -254,7 +267,7 @@ export default function AddSalesmen() {
                 onChange={(event) => setAddress(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={4} sm={4} md={4}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="areaCode-label">Area Code</InputLabel>
                 <Select
@@ -272,39 +285,28 @@ export default function AddSalesmen() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="code"
-                name="code"
-                label="Code"
-                fullWidth
-                variant="outlined"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3}>
+
+            <Grid item xs={4} sm={4} md={4}>
               <TextField
                 required
                 id="areaCommission"
                 name="areaCommission"
                 label="Area Commission"
                 fullWidth
-                type="number" 
+                type="number"
                 variant="outlined"
                 value={areaCommission}
                 onChange={(event) => setAreaCommission(event.target.value)}
               />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={4} sm={4} md={4}>
               <TextField
                 required
                 id="target"
                 name="target"
                 label="Target"
                 fullWidth
-                type="number" 
+                type="number"
                 variant="outlined"
                 value={target}
                 onChange={(event) => setTarget(event.target.value)}
@@ -346,7 +348,7 @@ export default function AddSalesmen() {
                     variant="contained"
                     size="medium"
                     color="error"
-                    // onClick={() => setOpenPopup(false)}
+                  // onClick={() => setOpenPopup(false)}
                   >
                     Cancel
                   </Button>
