@@ -786,10 +786,15 @@ export const customersColumns = [
     width: 230,
   },
   {
-    field: "gender",
-    headerName: "Gender",
+    field: "ntn",
+    headerName: "Ntn",
     width: 230,
   },
+  // {
+  //   field: "gender",
+  //   headerName: "Gender",
+  //   width: 230,
+  // },
   {
     field: "email",
     headerName: "Email",

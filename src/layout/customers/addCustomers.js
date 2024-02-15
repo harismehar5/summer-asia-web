@@ -13,7 +13,7 @@ export default function AddCustomers() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("");
+  // const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [license, setLicense] = useState("");
   const [licenseExpiryDate, setLicenseExpiryDate] = useState("");
@@ -24,7 +24,7 @@ export default function AddCustomers() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-
+  const [ntn, setNtn] = useState("");
   useEffect(() => {
     // Fetch areas data from the API
     axios
@@ -39,16 +39,17 @@ export default function AddCustomers() {
 
   const addCustomer = () => {
     const customerData = {
-      name:name,
-      phone:phone,
-      address:address,
-      gender:gender,
-      email:email,
-      license:license,
-      licenseExpiryDate:licenseExpiryDate,
-      areaCode:areaCode,
-      bankAccount:bankAccount,
-      code:code,
+      name: name,
+      phone: phone,
+      address: address,
+      // gender: gender,
+      ntn:ntn,
+      email: email,
+      license: license,
+      licenseExpiryDate: licenseExpiryDate,
+      areaCode: areaCode,
+      bankAccount: bankAccount,
+      code: code,
     };
 
     axios
@@ -74,7 +75,8 @@ export default function AddCustomers() {
       name.length === 0 ||
       phone.length === 0 ||
       address.length === 0 ||
-      gender.length === 0 ||
+      // gender.length === 0 ||
+      ntn.length ===0 ||
       email.length === 0 ||
       license.length === 0 ||
       licenseExpiryDate.length === 0 ||
@@ -105,7 +107,8 @@ export default function AddCustomers() {
     setName("");
     setPhone("");
     setAddress("");
-    setGender("");
+    // setGender("");
+    setNtn("");
     setEmail("");
     setLicense("");
     setLicenseExpiryDate("");
@@ -124,7 +127,45 @@ export default function AddCustomers() {
             Add Customer
           </Typography>
           <Grid container spacing={3}>
-          <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6} />
+            <Grid item xs={6} sm={6} md={6}>
+              <TextField
+                required
+                id="code"
+                name="code"
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <TextField
+                required
+                id="name"
+                name="name"
+                label="Name"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <TextField
+                required
+                id="phone"
+                name="phone"
+                label="Phone"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+            </Grid>
+            {/* <Grid item xs={6} sm={6} md={6}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="gender-label">Gender</InputLabel>
                 <Select
@@ -138,33 +179,20 @@ export default function AddCustomers() {
                   <MenuItem value="Female">Female</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={4} sm={3}>
+            </Grid> */}
+                        <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
-                id="name"
-                name="name"
-                label="Name"
+                id="ntn"
+                name="ntn"
+                label="NTN"
                 fullWidth
                 variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
+                value={ntn}
+                onChange={(event) => setNtn(event.target.value)}
               />
-            </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="phone"
-                name="phone"
-                label="Phone"
-                type="number" 
-                fullWidth
-                variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3}>
+</Grid>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="email"

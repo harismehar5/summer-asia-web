@@ -3,7 +3,7 @@ import "./styles.scss";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import axios from "axios";
@@ -290,6 +290,7 @@ export default function AddSalesReturn() {
       <SideBar />
       <div className="box-container">
         <Navbar />
+        <Typography variant="h6" gutterBottom style={{marginLeft:"2%", marginTop:"2%"}}>Add Sale Return</Typography>
         {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
@@ -370,7 +371,7 @@ export default function AddSalesReturn() {
                     key={index}
                     mt={2}
                   >
-                    <Grid item md={1.5} pr={1}>
+                                        <Grid item md={1.5} pr={1}>
                       <Autocomplete
                         options={productList}
                         getOptionLabel={(product, index) => product.name}
@@ -434,7 +435,7 @@ export default function AddSalesReturn() {
                         fullWidth
                       />
                     </Grid>
-                    <Grid item md={1} px={1}>
+                      <Grid item md={1} px={1}>
                       <TextField
                         label="Quantity"
                         variant="outlined"
@@ -444,22 +445,6 @@ export default function AddSalesReturn() {
                           setData((currentData) =>
                             produce(currentData, (v) => {
                               v[index].quantity = quantity;
-                            })
-                          );
-                        }}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item md={1} px={1}>
-                      <TextField
-                        label="Discount"
-                        variant="outlined"
-                        value={product.discount}
-                        onChange={(e) => {
-                          var discount = e.target.value;
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].discount = discount;
                             })
                           );
                         }}
@@ -482,21 +467,6 @@ export default function AddSalesReturn() {
                         fullWidth
                       />
                     </Grid>
-                    <Grid item md={1} px={1}>
-                      <TextField
-                        label="Sales Tax"
-                        variant="outlined"
-                        value={product.salesTax}
-                        onChange={(e) => {
-                          var salesTax = e.target.value;
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].salesTax = salesTax;
-                            })
-                          );
-                        }}
-                      />
-                    </Grid>
                     <Grid item md={1.2} px={1}>
                       <TextField
                         label="Trade Rate"
@@ -507,6 +477,37 @@ export default function AddSalesReturn() {
                           setData((currentData) =>
                             produce(currentData, (v) => {
                               v[index].tradeRate = tradeRate;
+                            })
+                          );
+                        }}
+                      />
+                    </Grid>
+                    <Grid item md={1} px={1}>
+                      <TextField
+                        label="Discount"
+                        variant="outlined"
+                        value={product.discount}
+                        onChange={(e) => {
+                          var discount = e.target.value;
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].discount = discount;
+                            })
+                          );
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item md={1} px={1}>
+                      <TextField
+                        label="Sales Tax"
+                        variant="outlined"
+                        value={product.salesTax}
+                        onChange={(e) => {
+                          var salesTax = e.target.value;
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].salesTax = salesTax;
                             })
                           );
                         }}
