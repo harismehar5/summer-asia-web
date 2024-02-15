@@ -118,3 +118,12 @@ export const GET_CUSTOMERS_CASH_IN = BASE_URL + "cashin";
 export const GET_QUANTITY_AND_EXPIRY_LIST = BASE_URL + "sales/getquantityandexpiry";
 //CUSTOMER CASH IN URL
 export const GET_CUSTOMERS_CASH_OUT = BASE_URL + "cashout";
+//Inventory URL
+export const GET_INVENTORY_LIST = BASE_URL + "inventories";
+
+//Inventory StockIn URL
+export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
+
+//Inventory StockOut URL
+export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
+

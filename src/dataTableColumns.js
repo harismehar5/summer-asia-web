@@ -100,6 +100,53 @@ export const productColumns = [
   },
 ];
 
+export const inventoryListColumns = [
+  {
+    field: "productCode",
+    headerName: "Product Code",
+    width: 220,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>
+            {(params.row.productCode && params.row.productCode.code) || "N/A"}
+          </div>
+        </>
+      );
+    },
+  },
+
+  {
+    field: "batchCode",
+    headerName: "Batch Code",
+    width: 220,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    width: 180,
+  },
+
+  {
+    field: "expiryDate",
+    headerName: "Expiry Date",
+    width: 220,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.expiryDate)}</div>
+        </>
+      );
+    },
+  },
+
+  {
+    field: "status",
+    headerName: "Status",
+    width: 180,
+  },
+];
+
 export const expenseColumns = [
   { field: "_id", headerName: "ID", width: 230 },
   {
@@ -185,7 +232,6 @@ export const cashColumns = [
 ];
 
 export const saleColumn = [
-  
   {
     field: "createdAt",
     headerName: "Date",
@@ -226,14 +272,12 @@ export const saleColumn = [
     field: "total",
     headerName: "Total Amount",
     width: 230,
-    
   },
   {
     field: "paymentMode",
     headerName: "Payment Method",
     width: 230,
   },
-  
 ];
 
 export const saleReturnColumn = [
@@ -255,16 +299,13 @@ export const saleReturnColumn = [
     field: "total",
     headerName: "Total Amount",
     width: 230,
-    
   },
   {
     field: "paymentMode",
     headerName: "Payment Method",
     width: 230,
   },
-  
 ];
-
 
 export const saleDetailsColumn = [
   { field: "_id", headerName: "ID", width: 250 },
@@ -318,8 +359,6 @@ export const saleDetailsColumn = [
     width: 160,
   },
 ];
-
-
 
 export const purchaseColumn = [
   {
@@ -678,8 +717,6 @@ export const supplierLedgerColumns = [
     headerName: "Balance",
     width: 160,
   },
-
-  
 ];
 
 export const areaColumns = [
@@ -756,7 +793,7 @@ export const customersColumns = [
       );
     },
   },
-  
+
   {
     field: "areaCode",
     headerName: "Area code",
@@ -848,18 +885,13 @@ export const salesmanColumns = [
 ];
 
 export const salesmanLedgerColumns = [
- 
   {
     field: "saleId",
     headerName: "Sale Id",
     renderCell: (params) => {
       return (
         <>
-          <p>
-            {
-              params?.row?.saleId ? params?.row?.saleId : "N/A"
-            }
-          </p>
+          <p>{params?.row?.saleId ? params?.row?.saleId : "N/A"}</p>
         </>
       );
     },
@@ -871,11 +903,7 @@ export const salesmanLedgerColumns = [
     renderCell: (params) => {
       return (
         <>
-          <p>
-            {
-              params?.row?.saleReturnId ? params?.row?.saleReturnId : "N/A"
-            }
-          </p>
+          <p>{params?.row?.saleReturnId ? params?.row?.saleReturnId : "N/A"}</p>
         </>
       );
     },
@@ -963,5 +991,4 @@ export const salesmanLedgerColumns = [
     },
     width: 160,
   },
-  
 ];
