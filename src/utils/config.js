@@ -43,7 +43,7 @@ export const GET_ALL_CUSTOMER_CASH_OUT =
   CUSTOMER_BASE_URL + "get_all_cash_out_customer";
 // export const GET_CUSTOMERS_CASH_FLOW =
 //   CUSTOMER_BASE_URL + "get_customers_cash_flow";
-export const GET_CUSTOMER_LEDGER = CUSTOMER_BASE_URL + "get_customer_ledger/"
+export const GET_CUSTOMER_LEDGER = CUSTOMER_BASE_URL + "get_customer_ledger/";
 //Product URL
 export const PRODUCT_BASE_URL = BASE_URL + "product/";
 export const GET_PRODUCTS_LIST = PRODUCT_BASE_URL + "get_products";
@@ -58,13 +58,17 @@ export const STOCK_IN = PRODUCT_BASE_URL + "stock_in/";
 export const STOCK_OUT = PRODUCT_BASE_URL + "stock_out/";
 
 //Expense URL
-export const EXPENSE_BASE_URL = BASE_URL + "expense/";
-export const GET_EXPENSES_LIST = EXPENSE_BASE_URL + "get_expenses";
+// export const EXPENSE_BASE_URL = BASE_URL + "expense/";
+export const EXPENSE_BASE_URL = BASE_URL + "expenses";
+export const GET_EXPENSES_LIST = BASE_URL + "expenses";
 export const ADD_EXPENSE = EXPENSE_BASE_URL + "add_expense";
 export const DELETE_EXPENSE = EXPENSE_BASE_URL;
 export const UPDATE_EXPENSE_BY_ID = EXPENSE_BASE_URL;
 export const GET_EXPENSE_BY_ID = EXPENSE_BASE_URL;
 export const UPDATE_EXPENSE_STATUS_BY_ID = EXPENSE_BASE_URL + "update_status";
+
+//Expense Catagory
+export const EXPENSE_CATAGORY_BASE_URL = BASE_URL + "expensecategories/";
 
 //Sale URL
 export const SALE_BASE_URL = BASE_URL + "sales/";
@@ -72,6 +76,7 @@ export const ADD_SALE = SALE_BASE_URL + "add_sale";
 export const ESTIMATE_SALE = SALE_BASE_URL + "dummysales";
 export const GET_BATCH_LIST = SALE_BASE_URL + "get_batch";
 export const GET_SALE_LIST = BASE_URL + "sales";
+export const ADD_SALES_SERVICES = BASE_URL + "sales";
 export const GET_SALE_RETURN_LIST = BASE_URL + "salereturns";
 
 //Purchase URL
@@ -94,8 +99,6 @@ export const ADD_PRODUCT = BASE_URL + "products";
 
 export const ADD_PURCHASE = BASE_URL + "purchases";
 
-export const ADD_SALES_SERVICES = BASE_URL + "sales"
-
 //Area URL
 export const GET_AREA_LIST = BASE_URL + "areas";
 //CUSTOMERS URL
@@ -115,7 +118,8 @@ export const GET_PURCHASERETURN = BASE_URL + "purchasereturns";
 export const GET_CUSTOMERS_CASH_FLOW = BASE_URL + "cash";
 //CUSTOMER CASH IN URL
 export const GET_CUSTOMERS_CASH_IN = BASE_URL + "cashin";
-export const GET_QUANTITY_AND_EXPIRY_LIST = BASE_URL + "sales/getquantityandexpiry";
+export const GET_QUANTITY_AND_EXPIRY_LIST =
+  BASE_URL + "sales/getquantityandexpiry";
 //CUSTOMER CASH IN URL
 export const GET_CUSTOMERS_CASH_OUT = BASE_URL + "cashout";
 //Inventory URL
@@ -126,4 +130,3 @@ export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
 
 //Inventory StockOut URL
 export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
-

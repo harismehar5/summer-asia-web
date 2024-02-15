@@ -62,7 +62,7 @@ export default function SideBar() {
               <span>Customers List</span>
             </li>
           </Link>
-          
+
           <p className="title">Sales Man</p>
           <Link to="/salesman/add/" style={{ textDecoration: "none" }}>
             <li>
@@ -149,7 +149,7 @@ export default function SideBar() {
               <span>Supplier list</span>
             </li>
           </Link>
-       
+
           <p className="title">Expenses</p>
           <Link to="/expense/add" style={{ textDecoration: "none" }}>
             <li>
@@ -163,6 +163,21 @@ export default function SideBar() {
               <span>Expense list</span>
             </li>
           </Link>
+
+          <p className="title">Expenses Catagory</p>
+          <Link to="/expense/catagory/add" style={{ textDecoration: "none" }}>
+            <li>
+              <LocalMallRoundedIcon className="icon" />
+              <span>Add Expense Catagory</span>
+            </li>
+          </Link>
+          <Link to="/expense/catagory/list" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Expense Catagory List</span>
+            </li>
+          </Link>
+
           <p className="title">Product</p>
           <Link to="/product/add" style={{ textDecoration: "none" }}>
             <li>

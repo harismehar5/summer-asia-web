@@ -30,8 +30,7 @@ export default function GetCustomerCashFlow() {
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          setData(response.data.data);
-          console.log("data :",response.data)
+          setData(response.data.cash_flow);
         }
       })
       .catch(function (error) {
@@ -51,7 +50,6 @@ export default function GetCustomerCashFlow() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <h1>{data.cashInBalance}</h1>
         <ListHeader
           header={"Cash Flow List"}
           firstButton={true}

@@ -165,6 +165,13 @@ export const expenseColumns = [
     field: "name",
     headerName: "Name",
     width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params?.row?.expenseCategory?.name || "N/A"}</div>
+        </>
+      );
+    },
   },
   {
     field: "description",
@@ -177,6 +184,31 @@ export const expenseColumns = [
     headerName: "Amount",
     width: 230,
   },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 160,
+    renderCell: (params) => {
+      return (
+        <>
+          {params.row.status === true ? (
+            <div className={`cell-with-status active`}>{"active"}</div>
+          ) : (
+            <div className={`cell-with-status passive`}>{"passive"}</div>
+          )}
+        </>
+      );
+    },
+  },
+];
+
+export const expenseCatagoryColumns = [
+  {
+    field: "name",
+    headerName: "Name",
+    width: 230,
+  },
+
   {
     field: "status",
     headerName: "Status",
@@ -487,51 +519,43 @@ export const supplierCashFlowColumn = [
 
 export const customerCashFlowColumn = [
   { field: "_id", headerName: "ID", width: 230 },
-  { field: "purchaseId", headerName: "Purchase Id", width: 230 },
-  { field: "purchaseReturnId", headerName: "Purchase return Id", width: 230 },
-  { field: "saleId", headerName: "Sale Id", width: 230 },
-  { field: "saleReturnId", headerName: "Purchase return Id", width: 230 },
   {
-    field: "customerId",
-    headerName: "Customer",
-    width: 230,
-    renderCell: (params) => {
-      return (
-        <>
-          <div>{params.value && params.value.name}</div>
-        </>
-      );
-    },
-  },
-  {
-    field: "companyId",
-    headerName: "Company",
-    width: 230,
-    renderCell: (params) => {
-      return (
-        <>
-          <div>{params.value && params.value.name}</div>
-        </>
-      );
-    },
-  },
-  
-  { field: "debit", headerName: "Debit", width: 230 },
-  { field: "credit", headerName: "Credit", width: 230 },
-  { field: "balance", headerName: "Balance", width: 230 },
-  {
-    field: "createdAt", 
+    field: "submit_date",
     headerName: "Date",
     width: 230,
     renderCell: (params) => {
       return (
         <>
-          <div>{formatDate(params.value)}</div>
+          <div>{formatDate(params.row.submit_date)}</div>
         </>
       );
     },
   },
-  
+  {
+    field: "customer_name",
+    headerName: "Customer Name",
+    width: 230,
+  },
+  {
+    field: "cash_in_amount",
+    headerName: "Cash In",
+    width: 160,
+  },
+  {
+    field: "cash_out_amount",
+    headerName: "Cash Out",
+    width: 160,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+  },
+  {
+    field: "payment_medium",
+    headerName: "Medium",
+    width: 230,
+  },
 ];
 export const stockLogColumns = [
   {

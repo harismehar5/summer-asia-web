@@ -39,16 +39,16 @@ export default function AddCustomers() {
 
   const addCustomer = () => {
     const customerData = {
-      name: name,
-      phone: phone,
-      address: address,
-      gender: gender,
-      email: email,
-      license: license,
-      licenseExpiryDate: licenseExpiryDate,
-      areaCode: areaCode,
-      bankAccount: bankAccount,
-      code: code,
+      name:name,
+      phone:phone,
+      address:address,
+      gender:gender,
+      email:email,
+      license:license,
+      licenseExpiryDate:licenseExpiryDate,
+      areaCode:areaCode,
+      bankAccount:bankAccount,
+      code:code,
     };
 
     axios
@@ -65,7 +65,7 @@ export default function AddCustomers() {
       })
       .catch(function (error) {
         console.error("Error adding customer:", error);
-        handleSnackbar("error", error.response.data.error);
+        handleSnackbar("error",  error.response.data.error);
       });
   };
 
@@ -79,8 +79,8 @@ export default function AddCustomers() {
       license.length === 0 ||
       licenseExpiryDate.length === 0 ||
       areaCode.length === 0 ||
-      bankAccount.length === 0 ||
-      code.length === 0
+      bankAccount.length === 0 || 
+      code.length ===0
     ) {
       handleSnackbar("error", "All fields are required");
     } else {
@@ -124,45 +124,7 @@ export default function AddCustomers() {
             Add Customer
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={6} sm={6} md={6} />
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="code"
-                name="code"
-                label="Code"
-                fullWidth
-                variant="outlined"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="name"
-                name="name"
-                label="Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="phone"
-                name="phone"
-                label="Phone"
-                type="number"
-                fullWidth
-                variant="outlined"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
+          <Grid item xs={4} sm={3}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="gender-label">Gender</InputLabel>
                 <Select
@@ -177,7 +139,32 @@ export default function AddCustomers() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="name"
+                name="name"
+                label="Name"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="phone"
+                name="phone"
+                label="Phone"
+                type="number" 
+                fullWidth
+                variant="outlined"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="email"
@@ -189,8 +176,8 @@ export default function AddCustomers() {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Grid>
-
-            <Grid item xs={6} sm={6} md={6}>
+            
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="license"
@@ -202,23 +189,23 @@ export default function AddCustomers() {
                 onChange={(event) => setLicense(event.target.value)}
               />
             </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="licenseExpiryDate"
-                name="licenseExpiryDate"
-                label="License Expiry Date"
-                type="date"
-                fullWidth
-                variant="outlined"
-                value={licenseExpiryDate}
-                onChange={(event) => setLicenseExpiryDate(event.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={4} sm={3}>
+  <TextField
+    required
+    id="licenseExpiryDate"
+    name="licenseExpiryDate"
+    label="License Expiry Date"
+    type="date"
+    fullWidth
+    variant="outlined"
+    value={licenseExpiryDate}
+    onChange={(event) => setLicenseExpiryDate(event.target.value)}
+    InputLabelProps={{
+      shrink: true,
+    }}
+  />
+</Grid>
+            <Grid item xs={4} sm={3}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="areaCode-label">Area Code</InputLabel>
                 <Select
@@ -236,7 +223,7 @@ export default function AddCustomers() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="bankAccount"
@@ -248,7 +235,7 @@ export default function AddCustomers() {
                 onChange={(event) => setBankAccount(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={12} md={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 required
                 id="address"
@@ -260,9 +247,20 @@ export default function AddCustomers() {
                 onChange={(event) => setAddress(event.target.value)}
               />
             </Grid>
-
-            <Grid item xs={6} sm={6} md={6}></Grid>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="code"
+                name="code"
+                label="Code"
+                fullWidth
+                variant="outlined"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} sm={3}></Grid>
+            <Grid item xs={4} sm={3}>
               <Grid
                 justifyContent={"flex-end"}
                 container
@@ -284,7 +282,7 @@ export default function AddCustomers() {
                     variant="contained"
                     size="medium"
                     color="error"
-                  // onClick={() => setOpenPopup(false)}
+                    // onClick={() => setOpenPopup(false)}
                   >
                     Cancel
                   </Button>

@@ -49,6 +49,7 @@ export default function AddSale() {
     salesTax: 0,
     tradeRate: 0,
     netTotal: "",
+    status: "",
     productCode: "",
   });
   const [data, setData] = useState([productObject]);
@@ -161,11 +162,13 @@ export default function AddSale() {
   };
 
   const getBatchList = (productCode) => {
+    console.log("Product Code", productCode);
     axios
       .post(GET_BATCH_LIST, {
         productCode: productCode,
       })
       .then(function (response) {
+        console.log("Response", response);
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
@@ -199,6 +202,7 @@ export default function AddSale() {
       });
   };
   const addProductIntoList = () => {
+    console.log("Product Object", productObject);
     // if (productObject._id !== "") {
     var obj = {};
     var array = data;
@@ -270,7 +274,7 @@ export default function AddSale() {
     axios
       .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
       .then(function (response) {
-        console.log(JSON.stringify(response.data, null, 2))
+        console.log(JSON.stringify(response.data, null, 2));
         setDateAndQuantityObject(response.data);
         setData((currentData) =>
           produce(currentData, (v) => {
@@ -328,7 +332,7 @@ export default function AddSale() {
     }
 
     var purchaseObject = {
-      saleDetail: data,
+      purchaseDetail: data,
       companyCode: companyCode,
       paymentMode: paymentMode,
       salesman: SaleManObject._id,
@@ -464,12 +468,12 @@ export default function AddSale() {
                         }
                         onChange={(event, newInputValue) => {
                           // setProductObject(newInputValue);
-                          setProductId(newInputValue._id)
-                          console.log(newInputValue)
+                          setProductId(newInputValue._id);
+                          console.log(newInputValue);
                           var productObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
-                              v[index].productCode = newInputValue._id;
+                              v[index].productCode = productObject._id;
                             })
                           );
                           getBatchList(productObject._id);
@@ -502,7 +506,7 @@ export default function AddSale() {
 
                           setData((currentData) =>
                             produce(currentData, (v) => {
-                              v[index].batchCode = newInputValue.batchCode;
+                              v[index].productCode = batchObject.batchCode;
                             })
                           );
                         }}
@@ -824,11 +828,6 @@ const ComponentToPrint = React.forwardRef(({ data }, ref) => {
   data.map((item) => (totalSalesTax += Number(item.salesTax)));
   data.map((item) => (totalTradeRate += Number(item.tradeRate)));
 
-  console.log("total Quantity ", totalQuantity);
-  console.log("total Bonus ", totalBonus);
-  console.log("total Discount ", totalDiscount);
-  console.log("total Sales Tax ", totalSalesTax);
-  console.log("total Trade Rate ", totalTradeRate);
   return (
     <div ref={ref}>
       <header class="header">

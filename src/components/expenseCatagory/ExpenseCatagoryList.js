@@ -11,32 +11,26 @@ import { Button } from "@mui/material";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { expenseColumns } from "../../dataTableColumns";
+import { expenseCatagoryColumns } from "../../dataTableColumns";
 
-import {
-  EXPENSE_BASE_URL,
-  DELETE_EXPENSE,
-  GET_EXPENSES_LIST,
-  UPDATE_EXPENSE_BY_ID,
-} from "../../utils/config";
+import { EXPENSE_CATAGORY_BASE_URL } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
 
-export default function GetExpensesList() {
+export default function ExpenseCatagoryList() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const [openPopup, setOpenPopup] = useState(false);
   const [name, setName] = useState("");
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
+  // const [amount, setAmount] = useState("");
+  // const [description, setDescription] = useState("");
   const [id, setId] = useState("");
+
   var expense = {
     name: "",
-    amount: "",
-    description: "",
   };
   useEffect(() => {
     getExpensesList();
@@ -71,15 +65,13 @@ export default function GetExpensesList() {
   ];
   const getExpensesList = () => {
     axios
-      .get(EXPENSE_BASE_URL)
+      .get(EXPENSE_CATAGORY_BASE_URL)
       .then(function (response) {
-        console.log(JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response.data.data);
           setData(response.data.data);
         }
       })
@@ -91,7 +83,7 @@ export default function GetExpensesList() {
   };
   const deleteExpense = (id) => {
     axios
-      .delete(EXPENSE_BASE_URL + "/" + id)
+      .delete(EXPENSE_CATAGORY_BASE_URL + id)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -112,11 +104,11 @@ export default function GetExpensesList() {
   const updateExpense = () => {
     expense = {
       name: name,
-      amount: amount,
-      description: description,
+      // amount: amount,
+      // description: description,
     };
     axios
-      .put(EXPENSE_BASE_URL + "/" + id, expense)
+      .put(EXPENSE_CATAGORY_BASE_URL + id, expense)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -127,8 +119,6 @@ export default function GetExpensesList() {
           setMessage(response.data.success_msg);
           setSeverity("success");
           setName("");
-          setAmount("");
-          setDescription("");
           setId("");
           setOpenPopup(false);
         }
@@ -140,7 +130,7 @@ export default function GetExpensesList() {
       });
   };
   const validation = () => {
-    if (name.length === 0 || amount.length === 0 || description.length === 0) {
+    if (name.length === 0) {
       setOpen(true);
       setMessage("Some fields are missing");
       setSeverity("error");
@@ -157,8 +147,8 @@ export default function GetExpensesList() {
   const editExpense = (expense) => {
     setOpenPopup(true);
     setName(expense.name);
-    setDescription(expense.description);
-    setAmount(expense.amount);
+    // setDescription(expense.description);
+    // setAmount(expense.amount);
     setId(expense._id);
   };
   return (
@@ -167,15 +157,14 @@ export default function GetExpensesList() {
       <div className="list-container">
         <Navbar />
         <ListHeader
-          header={"Expenses List"}
+          header={"Expenses Catagory List"}
           firstButton={true}
           firstButtonText={"Add Expense"}
         />
         <DataTable
           data={data}
-          columns={expenseColumns.concat(actionColumn)}
+          columns={expenseCatagoryColumns.concat(actionColumn)}
           isForTransaction={false}
-          // loading={!data.length}
         />
         <Popup
           title="Expense Form"
@@ -195,7 +184,7 @@ export default function GetExpensesList() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 required
                 id="amount"
@@ -206,8 +195,8 @@ export default function GetExpensesList() {
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
               />
-            </Grid>
-            <Grid item xs={12} sm={12}>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={12}>
               <TextField
                 id="description"
                 name="description"
@@ -217,8 +206,8 @@ export default function GetExpensesList() {
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}></Grid>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={6}></Grid> */}
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}
