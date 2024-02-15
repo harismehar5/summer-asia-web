@@ -92,11 +92,13 @@ export default function GetSupplierLedger() {
             )}
           />
         </Grid>
+       
         <DataTable
           data={data}
           columns={supplierLedgerColumns}
           isForTransaction={false}
         />
+        
         <SnackBar
           open={open}
           severity={severity}

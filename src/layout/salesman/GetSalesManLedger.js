@@ -160,17 +160,15 @@ export default function GetsalesmanLedger() {
             )}
           />
         </Grid>
-        {data.length !== 0 ? (
-          <>
-            <DataTable
-              data={data}
-              columns={salesmanLedgerColumns}
-              // loading={loading}
-              isForTransaction={false}
-            />
-            {/* <BalancesSection /> */}
-          </>
-        ) : null}
+
+        <DataTable
+          data={data}
+          columns={salesmanLedgerColumns}
+          // loading={loading}
+          isForTransaction={false}
+        />
+        {/* <BalancesSection /> */}
+
         <SnackBar
           open={open}
           severity={severity}

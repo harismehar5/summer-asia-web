@@ -23,6 +23,7 @@ export default function GetSupplierCashFlow() {
     axios
       .get(GET_SUPPLIERS_CASH_FLOW)
       .then(function (response) {
+        console.log(JSON.stringify(response,null,2))
         if (response.data.error) {
         //   setLoading(false);
         } else {
@@ -48,9 +49,9 @@ export default function GetSupplierCashFlow() {
           secondButtonText="Cash Out"
           secondLink={"/supplier/add_cash_out"}
         />
-        {data.length !== 0 ? (
+        {/* {data.length !== 0 ? (
           <DataTable data={data} columns={supplierCashFlowColumn} loading={loading} isForTransaction={false} />
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );

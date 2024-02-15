@@ -29,6 +29,13 @@ export default function SideBar() {
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
           </li>
+          <p className="title">Cash Flow</p>
+          <Link to="/customer/cash_flow" style={{ textDecoration: "none" }}>
+            <li>
+              <CurrencyExchangeRoundedIcon className="icon" />
+              <span>Cash Flow</span>
+            </li>
+          </Link>
           <p className="title">Area</p>
           <Link to="/area/add/" style={{ textDecoration: "none" }}>
             <li>
@@ -55,12 +62,7 @@ export default function SideBar() {
               <span>Customers List</span>
             </li>
           </Link>
-          <Link to="/customer/cash_flow" style={{ textDecoration: "none" }}>
-            <li>
-              <CurrencyExchangeRoundedIcon className="icon" />
-              <span>Cash Flow</span>
-            </li>
-          </Link>
+          
           <p className="title">Sales Man</p>
           <Link to="/salesman/add/" style={{ textDecoration: "none" }}>
             <li>
@@ -147,12 +149,7 @@ export default function SideBar() {
               <span>Supplier list</span>
             </li>
           </Link>
-          <Link to="/supplier/cash_flow" style={{ textDecoration: "none" }}>
-            <li>
-              <CurrencyExchangeRoundedIcon className="icon" />
-              <span>Cash Flow</span>
-            </li>
-          </Link>
+       
           <p className="title">Expenses</p>
           <Link to="/expense/add" style={{ textDecoration: "none" }}>
             <li>
@@ -176,13 +173,20 @@ export default function SideBar() {
           <Link to="/product" style={{ textDecoration: "none" }}>
             <li>
               <Inventory2OutlinedIcon className="icon" />
-              <span>Stock</span>
+              <span>Product List</span>
             </li>
           </Link>
-          <Link to="/product/stock_log" style={{ textDecoration: "none" }}>
+          {/* <Link to="/product/stock_log" style={{ textDecoration: "none" }}>
             <li>
               <BookIcon className="icon" />
               <span>Stock Log</span>
+            </li>
+          </Link> */}
+          <p className="title">Inventory</p>
+          <Link to="/inventory" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Inventory list</span>
             </li>
           </Link>
           <p className="title">Ledger</p>

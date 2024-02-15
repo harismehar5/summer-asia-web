@@ -49,6 +49,7 @@ import SalesReturn from "./layout/sale/SalesReturn";
 import SalesReturnDetails from "./layout/sale/SalesReturn";
 import PurchaseReturn from "./layout/purchaseReturn/addPurchaseReturn";
 import AddSalesReturn from "./layout/saleReturn/addSalesReturn";
+import Inventory from "./layout/Inventory";
 
 function App() {
   return (
@@ -88,6 +89,13 @@ function App() {
             <Route path="add" element={<AddProduct />} />
             <Route path="stock_log" element={<StockLog />} />
           </Route>
+
+          <Route path="inventory">
+            <Route index element={<Inventory/>} />
+            {/* <Route path="add" element={<AddProduct />} />
+            <Route path="stock_log" element={<StockLog />} /> */}
+          </Route>
+
           <Route path="sale">
             <Route index element={<GetSaleList />} />
             <Route path="sale_details/:id" element={<SalesDetails />} />
