@@ -91,9 +91,9 @@ export default function AddSupplierCashIn() {
   const validation = () => {
     if (
       amount.length === 0 ||
-      paymentMediumObject === {} ||
+      paymentMediumObject == {} ||
       submittedDate.length === 0 ||
-      supplierObject === {}
+      supplierObject == {}
     ) {
       <Alert severity="error">Some Fields are missing</Alert>;
     } else if (parseInt(amount) <= 0) {
