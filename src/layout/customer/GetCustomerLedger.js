@@ -13,8 +13,8 @@ import { customerLedgerColumns } from "../../dataTableColumns";
 
 import {
   BASE_URL,
+  GET_All_LEDGER,
   GET_CUSTOMERS_LIST,
-  GET_CUSTOMER_LEDGER,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
@@ -54,7 +54,7 @@ export default function GetCustomerLedger() {
     // setLoading(true);
 
     axios
-      .get(GET_CUSTOMER_LEDGER +id)
+      .get(GET_All_LEDGER +id)
       .then(function (response) {
        console.log(response)
         if (response.message == "Cash data not found") {
@@ -108,14 +108,14 @@ export default function GetCustomerLedger() {
             )}
           />
         </Grid>
-       
+    
           <DataTable
             data={data}
             columns={customerLedgerColumns}
             // loading={loading}
             isForTransaction={false}
           />
-       
+     
         <SnackBar
           open={open}
           severity={severity}

@@ -11,7 +11,7 @@ import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { supplierLedgerColumns } from "../../dataTableColumns";
 
-import { GET_ALL_COMPANIES, GET_SUPPLIER_LEDGER } from "../../utils/config";
+import { GET_ALL_COMPANIES, GET_All_LEDGER, GET_SUPPLIER_LEDGER } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 
@@ -42,7 +42,7 @@ export default function GetSupplierLedger() {
 
   const getSupplierLedgerList = (id) => {
     axios
-      .get(GET_SUPPLIER_LEDGER + id)
+      .get(GET_All_LEDGER + id)
       .then(function (response) {
         setData(response?.data?.data || []); // Set data to empty array if there is no data
       })

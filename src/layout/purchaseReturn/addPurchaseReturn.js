@@ -368,7 +368,7 @@ export default function AddPurchase() {
                     </Grid>
                     <Grid item md={1.5} px={1}>
                       <TextField
-                        label="Select Date"
+                        label="Expiry Date"
                         type="date"
                         // defaultValue={currentDate}
                         onChange={(e) => {
