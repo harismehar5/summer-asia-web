@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Button, Paper, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import {
+  Button,
+  Paper,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+} from "@mui/material";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
@@ -18,8 +26,8 @@ export default function AddSalesMan() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const [areaCommission, setAreaCommission] = useState();
-  const [cnic, setCnic] = useState();
+  const [areaCommission, setAreaCommission] = useState("");
+  const [cnic, setCnic] = useState("");
   const [dateOfJoin, setDateOfJoin] = useState("");
   const [description, setDescription] = useState("");
   const [fatherName, setFatherName] = useState("");
@@ -27,7 +35,8 @@ export default function AddSalesMan() {
   const [qualification, setQualification] = useState("");
   const [refPerson, setRefPerson] = useState("");
   const [refPersonNumber, setRefPersonNumber] = useState("");
-  const [target, setTarget] = useState();
+  const [target, setTarget] = useState("");
+
   useEffect(() => {
     axios
       .get(GET_AREA_LIST)
@@ -39,8 +48,8 @@ export default function AddSalesMan() {
       });
   }, []);
 
-  const addCustomer = () => {
-    const customerData = {
+  const addSalesMan = () => {
+    const salesManData = {
       name: name,
       address: address,
       areaCode: areaCode,
@@ -58,46 +67,129 @@ export default function AddSalesMan() {
     };
 
     axios
-      .post(GET_salesman_LIST, customerData)
+      .post(GET_salesman_LIST, salesManData)
       .then(function (response) {
-
         if (response.data.error) {
           handleSnackbar("error", response.data.error);
         } else {
           handleSnackbar("success", response.data.success);
           resetForm();
         }
-        console.log("New Data Success :", customerData);
-        console.log("Success Message :", response.data.message);
       })
       .catch(function (error) {
-        console.error("Error adding customer:", error);
+        console.error("Error adding sales man:", error);
         handleSnackbar("error", error.response.data.error);
       });
   };
 
   const validation = () => {
-    if (
-      name.length === 0 ||
-      address.length === 0 ||
-      areaCode.length === 0 ||
-      code.length === 0 ||
-      areaCommission.length === 0 ||
-      cnic.length === 0 ||
-      dateOfJoin.length === 0 ||
-      description.length === 0 ||
-      fatherName.length === 0 ||
-      phoneNo.length === 0 ||
-      qualification.length === 0 ||
-      refPerson.length === 0 ||
-      refPersonNumber.length === 0 ||
-      target.length === 0
-    ) {
-      handleSnackbar("error", "All fields are required");
+    let isValid = true;
+  
+    if (name.trim() === "") {
+      setNameError("Enter name");
+      isValid = false;
     } else {
-      addCustomer();
+      setNameError("");
+    }
+  
+    if (address.trim() === "") {
+      setAddressError("Enter address");
+      isValid = false;
+    } else {
+      setAddressError("");
+    }
+  
+    if (areaCode.trim() === "") {
+      setAreaCodeError("Select area code");
+      isValid = false;
+    } else {
+      setAreaCodeError("");
+    }
+  
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    } else {
+      setCodeError("");
+    }
+  
+    if (areaCommission.trim() === "") {
+      setAreaCommissionError("Enter area commission");
+      isValid = false;
+    } else {
+      setAreaCommissionError("");
+    }
+  
+    if (cnic.trim() === "") {
+      setCnicError("Enter CNIC");
+      isValid = false;
+    } else {
+      setCnicError("");
+    }
+  
+    if (dateOfJoin.trim() === "") {
+      setDateOfJoinError("Select date of join");
+      isValid = false;
+    } else {
+      setDateOfJoinError("");
+    }
+  
+    if (description.trim() === "") {
+      setDescriptionError("Enter description");
+      isValid = false;
+    } else {
+      setDescriptionError("");
+    }
+  
+    if (fatherName.trim() === "") {
+      setFatherNameError("Enter father's name");
+      isValid = false;
+    } else {
+      setFatherNameError("");
+    }
+  
+    if (phoneNo.trim() === "") {
+      setPhoneNoError("Enter phone number");
+      isValid = false;
+    } else {
+      setPhoneNoError("");
+    }
+  
+    if (qualification.trim() === "") {
+      setQualificationError("Enter qualification");
+      isValid = false;
+    } else {
+      setQualificationError("");
+    }
+  
+    if (refPerson.trim() === "") {
+      setRefPersonError("Enter reference person");
+      isValid = false;
+    } else {
+      setRefPersonError("");
+    }
+  
+    if (refPersonNumber.trim() === "") {
+      setRefPersonNumberError("Enter reference person number");
+      isValid = false;
+    } else {
+      setRefPersonNumberError("");
+    }
+  
+    if (target.trim() === "") {
+      setTargetError("Enter target");
+      isValid = false;
+    } else {
+      setTargetError("");
+    }
+  
+    if (isValid) {
+      addSalesMan();
+    } else {
+      handleSnackbar("error", "Enter valid values in all fields!");
     }
   };
+  
 
   const handleClose = (event, reason) => {
     if (reason === "click away") {
@@ -115,19 +207,35 @@ export default function AddSalesMan() {
   const resetForm = () => {
     setName("");
     setAddress("");
-    setAreaCode();
+    setAreaCode("");
     setCode("");
-    setAreaCommission();
-    setCnic();
+    setAreaCommission("");
+    setCnic("");
     setDateOfJoin("");
     setDescription("");
     setFatherName("");
-    setPhoneNo();
+    setPhoneNo("");
     setQualification("");
     setRefPerson("");
-    setRefPersonNumber();
-    setTarget();
+    setRefPersonNumber("");
+    setTarget("");
   };
+
+  // Add error states and helper text states for each field
+  const [nameError, setNameError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [areaCodeError, setAreaCodeError] = useState("");
+  const [codeError, setCodeError] = useState("");
+  const [areaCommissionError, setAreaCommissionError] = useState("");
+  const [cnicError, setCnicError] = useState("");
+  const [dateOfJoinError, setDateOfJoinError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [fatherNameError, setFatherNameError] = useState("");
+  const [phoneNoError, setPhoneNoError] = useState("");
+  const [qualificationError, setQualificationError] = useState("");
+  const [refPersonError, setRefPersonError] = useState("");
+  const [refPersonNumberError, setRefPersonNumberError] = useState("");
+  const [targetError, setTargetError] = useState("");
 
   return (
     <div className="box">
@@ -151,6 +259,7 @@ export default function AddSalesMan() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{codeError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -163,6 +272,7 @@ export default function AddSalesMan() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -175,6 +285,7 @@ export default function AddSalesMan() {
                 value={fatherName}
                 onChange={(event) => setFatherName(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{fatherNameError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -188,6 +299,7 @@ export default function AddSalesMan() {
                 value={phoneNo}
                 onChange={(event) => setPhoneNo(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{phoneNoError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -201,6 +313,7 @@ export default function AddSalesMan() {
                 value={cnic}
                 onChange={(event) => setCnic(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{cnicError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -213,6 +326,7 @@ export default function AddSalesMan() {
                 value={qualification}
                 onChange={(event) => setQualification(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{qualificationError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -229,6 +343,7 @@ export default function AddSalesMan() {
                   shrink: true,
                 }}
               />
+              <FormHelperText style={{ color: 'red' }}>{dateOfJoinError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -241,6 +356,7 @@ export default function AddSalesMan() {
                 value={refPerson}
                 onChange={(event) => setRefPerson(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{refPersonError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -254,6 +370,7 @@ export default function AddSalesMan() {
                 value={refPersonNumber}
                 onChange={(event) => setRefPersonNumber(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{refPersonNumberError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField
@@ -266,6 +383,7 @@ export default function AddSalesMan() {
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{addressError}</FormHelperText>
             </Grid>
             <Grid item xs={4} sm={4} md={4}>
               <FormControl fullWidth variant="outlined" required>
@@ -284,8 +402,8 @@ export default function AddSalesMan() {
                   ))}
                 </Select>
               </FormControl>
+              <FormHelperText style={{ color: 'red' }}>{areaCodeError}</FormHelperText>
             </Grid>
-
             <Grid item xs={4} sm={4} md={4}>
               <TextField
                 required
@@ -298,6 +416,7 @@ export default function AddSalesMan() {
                 value={areaCommission}
                 onChange={(event) => setAreaCommission(event.target.value)}
               />
+              <FormHelperText style={{ color: 'red' }}>{areaCommissionError}</FormHelperText>
             </Grid>
             <Grid item xs={4} sm={4} md={4}>
               <TextField
@@ -311,19 +430,7 @@ export default function AddSalesMan() {
                 value={target}
                 onChange={(event) => setTarget(event.target.value)}
               />
-            </Grid>
-
-            <Grid item xs={12} sm={12}>
-              <TextField
-                required
-                id="description"
-                name="description"
-                label="Description"
-                fullWidth
-                variant="outlined"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              />
+              <FormHelperText style={{ color: 'red' }}>{targetError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
@@ -348,7 +455,7 @@ export default function AddSalesMan() {
                     variant="contained"
                     size="medium"
                     color="error"
-                  // onClick={() => setOpenPopup(false)}
+                    onClick={() => resetForm()}
                   >
                     Cancel
                   </Button>

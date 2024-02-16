@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, FormHelperText } from "@mui/material";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
@@ -12,8 +12,11 @@ import { GET_AREA_LIST } from "../../utils/config";
 
 export default function AddArea() {
   const [code, setCode] = useState("");
+  const [codeError, setCodeError] = useState("");
   const [area, setArea] = useState("");
+  const [areaError, setAreaError] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -42,12 +45,36 @@ export default function AddArea() {
   };
 
   const validation = () => {
-    if (code.length === 0 || area.length === 0 || description.length === 0) {
-      handleSnackbar("error", "Area should be greater than 0");
-    } else {
+    let isValid = true;
+  
+    setCodeError("");
+    setAreaError("");
+    setDescriptionError("");
+
+
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    }
+  
+
+    if (area.trim() === "") {
+      setAreaError("Enter area");
+      isValid = false;
+    }
+  
+    if (description.trim() === "") {
+      setDescriptionError("Enter description");
+      isValid = false;
+    }
+
+    if (isValid) {
       addArea();
+    } else {
+      handleSnackbar("error", "Enter valid values!");
     }
   };
+  
 
   const handleClose = (event, reason) => {
     if (reason === "click away") {
@@ -89,6 +116,7 @@ export default function AddArea() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
+               <FormHelperText style={{ color: 'red' }}>{codeError}</FormHelperText>
             </Grid>
             <Grid item xs={4} sm={3}>
               <TextField
@@ -101,6 +129,7 @@ export default function AddArea() {
                 value={area}
                 onChange={(event) => setArea(event.target.value)}
               />
+               <FormHelperText style={{ color: 'red' }}>{areaError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12   }>
               <TextField
@@ -112,6 +141,7 @@ export default function AddArea() {
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
+               <FormHelperText style={{ color: 'red' }}>{descriptionError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
