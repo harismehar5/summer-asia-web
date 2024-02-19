@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,7 +11,7 @@ import { inventoryListColumns, productColumns } from "../../dataTableColumns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Button, Stack } from "@mui/material";
-
+import Autocomplete from "@mui/material/Autocomplete";
 import {
   GET_ALL_PRODUCTS,
   GET_INVENTORY_LIST,
@@ -21,6 +21,7 @@ import {
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
+import produce from "immer";
 
 export default function GetProductStock() {
   const [data, setData] = useState([]);
@@ -47,7 +48,7 @@ export default function GetProductStock() {
   const [openAddInventoryPopup, setOpenAddInventoryPopup] = useState(false);
   const [newInventoryItem, setNewInventoryItem] = useState({});
   const [productOptions, setProductOptions] = useState([]);
-
+  const [selectedProduct, setSelectedProduct] = useState({});
 
   useEffect(() => {
     getInventoryList();
@@ -236,13 +237,26 @@ export default function GetProductStock() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
-                label="Product Code"
+              <Autocomplete
+                options={productOptions}
+                getOptionLabel={(product) => product.code}
+                disablePortal
                 fullWidth
-                variant="outlined"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
+                // value={selectedProduct}
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value._id
+                }
+                onChange={(event, newValue) => {
+                  setSelectedProduct(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Product Code" />
+                )}
+                renderOption={(props, item) => (
+                  <Box component="li" {...props} key={item._id}>
+                    {item.code}
+                  </Box>
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -304,20 +318,20 @@ export default function GetProductStock() {
                         setSeverity("error");
                       } else {
                         const newItem = {
-                          productCode: code,
+                          productCode: selectedProduct,
                           batchCode: batchCode,
                           expiryDate: expiryDate,
                           quantity: parseInt(quantity),
                         };
 
-                        setData([...data, newItem]); // Add the new item to the data array
+                        // setData([...data, newItem]); // Add the new item to the data array
 
                         setOpen(true);
                         setMessage("Inventory item added successfully");
                         setSeverity("success");
 
                         // Reset input fields
-                        setCode("");
+                        setSelectedProduct(null);
                         setBatchCode("");
                         setExpiryDate("");
                         setQuantity("");
@@ -334,9 +348,11 @@ export default function GetProductStock() {
                     size="medium"
                     color="error"
                     onClick={() => {
+                      setSelectedProduct(null);
+                      setBatchCode("");
+                      setExpiryDate("");
                       setQuantity("");
-                      setID("");
-                      setStockInOpenPopup(false);
+                      setOpenAddInventoryPopup(false);
                     }}
                   >
                     Cancel
