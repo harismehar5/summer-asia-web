@@ -7,7 +7,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { Paper } from "@material-ui/core";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
-import { Alert, Button } from "@mui/material";
+import { Alert, Button, FormHelperText } from "@mui/material";
 import axios from "axios";
 import { ADD_COMPANY } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
@@ -23,6 +23,17 @@ export default function AddSupplier() {
   const [email, setEmail] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
 
+  // error states
+  const [codeError, setCodeError] = useState("")
+  const [nameError, setNameError] = useState("");
+  const [personNameError, setPersonNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [licenseError, setLicenseError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [accountNumberError, setAccountNumberError] = useState("");
+  
   const [openingBalance, setOpeningBalance] = useState("");
   const [status, setStatus] = useState(true);
   const [open, setOpen] = useState(false);
@@ -81,23 +92,94 @@ export default function AddSupplier() {
         setSeverity("error");
       });
   };
+  // const validation = () => {
+  //   if (
+  //     name.length === 0 ||
+  //     phone.length === 0 
+  //   ) {
+  //     setOpen(true);
+  //     setMessage("Some fields are missing");
+  //     setSeverity("error");
+  //   } else {
+  //     addSupplier();
+  //   }
+  // };
+
   const validation = () => {
-    if (
-      name.length === 0 ||
-      phone.length === 0 
-    ) {
-      setOpen(true);
-      setMessage("Some fields are missing");
-      setSeverity("error");
-    } else {
+    setNameError("");
+    setPhoneError("");
+    setAddressError("");
+    setEmailError("");
+    setLicenseError("");
+    setCodeError("");
+    setDescriptionError("");
+    setAccountNumberError("");
+    setPersonNameError("");
+
+    let isValid = true;
+
+    if (name.trim() === "") {
+      setNameError("Enter name");
+      isValid = false;
+    }
+
+    if (phone.trim() === "") {
+      setPhoneError("Enter phone");
+      isValid = false;
+    }
+
+    if (address.trim() === "") {
+      setAddressError("Enter address");
+      isValid = false;
+    }
+
+
+    if (email.trim() === "") {
+      setEmailError("Enter email");
+      isValid = false;
+    }
+
+    if (license.trim() === "") {
+      setLicenseError("Enter license");
+      isValid = false;
+    }
+    
+    if (description.trim() === "") {
+      setDescriptionError("Enter Descrption");
+      isValid = false;
+    }
+
+    if (accountNumber.trim() === "") {
+      setAccountNumberError("Enter Descrption");
+      isValid = false;
+    }
+
+    
+    if (personName.trim() === "") {
+      setPersonNameError("Enter Account Number");
+      isValid = false;
+    }
+
+
+    if (isValid) {
       addSupplier();
+    } else {
+      handleSnackbar("error", "Enter valid values!");
     }
   };
+
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
+  };
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
   };
   return (
     <div className="box">
@@ -138,6 +220,7 @@ export default function AddSupplier() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
+                <FormHelperText style={{ color: "red" }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -148,7 +231,9 @@ export default function AddSupplier() {
                 value={personName}
                 onChange={(event) => setPersonName(event.target.value)}
               />
+                    <FormHelperText style={{ color: "red" }}>{personNameError}</FormHelperText>
             </Grid>
+      
             <Grid item xs={12} sm={4}>
               <TextField
                 required
@@ -158,6 +243,7 @@ export default function AddSupplier() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
+               <FormHelperText style={{ color: "red" }}>{emailError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -167,6 +253,7 @@ export default function AddSupplier() {
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
+                    <FormHelperText style={{ color: "red" }}>{addressError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -176,6 +263,7 @@ export default function AddSupplier() {
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
               />
+                    <FormHelperText style={{ color: "red" }}>{phoneError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -185,6 +273,7 @@ export default function AddSupplier() {
                 value={license}
                 onChange={(event) => setLicense(event.target.value)}
               />
+                    <FormHelperText style={{ color: "red" }}>{licenseError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -194,6 +283,7 @@ export default function AddSupplier() {
                 value={accountNumber}
                 onChange={(event) => setAccountNumber(event.target.value)}
               />
+                    <FormHelperText style={{ color: "red" }}>{accountNumberError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField
@@ -203,6 +293,7 @@ export default function AddSupplier() {
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
+                    <FormHelperText style={{ color: "red" }}>{descriptionError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               {/* <FormControlLabel

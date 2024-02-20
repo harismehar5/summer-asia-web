@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Button, MenuItem, Paper, Select, InputLabel, FormControl } from "@mui/material";
+import {
+  Button,
+  MenuItem,
+  Paper,
+  Select,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+} from "@mui/material";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
@@ -13,20 +21,29 @@ export default function AddCustomers() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  // const [gender, setGender] = useState("");
+  const [ntn, setNtn] = useState("");
   const [email, setEmail] = useState("");
   const [license, setLicense] = useState("");
   const [licenseExpiryDate, setLicenseExpiryDate] = useState("");
   const [areaCode, setAreaCode] = useState("");
-  const [code, setCode] = useState("");
-  const [areas, setAreas] = useState([]); // New state to store areas data
   const [bankAccount, setBankAccount] = useState("");
+  const [code, setCode] = useState("");
+  const [areas, setAreas] = useState([]);
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [ntnError, setNtnError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [licenseError, setLicenseError] = useState("");
+  const [licenseExpiryDateError, setLicenseExpiryDateError] = useState("");
+  const [areaCodeError, setAreaCodeError] = useState("");
+  const [bankAccountError, setBankAccountError] = useState("");
+  const [codeError, setCodeError] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const [ntn, setNtn] = useState("");
+
   useEffect(() => {
-    // Fetch areas data from the API
     axios
       .get(GET_AREA_LIST)
       .then((response) => {
@@ -35,15 +52,14 @@ export default function AddCustomers() {
       .catch((error) => {
         console.error("Error fetching areas:", error);
       });
-  }, []); // Run the effect only once on component mount
+  }, []);
 
   const addCustomer = () => {
     const customerData = {
       name: name,
       phone: phone,
       address: address,
-      // gender: gender,
-      ntn:ntn,
+      ntn: ntn,
       email: email,
       license: license,
       licenseExpiryDate: licenseExpiryDate,
@@ -55,14 +71,12 @@ export default function AddCustomers() {
     axios
       .post(GET_CUSTOMERS_LIST, customerData)
       .then(function (response) {
-        console.log("New Data :", customerData);
         if (response.data.error) {
           handleSnackbar("error", response.data.error);
         } else {
           handleSnackbar("success", response.data.success);
           resetForm();
         }
-        console.log("New Data Success :", customerData);
       })
       .catch(function (error) {
         console.error("Error adding customer:", error);
@@ -71,22 +85,69 @@ export default function AddCustomers() {
   };
 
   const validation = () => {
-    if (
-      name.length === 0 ||
-      phone.length === 0 ||
-      address.length === 0 ||
-      // gender.length === 0 ||
-      ntn.length ===0 ||
-      email.length === 0 ||
-      license.length === 0 ||
-      licenseExpiryDate.length === 0 ||
-      areaCode.length === 0 ||
-      bankAccount.length === 0 || 
-      code.length ===0
-    ) {
-      handleSnackbar("error", "All fields are required");
-    } else {
+    setNameError("");
+    setPhoneError("");
+    setAddressError("");
+    setNtnError("");
+    setEmailError("");
+    setLicenseError("");
+    setLicenseExpiryDateError("");
+    setAreaCodeError("");
+    setBankAccountError("");
+    setCodeError("");
+
+    let isValid = true;
+
+    if (name.trim() === "") {
+      setNameError("Enter name");
+      isValid = false;
+    }
+
+    if (phone.trim() === "") {
+      setPhoneError("Enter phone");
+      isValid = false;
+    }
+
+    if (address.trim() === "") {
+      setAddressError("Enter address");
+      isValid = false;
+    }
+
+    if (ntn.trim() === "") {
+      setNtnError("Enter NTN");
+      isValid = false;
+    }
+
+    if (email.trim() === "") {
+      setEmailError("Enter email");
+      isValid = false;
+    }
+
+    if (license.trim() === "") {
+      setLicenseError("Enter license");
+      isValid = false;
+    }
+
+    if (licenseExpiryDate.trim() === "") {
+      setLicenseExpiryDateError("Enter license expiry date");
+      isValid = false;
+    }
+
+    if (areaCode.trim() === "") {
+      setAreaCodeError("Select area code");
+      isValid = false;
+    }
+
+    if (bankAccount.trim() === "") {
+      setBankAccountError("Enter bank account");
+      isValid = false;
+    }
+
+
+    if (isValid) {
       addCustomer();
+    } else {
+      handleSnackbar("error", "Enter valid values!");
     }
   };
 
@@ -107,7 +168,6 @@ export default function AddCustomers() {
     setName("");
     setPhone("");
     setAddress("");
-    // setGender("");
     setNtn("");
     setEmail("");
     setLicense("");
@@ -127,7 +187,6 @@ export default function AddCustomers() {
             Add Customer
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={6} sm={6} md={6} />
             <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
@@ -139,6 +198,7 @@ export default function AddCustomers() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{codeError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -151,6 +211,7 @@ export default function AddCustomers() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -164,23 +225,9 @@ export default function AddCustomers() {
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{phoneError}</FormHelperText>
             </Grid>
-            {/* <Grid item xs={6} sm={6} md={6}>
-              <FormControl fullWidth variant="outlined" required>
-                <InputLabel id="gender-label">Gender</InputLabel>
-                <Select
-                  labelId="gender-label"
-                  id="gender"
-                  value={gender}
-                  onChange={(event) => setGender(event.target.value)}
-                  label="Gender"
-                >
-                  <MenuItem value="Male">Male</MenuItem>
-                  <MenuItem value="Female">Female</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid> */}
-                        <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="ntn"
@@ -191,7 +238,8 @@ export default function AddCustomers() {
                 value={ntn}
                 onChange={(event) => setNtn(event.target.value)}
               />
-</Grid>
+              <FormHelperText style={{ color: "red" }}>{ntnError}</FormHelperText>
+            </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
@@ -203,9 +251,9 @@ export default function AddCustomers() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{emailError}</FormHelperText>
             </Grid>
-            
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
               <TextField
                 required
                 id="license"
@@ -216,24 +264,26 @@ export default function AddCustomers() {
                 value={license}
                 onChange={(event) => setLicense(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{licenseError}</FormHelperText>
             </Grid>
-            <Grid item xs={4} sm={3}>
-  <TextField
-    required
-    id="licenseExpiryDate"
-    name="licenseExpiryDate"
-    label="License Expiry Date"
-    type="date"
-    fullWidth
-    variant="outlined"
-    value={licenseExpiryDate}
-    onChange={(event) => setLicenseExpiryDate(event.target.value)}
-    InputLabelProps={{
-      shrink: true,
-    }}
-  />
-</Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}>
+              <TextField
+                required
+                id="licenseExpiryDate"
+                name="licenseExpiryDate"
+                label="License Expiry Date"
+                type="date"
+                fullWidth
+                variant="outlined"
+                value={licenseExpiryDate}
+                onChange={(event) => setLicenseExpiryDate(event.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <FormHelperText style={{ color: "red" }}>{licenseExpiryDateError}</FormHelperText>
+            </Grid>
+            <Grid item xs={6} sm={6} md={6}>
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="areaCode-label">Area Code</InputLabel>
                 <Select
@@ -250,6 +300,7 @@ export default function AddCustomers() {
                   ))}
                 </Select>
               </FormControl>
+              <FormHelperText style={{ color: "red" }}>{areaCodeError}</FormHelperText>
             </Grid>
             <Grid item xs={4} sm={3}>
               <TextField
@@ -262,6 +313,7 @@ export default function AddCustomers() {
                 value={bankAccount}
                 onChange={(event) => setBankAccount(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{bankAccountError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -274,21 +326,10 @@ export default function AddCustomers() {
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{addressError}</FormHelperText>
             </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="code"
-                name="code"
-                label="Code"
-                fullWidth
-                variant="outlined"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3}></Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={6} sm={6} md={6}></Grid>
+            <Grid item xs={6} sm={6} md={6}>
               <Grid
                 justifyContent={"flex-end"}
                 container
