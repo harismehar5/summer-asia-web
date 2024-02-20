@@ -218,6 +218,60 @@ export default function GetProductStock() {
     }
     setOpen(false);
   };
+
+  const handleSave = () => {
+    if (quantity < 0) {
+      setOpen(true);
+      setMessage("Quantity should be greater than 0");
+      setSeverity("error");
+    } else if (quantity === "") {
+      setOpen(true);
+      setMessage("Please enter quantity");
+      setSeverity("error");
+    } else {
+      const newItem = {
+        productCode: selectedProduct,
+        batchCode: batchCode,
+        expiryDate: expiryDate,
+        quantity: parseInt(quantity),
+      };
+
+      axios
+        .post(GET_INVENTORY_StockIn, newItem)
+        .then(function (response) {
+          if (response.data.error) {
+            setOpen(true);
+            setMessage(response.data.error);
+            setSeverity("error");
+          } else {
+            setOpen(true);
+            setMessage("Inventory item added successfully");
+            setSeverity("success");
+
+            setSelectedProduct(null);
+            setBatchCode("");
+            setExpiryDate("");
+            setQuantity("");
+            setOpenAddInventoryPopup(false);
+          }
+        })
+        .catch(function (error) {
+          setOpen(true);
+          setMessage(error.toString());
+          setSeverity("error");
+        });
+    }
+  };
+
+  <Button
+    variant="contained"
+    size="medium"
+    color="success"
+    onClick={handleSave}
+  >
+    Save
+  </Button>;
+
   return (
     <div className="list">
       <Sidebar />
@@ -307,37 +361,7 @@ export default function GetProductStock() {
                     variant="contained"
                     size="medium"
                     color="success"
-                    onClick={() => {
-                      if (quantity < 0) {
-                        setOpen(true);
-                        setMessage("Quantity should be greater than 0");
-                        setSeverity("error");
-                      } else if (quantity === "") {
-                        setOpen(true);
-                        setMessage("Please enter quantity");
-                        setSeverity("error");
-                      } else {
-                        const newItem = {
-                          productCode: selectedProduct,
-                          batchCode: batchCode,
-                          expiryDate: expiryDate,
-                          quantity: parseInt(quantity),
-                        };
-
-                        // setData([...data, newItem]); // Add the new item to the data array
-
-                        setOpen(true);
-                        setMessage("Inventory item added successfully");
-                        setSeverity("success");
-
-                        // Reset input fields
-                        setSelectedProduct(null);
-                        setBatchCode("");
-                        setExpiryDate("");
-                        setQuantity("");
-                        setOpenAddInventoryPopup(false);
-                      }
-                    }}
+                    onClick={handleSave}
                   >
                     Save
                   </Button>
