@@ -26,10 +26,11 @@ export default function GetCustomerCashOut() {
         if (response.data.error) {
           setLoading(false);
         } else {
-          for (var i = 0; i < response.data.data.length; i++) {
-            for (var k = 0; k < response.data.data[i].cash.length; k++)
-              data.push(response.data.data[i].cash[k]);
-          }
+          console.log(JSON.stringify(response, null, 2));
+          // for (var i = 0; i < response.data.data.length; i++) {
+          //   for (var k = 0; k < response.data.data[i].cash.length; k++)
+          //     data.push(response.data.data[i].cash[k]);
+          // }
           setLoading(false);
         }
       })
@@ -42,7 +43,11 @@ export default function GetCustomerCashOut() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <ListHeader header={"Cash Out List"} firstButton={true} firstButtonText={"Cash Out"}/>
+        <ListHeader
+          header={"Cash Out List"}
+          firstButton={true}
+          firstButtonText={"Cash Out"}
+        />
         {data.length !== 0 ? (
           <DataTable
             data={data}

@@ -42,9 +42,18 @@ export default function GetCustomerCashIn() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <ListHeader header={"Cash In List"} firstButton={true} firstButtonText={"Cash In"}/>
+        <ListHeader
+          header={"Cash In List"}
+          firstButton={true}
+          firstButtonText={"Cash In"}
+        />
         {data.length !== 0 ? (
-          <DataTable data={data} columns={cashColumns} loading={loading} isForTransaction={false} />
+          <DataTable
+            data={data}
+            columns={cashColumns}
+            loading={loading}
+            isForTransaction={false}
+          />
         ) : null}
       </div>
     </div>

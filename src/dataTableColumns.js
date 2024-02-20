@@ -518,6 +518,11 @@ export const supplierCashFlowColumn = [
 ];
 
 export const customerCashFlowColumn = [
+  { field: "_id", headerName: "ID", width: 230 },
+  { field: "purchaseId", headerName: "Purchase Id", width: 230 },
+  { field: "purchaseReturnId", headerName: "Purchase return Id", width: 230 },
+  { field: "saleId", headerName: "Sale Id", width: 230 },
+  { field: "saleReturnId", headerName: "Purchase return Id", width: 230 },
   {
     field: "customerId",
     headerName: "Customer",
@@ -525,7 +530,7 @@ export const customerCashFlowColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{params?.row?.name || "NA"}</div>
+          <div>{params.value && params.value.name}</div>
         </>
       );
     },
@@ -537,7 +542,7 @@ export const customerCashFlowColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{params?.row?.companyId || "NA"}</div>
+          <div>{params.value && params.value.name}</div>
         </>
       );
     },
@@ -553,7 +558,7 @@ export const customerCashFlowColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{params.value ? formatDate(params.value) : "NA"}</div>
+          <div>{formatDate(params.value)}</div>
         </>
       );
     },

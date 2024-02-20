@@ -3,82 +3,57 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Paper } from "@material-ui/core";
+import Alert from "@mui/material/Alert";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Autocomplete, Box, Button } from "@mui/material";
 import axios from "axios";
 import {
-  ADD_CUSTOMER_CASH_OUT,
+  GET_ALL_COMPANIES,
+  GET_CUSTOMERS_CASH_OUT,
   GET_CUSTOMERS_LIST,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddCustomerCashOut() {
   const [customerList, setCustomerList] = useState([]);
+  const [companyList, setCompanyList] = useState([]);
+  const [selectedRadio, setSelectedRadio] = useState("customer");
+  const [selectedList, setSelectedList] = useState([]);
   const [customerObject, setCustomerObject] = useState({});
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [submittedDate, setSubmittedDate] = useState("");
-  const paymentMediumList = [
-    {
-      id: 1,
-      name: "Bank Transfer",
-    },
-    {
-      id: 2,
-      name: "By Hand",
-    },
-    {
-      id: 3,
-      name: "Jazz Cash/Easy Paisa ",
-    },
-    {
-      id: 4,
-      name: "By Someone",
-    },
-  ];
   const [paymentMediumObject, setPaymentMediumObject] = useState({});
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
-  const date = new Date();
-
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-
-  let currentDate = `${day}/${month}/${year}`;
-
-  var cashOut = {
-    amount: "",
-    description: "",
-    payment_medium: "",
-    submit_date: "",
-    cash_type: "",
-  };
-
   useEffect(() => {
-    getCustomersList();
-  }, []);
-  const addCashOut = () => {
-    cashOut = {
-      amount: amount,
+    if (selectedRadio === "customer") {
+      getCustomersList();
+    } else if (selectedRadio === "company") {
+      getCompanyList();
+    }
+  }, [selectedRadio]);
+
+  const addCashIn = () => {
+    const cashIn = {
+      credit: amount,
       description: description,
-      payment_medium: paymentMediumObject.name,
-      submit_date: submittedDate,
-      cash_type: "Cash Out",
+      paymentMode: paymentMediumObject.name,
+      [selectedRadio === "customer" ? "customerId" : "companyId"]:
+        customerObject._id,
     };
     axios
-      .patch(ADD_CUSTOMER_CASH_OUT + customerObject._id, cashOut)
+      .post(GET_CUSTOMERS_CASH_OUT, cashIn)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage(response.data.message);
           setSeverity("success");
         }
       })
@@ -90,23 +65,15 @@ export default function AddCustomerCashOut() {
   };
 
   const validation = () => {
-    if (
-      amount.length === 0 ||
-      paymentMediumObject === {} ||
-      submittedDate.length === 0 ||
-      customerObject === {}
-    ) {
-      setOpen(true);
-      setMessage("Some fields are missing");
-      setSeverity("error");
+    if (amount.trim() === "" || !paymentMediumObject || !customerObject) {
+      return <Alert severity="error">Some Fields are missing</Alert>;
     } else if (parseInt(amount) <= 0) {
-      setOpen(true);
-      setMessage("Amount should be greater than 0");
-      setSeverity("error");
+      return <Alert severity="error">Amount should be greater than 0</Alert>;
     } else {
-      addCashOut();
+      addCashIn();
     }
   };
+
   const getCustomersList = () => {
     axios
       .get(GET_CUSTOMERS_LIST)
@@ -116,7 +83,8 @@ export default function AddCustomerCashOut() {
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          setCustomerList(response.data.customers);
+          setCustomerList(response.data.data);
+          setSelectedList(response.data.data);
         }
       })
       .catch(function (error) {
@@ -125,12 +93,39 @@ export default function AddCustomerCashOut() {
         setSeverity("error");
       });
   };
+
+  const getCompanyList = () => {
+    axios
+      .get(GET_ALL_COMPANIES)
+      .then(function (response) {
+        if (response.data.error) {
+          setOpen(true);
+          setMessage(response.data.error_msg);
+          setSeverity("error");
+        } else {
+          setCompanyList(response.data.data);
+          setSelectedList(response.data.data);
+        }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+
+  const handleRadioChange = (event) => {
+    setSelectedRadio(event.target.value);
+    setCustomerObject({});
+  };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+
   return (
     <div className="box">
       <SideBar />
@@ -142,33 +137,71 @@ export default function AddCustomerCashOut() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <Autocomplete
-                options={customerList}
-                getOptionLabel={(customer, index) => customer.name}
-                disablePortal
-                fullWidth
-                isOptionEqualToValue={(option, value) =>
-                  option._id === value._id
-                }
-                onChange={(event, newInputValue) => {
-                  setCustomerObject(newInputValue);
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Select Customer" />
-                )}
-                renderOption={(props, customer) => (
-                  <Box component="li" {...props} key={customer._id}>
-                    {customer.name}
-                  </Box>
-                )}
-              />
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="customer"
+                    checked={selectedRadio === "customer"}
+                    onChange={handleRadioChange}
+                  />
+                  Customer
+                </label>
+                <span style={{ marginRight: "10px" }}></span>{" "}
+                <label>
+                  <input
+                    type="radio"
+                    value="company"
+                    checked={selectedRadio === "company"}
+                    onChange={handleRadioChange}
+                  />
+                  Company
+                </label>
+              </div>
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              {selectedList && selectedList.length > 0 ? (
+                <Autocomplete
+                  options={selectedList}
+                  getOptionLabel={(item) => item.name}
+                  disablePortal
+                  fullWidth
+                  isOptionEqualToValue={(option, value) =>
+                    option._id === value._id
+                  }
+                  onChange={(event, newInputValue) => {
+                    setCustomerObject(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={
+                        selectedRadio === "customer"
+                          ? "Select Customer"
+                          : "Select Company"
+                      }
+                    />
+                  )}
+                  renderOption={(props, item) => (
+                    <Box component="li" {...props} key={item._id}>
+                      {item.name}
+                    </Box>
+                  )}
+                />
+              ) : (
+                <Typography variant="body2">
+                  No {selectedRadio} data available.
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                name="amount"
-                label="Amount"
+                name={selectedRadio === "customer" ? "debit" : "credit"}
+                label={selectedRadio === "customer" ? "Debit" : "Credit"}
                 fullWidth
+                type="number"
                 variant="outlined"
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
@@ -176,8 +209,13 @@ export default function AddCustomerCashOut() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Autocomplete
-                options={paymentMediumList}
-                getOptionLabel={(payment, index) => payment.name}
+                options={[
+                  { id: 1, name: "Cash" },
+                  { id: 2, name: "Bank" },
+                  { id: 3, name: "Cheque" },
+                  { id: 4, name: "Other" },
+                ]}
+                getOptionLabel={(payment) => payment.name}
                 disablePortal
                 fullWidth
                 isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -192,20 +230,6 @@ export default function AddCustomerCashOut() {
                     {payment.name}
                   </Box>
                 )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Select Date"
-                type="date"
-                defaultValue={currentDate}
-                onChange={(event) => {
-                  setSubmittedDate(event.target.value);
-                }}
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

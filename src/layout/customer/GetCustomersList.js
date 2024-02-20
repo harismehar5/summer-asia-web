@@ -33,7 +33,7 @@ export default function GetCustomersList() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  
+
   useEffect(() => {
     getCustomersList();
   }, []);
@@ -75,7 +75,7 @@ export default function GetCustomersList() {
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          setData(response.data.customers);
+          setData(response.data.data);
         }
       })
       .catch(function (error) {
@@ -223,8 +223,7 @@ export default function GetCustomersList() {
                 onChange={(event) => setOpeningBalance(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={12}>
               <Grid
                 justifyContent={"flex-end"}
