@@ -13,8 +13,8 @@ import { customerLedgerColumns } from "../../dataTableColumns";
 
 import {
   BASE_URL,
+  GET_All_LEDGER,
   GET_CUSTOMERS_LIST,
-  GET_CUSTOMER_LEDGER,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
@@ -54,9 +54,9 @@ export default function GetCustomerLedger() {
     // setLoading(true);
 
     axios
-      .get(GET_CUSTOMER_LEDGER + id)
+      .get(GET_All_LEDGER + id)
       .then(function (response) {
-        console.log(JSON.stringify(response,null,2));
+        console.log(JSON.stringify(response, null, 2));
         if (response.message == "Cash data not found") {
           //   setLoading(false);
           setData([]);

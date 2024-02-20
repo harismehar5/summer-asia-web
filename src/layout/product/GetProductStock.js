@@ -48,41 +48,41 @@ export default function GetProductStock() {
   }, []);
 
   const actionColumn = [
-    {
-      field: "stock",
-      headerName: "Stock",
-      width: 250,
-      renderCell: (params) => {
-        return (
-          <Stack direction={"row"} spacing={1}>
-            <Button
-              variant="contained"
-              size="medium"
-              color="success"
-              onClick={() => {
-                setID(params.row._id);
-                setQuantity("");
-                setStockInOpenPopup(true);
-              }}
-            >
-              Stock In
-            </Button>
-            <Button
-              variant="contained"
-              size="medium"
-              color="success"
-              onClick={() => {
-                setID(params.row._id);
-                setQuantity("");
-                setStockOutOpenPopup(true);
-              }}
-            >
-              Stock Out
-            </Button>
-          </Stack>
-        );
-      },
-    },
+      // {
+      //   field: "stock",
+      //   headerName: "Stock",
+      //   width: 250,
+      //   renderCell: (params) => {
+      //     return (
+      //       <Stack direction={"row"} spacing={1}>
+      //         <Button
+      //           variant="contained"
+      //           size="medium"
+      //           color="success"
+      //           onClick={() => {
+      //             setID(params.row._id);
+      //             setQuantity("");
+      //             setStockInOpenPopup(true);
+      //           }}
+      //         >
+      //           Stock In
+      //         </Button>
+      //         <Button
+      //           variant="contained"
+      //           size="medium"
+      //           color="success"
+      //           onClick={() => {
+      //             setID(params.row._id);
+      //             setQuantity("");
+      //             setStockOutOpenPopup(true);
+      //           }}
+      //         >
+      //           Stock Out
+      //         </Button>
+      //       </Stack>
+      //     );
+      //   },
+      // },
     {
       field: "action",
       headerName: "Action",

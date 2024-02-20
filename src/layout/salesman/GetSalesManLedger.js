@@ -15,6 +15,7 @@ import {
   BASE_URL,
   GET_salesman_LIST,
   GET_CUSTOMER_LEDGER,
+  GET_All_LEDGER,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
@@ -75,7 +76,7 @@ export default function GetsalesmanLedger() {
 
   const getCustomerLedgerList = (id) => {
     axios
-      .get(GET_CUSTOMER_LEDGER + id)
+      .get(GET_All_LEDGER + id)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
