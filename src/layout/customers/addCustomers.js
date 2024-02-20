@@ -143,10 +143,6 @@ export default function AddCustomers() {
       isValid = false;
     }
 
-    if (code.trim() === "") {
-      setCodeError("Enter code");
-      isValid = false;
-    }
 
     if (isValid) {
       addCustomer();

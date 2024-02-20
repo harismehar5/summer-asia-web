@@ -3,7 +3,7 @@ import "./styles.scss";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, FormHelperText, IconButton, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import axios from "axios";
@@ -71,6 +71,11 @@ export default function AddSalesReturn() {
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const date = new Date();
+    // error states
+    const [customerError, setCustomerError] = useState("");
+    const [paymentMediumError, setPaymentMediumError] = useState("");
+    const [salesmanError, setSalesmanError] = useState("");
+    const [productError, setProductError] = useState("");
 
   var purchaseObject = {
     total_amount: "",
@@ -123,7 +128,6 @@ export default function AddSalesReturn() {
       .get(GET_ALL_PRODUCTS)
       .then(function (response) {
         // if (response.data.error) {
-        //   setOpen(true);
         //   setMessage(response.data.error_msg);
         //   setSeverity("error");
         // } else {
@@ -247,6 +251,39 @@ export default function AddSalesReturn() {
     }
   };
   const validate = () => {
+
+    setSalesmanError("");
+    setPaymentMediumError("");
+    setCustomerError("");
+    let isValid = true;
+
+    
+    if (!customerObject._id) {
+      setCustomerError("Select a company");
+      isValid = false;
+    }
+
+    if (!paymentMediumObject.id) {
+      setPaymentMediumError("Select a payment medium");
+      isValid = false;
+    }
+
+    
+    if (!supplierObject._id) {
+      setSalesmanError("Select a salesman");
+      isValid = false;
+    }
+
+        // Validate products
+        for (let i = 0; i < data.length; i++) {
+          const product = data[i];
+          if (!product.productCode || !product.batchCode || !product.expiryDate || !product.quantity || !product.tradeRate || !product.salesTax) {
+            setProductError("Complete all product fields");
+            isValid = false;
+            break;
+          }
+        }
+
     var customerCode = customerObject._id
     var salesmanCode = supplierObject._id
     var paymentMode = paymentMediumObject.name
@@ -281,8 +318,19 @@ export default function AddSalesReturn() {
     //   setMessage("Please select date");
     //   setSeverity("error");
     // } else {
-    dataEntry(purchaseObject);
+    // dataEntry(purchaseObject);
     // }
+    if (isValid) {
+      dataEntry(purchaseObject);
+    } else {
+      handleSnackbar("error", "Enter valid values!");
+    }
+  };
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
   };
   return (
     <div className="box">
@@ -314,6 +362,7 @@ export default function AddSalesReturn() {
                   </Box>
                 )}
               />
+                <FormHelperText style={{ color: "red" }}>{customerError}</FormHelperText>
             </Grid>
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
@@ -336,6 +385,7 @@ export default function AddSalesReturn() {
                   </Box>
                 )}
               />
+                <FormHelperText style={{ color: "red" }}>{salesmanError}</FormHelperText>
             </Grid>
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
@@ -356,6 +406,7 @@ export default function AddSalesReturn() {
                   </Box>
                 )}
               />
+                <FormHelperText style={{ color: "red" }}>{paymentMediumError}</FormHelperText>
             </Grid>
           </Grid>
           <Grid item md={12} mt={2} ml={4}>

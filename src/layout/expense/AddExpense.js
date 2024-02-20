@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, FormHelperText } from "@mui/material";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
 
@@ -15,6 +15,12 @@ export default function AddExpense() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+
+  // error states
+  const [nameError, setNameError] = useState("");
+  const [amountError, setAmountError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -52,14 +58,40 @@ export default function AddExpense() {
       });
   };
   const validation = () => {
-    if (name.length === 0 || amount.length === 0 || description.length === 0) {
-      setOpen(true);
-      setMessage("Amount should be greater then 0");
-      setSeverity("success");
-    } else {
+    setNameError("");
+    setDescriptionError("");
+   setAmountError("");
+
+    let isValid = true;
+
+    if (name.trim() === "") {
+      setNameError("Enter name");
+      isValid = false;
+    }
+    if (description.trim() === "") {
+      setDescriptionError("Enter Description");
+      isValid = false;
+    }
+    if (amount.trim() === "") {
+      setAmountError("Enter Amount");
+      isValid = false;
+    }
+
+
+
+    if (isValid) {
       addExpense();
+    } else {
+      handleSnackbar("error", "Enter valid values!");
     }
   };
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
+  };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -87,6 +119,7 @@ export default function AddExpense() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
+         <FormHelperText style={{ color: "red" }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -99,6 +132,7 @@ export default function AddExpense() {
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
               />
+             <FormHelperText style={{ color: "red" }}>{amountError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField
@@ -110,6 +144,7 @@ export default function AddExpense() {
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
+               <FormHelperText style={{ color: "red" }}>{descriptionError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>

@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import { Paper } from "@material-ui/core";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
-import { Button } from "@mui/material";
+import { Button, FormHelperText } from "@mui/material";
 import axios from "axios";
 import { ADD_PRODUCT } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
@@ -19,6 +19,16 @@ export default function AddProduct() {
   const [purchaseRate, setPurchaseRate] = useState("");
   const [maximumRetailPrice, setMaximumRetailPrice] = useState("");
   const [distributerPrice, setDistributerPrice] = useState("");
+
+  // error states
+  const [nameError, setNameError] = useState("");
+  const [codeError, setCodeError] = useState("");
+  const [packingError, setPackingError] = useState("");
+  const [strengthError, setStrengthError] = useState("");
+  const [tradeRateError, setTradeRateError] = useState("");
+  const [purchaseRateError, setPurchaseRateError] = useState("");
+  const [maximumRetailPriceError, setMaximumRetailPriceError] = useState("");
+  const [distributerPriceError, setDistributerPriceError] = useState("");
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -76,19 +86,75 @@ export default function AddProduct() {
       });
   };
   const validation = () => {
-    if (name.length === 0) {
-      setOpen(true);
-      setMessage("Name is required");
-      setSeverity("error");
-    } else {
+    setNameError("");
+    setCodeError("");
+    setPackingError("");
+    setStrengthError("");
+    setTradeRateError("");
+    setPurchaseRateError("");
+    setMaximumRetailPriceError("");
+    setDistributerPriceError("");
+
+
+    let isValid = true;
+
+    if (name.trim() === "") {
+      setNameError("Enter name");
+      isValid = false;
+    }
+    if (packing.trim() === "") {
+      setPackingError("Enter address");
+      isValid = false;
+    }
+
+
+    if (strength.trim() === "") {
+      setStrengthError("Enter email");
+      isValid = false;
+    }
+
+    if (tradeRate.trim() === "") {
+      setTradeRateError("Enter license");
+      isValid = false;
+    }
+
+  
+    if (purchaseRate.trim() === "") {
+      setPurchaseRateError("Enter Descrption");
+      isValid = false;
+    }
+
+    if (maximumRetailPrice.trim() === "") {
+      setMaximumRetailPriceError("Enter Descrption");
+      isValid = false;
+    }
+
+    
+    if (distributerPrice.trim() === "") {
+      setDistributerPriceError("Enter Account Number");
+      isValid = false;
+    }
+
+
+    if (isValid) {
       addProduct();
+    } else {
+      handleSnackbar("error", "Enter valid values!");
     }
   };
+
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
+  };
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
   };
   return (
     <div className="box">
@@ -129,6 +195,7 @@ export default function AddProduct() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -139,6 +206,7 @@ export default function AddProduct() {
                 value={packing}
                 onChange={(event) => setPacking(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{packingError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -149,6 +217,7 @@ export default function AddProduct() {
                 value={strength}
                 onChange={(event) => setStrength(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{strengthError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -159,6 +228,7 @@ export default function AddProduct() {
                 value={tradeRate}
                 onChange={(event) => setTradeRate(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{tradeRateError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -169,6 +239,7 @@ export default function AddProduct() {
                 value={purchaseRate}
                 onChange={(event) => setPurchaseRate(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{purchaseRateError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -179,6 +250,7 @@ export default function AddProduct() {
                 value={maximumRetailPrice}
                 onChange={(event) => setMaximumRetailPrice(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{maximumRetailPriceError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -189,6 +261,7 @@ export default function AddProduct() {
                 value={distributerPrice}
                 onChange={(event) => setDistributerPrice(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>{distributerPriceError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>

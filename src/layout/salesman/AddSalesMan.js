@@ -106,12 +106,6 @@ export default function AddSalesMan() {
       setAreaCodeError("");
     }
   
-    if (code.trim() === "") {
-      setCodeError("Enter code");
-      isValid = false;
-    } else {
-      setCodeError("");
-    }
   
     if (areaCommission.trim() === "") {
       setAreaCommissionError("Enter area commission");
@@ -134,12 +128,12 @@ export default function AddSalesMan() {
       setDateOfJoinError("");
     }
   
-    if (description.trim() === "") {
-      setDescriptionError("Enter description");
-      isValid = false;
-    } else {
-      setDescriptionError("");
-    }
+    // if (description.trim() === "") {
+    //   setDescriptionError("Enter description");
+    //   isValid = false;
+    // } else {
+    //   setDescriptionError("");
+    // }
   
     if (fatherName.trim() === "") {
       setFatherNameError("Enter father's name");
