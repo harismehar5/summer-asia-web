@@ -75,7 +75,7 @@ export default function AddSale() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [IsExpired, setIsExpired] = useState(true);
   const [isWarranted, setisWarranted] = useState(false);
-
+  const [isEstimated, setIsEstimated] = useState(false);
   const paymentMediumList = [
     {
       id: 1,
@@ -129,6 +129,7 @@ export default function AddSale() {
     axios
       .post(ADD_SALES_SERVICES, data)
       .then((response) => {
+        console.log(JSON.stringify(response, null, 2));
         if (response.status == 200) {
           setOpen(true);
           setSeverity("success");
@@ -155,6 +156,7 @@ export default function AddSale() {
         //   setSeverity("error");
         // } else {
         setProductList(response.data.data);
+
         // }
       })
       .catch(function (error) {
@@ -164,18 +166,19 @@ export default function AddSale() {
       });
   };
 
-  const getBatchList = (productCode) => {
+  const getBatchList = (productCode, index) => {
     axios
       .post(GET_BATCH_LIST, {
         productCode: productCode,
       })
       .then(function (response) {
-        // if (response.data.error) {
+        // if (response.error) {
         //   setOpen(true);
-        //   setMessage(response.data.error_msg);
+        //   setMessage(response.error);
         //   setSeverity("error");
         // } else {
         setBatchList(response.data.data);
+
         // }
       })
       .catch(function (error) {
@@ -208,6 +211,7 @@ export default function AddSale() {
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
     // if (data.length === 0) {
+
     obj = {
       productCode: productObject.productCode,
       quantity: productObject.quantity,
@@ -221,44 +225,12 @@ export default function AddSale() {
     };
     array = [...array, obj];
     setData(array);
-    // } else if (foundIndex === -1) {
-    //   obj = {
-    //     _id: productObject._id,
-    //     name: productObject.name,
-    //     tradeRate: productObject.tradeRate,
-    //     quantity: 1,
-    //     netTotal: productObject.tradeRate,
-    //     status: productObject.status,
-    //   };
-    //   array = [...array, obj];
-    //   setData(array);
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Already existed");
-    //   setSeverity("error");
-    // }
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Please select any product");
-    //   setSeverity("error");
-    // }
   };
   const getSalesManList = () => {
     axios
       .get(GET_salesman_LIST)
       .then(function (response) {
         setSalesManList(response.data.data);
-        // if (response.data.error) {
-        //   handleSnackbar("error", response.data.error_msg);
-        // } else {
-        //   const formattedData = response.data.data.map((salesman) => ({
-        //     ...salesman,
-        //     dateOfJoin: salesman.dateOfJoin
-        //       ? new Date(salesman.dateOfJoin).toISOString().split("T")[0]
-        //       : null,
-        //   }));
-        //   setData(formattedData);
-        // }
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
@@ -331,30 +303,17 @@ export default function AddSale() {
     }
 
     var purchaseObject = {
-      purchaseDetail: data,
-      companyCode: companyCode,
+      saleDetail: data,
+      customerCode: companyCode,
       paymentMode: paymentMode,
       salesman: SaleManObject._id,
-      total: totalAmount,
+      total: calculateTotalAmount() - invoiceDiscount,
+      additionalTax: parseFloat(invoiceSalesTax),
+      additionalDiscount: parseFloat(invoiceDiscount),
+      receivedAmount: parseFloat(invoiceAmount),
     };
 
-    // if (data.length === 0) {
-    //   setOpen(true);
-    //   setMessage("Please select any product to purchase");
-    //   setSeverity("error");
-    // } else if (
-    //   supplierObject._id === "" ||
-    //   supplierObject._id === null ||
-    //   supplierObject._id === undefined
-    // ) {
-    //   setOpen(true);
-    //   setMessage("Please select any supplier");
-    //   setSeverity("error");
-    // } else if (submittedDate === "") {
-    //   setOpen(true);
-    //   setMessage("Please select date");
-    //   setSeverity("error");
-    // } else {
+    console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
     dataEntry(purchaseObject);
     // }
   };
@@ -370,6 +329,16 @@ export default function AddSale() {
 
     return [year, month, day].join("-");
   }
+  const calculateTotalAmount = () => {
+    const additionalSalePercentage = invoiceSalesTax;
+    var totalAmount = 0;
+    for (let i = 0; i < data.length; i++) {
+      totalAmount = totalAmount + data[i].netTotal;
+    }
+    const additionalSaleAmount = (totalAmount * additionalSalePercentage) / 100;
+    const calAmount = totalAmount + additionalSaleAmount;
+    return calAmount;
+  };
   return (
     <div className="box">
       <SideBar />
@@ -400,22 +369,16 @@ export default function AddSale() {
                     // Set to false or handle accordingly
                     return;
                   }
-
-                  console.log(currentDate);
-                  console.log(
-                    JSON.stringify(newInputValue.licenseExpiryDate, null, 2)
-                  );
-
                   // Compare dates
                   const isExpired = licenseExpiryDate < currentDate;
 
                   if (isExpired) {
                     setIsExpired(true);
-                    console.log("License is expired");
+
                     // Set to false or handle accordingly
                   } else {
                     setIsExpired(false);
-                    console.log("License is valid");
+
                     // Set to true or handle accordingly
                   }
 
@@ -498,14 +461,14 @@ export default function AddSale() {
                         onChange={(event, newInputValue) => {
                           // setProductObject(newInputValue);
                           setProductId(newInputValue._id);
-                          console.log(newInputValue);
+
                           var productObject = newInputValue;
                           setData((currentData) =>
                             produce(currentData, (v) => {
                               v[index].productCode = productObject._id;
                             })
                           );
-                          getBatchList(productObject._id);
+                          getBatchList(productObject._id, index);
                         }}
                         renderInput={(params) => (
                           <TextField {...params} label="Select Product" />
@@ -535,7 +498,7 @@ export default function AddSale() {
 
                           setData((currentData) =>
                             produce(currentData, (v) => {
-                              v[index].productCode = batchObject.batchCode;
+                              v[index].batchCode = newInputValue.batchCode;
                             })
                           );
                         }}
@@ -645,10 +608,12 @@ export default function AddSale() {
                         variant="outlined"
                         value={product.tradeRate}
                         onChange={(e) => {
-                          var tradeRate = e.target.value;
                           setData((currentData) =>
                             produce(currentData, (v) => {
-                              v[index].tradeRate = tradeRate;
+                              v[index].tradeRate = e.target.value;
+                              v[index].netTotal =
+                                product.quantity * e.target.value;
+                              console.log(e.target.value);
                             })
                           );
                         }}
@@ -659,6 +624,9 @@ export default function AddSale() {
                         label="Sub Total"
                         variant="outlined"
                         value={product.quantity * product.tradeRate}
+                        onChange={(e) => {
+                          // var tradeRate = e.target.value;
+                        }}
                         disabled
                       />
                     </Grid>
@@ -848,14 +816,13 @@ export default function AddSale() {
             <Grid item xs={12} sm={12}>
               <TextField
                 required
-                label={"Sales Tax"}
+                label={"Additional Sales Tax %"}
                 fullWidth
                 variant="outlined"
                 value={invoiceSalesTax}
                 onChange={(event) => setInvoiceSalesTax(event.target.value)}
               />
             </Grid>
-
             <Grid item xs={12} sm={12}>
               <TextField
                 required
@@ -870,7 +837,7 @@ export default function AddSale() {
             <Grid item xs={12} sm={12}>
               <TextField
                 required
-                label="Amount"
+                label="Amount Recieved"
                 fullWidth
                 variant="outlined"
                 value={invoiceAmount}
@@ -878,13 +845,122 @@ export default function AddSale() {
               />
             </Grid>
             <Grid
+              item
+              xs={12}
+              sm={12}
+              container
+              direction={"row"}
+              spacing={2}
+              style={{ marginTop: "10px" }}
+            >
+              <Typography
+                style={{
+                  display: "flex",
+                  marginLeft: "16px",
+                  alignItems: "center",
+                  color: "GrayText",
+                  fontWeight: "bold",
+                }}
+                variant="h6"
+              >
+                Recieved Amount :{" "}
+                <Typography
+                  variant="h6"
+                  style={{
+                    color: "#000",
+                    fontWeight: "bold",
+                    position: "absolute",
+                    right: 50,
+                  }}
+                >
+                  {invoiceAmount ? invoiceAmount : 0}
+                </Typography>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12} container direction={"row"} spacing={2}>
+              <Typography
+                style={{
+                  display: "flex",
+                  marginLeft: "16px",
+                  alignItems: "center",
+                  color: "GrayText",
+                  fontWeight: "bold",
+                }}
+                variant="h6"
+              >
+                Discount:{" "}
+                <Typography
+                  variant="h6"
+                  style={{
+                    color: "#000",
+                    fontWeight: "bold",
+                    position: "absolute",
+                    right: 50,
+                  }}
+                >
+                  {invoiceDiscount ? invoiceDiscount : 0}
+                </Typography>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12} container direction={"row"} spacing={2}>
+              <Typography
+                style={{
+                  display: "flex",
+                  marginLeft: "16px",
+                  alignItems: "center",
+                  color: "GrayText",
+                  fontWeight: "bold",
+                }}
+                variant="h6"
+              >
+                Additional Sales Tax %:{" "}
+                <Typography
+                  variant="h6"
+                  style={{
+                    color: "#000",
+                    fontWeight: "bold",
+                    position: "absolute",
+                    right: 50,
+                  }}
+                >
+                  {invoiceSalesTax ? invoiceSalesTax : 0}
+                </Typography>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12} container direction={"row"} spacing={2}>
+              <Typography
+                style={{
+                  display: "flex",
+                  marginLeft: "16px",
+                  alignItems: "center",
+                  color: "GrayText",
+                  fontWeight: "bold",
+                }}
+                variant="h6"
+              >
+                Total Amount:{" "}
+                <Typography
+                  variant="h6"
+                  style={{
+                    color: "#000",
+                    fontWeight: "bold",
+                    position: "absolute",
+                    right: 50,
+                  }}
+                >
+                  {calculateTotalAmount() - invoiceDiscount}
+                </Typography>
+              </Typography>
+            </Grid>
+
+            <Grid
               justifyContent={"center"}
               container
               spacing={1}
               style={{ marginTop: 20 }}
               direction={"row"}
             >
-              {!IsExpired ? (
+              {IsExpired ? (
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
                   defaultValue="Estimated"
@@ -922,20 +998,27 @@ export default function AddSale() {
                       value="Estimated"
                       control={<Radio />}
                       label="Estimated"
+                      onClick={() => setIsEstimated(true)}
                     />
                     <FormControlLabel
                       style={{ marginLeft: 20 }}
                       value="With Warranty"
                       control={<Radio />}
                       label="With Warranty"
-                      onClick={() => setisWarranted(true)}
+                      onClick={() => {
+                        setisWarranted(true);
+                        setIsEstimated(false);
+                      }}
                     />
                     <FormControlLabel
                       value="Without Warranty"
                       style={{ marginLeft: 20 }}
                       control={<Radio />}
                       label="Without Warranty"
-                      onClick={() => setisWarranted(false)}
+                      onClick={() => {
+                        setisWarranted(false);
+                        setIsEstimated(false);
+                      }}
                     />
                   </Grid>
                 </RadioGroup>
@@ -954,10 +1037,10 @@ export default function AddSale() {
                     variant="contained"
                     size="medium"
                     color="success"
-                    onClick={
-                      // () => setOpenInvoicePopup(true)
-                      handlePrint
-                    }
+                    onClick={() => {
+                      handlePrint();
+                      validate();
+                    }}
                   >
                     Save
                   </Button>
@@ -985,6 +1068,7 @@ export default function AddSale() {
           <ComponentToPrint
             isExpired={IsExpired}
             isWarranted={isWarranted}
+            isEstimated={isEstimated}
             data={data}
             ref={componentRef}
           />
@@ -995,7 +1079,7 @@ export default function AddSale() {
 }
 
 const ComponentToPrint = React.forwardRef(
-  ({ data, isExpired, isWarranted }, ref) => {
+  ({ data, isExpired, isWarranted, isEstimated }, ref) => {
     let totalQuantity = 0;
     let totalBonus = 0;
     let totalDiscount = 0;
@@ -1010,7 +1094,7 @@ const ComponentToPrint = React.forwardRef(
 
     return (
       <div ref={ref}>
-        {isExpired ? null : (
+        {isEstimated ? null : (
           <header class="header">
             <h1>PHARMA NET</h1>
             <p>
@@ -1047,7 +1131,6 @@ const ComponentToPrint = React.forwardRef(
             </div>
           </header>
         )}
-
         <div class="gap">
           <table>
             <thead>
@@ -1144,114 +1227,8 @@ const ComponentToPrint = React.forwardRef(
             </thead>
           </table>
         </div>
-        {!isExpired
-          ? {
-              /* <footer>
-            <div style="margin-top: 10px; margin-left: 10px; line-height: 20px;">
-              <div style="font-weight: bold;">
-                FORM 2A (SEE RULES 19 & 30) 34371 Warranty Under Seetion
-                23(1)(i) orThe Drugs Act,
-              </div>
-              <div style="margin-top: 5px;">
-                <span style="font-weight: bold;">I KHALID RASHEED</span>,being a
-                person resident in Pakistan,camying on business at the afc'esaid
-                address under the namie of PHARMA NET,
-              </div>
-              <div>
-                having valid license(s) as mentioned above greisstied by
-                Licensing Authority. and being importers/Authorized Distr?butors
-                of the Manufacturers
-              </div>
-              <div>
-                Principals. do hereby give th warranty that the drugs here above
-                described as sold by mie/specified and contain in the cash
-                memo/invoicedes
-              </div>
-              <div>
-                describing the goods referred to herein do not contravene in any
-                way the provisions of scction 23 ofthe Drugs Act, 1976.
-              </div>
-              <div style="margin-top: 5px; font-weight: bold;">
-                (ii) FORM-5 |see rule 6(2)(i), 6(5(b). 19 (7) and 48(1 )i)|
-                Warvanty under MMedical Devices Rules.2017
-              </div>
-              <div style="margin-top: 5px;">
-                <span style="font-weight: bold;">i KHALID RASHEED</span>,being a
-                person resident in Pakistan. carrying on business ut aforesed
-                address under the name of PHARMA NET, holding valid license
-                issued by
-              </div>
-              <div>
-                Licensing Authority and having authority or being authorized by
-                Manufacturers Principals vide ietters. co hereby give this
-                warranty that the medical devices here
-              </div>
-              <div>
-                above described as sold by me and contained in the bill of sale,
-                invoice. bill of lading or other document. describing the
-                medical devices referred to herein do not
-              </div>
-              <div>
-                Contrwene ', any way the provisions of the DRAPAct, 2012 and the
-                rules framed thers-under.
-              </div>
-              <div>
-                Warranty Under Alternative Medicines & Health Products
-                (Enlistment) Rules, 2014. |Sce rule 10 (3) & (5)|
-              </div>
-              <div>
-                We,as the authorized distributors/agents and on behalf of
-                thePrincipals/Manufacture's / importe:s hereby give warranty
-                that the supplied
-              </div>
-              <div>
-                alternative medicine health products mentioned herein do not
-                contravene any provision of the prevailing DRAPACT and rules
-                framed thereunder{" "}
-                <div style="font-weight: bold;">KHALID RASHEED</div>
-              </div>
-            </div>
-            <div style="margin-top: 20px; font-weight: bold;">
-              <div style="margin-left: 650px;">
-                {" "}
-                کوئی دکاندار ایکسپائری اسٹاک کی رقم میں موجود بل سے منھبا کرنے
-                کا مجاز نہیں ہو گا (i)
-              </div>
-              <div style="margin-left: 545px;">
-                مال وصول کرتے وقت اچھی طرح چیک کر لیں بعد میں اسٹاک کی کمی بیشی
-                کا کوئی کلیم قابل قبول نہیں ہو گا (ii)
-              </div>
-              <div style="margin-left: 90px;">
-                {" "}
-                پر ایکسپائر مال حوالے کریں ورنہ کمپنی کی ذمہ داری نہیں ہو گی-
-                Office Form کا کوہی بھی ملازم پر چی دے کر اسٹاک وصول کرنے کا
-                مجاز نہیں رکھتا ہمیشہ کمپنی کے PHARMA NET (iii)
-              </div>
-              <div style="margin-left: 305px;">
-                {" "}
-                کی قطی نہیں ہو گی PHARMA NET کا کوئی ملازم کسی دکاندار سے ایڈ
-                وانس رقم وصول کرنے کا مجاز نہیں ہے اسکی ذمہ داری PHARMA NET (iv)
-              </div>
-              <div style="margin-left: 634px;">
-                {" "}
-                اسٹاک کپمنی کے بل کے مطابق وصول کرہں بعد میں کسی قسم کی کوئی ذمہ
-                داری نہیں ہو گی (v)
-              </div>
-              <span style="margin-left: 10px;">
-                ماہ کی مدت سے قبل تحریری طور پر کمپنی بذا کے علم میں نہ لایا جاے
-                گا 6{" "}
-              </span>
-              <span style="margin-left: 255px;">
-                {" "}
-                کمپنی کسی بھی ایکسپائر کی تبدیلی کی قطعا ذمہ دار نہیں ہو گی جب
-                تک کے کم از کم (vi){" "}
-              </span>
-            </div>
-          </footer> */
-            }
-          : isWarranted
-          ? {
-              /* <footer>
+        {/* {!isExpired ? (
+          <footer>
             <div
               style={{
                 marginTop: "10px",
@@ -1282,15 +1259,15 @@ const ComponentToPrint = React.forwardRef(
                 describing the goods referred to herein do not contravene in any
                 way the provisions of scction 23 ofthe Drugs Act, 1976.
               </div>
-              <div style={{ marginTop: "10px", fontWeight: "bold" }}>
+              <div style={{ marginTop: "5px", fontWeight: "bold" }}>
                 (ii) FORM-5 |see rule 6(2)(i), 6(5(b). 19 (7) and 48(1 )i)|
                 Warvanty under MMedical Devices Rules.2017
               </div>
               <div style={{ marginTop: "5px" }}>
-                <span style="fonteight: bold;">i KHALID RASHEED</span>,being a
-                person resident in Pakistan. carrying on business ut aforesed
-                address under the name of PHARMA NET, holding valid license
-                issued by
+                <span style={{ fontWeight: "bold" }}>i KHALID RASHEED</span>
+                ,being a person resident in Pakistan. carrying on business ut
+                aforesed address under the name of PHARMA NET, holding valid
+                license issued by
               </div>
               <div>
                 Licensing Authority and having authority or being authorized by
@@ -1319,48 +1296,148 @@ const ComponentToPrint = React.forwardRef(
                 alternative medicine health products mentioned herein do not
                 contravene any provision of the prevailing DRAPACT and rules
                 framed thereunder{" "}
-                <div style="font-weight: bold;">KHALID RASHEED</div>
+                <div style={{ fontWeight: "bold" }}>KHALID RASHEED</div>
               </div>
             </div>
-            <div style="margin-top: 20px; font-weight: bold;">
-              <div style="margin-left: 650px;">
+            <div style={{ marginTop: "20px", fontWeight: "bold" }}>
+              <div style={{ marginLeft: "650px" }}>
                 {" "}
                 کوئی دکاندار ایکسپائری اسٹاک کی رقم میں موجود بل سے منھبا کرنے
                 کا مجاز نہیں ہو گا (i)
               </div>
-              <div style="margin-left: 545px;">
+              <div style={{ marginLeft: "545px" }}>
                 مال وصول کرتے وقت اچھی طرح چیک کر لیں بعد میں اسٹاک کی کمی بیشی
                 کا کوئی کلیم قابل قبول نہیں ہو گا (ii)
               </div>
-              <div style="margin-left: 90px;">
+              <div style={{ marginLeft: "90px" }}>
                 {" "}
                 پر ایکسپائر مال حوالے کریں ورنہ کمپنی کی ذمہ داری نہیں ہو گی-
                 Office Form کا کوہی بھی ملازم پر چی دے کر اسٹاک وصول کرنے کا
                 مجاز نہیں رکھتا ہمیشہ کمپنی کے PHARMA NET (iii)
               </div>
-              <div style="margin-left: 305px;">
+              <div style={{ marginLeft: "305px" }}>
                 {" "}
                 کی قطی نہیں ہو گی PHARMA NET کا کوئی ملازم کسی دکاندار سے ایڈ
                 وانس رقم وصول کرنے کا مجاز نہیں ہے اسکی ذمہ داری PHARMA NET (iv)
               </div>
-              <div style="margin-left: 634px;">
+              <div style={{ marginLeft: "634px" }}>
                 {" "}
                 اسٹاک کپمنی کے بل کے مطابق وصول کرہں بعد میں کسی قسم کی کوئی ذمہ
                 داری نہیں ہو گی (v)
               </div>
-              <span style="margin-left: 10px;">
+              <span style={{ marginLeft: "10px" }}>
                 ماہ کی مدت سے قبل تحریری طور پر کمپنی بذا کے علم میں نہ لایا جاے
                 گا 6{" "}
               </span>
-              <span style="margin-left: 255px;">
+              <span style={{ marginLeft: "255px" }}>
                 {" "}
                 کمپنی کسی بھی ایکسپائر کی تبدیلی کی قطعا ذمہ دار نہیں ہو گی جب
                 تک کے کم از کم (vi){" "}
               </span>
             </div>
-          </footer> */
-            }
-          : null}
+          </footer>
+        ) :  */}
+        {isWarranted ? (
+          <footer style={{ padding: "2rem", fontSize: "10px" }}>
+            <div
+              style={{
+                marginTop: "10px",
+                marginLeft: "10px",
+              }}
+            >
+              <div style={{ fontWeight: "bold" }}>
+                FORM 2A (SEE RULES 19 & 30) 34371 Warranty Under Seetion
+                23(1)(i) orThe Drugs Act,
+              </div>
+              <div style={{ marginTop: "5px" }}>
+                <span style={{ fontWeight: "bold" }}>I KHALID RASHEED</span>
+                ,being a person resident in Pakistan,camying on business at the
+                afc'esaid address under the namie of PHARMA NET,
+              </div>
+              <div>
+                having valid license(s) as mentioned above greisstied by
+                Licensing Authority. and being importers/Authorized Distr?butors
+                of the Manufacturers
+              </div>
+              <div>
+                Principals. do hereby give th warranty that the drugs here above
+                described as sold by mie/specified and contain in the cash
+                memo/invoicedes
+              </div>
+              <div>
+                describing the goods referred to herein do not contravene in any
+                way the provisions of scction 23 ofthe Drugs Act, 1976.
+              </div>
+              <div style={{ marginTop: "5px", fontWeight: "bold" }}>
+                (ii) FORM-5 |see rule 6(2)(i), 6(5(b). 19 (7) and 48(1 )i)|
+                Warvanty under MMedical Devices Rules.2017
+              </div>
+              <div style={{ marginTop: "5px" }}>
+                <span style={{ fontWeight: "bold" }}>i KHALID RASHEED</span>
+                ,being a person resident in Pakistan. carrying on business ut
+                aforesed address under the name of PHARMA NET, holding valid
+                license issued by
+              </div>
+              <div>
+                Licensing Authority and having authority or being authorized by
+                Manufacturers Principals vide ietters. co hereby give this
+                warranty that the medical devices here
+              </div>
+              <div>
+                above described as sold by me and contained in the bill of sale,
+                invoice. bill of lading or other document. describing the
+                medical devices referred to herein do not
+              </div>
+              <div>
+                Contrwene ', any way the provisions of the DRAPAct, 2012 and the
+                rules framed thers-under.
+              </div>
+              <div>
+                Warranty Under Alternative Medicines & Health Products
+                (Enlistment) Rules, 2014. |Sce rule 10 (3) & (5)|
+              </div>
+              <div>
+                We,as the authorized distributors/agents and on behalf of
+                thePrincipals/Manufacture's / importe:s hereby give warranty
+                that the supplied
+              </div>
+              <div>
+                alternative medicine health products mentioned herein do not
+                contravene any provision of the prevailing DRAPACT and rules
+                framed thereunder{" "}
+                <div style={{ fontWeight: "bold" }}>KHALID RASHEED</div>
+              </div>
+            </div>
+            <div style={{ marginTop: "20px", fontWeight: "bold" }}>
+              <div dir="rtl">
+                (i) کوئی دکاندار ایکسپائری اسٹاک کی رقم میں موجود بل سے منھبا
+                کرنے کا مجاز نہیں ہو گا
+              </div>
+              <div dir="rtl">
+                (ii) مال وصول کرتے وقت اچھی طرح چیک کر لیں بعد میں اسٹاک کی کمی
+                بیشی کا کوئی کلیم قابل قبول نہیں ہو گا
+              </div>
+              <div dir="rtl">
+                (iii) پر ایکسپائر مال حوالے کریں ورنہ کمپنی کی ذمہ داری نہیں ہو
+                گی- Office Form کا کوہی بھی ملازم پر چی دے کر اسٹاک وصول کرنے کا
+                مجاز نہیں رکھتا ہمیشہ کمپنی کے PHARMA NET
+              </div>
+              <div dir="rtl">
+                (iv) کی قطی نہیں ہو گی PHARMA NET کا کوئی ملازم کسی دکاندار سے
+                ایڈ وانس رقم وصول کرنے کا مجاز نہیں ہے اسکی ذمہ داری PHARMA NET
+              </div>
+              <div dir="rtl">
+                (v) اسٹاک کپمنی کے بل کے مطابق وصول کرہں بعد میں کسی قسم کی کوئی
+                ذمہ داری نہیں ہو گی
+              </div>
+              <div dir="rtl">
+                (vi) ماہ کی مدت سے قبل تحریری طور پر کمپنی بذا کے علم میں نہ
+                لایا جاے گا 6 کمپنی کسی بھی ایکسپائر کی تبدیلی کی قطعا ذمہ دار
+                نہیں ہو گی جب تک کے کم از کم
+              </div>
+            </div>
+          </footer>
+        ) : null}
       </div>
     );
   }

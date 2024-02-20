@@ -21,6 +21,7 @@ import {
   ADD_QUANTITY,
   ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
+  COMPANY_PRODUCTS,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
@@ -104,6 +105,7 @@ export default function AddPurchase() {
 
   useEffect(() => {
     getStockList();
+    getCompanyProduts();
     getSupplierList();
     calculateAmountAndBags(data);
   }, []);
@@ -130,13 +132,35 @@ export default function AddPurchase() {
         //   setMessage(response.data.error_msg);
         //   setSeverity("error");
         // } else {
-        setProductList(response.data.data);
+        // setProductList(response.data.data);
         // }
       })
       .catch(function (error) {
         setOpen(true);
         setMessage("error: " + error);
         setSeverity("error");
+      });
+  };
+
+  const getCompanyProduts = (id) => {
+    axios
+      .post(COMPANY_PRODUCTS, {
+        companyCode: id,
+      })
+      .then((response) => {
+        // Handle the response data here
+        console.log(
+          "Company products:",
+          response.data.data.map((name) => name.name)
+        );
+        setProductList(response.data.data);
+        // You can use response.data to access the data returned from the server
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("No Products found against this company ");
+        setSeverity("error");
+        setProductList([]);
       });
   };
   const getSupplierList = () => {
@@ -285,7 +309,10 @@ export default function AddPurchase() {
                   option._id === value._id
                 }
                 onChange={(event, newInputValue) => {
+                  console.log("newInputValue =", newInputValue._id);
                   setSupplierObject(newInputValue);
+                  // getStockList(newInputValue.name);
+                  getCompanyProduts(newInputValue._id);
                 }}
                 renderInput={(params) => (
                   <TextField {...params} label="Select Company" />
@@ -558,11 +585,6 @@ const ComponentToPrint = React.forwardRef(({ data }, ref) => {
   data.map((item) => (totalSalesTax += Number(item.salesTax)));
   data.map((item) => (totalTradeRate += Number(item.tradeRate)));
 
-  console.log("total Quantity ", totalQuantity);
-  console.log("total Bonus ", totalBonus);
-  console.log("total Discount ", totalDiscount);
-  console.log("total Sales Tax ", totalSalesTax);
-  console.log("total Trade Rate ", totalTradeRate);
   return (
     <div ref={ref}>
       <header class="header">

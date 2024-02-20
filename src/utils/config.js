@@ -56,6 +56,7 @@ export const ADD_QUANTITY = PRODUCT_BASE_URL + "add_quantity";
 export const SUBTRACT_QUANTITY = PRODUCT_BASE_URL + "subtract_quantity";
 export const STOCK_IN = PRODUCT_BASE_URL + "stock_in/";
 export const STOCK_OUT = PRODUCT_BASE_URL + "stock_out/";
+export const COMPANY_PRODUCTS = SUPPLIER_BASE_URL + "get_products";
 
 //Expense URL
 // export const EXPENSE_BASE_URL = BASE_URL + "expense/";
@@ -95,6 +96,7 @@ export const ADD_COMPANY = BASE_URL + "companies";
 
 // export const PRODUCT_BASE_URL = BASE_URL + ""
 export const GET_ALL_PRODUCTS = BASE_URL + "products";
+export const GET_ALL_INVENTORY = BASE_URL + "inventories";
 export const ADD_PRODUCT = BASE_URL + "products";
 
 export const ADD_PURCHASE = BASE_URL + "purchases";
@@ -131,13 +133,8 @@ export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
 //Inventory StockOut URL
 export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
 
-
 //Purchase Report Detail URL
 export const GET_Purchase_Reports = BASE_URL + "purchases/detail";
 
 //Sales Report Detail URL
 export const GET_Sales_Reports = BASE_URL + "sales/detail";
-
-
-
-
