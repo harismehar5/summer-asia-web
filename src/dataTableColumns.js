@@ -64,6 +64,18 @@ export const productColumns = [
     width: 100,
   },
   {
+    field: "companyCode",
+    headerName: "Company",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.companyCode}</div>
+        </>
+      );
+    },
+  },
+  {
     field: "name",
     headerName: "Name",
     width: 230,
