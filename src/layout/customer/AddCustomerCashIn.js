@@ -8,7 +8,11 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Autocomplete, Box, Button } from "@mui/material";
 import axios from "axios";
-import { GET_ALL_COMPANIES, GET_CUSTOMERS_CASH_IN, GET_CUSTOMERS_LIST } from "../../utils/config";
+import {
+  GET_ALL_COMPANIES,
+  GET_CUSTOMERS_CASH_IN,
+  GET_CUSTOMERS_LIST,
+} from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
 export default function AddCustomerCashIn() {
@@ -34,12 +38,13 @@ export default function AddCustomerCashIn() {
 
   const addCashIn = () => {
     const cashIn = {
-      debit : amount,
+      debit: amount,
       description: description,
       paymentMode: paymentMediumObject.name,
-      [selectedRadio === "customer" ? "customerId" : "companyId"]: customerObject._id,
+      [selectedRadio === "customer" ? "customerId" : "companyId"]:
+        customerObject._id,
     };
-    console.log("payload",cashIn);
+    console.log("payload", cashIn);
     axios
       .post(GET_CUSTOMERS_CASH_IN, cashIn)
       .then(function (response) {
@@ -61,11 +66,7 @@ export default function AddCustomerCashIn() {
   };
 
   const validation = () => {
-    if (
-      amount.trim() === "" ||
-      !paymentMediumObject ||
-      !customerObject
-    ) {
+    if (amount.trim() === "" || !paymentMediumObject || !customerObject) {
       return <Alert severity="error">Some Fields are missing</Alert>;
     } else if (parseInt(amount) <= 0) {
       return <Alert severity="error">Amount should be greater than 0</Alert>;
@@ -136,31 +137,29 @@ export default function AddCustomerCashIn() {
             Add Cash In
           </Typography>
           <Grid container spacing={3}>
-          <Grid item xs={12} sm={12}>
-  <div>
-    <label>
-      <input
-        type="radio"
-        value="customer"
-        checked={selectedRadio === "customer"}
-        onChange={handleRadioChange}
-      />
-      Customer
-    </label>
-    
-    <span style={{ marginRight: '10px' }}></span> {/* Add space between radio buttons */}
-    
-    <label>
-      <input
-        type="radio"
-        value="company"
-        checked={selectedRadio === "company"}
-        onChange={handleRadioChange}
-      />
-      Company
-    </label>
-  </div>
-</Grid>
+            <Grid item xs={12} sm={12}>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="customer"
+                    checked={selectedRadio === "customer"}
+                    onChange={handleRadioChange}
+                  />
+                  Customer
+                </label>
+                <span style={{ marginRight: "10px" }}></span>{" "}
+                <label>
+                  <input
+                    type="radio"
+                    value="company"
+                    checked={selectedRadio === "company"}
+                    onChange={handleRadioChange}
+                  />
+                  Company
+                </label>
+              </div>
+            </Grid>
 
             <Grid item xs={12} sm={12}>
               {selectedList && selectedList.length > 0 ? (
@@ -169,12 +168,21 @@ export default function AddCustomerCashIn() {
                   getOptionLabel={(item) => item.name}
                   disablePortal
                   fullWidth
-                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                  isOptionEqualToValue={(option, value) =>
+                    option._id === value._id
+                  }
                   onChange={(event, newInputValue) => {
                     setCustomerObject(newInputValue);
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label={selectedRadio === "customer" ? "Select Customer" : "Select Company"} />
+                    <TextField
+                      {...params}
+                      label={
+                        selectedRadio === "customer"
+                          ? "Select Customer"
+                          : "Select Company"
+                      }
+                    />
                   )}
                   renderOption={(props, item) => (
                     <Box component="li" {...props} key={item._id}>
@@ -183,7 +191,9 @@ export default function AddCustomerCashIn() {
                   )}
                 />
               ) : (
-                <Typography variant="body2">No {selectedRadio} data available.</Typography>
+                <Typography variant="body2">
+                  No {selectedRadio} data available.
+                </Typography>
               )}
             </Grid>
             <Grid item xs={12} sm={6}>

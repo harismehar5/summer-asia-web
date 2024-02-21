@@ -50,17 +50,17 @@ import SalesReturnDetails from "./layout/sale/SalesReturn";
 import PurchaseReturn from "./layout/purchaseReturn/addPurchaseReturn";
 import AddSalesReturn from "./layout/saleReturn/addSalesReturn";
 import Inventory from "./layout/Inventory";
-import Login from "./layout/login/login";
-import Protected from "./utils/protectedRoute";
+import SalesReports from "./layout/SalesReports/salesReports";
+import PurchaseReports from "./layout/PurchaseReports/purchaseReports";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/">
-          <Route index element={<Protected Component={Dashboard} />} />
-          <Route path="login" element={<Login/>} />
-          <Route path="customer/*" element={<Protected Component={GetCustomerList} />} >
+          <Route index element={<Dashboard />} />
+          <Route path="customer">
+            <Route index element={<GetCustomerList />} />
             <Route path="add" element={<AddCustomer />} />
             <Route path="edit/:id" element={<EditCustomer />} />
             <Route path="add_cash_in" element={<AddCustomerCashIn />} />
@@ -70,9 +70,8 @@ function App() {
             <Route path="cash_flow" element={<GetCustomerCashFlow />} />
             <Route path="ledger" element={<GetCustomerLedger />} />
           </Route>
-
-          <Route path="supplier/">
-          <Route  index element={<Protected Component={GetSuppliersList} />} />
+          <Route path="supplier">
+            <Route index element={<GetSuppliersList />} />
             <Route path="add" element={<AddSupplier />} />
             <Route path="edit/:id" element={<EditSupplier />} />
             <Route path="add_cash_in" element={<AddSupplierCashIn />} />
@@ -82,27 +81,25 @@ function App() {
             <Route path="cash_flow" element={<GetSupplierCashFlow />} />
             <Route path="ledger" element={<GetSupplierLedger />} />
           </Route>
-
-          <Route path="expense/">
-          <Route index element={<Protected Component={GetExpensesList} />} />
+          <Route path="expense">
+            <Route index element={<GetExpensesList />} />
             <Route path="add" element={<AddExpense />} />
             <Route path="edit/:id" element={<EditExpense />} />
           </Route>
-
-           <Route path="product/">
-          <Route  index element={<Protected Component={GetProductStock} />} />
+          <Route path="product">
+            <Route index element={<GetProductStock />} />
             <Route path="add" element={<AddProduct />} />
             <Route path="stock_log" element={<StockLog />} />
           </Route>
 
-          <Route  path="inventory/">
-          <Route index element={<Protected Component={Inventory} />} />
+          <Route path="inventory">
+            <Route index element={<Inventory />} />
             {/* <Route path="add" element={<AddProduct />} />
             <Route path="stock_log" element={<StockLog />} /> */}
           </Route>
 
-          <Route path="sale/">
-          <Route index element={<Protected Component={GetSaleList} />} />
+          <Route path="sale">
+            <Route index element={<GetSaleList />} />
             <Route path="sale_details/:id" element={<SalesDetails />} />
             <Route path="add" element={<AddSale />} />
             <Route
@@ -112,27 +109,22 @@ function App() {
             <Route path="sale_return" element={<SalesReturn />} />
             <Route path="sale_estimated" element={<EstimatedSale />} />
           </Route>
-
-           <Route  path="purchase/">
-          <Route index element={<Protected Component={GetPurchaseList} />} />
+          <Route path="purchase">
+            <Route index element={<GetPurchaseList />} />
             <Route path="add" element={<AddPurchase />} />
             <Route path="purchase_details/:id" element={<PurchaseDetails />} />
           </Route>
-
-           <Route path="area/">
-          <Route index element={<Protected Component={GetAreaList} />} />
+          <Route path="area">
+            <Route index element={<GetAreaList />} />
             <Route path="add" element={<AddArea />} />
           </Route>
-
-          <Route path="customers/">
-          <Route index element={<Protected Component={GetCustomersList} />} />
+          <Route path="customers">
             <Route index element={<GetCustomersList />} />
             <Route path="add" element={<AddCustomers />} />
           </Route>
-
-          <Route path="salesman/">
-          <Route index element={<Protected Component={GetSalesManList} />} />
-            <Route path="add" element={<AddSalesMan/>} />
+          <Route path="salesman">
+            <Route index element={<GetSalesManList />} />
+            <Route path="add" element={<AddSalesMan />} />
             <Route path="ledger" element={<GetSalesManLedger />} />
           </Route>
 
@@ -143,11 +135,19 @@ function App() {
           // }
           />
             <Route path="add" element={<PurchaseReturn/>} />
+            </Route>
+          <Route path="salesReports">
+            <Route index element={<SalesReports />} />
           </Route>
 
-
+          <Route path="purchaseReposts">
+            <Route index element={<PurchaseReports />} />
+          </Route>
+          <Route path="purchase-return">
+            <Route path="add" element={<PurchaseReturn />} />
+          </Route>
           <Route path="sale-return">
-            <Route path="adds"  element={<Protected Component={AddSalesReturn} />} />
+            <Route path="adds" element={<AddSalesReturn />} />
           </Route>
         </Route>
       </Routes>

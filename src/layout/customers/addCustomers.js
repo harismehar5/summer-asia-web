@@ -80,7 +80,7 @@ export default function AddCustomers() {
       })
       .catch(function (error) {
         console.error("Error adding customer:", error);
-        handleSnackbar("error", error.response.data.error);
+        handleSnackbar("error",  error.response.data.error);
       });
   };
 
@@ -307,7 +307,7 @@ export default function AddCustomers() {
               </FormControl>
               <FormHelperText style={{ color: "red" }}>{areaCodeError}</FormHelperText>
             </Grid>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="bankAccount"
@@ -320,7 +320,7 @@ export default function AddCustomers() {
               />
               <FormHelperText style={{ color: "red" }}>{bankAccountError}</FormHelperText>
             </Grid>
-            <Grid item xs={12} sm={12} md={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 required
                 id="address"
@@ -356,7 +356,7 @@ export default function AddCustomers() {
                     variant="contained"
                     size="medium"
                     color="error"
-                  // onClick={() => setOpenPopup(false)}
+                    // onClick={() => setOpenPopup(false)}
                   >
                     Cancel
                   </Button>

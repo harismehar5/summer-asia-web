@@ -12,7 +12,7 @@ import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetSupplierCashFlow() {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     getSupplierCashFlowList();
@@ -23,12 +23,12 @@ export default function GetSupplierCashFlow() {
     axios
       .get(GET_SUPPLIERS_CASH_FLOW)
       .then(function (response) {
-        console.log(JSON.stringify(response,null,2))
+        console.log(JSON.stringify(response, null, 2));
         if (response.data.error) {
-        //   setLoading(false);
+          //   setLoading(false);
         } else {
-          setData(response.data.cash_flow)
-        //   setLoading(false);
+          setData(response.data.cash_flow);
+          //   setLoading(false);
         }
       })
       .catch(function (error) {
@@ -41,7 +41,7 @@ export default function GetSupplierCashFlow() {
       <div className="list-container">
         <Navbar />
         <ListHeader
-          header={"Cash Flow List"}
+          header={"Cash FfasfsdjfsdkjhfjdshfjkdshfjdkshfkdsList"}
           firstButton={true}
           firstButtonText={"Cash In"}
           firstLink={"/supplier/add_cash_in"}

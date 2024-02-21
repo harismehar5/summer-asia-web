@@ -53,6 +53,7 @@ export default function GetCustomerCashFlow() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        {/* <h1>{data.cashInBalance}</h1> */}
         <ListHeader
           header={"Cash Flow List"}
           firstButton={true}
@@ -62,17 +63,15 @@ export default function GetCustomerCashFlow() {
           secondButtonText="Cash Out"
           secondLink={"/customer/add_cash_out"}
         />
-
-        {data && data.length > 0 ? (
+        {data.length !== 0 ? (
           <DataTable
             data={data}
             columns={customerCashFlowColumn}
             isForTransaction={false}
           />
         ) : (
-          <p>No data available.</p>
+          <p>No data available</p>
         )}
-
         <SnackBar
           open={open}
           severity={severity}

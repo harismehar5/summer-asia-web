@@ -13,8 +13,8 @@ import { customerLedgerColumns } from "../../dataTableColumns";
 
 import {
   BASE_URL,
+  GET_All_LEDGER,
   GET_CUSTOMERS_LIST,
-  GET_CUSTOMER_LEDGER,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
@@ -54,9 +54,9 @@ export default function GetCustomerLedger() {
     // setLoading(true);
 
     axios
-      .get(GET_CUSTOMER_LEDGER +id)
+      .get(GET_All_LEDGER + id)
       .then(function (response) {
-       console.log(response)
+        console.log(JSON.stringify(response, null, 2));
         if (response.message == "Cash data not found") {
           //   setLoading(false);
           setData([]);
@@ -82,6 +82,7 @@ export default function GetCustomerLedger() {
       <div className="list-container">
         <Navbar />
         <ListHeader header={"Customer Ledger"} />
+
         <Grid container item md={12} px={4}>
           <Autocomplete
             options={customerList}
@@ -108,14 +109,14 @@ export default function GetCustomerLedger() {
             )}
           />
         </Grid>
-       
-          <DataTable
-            data={data}
-            columns={customerLedgerColumns}
-            // loading={loading}
-            isForTransaction={false}
-          />
-       
+
+        <DataTable
+          data={data}
+          columns={customerLedgerColumns}
+          // loading={loading}
+          isForTransaction={false}
+        />
+
         <SnackBar
           open={open}
           severity={severity}

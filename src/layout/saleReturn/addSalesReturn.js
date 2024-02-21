@@ -23,6 +23,7 @@ import {
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 
+
 export default function AddSalesReturn() {
     
   const [productList, setProductList] = useState([]);
@@ -38,6 +39,7 @@ export default function AddSalesReturn() {
     tradeRate: 0,
     netTotal: "",
     productCode: "",
+    subtotal:"",
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});

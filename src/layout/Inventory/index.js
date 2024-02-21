@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,21 +11,17 @@ import { inventoryListColumns, productColumns } from "../../dataTableColumns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Button, Stack } from "@mui/material";
-
+import Autocomplete from "@mui/material/Autocomplete";
 import {
-  DELETE_PRODUCT,
   GET_ALL_PRODUCTS,
   GET_INVENTORY_LIST,
   GET_INVENTORY_StockIn,
   GET_INVENTORY_StockOut,
-  GET_PRODUCTS_LIST,
-  STOCK_IN,
-  STOCK_OUT,
-  UPDATE_PRODUCT_BY_ID,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
+import produce from "immer";
 
 export default function GetProductStock() {
   const [data, setData] = useState([]);
@@ -48,10 +44,15 @@ export default function GetProductStock() {
   const [batchCode, setBatchCode] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [stockInData, setStockInData] = useState({});
-  const [ProductId, setProductId] = useState(null)
+  const [ProductId, setProductId] = useState(null);
+  const [openAddInventoryPopup, setOpenAddInventoryPopup] = useState(false);
+  const [newInventoryItem, setNewInventoryItem] = useState({});
+  const [productOptions, setProductOptions] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState({});
 
   useEffect(() => {
     getInventoryList();
+    fetchAllProductOptions();
   }, []);
 
   const actionColumn = [
@@ -67,14 +68,14 @@ export default function GetProductStock() {
               size="medium"
               color="success"
               onClick={() => {
-                setCode(params.row.productCode.code)
-                setBatchCode(params.row.batchCode)
-                formatDate(params.row.expiryDate)
-                setProductId(params.row.productCode._id)
-                setQuantity(params.row.quantity)
-                setStockInData(params.row)
-                setID(params.row._id);
-                
+                setCode(params?.row?.productCode?.code);
+                setBatchCode(params?.row?.batchCode);
+                formatDate(params?.row?.expiryDate);
+                setProductId(params?.row?.productCode?._id);
+                setQuantity(params?.row?.quantity);
+                setStockInData(params?.row);
+                setID(params?.row?._id);
+
                 setStockInOpenPopup(true);
               }}
             >
@@ -85,13 +86,13 @@ export default function GetProductStock() {
               size="medium"
               color="success"
               onClick={() => {
-                setCode(params.row.productCode.code)
-                setBatchCode(params.row.batchCode)
-                formatDate(params.row.expiryDate)
-                setProductId(params.row.productCode._id)
-                setQuantity(params.row.quantity)
-                setStockInData(params.row)
-                setID(params.row._id);
+                setCode(params?.row?.productCode?.code);
+                setBatchCode(params?.row?.batchCode);
+                formatDate(params?.row?.expiryDate);
+                setProductId(params?.row?.productCode?._id);
+                setQuantity(params?.row?.quantity);
+                setStockInData(params?.row);
+                setID(params?.row?._id);
                 setStockOutOpenPopup(true);
               }}
             >
@@ -110,8 +111,8 @@ export default function GetProductStock() {
 
     if (month.length < 2) month = "0" + month;
     if (day.length < 2) day = "0" + day;
-let ConvertedDate = [year, month, day].join("-");
-setExpiryDate(ConvertedDate)
+    let ConvertedDate = [year, month, day].join("-");
+    setExpiryDate(ConvertedDate);
     return [year, month, day].join("-");
   }
 
@@ -125,7 +126,7 @@ setExpiryDate(ConvertedDate)
         //   setSeverity("error");
         // } else {
         setData(response.data.data);
-        console.log("data :",response.data?.data);
+        console.log("data :", response.data?.data);
 
         // }
       })
@@ -135,30 +136,27 @@ setExpiryDate(ConvertedDate)
         setSeverity("error");
       });
   };
-  
- 
+
   const stockIn = () => {
     var stock_in = {
       productCode: ProductId,
       batchCode: batchCode,
       quantity: parseInt(quantity),
       expiryDate: expiryDate,
-
-      
     };
-    console.log(JSON.stringify(stock_in,null,2))
+    console.log(JSON.stringify(stock_in, null, 2));
     axios
       .post(GET_INVENTORY_StockIn, stock_in)
       .then(function (response) {
-        console.log("stockIn response", JSON.stringify(response,null,2));
+        console.log("stockIn response", JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error); 
+          setMessage(response.data.error);
           setSeverity("error");
           setStockInOpenPopup(false);
         } else {
           setOpen(true);
-          setMessage(response.data.message); 
+          setMessage(response.data.message);
           setSeverity("success");
           setQuantity("");
           setBatchCode("");
@@ -172,18 +170,17 @@ setExpiryDate(ConvertedDate)
         setSeverity("error");
       });
   };
-  
-  
+
   const stockOut = () => {
     var stock_out = {
-        quantity: parseInt(quantity),
-        productCode: ProductId,
-        batchCode: batchCode,
-        expiryDate: expiryDate,
+      quantity: parseInt(quantity),
+      productCode: ProductId,
+      batchCode: batchCode,
+      expiryDate: expiryDate,
     };
-    console.log(JSON.stringify(stock_out,null,2))
+    console.log(JSON.stringify(stock_out, null, 2));
     axios
-      .post(GET_INVENTORY_StockOut , stock_out)
+      .post(GET_INVENTORY_StockOut, stock_out)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -204,6 +201,16 @@ setExpiryDate(ConvertedDate)
         setSeverity("error");
       });
   };
+  const fetchAllProductOptions = () => {
+    axios
+      .get(GET_ALL_PRODUCTS)
+      .then((response) => {
+        setProductOptions(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -211,6 +218,60 @@ setExpiryDate(ConvertedDate)
     }
     setOpen(false);
   };
+
+  const handleSave = () => {
+    if (quantity < 0) {
+      setOpen(true);
+      setMessage("Quantity should be greater than 0");
+      setSeverity("error");
+    } else if (quantity === "") {
+      setOpen(true);
+      setMessage("Please enter quantity");
+      setSeverity("error");
+    } else {
+      const newItem = {
+        productCode: selectedProduct,
+        batchCode: batchCode,
+        expiryDate: expiryDate,
+        quantity: parseInt(quantity),
+      };
+
+      axios
+        .post(GET_INVENTORY_StockIn, newItem)
+        .then(function (response) {
+          if (response.data.error) {
+            setOpen(true);
+            setMessage(response.data.error);
+            setSeverity("error");
+          } else {
+            setOpen(true);
+            setMessage("Inventory item added successfully");
+            setSeverity("success");
+
+            setSelectedProduct(null);
+            setBatchCode("");
+            setExpiryDate("");
+            setQuantity("");
+            setOpenAddInventoryPopup(false);
+          }
+        })
+        .catch(function (error) {
+          setOpen(true);
+          setMessage(error.toString());
+          setSeverity("error");
+        });
+    }
+  };
+
+  <Button
+    variant="contained"
+    size="medium"
+    color="success"
+    onClick={handleSave}
+  >
+    Save
+  </Button>;
+
   return (
     <div className="list">
       <Sidebar />
@@ -220,8 +281,112 @@ setExpiryDate(ConvertedDate)
           header={"Inventory List"}
           firstButton={true}
           firstButtonText={"Add Inventory Item"}
-          firstLink={"/product/add"}
+          handle={() => setOpenAddInventoryPopup(true)}
         />
+
+        <Popup
+          title="Add Inventory Item"
+          openPopup={openAddInventoryPopup}
+          setOpenPopup={setOpenAddInventoryPopup}
+        >
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+              <Autocomplete
+                options={productOptions}
+                getOptionLabel={(product) => product.code}
+                disablePortal
+                fullWidth
+                // value={selectedProduct}
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value._id
+                }
+                onChange={(event, newValue) => {
+                  setSelectedProduct(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Product Code" />
+                )}
+                renderOption={(props, item) => (
+                  <Box component="li" {...props} key={item._id}>
+                    {item.code}
+                  </Box>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                label="Batch Code"
+                fullWidth
+                variant="outlined"
+                value={batchCode}
+                onChange={(event) => setBatchCode(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                label="Expiry Date"
+                fullWidth
+                variant="outlined"
+                type="date"
+                value={expiryDate}
+                onChange={(event) => setExpiryDate(event.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                label="Quantity"
+                fullWidth
+                variant="outlined"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
+            <Grid item xs={12} sm={6}>
+              <Grid
+                justifyContent={"flex-end"}
+                container
+                spacing={1}
+                direction={"row"}
+              >
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="success"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => {
+                      setSelectedProduct(null);
+                      setBatchCode("");
+                      setExpiryDate("");
+                      setQuantity("");
+                      setOpenAddInventoryPopup(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Popup>
+
         <DataTable
           data={data}
           columns={inventoryListColumns.concat(actionColumn)}
@@ -267,7 +432,6 @@ setExpiryDate(ConvertedDate)
                   shrink: true,
                 }}
               />
-        
             </Grid>
 
             <Grid item xs={12} sm={12}>
@@ -369,7 +533,6 @@ setExpiryDate(ConvertedDate)
                   shrink: true,
                 }}
               />
-                 
             </Grid>
 
             <Grid item xs={12} sm={12}>

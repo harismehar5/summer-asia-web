@@ -68,8 +68,8 @@ export default function GetPurchaseList() {
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
+          console.log("data", JSON.stringify(response, null, 2));
           setData(response.data.data);
-          
         }
       })
       .catch(function (error) {
