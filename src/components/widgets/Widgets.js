@@ -79,10 +79,10 @@ export default function Widgets({ type,amount }) {
           cardData = {
             title: "Purchase Return",
             isMoney: false,
-            linkName: "See all purchase returns",
+            // linkName: "See all purchase returns",
             icon: <CurrencyExchangeRoundedIcon className="icon"/>,
             amount:amount,
-            link:"/purchaseReturn",
+            // link:"/purchaseReturn",
           };
           break;
           case "sale":
@@ -99,10 +99,10 @@ export default function Widgets({ type,amount }) {
               cardData = {
                 title: "Sales Returns",
                 isMoney: false,
-                linkName: "See all sale returns",
+                // linkName: "See all sale returns",
                 icon: <CurrencyExchangeRoundedIcon className="icon"/>,
                 amount:amount,
-                link:"/salesReturn",
+                // link:"/salesReturn",
               };
               break;
     default:

@@ -187,7 +187,7 @@ export default function AddSalesMan() {
     if (isValid) {
       addSalesMan();
     } else {
-      handleSnackbar("error", "Enter valid values in all fields!");
+      handleSnackbar("error", "Enter valid values!");
     }
   };
   
