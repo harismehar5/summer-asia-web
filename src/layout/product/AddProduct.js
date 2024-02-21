@@ -97,6 +97,10 @@ export default function AddProduct() {
 
 
     let isValid = true;
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    }
 
     if (name.trim() === "") {
       setNameError("Enter name");
@@ -185,6 +189,7 @@ export default function AddProduct() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
+               <FormHelperText style={{ color: "red" }}>{codeError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField

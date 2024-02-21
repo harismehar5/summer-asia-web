@@ -31,7 +31,7 @@ export default function GetCustomerCashFlow() {
           setSeverity("error");
         } else {
           setData(response.data.data);
-          console.log("data :",response.data)
+          console.log("data :", response.data);
         }
       })
       .catch(function (error) {
@@ -40,12 +40,14 @@ export default function GetCustomerCashFlow() {
         setSeverity("error");
       });
   };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+
   return (
     <div className="list">
       <Sidebar />
@@ -61,11 +63,16 @@ export default function GetCustomerCashFlow() {
           secondLink={"/customer/add_cash_out"}
         />
 
-        <DataTable
-          data={data}
-          columns={customerCashFlowColumn}
-          isForTransaction={false}
-        />
+        {data && data.length > 0 ? (
+          <DataTable
+            data={data}
+            columns={customerCashFlowColumn}
+            isForTransaction={false}
+          />
+        ) : (
+          <p>No data available.</p>
+        )}
+
         <SnackBar
           open={open}
           severity={severity}

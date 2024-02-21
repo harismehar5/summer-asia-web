@@ -98,6 +98,11 @@ export default function AddCustomers() {
 
     let isValid = true;
 
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    }
+
     if (name.trim() === "") {
       setNameError("Enter name");
       isValid = false;

@@ -127,3 +127,8 @@ export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
 //Inventory StockOut URL
 export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
 
+// Dashboard Count URL           
+export const GET_DASHBOARD_COUNT = BASE_URL + "dashboard/counts";
+
+// Dashboard Today URL           
+export const GET_DASHBOARD_TODAY = BASE_URL + "dashboard/balance";

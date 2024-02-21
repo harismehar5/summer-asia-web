@@ -136,7 +136,7 @@ function App() {
             <Route path="ledger" element={<GetSalesManLedger />} />
           </Route>
 
-          <Route path="purchase-return/">
+          <Route path="purchase-return/">   
           <Route 
           //  index element={
           //  <Protected Component={GetsalesmanList}/>

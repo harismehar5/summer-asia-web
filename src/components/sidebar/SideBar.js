@@ -25,10 +25,12 @@ export default function SideBar() {
       <div className="center">
         <ul>
           <p className="title">Main</p>
+          <Link to="/" style={{ textDecoration: "none" }}>
           <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
+            <DashboardIcon className="icon" />                  
+              <span>Dashboard</span>         
           </li>
+          </Link>
           <p className="title">Cash Flow</p>
           <Link to="/customer/cash_flow" style={{ textDecoration: "none" }}>
             <li>

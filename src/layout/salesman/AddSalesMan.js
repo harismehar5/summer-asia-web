@@ -85,6 +85,13 @@ export default function AddSalesMan() {
   const validation = () => {
     let isValid = true;
   
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    }else {
+      setCodeError("");
+    }
+
     if (name.trim() === "") {
       setNameError("Enter name");
       isValid = false;
