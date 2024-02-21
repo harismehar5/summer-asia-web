@@ -301,13 +301,28 @@ export const saleColumn = [
     },
   },
   {
+    field: "paymentMode",
+    headerName: "Payment Method",
+    width: 230,
+  },
+  {
     field: "total",
     headerName: "Total Amount",
     width: 230,
   },
   {
-    field: "paymentMode",
-    headerName: "Payment Method",
+    field: "additionalTax",
+    headerName: "Addittional Tax",
+    width: 230,
+  },
+  {
+    field: "additionalDiscount",
+    headerName: "Addittional Discount",
+    width: 230,
+  },
+  {
+    field: "receivedAmount",
+    headerName: "Recieved Amount",
     width: 230,
   },
 ];
@@ -420,6 +435,21 @@ export const purchaseColumn = [
   {
     field: "total",
     headerName: "Total Amount",
+    width: 230,
+  },
+  {
+    field: "payedAmount",
+    headerName: "Amount Payed",
+    width: 230,
+  },
+  {
+    field: "additionalDiscount",
+    headerName: "Additional Discount",
+    width: 230,
+  },
+  {
+    field: "additionalTax",
+    headerName: "Additional Tax %",
     width: 230,
   },
 ];
@@ -694,6 +724,7 @@ export const supplierLedgerColumns = [
     field: "createdAt",
     headerName: "Date",
     renderCell: (params) => {
+      console.log("data =", JSON.stringify(params.row, null, 2));
       return (
         <>
           <div>{formatDate(params?.row?.createdAt)}</div>

@@ -80,6 +80,7 @@ export const GET_BATCH_LIST = SALE_BASE_URL + "get_batch";
 export const GET_SALE_LIST = BASE_URL + "sales";
 export const ADD_SALES_SERVICES = BASE_URL + "sales";
 export const GET_SALE_RETURN_LIST = BASE_URL + "salereturns";
+
 //Purchase URL
 export const PURCHASE_BASE_URL = BASE_URL + "purchases";
 // export const ADD_PURCHASE = PURCHASE_BASE_URL + "add_purchase";
@@ -98,6 +99,7 @@ export const ADD_COMPANY = BASE_URL + "companies";
 export const GET_ALL_PRODUCTS = BASE_URL + "products";
 export const GET_ALL_INVENTORY = BASE_URL + "inventories";
 export const ADD_PRODUCT = BASE_URL + "products";
+export const GET_PRODUCT_TRADE_RATE = GET_ALL_PRODUCTS + "/gettraderate";
 
 export const ADD_PURCHASE = BASE_URL + "purchases";
 

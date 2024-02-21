@@ -14,19 +14,13 @@ import { produce } from "immer";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
-  ADD_PURCHASE,
-  GET_ALL_COMPANIES,
-  GET_PRODUCTS_LIST,
-  ADD_STOCK_LOG,
-  ADD_QUANTITY,
-  ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_BATCH_LIST,
   GET_salesman_LIST,
   GET_QUANTITY_AND_EXPIRY_LIST,
-  ADD_SALE,
   ADD_SALES_SERVICES,
   GET_CUSTOMERS_LIST,
+  GET_PRODUCT_TRADE_RATE,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
@@ -62,9 +56,6 @@ export default function AddSale() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [amount, setAmount] = useState("");
-  const [submittedDate, setSubmittedDate] = useState("");
-  const [code, setCode] = useState("");
   const [SalesManList, setSalesManList] = useState([]);
   const [ProductId, setProductId] = useState(null);
   const [DateAndQuantityObject, setDateAndQuantityObject] = useState([]);
@@ -72,10 +63,13 @@ export default function AddSale() {
   const [invoiceSalesTax, setInvoiceSalesTax] = useState("");
   const [invoiceAmount, setInvoiceAmount] = useState(null);
   const [invoiceDiscount, setInvoiceDiscount] = useState("");
-  const [currentDate, setCurrentDate] = useState(new Date());
   const [IsExpired, setIsExpired] = useState(true);
   const [isWarranted, setisWarranted] = useState(false);
   const [isEstimated, setIsEstimated] = useState(false);
+  const [quantityValues, setQuantityValues] = useState({});
+  const [expiryDateValues, setExpiryDateValues] = useState({});
+  const [tradeRateValues, setTradeRateValues] = useState({});
+
   const paymentMediumList = [
     {
       id: 1,
@@ -100,23 +94,23 @@ export default function AddSale() {
   const [severity, setSeverity] = useState("");
   const date = new Date();
 
-  var purchaseObject = {
-    total_amount: "",
-    total_quantity: "",
-    supplier: "",
-    submit_date: "",
-    order_details: "",
-  };
-  var cashOut = {
-    amount: "",
-    description: "",
-    payment_medium: "",
-    submit_date: "",
-    cash_type: "",
-  };
-  var purchaseDetail = [];
-  var stockLog = [];
-  var productArray = [];
+  // var purchaseObject = {
+  //   total_amount: "",
+  //   total_quantity: "",
+  //   supplier: "",
+  //   submit_date: "",
+  //   order_details: "",
+  // };
+  // var cashOut = {
+  //   amount: "",
+  //   description: "",
+  //   payment_medium: "",
+  //   submit_date: "",
+  //   cash_type: "",
+  // };
+  // var purchaseDetail = [];
+  // var stockLog = [];
+  // var productArray = [];
 
   useEffect(() => {
     getStockList();
@@ -150,14 +144,7 @@ export default function AddSale() {
     axios
       .get(GET_ALL_PRODUCTS)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setProductList(response.data.data);
-
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -172,14 +159,23 @@ export default function AddSale() {
         productCode: productCode,
       })
       .then(function (response) {
-        // if (response.error) {
-        //   setOpen(true);
-        //   setMessage(response.error);
-        //   setSeverity("error");
-        // } else {
-        setBatchList(response.data.data);
+        const filteredBatchList = response.data.data.filter(
+          (entry) => entry.quantity !== 0 && entry.quantity !== null
+        );
 
-        // }
+        const sortedBatchList = filteredBatchList.sort((a, b) => {
+          if (a.status === "Short Expiry" && b.status !== "Short Expiry") {
+            return -1; // a comes before b
+          } else if (
+            a.status !== "Short Expiry" &&
+            b.status === "Short Expiry"
+          ) {
+            return 1; // b comes before a
+          } else {
+            return 0; // no change in order
+          }
+        });
+        setBatchList(sortedBatchList);
       })
       .catch(function (error) {
         setOpen(true);
@@ -187,17 +183,30 @@ export default function AddSale() {
         setSeverity("error");
       });
   };
+
+  const getTradeRate = (productCode, index) => {
+    axios
+      .post(GET_PRODUCT_TRADE_RATE, {
+        productCode: productCode,
+      })
+      .then(function (response) {
+        setTradeRateValues((prevValues) => ({
+          ...prevValues,
+          [index]: response.data.tradeRate,
+        }));
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+
   const getCustomerList = () => {
     axios
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setSupplierList(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -205,6 +214,7 @@ export default function AddSale() {
         setSeverity("error");
       });
   };
+
   const addProductIntoList = () => {
     // if (productObject._id !== "") {
     var obj = {};
@@ -226,6 +236,7 @@ export default function AddSale() {
     array = [...array, obj];
     setData(array);
   };
+
   const getSalesManList = () => {
     axios
       .get(GET_salesman_LIST)
@@ -234,9 +245,9 @@ export default function AddSale() {
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
-        // handleSnackbar("error", "Error: " + error);
       });
   };
+
   const getQuantityAndExpiryObject = (batchId, index) => {
     let payload = {
       productCode: ProductId,
@@ -246,23 +257,33 @@ export default function AddSale() {
     axios
       .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
       .then(function (response) {
-        setDateAndQuantityObject(response.data);
+        console.log("quatity and expiry date ", response.data);
+
         setData((currentData) =>
           produce(currentData, (v) => {
-            v[index].expiryDate = response.data.expiryDate;
+            v[index] = {
+              ...v[index],
+              expiryDate: response.data.expiryDate,
+              quantity: response.data.quantity,
+            };
           })
         );
-        setData((currentData) =>
-          produce(currentData, (v) => {
-            v[index].quantity = response.data.quantity;
-          })
-        );
+
+        setQuantityValues((prevValues) => ({
+          ...prevValues,
+          [index]: response.data.quantity,
+        }));
+
+        setExpiryDateValues((prevValues) => ({
+          ...prevValues,
+          [index]: formatDate(response.data.expiryDate),
+        }));
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
-        // handleSnackbar("error", "Error: " + error);
       });
   };
+
   const calculateAmountAndBags = (array) => {
     let sum = 0;
     var total_quantity = 0;
@@ -275,6 +296,7 @@ export default function AddSale() {
     setTotalBags(total_quantity);
     setTotalProducts(array.length);
   };
+
   const handleRemoveFields = (id) => {
     const arr = [...data];
     arr.splice(
@@ -283,17 +305,20 @@ export default function AddSale() {
     );
     setData(arr);
   };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       addProductIntoList();
     }
   };
+
   const validate = () => {
     var companyCode = supplierObject._id;
     var paymentMode = paymentMediumObject.name;
@@ -315,7 +340,6 @@ export default function AddSale() {
 
     console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
     dataEntry(purchaseObject);
-    // }
   };
   // Function to format date to "yyyy-MM-dd" format
   function formatDate(date) {
@@ -344,8 +368,6 @@ export default function AddSale() {
       <SideBar />
       <div className="box-container">
         <Navbar />
-
-        {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
@@ -360,7 +382,7 @@ export default function AddSale() {
                 onChange={(event, newInputValue) => {
                   const currentDate = new Date();
                   const licenseExpiryDate = new Date(
-                    newInputValue.licenseExpiryDate
+                    newInputValue?.licenseExpiryDate
                   );
 
                   // Check if licenseExpiryDate is a valid date
@@ -402,13 +424,15 @@ export default function AddSale() {
                 fullWidth
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={(event, newInputValue) => {
-                  setPaymentMediumObject(newInputValue);
+                  if (newInputValue !== null) {
+                    setPaymentMediumObject(newInputValue);
+                  }
                 }}
                 renderInput={(params) => (
                   <TextField {...params} label="Select Payment Medium" />
                 )}
                 renderOption={(props, payment) => (
-                  <Box component="li" {...props} key={payment.id}>
+                  <Box component="li" {...props} key={payment.id || ""}>
                     {payment.name}
                   </Box>
                 )}
@@ -459,22 +483,29 @@ export default function AddSale() {
                           option.id === value.id
                         }
                         onChange={(event, newInputValue) => {
-                          // setProductObject(newInputValue);
-                          setProductId(newInputValue._id);
+                          if (newInputValue !== null) {
+                            // setProductObject(newInputValue);
+                            setProductId(newInputValue._id);
 
-                          var productObject = newInputValue;
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].productCode = productObject._id;
-                            })
-                          );
-                          getBatchList(productObject._id, index);
+                            var productObject = newInputValue;
+                            setData((currentData) =>
+                              produce(currentData, (v) => {
+                                v[index].productCode = productObject._id;
+                              })
+                            );
+                            getBatchList(productObject._id, index);
+                            getTradeRate(productObject._id, index);
+                          }
                         }}
                         renderInput={(params) => (
                           <TextField {...params} label="Select Product" />
                         )}
                         renderOption={(props, product) => (
-                          <Box component="li" {...props} key={product._id}>
+                          <Box
+                            component="li"
+                            {...props}
+                            key={product._id || ""}
+                          >
                             {product.name}
                           </Box>
                         )}
@@ -484,45 +515,55 @@ export default function AddSale() {
                     <Grid item md={1.5} px={1}>
                       <Autocomplete
                         options={batchList}
-                        getOptionLabel={(batch, index) => batch.batchCode}
+                        getOptionLabel={(batch) => batch.batchCode}
                         disablePortal
                         fullWidth
                         isOptionEqualToValue={(option, value) =>
                           option.id === value.id
                         }
                         onChange={(event, newInputValue) => {
-                          getQuantityAndExpiryObject(
-                            newInputValue.batchCode,
-                            index
-                          );
+                          if (newInputValue !== null) {
+                            getQuantityAndExpiryObject(
+                              newInputValue.batchCode,
+                              index
+                            );
 
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].batchCode = newInputValue.batchCode;
-                            })
-                          );
+                            setData((currentData) =>
+                              produce(currentData, (v) => {
+                                v[index].batchCode = newInputValue.batchCode;
+                              })
+                            );
+                          }
                         }}
                         renderInput={(params) => (
                           <TextField {...params} label="Select Batch" />
                         )}
                         renderOption={(props, batch) => (
-                          <Box component="li" {...props} key={batch._id}>
+                          <Box
+                            component="li"
+                            {...props}
+                            key={batch._id || ""}
+                            style={{
+                              color:
+                                batch.status === "Short Expiry"
+                                  ? "red"
+                                  : "inherit",
+                              fontWeight: "600",
+                            }}
+                          >
                             {batch.batchCode}
                           </Box>
                         )}
                         onKeyDown={handleKeyPress}
                       />
                     </Grid>
+
                     <Grid item md={1.5} px={1}>
                       <TextField
-                        label={"Select Date"}
+                        // label="Expiry Date"
+                        variant="outlined"
                         type="date"
-                        value={
-                          DateAndQuantityObject.expiryDate
-                            ? formatDate(DateAndQuantityObject.expiryDate)
-                            : ""
-                        }
-                        // defaultValue={currentDate}
+                        value={expiryDateValues[index] || ""}
                         onChange={(e) => {
                           var expiryDate = e.target.value;
                           setData((currentData) =>
@@ -530,20 +571,21 @@ export default function AddSale() {
                               v[index].expiryDate = expiryDate;
                             })
                           );
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
+
+                          setExpiryDateValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: expiryDate,
+                          }));
                         }}
                         fullWidth
                       />
                     </Grid>
+
                     <Grid item md={1} px={1}>
                       <TextField
                         label="Quantity"
                         variant="outlined"
-                        value={
-                          DateAndQuantityObject?.quantity || product.quantity
-                        }
+                        value={quantityValues[index] || ""}
                         onChange={(e) => {
                           var quantity = e.target.value;
                           setData((currentData) =>
@@ -551,10 +593,16 @@ export default function AddSale() {
                               v[index].quantity = quantity;
                             })
                           );
+
+                          setQuantityValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: quantity,
+                          }));
                         }}
                         fullWidth
                       />
                     </Grid>
+
                     <Grid item md={1} px={1}>
                       <TextField
                         label="Discount"
@@ -606,24 +654,23 @@ export default function AddSale() {
                       <TextField
                         label="Trade Rate"
                         variant="outlined"
-                        value={product.tradeRate}
+                        value={tradeRateValues[index] || ""}
                         onChange={(e) => {
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].tradeRate = e.target.value;
-                              v[index].netTotal =
-                                product.quantity * e.target.value;
-                              console.log(e.target.value);
-                            })
-                          );
+                          // Assuming you want to handle trade rate changes
+                          var tradeRate = e.target.value;
+                          setTradeRateValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: tradeRate,
+                          }));
                         }}
+                        fullWidth
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
                       <TextField
                         label="Sub Total"
                         variant="outlined"
-                        value={product.quantity * product.tradeRate}
+                        value={quantityValues[index] * tradeRateValues[index]}
                         onChange={(e) => {
                           // var tradeRate = e.target.value;
                         }}
@@ -668,11 +715,7 @@ export default function AddSale() {
               Save
             </Button>
             <Button
-              onClick={
-                () => setOpenInvoicePopup(true)
-                //handlePrint
-              }
-              // sx={{ marginLeft: "10px" }}
+              onClick={() => setOpenInvoicePopup(true)}
               variant="contained"
               size="medium"
               color="error"
@@ -681,125 +724,7 @@ export default function AddSale() {
             </Button>
           </Box>
         </Grid>
-        {/* <Grid item md={4} sx={{ height: "90vh" }}>
-            <Grid container item md={12} px={2}>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-              // mt={2}
-              >
-                <Autocomplete
-                  options={supplierList}
-                  getOptionLabel={(supplier, index) => supplier.name}
-                  disablePortal
-                  fullWidth
-                  isOptionEqualToValue={(option, value) =>
-                    option._id === value._id
-                  }
-                  onChange={(event, newInputValue) => {
-                    setSupplierObject(newInputValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select Supplier" />
-                  )}
-                  renderOption={(props, supplier) => (
-                    <Box component="li" {...props} key={supplier._id}>
-                      {supplier.name}
-                    </Box>
-                  )}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  label="Select Date"
-                  type="date"
-                  defaultValue={currentDate}
-                  onChange={(event) => {
-                    setSubmittedDate(event.target.value);
-                  }}
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  id="amount"
-                  name="amount"
-                  label="Enter Amount"
-                  fullWidth
-                  variant="outlined"
-                  value={amount}
-                  onChange={(event) => setAmount(event.target.value)}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Amount</Typography>
-                <Typography>RS {totalAmount}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Bags</Typography>
-                <Typography>{totalBags}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Products</Typography>
-                <Typography>{totalProducts}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"end"}
-                sx={{ width: "100%" }}
-                mt={2}
-                alignItems={"end"}
-              >
-                <Button
-                  variant="contained"
-                  size="medium"
-                  color="success"
-                  onClick={() => validate()}
-                  sx={{ marginX: "10px" }}
-                >
-                  Save
-                </Button>
-                <Button
-                  // sx={{ marginLeft: "10px" }}
-                  variant="contained"
-                  size="medium"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Grid>
-          </Grid> */}
-        {/* </Grid> */}
+
         <SnackBar
           open={open}
           severity={severity}
@@ -1046,16 +971,7 @@ export default function AddSale() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    // onClick={() => {
-                    //   setQuantity("");
-                    //   setID("");
-                    //   setStockInOpenPopup(false);
-                    // }}
-                  >
+                  <Button variant="contained" size="medium" color="error">
                     Cancel
                   </Button>
                 </Grid>
@@ -1150,9 +1066,9 @@ const ComponentToPrint = React.forwardRef(
             </thead>
 
             <tbody>
-              {data.map((item) => {
+              {data.map((item, index) => {
                 return (
-                  <tr>
+                  <tr key={index}>
                     <td>{item.quantity}</td>
                     <td>{item.productCode}</td>
                     <td>{item.bonus}</td>
@@ -1227,116 +1143,7 @@ const ComponentToPrint = React.forwardRef(
             </thead>
           </table>
         </div>
-        {/* {!isExpired ? (
-          <footer>
-            <div
-              style={{
-                marginTop: "10px",
-                marginLeft: "10px",
-                lineHeight: "20px",
-              }}
-            >
-              <div style={{ fontWeight: "bold" }}>
-                FORM 2A (SEE RULES 19 & 30) 34371 Warranty Under Seetion
-                23(1)(i) orThe Drugs Act,
-              </div>
-              <div style={{ marginTop: "5px" }}>
-                <span style={{ fontWeight: "bold" }}>I KHALID RASHEED</span>
-                ,being a person resident in Pakistan,camying on business at the
-                afc'esaid address under the namie of PHARMA NET,
-              </div>
-              <div>
-                having valid license(s) as mentioned above greisstied by
-                Licensing Authority. and being importers/Authorized Distr?butors
-                of the Manufacturers
-              </div>
-              <div>
-                Principals. do hereby give th warranty that the drugs here above
-                described as sold by mie/specified and contain in the cash
-                memo/invoicedes
-              </div>
-              <div>
-                describing the goods referred to herein do not contravene in any
-                way the provisions of scction 23 ofthe Drugs Act, 1976.
-              </div>
-              <div style={{ marginTop: "5px", fontWeight: "bold" }}>
-                (ii) FORM-5 |see rule 6(2)(i), 6(5(b). 19 (7) and 48(1 )i)|
-                Warvanty under MMedical Devices Rules.2017
-              </div>
-              <div style={{ marginTop: "5px" }}>
-                <span style={{ fontWeight: "bold" }}>i KHALID RASHEED</span>
-                ,being a person resident in Pakistan. carrying on business ut
-                aforesed address under the name of PHARMA NET, holding valid
-                license issued by
-              </div>
-              <div>
-                Licensing Authority and having authority or being authorized by
-                Manufacturers Principals vide ietters. co hereby give this
-                warranty that the medical devices here
-              </div>
-              <div>
-                above described as sold by me and contained in the bill of sale,
-                invoice. bill of lading or other document. describing the
-                medical devices referred to herein do not
-              </div>
-              <div>
-                Contrwene ', any way the provisions of the DRAPAct, 2012 and the
-                rules framed thers-under.
-              </div>
-              <div>
-                Warranty Under Alternative Medicines & Health Products
-                (Enlistment) Rules, 2014. |Sce rule 10 (3) & (5)|
-              </div>
-              <div>
-                We,as the authorized distributors/agents and on behalf of
-                thePrincipals/Manufacture's / importe:s hereby give warranty
-                that the supplied
-              </div>
-              <div>
-                alternative medicine health products mentioned herein do not
-                contravene any provision of the prevailing DRAPACT and rules
-                framed thereunder{" "}
-                <div style={{ fontWeight: "bold" }}>KHALID RASHEED</div>
-              </div>
-            </div>
-            <div style={{ marginTop: "20px", fontWeight: "bold" }}>
-              <div style={{ marginLeft: "650px" }}>
-                {" "}
-                کوئی دکاندار ایکسپائری اسٹاک کی رقم میں موجود بل سے منھبا کرنے
-                کا مجاز نہیں ہو گا (i)
-              </div>
-              <div style={{ marginLeft: "545px" }}>
-                مال وصول کرتے وقت اچھی طرح چیک کر لیں بعد میں اسٹاک کی کمی بیشی
-                کا کوئی کلیم قابل قبول نہیں ہو گا (ii)
-              </div>
-              <div style={{ marginLeft: "90px" }}>
-                {" "}
-                پر ایکسپائر مال حوالے کریں ورنہ کمپنی کی ذمہ داری نہیں ہو گی-
-                Office Form کا کوہی بھی ملازم پر چی دے کر اسٹاک وصول کرنے کا
-                مجاز نہیں رکھتا ہمیشہ کمپنی کے PHARMA NET (iii)
-              </div>
-              <div style={{ marginLeft: "305px" }}>
-                {" "}
-                کی قطی نہیں ہو گی PHARMA NET کا کوئی ملازم کسی دکاندار سے ایڈ
-                وانس رقم وصول کرنے کا مجاز نہیں ہے اسکی ذمہ داری PHARMA NET (iv)
-              </div>
-              <div style={{ marginLeft: "634px" }}>
-                {" "}
-                اسٹاک کپمنی کے بل کے مطابق وصول کرہں بعد میں کسی قسم کی کوئی ذمہ
-                داری نہیں ہو گی (v)
-              </div>
-              <span style={{ marginLeft: "10px" }}>
-                ماہ کی مدت سے قبل تحریری طور پر کمپنی بذا کے علم میں نہ لایا جاے
-                گا 6{" "}
-              </span>
-              <span style={{ marginLeft: "255px" }}>
-                {" "}
-                کمپنی کسی بھی ایکسپائر کی تبدیلی کی قطعا ذمہ دار نہیں ہو گی جب
-                تک کے کم از کم (vi){" "}
-              </span>
-            </div>
-          </footer>
-        ) :  */}
+
         {isWarranted ? (
           <footer style={{ padding: "2rem", fontSize: "10px" }}>
             <div
