@@ -52,6 +52,9 @@ import AddSalesReturn from "./layout/saleReturn/addSalesReturn";
 import Inventory from "./layout/Inventory";
 import SalesReports from "./layout/SalesReports/salesReports";
 import PurchaseReports from "./layout/PurchaseReports/purchaseReports";
+import ExpiredInventory from "./layout/Inventory/ExpiredInventory";
+import AddExpenseCatagory from "./layout/expenseCatagory/AddExpenseCatagory";
+import ExpenseCatagoryList from "./layout/expenseCatagory/ExpenseCatagory";
 
 function App() {
   return (
@@ -86,6 +89,11 @@ function App() {
             <Route path="add" element={<AddExpense />} />
             <Route path="edit/:id" element={<EditExpense />} />
           </Route>
+          <Route path="expense/catagory">
+            <Route index element={<GetExpensesList />} />
+            <Route path="add" element={<AddExpenseCatagory />} />
+            <Route path="list" element={<ExpenseCatagoryList />} />
+          </Route>
           <Route path="product">
             <Route index element={<GetProductStock />} />
             <Route path="add" element={<AddProduct />} />
@@ -94,6 +102,7 @@ function App() {
 
           <Route path="inventory">
             <Route index element={<Inventory />} />
+            <Route path="expired" element={<ExpiredInventory />} />
             {/* <Route path="add" element={<AddProduct />} />
             <Route path="stock_log" element={<StockLog />} /> */}
           </Route>

@@ -101,6 +101,9 @@ export const GET_ALL_INVENTORY = BASE_URL + "inventories";
 export const ADD_PRODUCT = BASE_URL + "products";
 export const GET_PRODUCT_TRADE_RATE = GET_ALL_PRODUCTS + "/gettraderate";
 
+//Expired Inventory
+export const GET_EXPIRED_INVENTORY = BASE_URL + "expiredinventory";
+
 export const ADD_PURCHASE = BASE_URL + "purchases";
 
 //Area URL
