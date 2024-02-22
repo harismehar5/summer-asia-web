@@ -382,7 +382,7 @@ export const saleColumn = [
 ];
 
 export const saleReturnColumn = [
-  { field: "_id", headerName: "ID", width: 230 },
+  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "createdAt",
     headerName: "Date",
@@ -406,6 +406,11 @@ export const saleReturnColumn = [
     headerName: "Payment Method",
     width: 230,
   },
+  {
+    field: "customerCode",
+    headerName: "Customer Code",
+    width: 230,
+  },
 ];
 
 export const saleDetailsColumn = [
@@ -415,11 +420,10 @@ export const saleDetailsColumn = [
     headerName: "expiry date",
     width: 230,
     renderCell: (params) => {
-      return (
-        <>
-          <div>{formatDate(params.row.expiryDate)}</div>
-        </>
-      );
+      const formattedDate = params?.row?.expiryDate
+        ? formatDate(params?.row?.expiryDate)
+        : "N/A";
+      return <div>{formattedDate}</div>;
     },
   },
   {

@@ -46,7 +46,7 @@ import AddSalesMan from "./layout/salesman/AddSalesMan";
 import PurchaseDetails from "./layout/purchase/PurchaseDetails";
 import SalesDetails from "./layout/sale/SalesDetails";
 import SalesReturn from "./layout/sale/SalesReturn";
-import SalesReturnDetails from "./layout/sale/SalesReturn";
+
 import PurchaseReturn from "./layout/purchaseReturn/addPurchaseReturn";
 import AddSalesReturn from "./layout/saleReturn/addSalesReturn";
 import Inventory from "./layout/Inventory";
@@ -55,6 +55,7 @@ import PurchaseReports from "./layout/PurchaseReports/purchaseReports";
 import ExpiredInventory from "./layout/Inventory/ExpiredInventory";
 import AddExpenseCatagory from "./layout/expenseCatagory/AddExpenseCatagory";
 import ExpenseCatagoryList from "./layout/expenseCatagory/ExpenseCatagory";
+import SalesReturnDetails from "./layout/sale/SalesReturnDetails";
 
 function App() {
   return (
@@ -115,7 +116,11 @@ function App() {
               path="sale_return_details/:id"
               element={<SalesReturnDetails />}
             />
-            <Route path="sale_return" element={<SalesReturn />} />
+
+            <Route path="sale_return">
+              <Route index element={<SalesReturn />} />
+              <Route path="_details/:id" element={<SalesReturnDetails />} />
+            </Route>
             <Route path="sale_estimated" element={<EstimatedSale />} />
           </Route>
           <Route path="purchase">

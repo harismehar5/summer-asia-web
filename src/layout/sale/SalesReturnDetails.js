@@ -5,9 +5,16 @@ import ListHeader from "../../components/listHeader/ListHeader";
 import DataTable from "../../components/dataTable/DataTable";
 import SnackBar from "../../components/alert/SnackBar";
 import { json, useLocation, useParams } from "react-router-dom";
-import { purchaseDetailsColumn, saleDetailsColumn } from "../../dataTableColumns";
+import {
+  purchaseDetailsColumn,
+  saleDetailsColumn,
+} from "../../dataTableColumns";
 import { IconButton } from "@mui/material";
-import { GET_PURCHASE_LIST, GET_SALE_LIST, GET_SALE_RETURN_LIST } from "../../utils/config";
+import {
+  GET_PURCHASE_LIST,
+  GET_SALE_LIST,
+  GET_SALE_RETURN_LIST,
+} from "../../utils/config";
 import axios from "axios";
 
 const SalesReturnDetails = () => {
@@ -18,7 +25,7 @@ const SalesReturnDetails = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  console.log("params id =",id)
+  console.log("params id =", id);
   const actionColumn = [
     {
       field: "action",
@@ -29,21 +36,19 @@ const SalesReturnDetails = () => {
       },
     },
   ];
-  useEffect(() => {
-    getSaleDetailsList();
-  }, []);
   const getSaleDetailsList = async () => {
     await axios
-      .get(GET_SALE_RETURN_LIST+"/"+id)
+      .get(GET_SALE_RETURN_LIST + "/" + id)
       .then(function (response) {
-        console.log(JSON.stringify(response,null,2))
+        // console.log(response.data);
+        console.log("sale return", JSON.stringify(response, null, 2));
+
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-         
-         setData(response.data.saleDetail);
+          setData(response.data.saleReturnDetail);
         }
       })
       .catch(function (error) {
@@ -52,6 +57,9 @@ const SalesReturnDetails = () => {
         setSeverity("error");
       });
   };
+  useEffect(() => {
+    getSaleDetailsList();
+  }, []);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
