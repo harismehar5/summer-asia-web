@@ -28,7 +28,7 @@ export default function SalesReturnDetails() {
   const actionColumn = [
     {
       field: "_id",
-      headerName: "ID",
+      headerName: "Sale Return Deatils",
       width: 300,
       renderCell: (params) => {
         return (

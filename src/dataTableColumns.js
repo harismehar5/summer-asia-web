@@ -384,6 +384,37 @@ export const saleColumn = [
 export const saleReturnColumn = [
   // { field: "_id", headerName: "ID", width: 230 },
   {
+    field: "customerCode",
+    headerName: "Customer Code",
+    width: 230,
+
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.customerCode?.code || "N/A"}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "salesman",
+    headerName: "Salesman Code",
+    width: 230,
+
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.salesman?.code || "N/A"}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "paymentMode",
+    headerName: "Payment Method",
+    width: 230,
+  },
+  {
     field: "createdAt",
     headerName: "Date",
     width: 230,
@@ -399,16 +430,6 @@ export const saleReturnColumn = [
   {
     field: "total",
     headerName: "Total Amount",
-    width: 230,
-  },
-  {
-    field: "paymentMode",
-    headerName: "Payment Method",
-    width: 230,
-  },
-  {
-    field: "customerCode",
-    headerName: "Customer Code",
     width: 230,
   },
 ];
