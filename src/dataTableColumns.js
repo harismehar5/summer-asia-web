@@ -238,22 +238,6 @@ export const expenseColumns = [
     headerName: "Amount",
     width: 230,
   },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 160,
-    renderCell: (params) => {
-      return (
-        <>
-          {params.row.status === true ? (
-            <div className={`cell-with-status active`}>{"active"}</div>
-          ) : (
-            <div className={`cell-with-status passive`}>{"passive"}</div>
-          )}
-        </>
-      );
-    },
-  },
 ];
 
 export const expenseCatagoryColumns = [

@@ -15,13 +15,12 @@ import { expenseColumns } from "../../dataTableColumns";
 
 import {
   EXPENSE_BASE_URL,
-  DELETE_EXPENSE,
-  GET_EXPENSES_LIST,
-  UPDATE_EXPENSE_BY_ID,
+  EXPENSE_CATAGORY_BASE_URL,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 
 export default function GetExpensesList() {
   const [data, setData] = useState([]);
@@ -33,13 +32,18 @@ export default function GetExpensesList() {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [id, setId] = useState("");
+  const [catagoryName, setCatagoryName] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  const [selectedCatagory, setSelectedCatagory] = useState("");
   var expense = {
     name: "",
     amount: "",
     description: "",
   };
+
   useEffect(() => {
     getExpensesList();
+    getExpenseCatagoryList();
   }, []);
 
   const actionColumn = [
@@ -69,17 +73,34 @@ export default function GetExpensesList() {
       },
     },
   ];
+
+  const getExpenseCatagoryList = () => {
+    axios
+      .get(EXPENSE_CATAGORY_BASE_URL)
+      .then(function (response) {
+        if (response.data.error) {
+          setOpen(true);
+          setMessage("");
+          setSeverity("error");
+        } else {
+          setCatagoryName(response.data.data);
+        }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
   const getExpensesList = () => {
     axios
       .get(EXPENSE_BASE_URL)
       .then(function (response) {
-        console.log(JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response.data.data);
           setData(response.data.data);
         }
       })
@@ -111,7 +132,7 @@ export default function GetExpensesList() {
   };
   const updateExpense = () => {
     expense = {
-      name: name,
+      expenseCategory: selectedCatagory,
       amount: amount,
       description: description,
     };
@@ -124,13 +145,14 @@ export default function GetExpensesList() {
           setSeverity("error");
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage("Data Updated Successfully ");
           setSeverity("success");
           setName("");
           setAmount("");
           setDescription("");
           setId("");
           setOpenPopup(false);
+          getExpensesList();
         }
       })
       .catch(function (error) {
@@ -156,10 +178,25 @@ export default function GetExpensesList() {
   };
   const editExpense = (expense) => {
     setOpenPopup(true);
-    setName(expense.name);
+    setName(expense?.expenseCategory?.name);
     setDescription(expense.description);
     setAmount(expense.amount);
     setId(expense._id);
+  };
+
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    setName(event.target.value);
+
+    const selectedItem = catagoryName.find(
+      (item) => item.name === selectedValue
+    );
+
+    setSelectedCatagory(selectedItem._id);
+    if (selectedItem) {
+      const selectedId = selectedItem._id;
+      setSelectedId(selectedId);
+    }
   };
   return (
     <div className="list">
@@ -170,12 +207,12 @@ export default function GetExpensesList() {
           header={"Expenses List"}
           firstButton={true}
           firstButtonText={"Add Expense"}
+          firstLink={"add"}
         />
         <DataTable
           data={data}
           columns={expenseColumns.concat(actionColumn)}
           isForTransaction={false}
-          // loading={!data.length}
         />
         <Popup
           title="Expense Form"
@@ -183,18 +220,21 @@ export default function GetExpensesList() {
           setOpenPopup={setOpenPopup}
         >
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
+            <FormControl fullWidth variant="outlined" required>
+              <InputLabel id="name-label">Name</InputLabel>
+              <Select
+                labelId="name-label"
                 id="name"
-                name="name"
                 label="Name"
-                fullWidth
-                variant="outlined"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </Grid>
+                onChange={handleSelectChange}
+              >
+                {catagoryName.map((item) => (
+                  <MenuItem value={item.name}>{item.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 required
