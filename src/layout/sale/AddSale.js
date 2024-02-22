@@ -27,6 +27,7 @@ import { useReactToPrint } from "react-to-print";
 import Popup from "../../components/popup/Popup";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import ListHeader from "../../components/listHeader/ListHeader";
+import { index } from "d3-array";
 
 export default function AddSale() {
   const componentRef = useRef();
@@ -52,14 +53,12 @@ export default function AddSale() {
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
-  const [batchObject, setBatchObject] = useState({});
   const [openInvoicePopup, setOpenInvoicePopup] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [SalesManList, setSalesManList] = useState([]);
   const [ProductId, setProductId] = useState(null);
-  const [DateAndQuantityObject, setDateAndQuantityObject] = useState([]);
   const [SaleManObject, setSaleManObject] = useState({});
   const [invoiceSalesTax, setInvoiceSalesTax] = useState("");
   const [invoiceAmount, setInvoiceAmount] = useState(null);
@@ -93,7 +92,6 @@ export default function AddSale() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const date = new Date();
 
   // var purchaseObject = {
   //   total_amount: "",
@@ -191,10 +189,18 @@ export default function AddSale() {
         productCode: productCode,
       })
       .then(function (response) {
+        // Update tradeRateValues
         setTradeRateValues((prevValues) => ({
           ...prevValues,
           [index]: response.data.tradeRate,
         }));
+
+        // Update data array
+        setData((currentData) =>
+          produce(currentData, (v) => {
+            v[index].tradeRate = response.data.tradeRate;
+          })
+        );
       })
       .catch(function (error) {
         setOpen(true);
@@ -202,6 +208,24 @@ export default function AddSale() {
         setSeverity("error");
       });
   };
+
+  // const getTradeRate = (productCode, index) => {
+  //   axios
+  //     .post(GET_PRODUCT_TRADE_RATE, {
+  //       productCode: productCode,
+  //     })
+  //     .then(function (response) {
+  //       setTradeRateValues((prevValues) => ({
+  //         ...prevValues,
+  //         [index]: response.data.tradeRate,
+  //       }));
+  //     })
+  //     .catch(function (error) {
+  //       setOpen(true);
+  //       setMessage("error: " + error);
+  //       setSeverity("error");
+  //     });
+  // };
 
   const getCustomerList = () => {
     axios
@@ -217,11 +241,9 @@ export default function AddSale() {
   };
 
   const addProductIntoList = () => {
-    // if (productObject._id !== "") {
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
-    // if (data.length === 0) {
 
     obj = {
       productCode: productObject.productCode,
@@ -323,10 +345,6 @@ export default function AddSale() {
   const validate = () => {
     var companyCode = supplierObject._id;
     var paymentMode = paymentMediumObject.name;
-    var totalAmount = 0;
-    for (let i = 0; i < data.length; i++) {
-      totalAmount = totalAmount + data[i].netTotal;
-    }
 
     var purchaseObject = {
       saleDetail: data,
@@ -358,12 +376,13 @@ export default function AddSale() {
     const additionalSalePercentage = invoiceSalesTax;
     var totalAmount = 0;
     for (let i = 0; i < data.length; i++) {
-      totalAmount = totalAmount + data[i].netTotal;
+      totalAmount = totalAmount + data[i].tradeRate * data[i].quantity;
     }
     const additionalSaleAmount = (totalAmount * additionalSalePercentage) / 100;
     const calAmount = totalAmount + additionalSaleAmount;
     return calAmount;
   };
+
   return (
     <div className="box">
       <SideBar />
@@ -470,7 +489,6 @@ export default function AddSale() {
                   <Grid
                     container
                     flexDirection={"row"}
-                    // justifyContent={"center"}
                     alignItems={"center"}
                     key={index}
                     mt={2}
@@ -486,7 +504,6 @@ export default function AddSale() {
                         }
                         onChange={(event, newInputValue) => {
                           if (newInputValue !== null) {
-                            // setProductObject(newInputValue);
                             setProductId(newInputValue._id);
 
                             var productObject = newInputValue;
@@ -652,7 +669,35 @@ export default function AddSale() {
                         }}
                       />
                     </Grid>
+
                     <Grid item md={1.2} px={1}>
+                      <TextField
+                        label="Trade Rate"
+                        variant="outlined"
+                        value={tradeRateValues[index] || ""}
+                        onChange={(e) => {
+                          var tradeRate = e.target.value;
+                          // Update tradeRateValues state
+                          setTradeRateValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: tradeRate,
+                          }));
+                          // Update data array
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].tradeRate = tradeRate;
+                              // Update netTotal based on quantity and tradeRate
+                              v[index].netTotal =
+                                parseFloat(v[index].quantity) *
+                                parseFloat(tradeRate);
+                            })
+                          );
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+
+                    {/* <Grid item md={1.2} px={1}>
                       <TextField
                         label="Trade Rate"
                         variant="outlined"
@@ -667,7 +712,7 @@ export default function AddSale() {
                         }}
                         fullWidth
                       />
-                    </Grid>
+                    </Grid> */}
                     <Grid item md={1} px={1}>
                       <TextField
                         label="Sub Total"
@@ -678,6 +723,10 @@ export default function AddSale() {
                         }}
                         disabled
                       />
+                      {console.log(
+                        "total",
+                        quantityValues[index] * tradeRateValues[index]
+                      )}
                     </Grid>
                     <Grid item md={0.5} px={1}>
                       <IconButton
@@ -707,7 +756,7 @@ export default function AddSale() {
             mr={4}
             alignItems={"end"}
           >
-            <Button
+            {/* <Button
               variant="contained"
               size="medium"
               color="success"
@@ -715,12 +764,12 @@ export default function AddSale() {
               sx={{ marginX: "10px" }}
             >
               Save
-            </Button>
+            </Button> */}
             <Button
               onClick={() => setOpenInvoicePopup(true)}
               variant="contained"
               size="medium"
-              color="error"
+              color="success"
             >
               Save & Print
             </Button>
@@ -951,6 +1000,7 @@ export default function AddSale() {
                 </RadioGroup>
               )}
             </Grid>
+
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
@@ -973,7 +1023,12 @@ export default function AddSale() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => setOpenInvoicePopup(false)}
+                  >
                     Cancel
                   </Button>
                 </Grid>
