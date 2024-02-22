@@ -98,6 +98,7 @@ export const ADD_COMPANY = BASE_URL + "companies";
 // export const PRODUCT_BASE_URL = BASE_URL + ""
 export const GET_ALL_PRODUCTS = BASE_URL + "products";
 export const GET_ALL_INVENTORY = BASE_URL + "inventories";
+export const GET_PRODUCT_OF_INVENTORY = GET_ALL_INVENTORY + "/get_products";
 export const ADD_PRODUCT = BASE_URL + "products";
 export const GET_PRODUCT_TRADE_RATE = GET_ALL_PRODUCTS + "/gettraderate";
 
