@@ -12,14 +12,12 @@ import Navbar from "../../components/navbar/Navbar";
 import { salesmanLedgerColumns } from "../../dataTableColumns";
 
 import {
-  BASE_URL,
-  GET_salesman_LIST,
-  GET_CUSTOMER_LEDGER,
   GET_All_LEDGER,
+  GET_salesman_LIST,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
-import { json } from "react-router-dom";
+import Widgets from "../../components/widgets/Widgets";
 
 export default function GetsalesmanLedger() {
   const [data, setData] = useState([]);
@@ -28,14 +26,27 @@ export default function GetsalesmanLedger() {
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const [customerObject, setCustomerObject] = useState({});
-
+  const [amount, setAmount] = useState({
+    cashInBalance: 0,
+    cashOutBalance: 0,
+    currentBalance: 0,
+  });
   const [cashInBalance, setCashInBalance] = useState(0);
   const [cashOutBalance, setCashOutBalance] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
-
   useEffect(() => {
     getCustomersList();
-  }, [data]);
+  }, []);
+
+  useEffect(() => {
+    updateWidgetValues();
+  }, [data, amount]);
+
+  const updateWidgetValues = () => {
+    setCashInBalance(amount.cashInBalance || 0);
+    setCashOutBalance(amount.cashOutBalance || 0);
+    setCurrentBalance(amount.currentBalance || 0);
+  };
 
   const getCustomersList = () => {
     axios
@@ -55,53 +66,43 @@ export default function GetsalesmanLedger() {
         setSeverity("error");
       });
   };
-  // const getCustomerLedgerList = (id) => {
-  //   // setLoading(true);
-  //   axios
-  //     .get(GET_CUSTOMER_LEDGER + id)
-  //     .then(function (response) {
-  //       if (response.data.error) {
-  //         //   setLoading(false);
-  //         setData([]);
-  //       } else {
-  //         setData(response.data.data);
 
-  //         //   setLoading(false);
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       // setLoading(false);
-  //     });
-  // };
-
-  const getCustomerLedgerList = (id) => {
+  const getSalesmanLedgerList = (id) => {
     axios
       .get(GET_All_LEDGER + id)
       .then(function (response) {
-        if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error_msg);
-          setSeverity("error");
-          setData([]); // Clear data in case of error
-          setCashInBalance(0);
-          setCashOutBalance(0);
-          setCurrentBalance(0);
+        if (response.data.message === "Cash data not found") {
+          setData([]);
+          setAmount({
+            cashInBalance: 0,
+            cashOutBalance: 0,
+            currentBalance: 0,
+          });
+          handleSnackbar("error", "Cash data not found");
         } else {
           setData(response.data.data);
-          setCashInBalance(response.data.cashInBalance || 0);
-          setCashOutBalance(response.data.cashOutBalance || 0);
-          setCurrentBalance(response.data.currentBalance || 0);
+          setAmount(response.data);
         }
       })
       .catch(function (error) {
-        setOpen(true);
-        setMessage("Error: Data not found"); // Adjust the error message
-        setSeverity("error");
-        setData([]); // Clear data in case of error
-        setCashInBalance(0);
-        setCashOutBalance(0);
-        setCurrentBalance(0);
+        if (error.response && error.response.status === 404) {
+          setData([]);
+          setAmount({
+            cashInBalance: 0,
+            cashOutBalance: 0,
+            currentBalance: 0,
+          });
+          handleSnackbar("error", " Data not found");
+        } else {
+          handleSnackbar("error", error.message);
+        }
       });
+  };
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
   };
 
   const handleClose = (event, reason) => {
@@ -111,29 +112,21 @@ export default function GetsalesmanLedger() {
     setOpen(false);
   };
 
-  // const BalancesSection = () => (
-  //   <div className="balances-container">
-  //     <h2>Balances</h2>
-  //     <div className="balance-item">
-  //       <span>Cash In:</span>
-  //       <span>${cashInBalance}</span>
-  //     </div>
-  //     <div className="balance-item">
-  //       <span>Cash Out:</span>
-  //       <span>${cashOutBalance}</span>
-  //     </div>
-  //     <div className="balance-item">
-  //       <span>Current Balance:</span>
-  //       <span>${currentBalance}</span>
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="list">
       <Sidebar />
       <div className="list-container">
         <Navbar />
+
+        <div className='dashboard'>
+          <div className='dashboard-container'>
+            <div className='widgets'>
+              <Widgets type={"cashIn"} amount={cashInBalance || ""} />
+              <Widgets type={"cashOut"} amount={cashOutBalance || ""} />
+              <Widgets type={"currentBalance"} amount={currentBalance || ""} />
+            </div>
+          </div>
+        </div>
         <ListHeader header={"Salesman Ledger"} />
         <Grid container item md={12} px={4}>
           <Autocomplete
@@ -147,7 +140,7 @@ export default function GetsalesmanLedger() {
             onChange={(event, newInputValue) => {
               if (newInputValue && newInputValue._id) {
                 setCustomerObject(newInputValue);
-                getCustomerLedgerList(newInputValue._id);
+                getSalesmanLedgerList(newInputValue._id);
               }
             }}
             value={customerObject.name}
@@ -165,10 +158,8 @@ export default function GetsalesmanLedger() {
         <DataTable
           data={data}
           columns={salesmanLedgerColumns}
-          // loading={loading}
           isForTransaction={false}
         />
-        {/* <BalancesSection /> */}
 
         <SnackBar
           open={open}

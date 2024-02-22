@@ -6,7 +6,7 @@ import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { customerCashFlowColumn } from "../../dataTableColumns";
-
+import Widgets from '../../components/widgets/Widgets'
 import { GET_CUSTOMERS_CASH_FLOW } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
@@ -16,6 +16,7 @@ export default function GetCustomerCashFlow() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+  const [amount, setAmount] = useState("");
 
   useEffect(() => {
     getCustomerCashFlowList();
@@ -31,7 +32,16 @@ export default function GetCustomerCashFlow() {
           setSeverity("error");
         } else {
           setData(response.data.data);
-          console.log("data :", response.data);
+          setAmount(response.data);
+
+          // Log the API response for debugging
+          console.log("data:", response.data);
+
+          // Log the specific values you want
+          console.log("count:", response.data.count);
+          console.log("currentBalance:", response.data.currentBalance);
+          console.log("cashInBalance:", response.data.cashInBalance);
+          console.log("cashOutBalance:", response.data.cashOutBalance);
         }
       })
       .catch(function (error) {
@@ -53,7 +63,17 @@ export default function GetCustomerCashFlow() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        {/* <h1>{data.cashInBalance}</h1> */}
+        <div className='dashboard'>
+          <div className='dashboard-container'>
+            <div className='widgets'>
+              {/* <Widgets type={"count"} amount={amount.count} /> */}
+              <Widgets type={"cashIn"} amount={amount.cashInBalance} />
+              <Widgets type={"cashOut"} amount={amount.cashOutBalance} />
+              <Widgets type={"currentBalance"} amount={amount.currentBalance} />
+            </div>
+          </div>
+        </div>
+
         <ListHeader
           header={"Cash Flow List"}
           firstButton={true}

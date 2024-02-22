@@ -99,12 +99,52 @@ export default function Widgets({ type,amount }) {
               cardData = {
                 title: "Sales Returns",
                 isMoney: false,
-                // linkName: "See all sale returns",
+                linkName: "See all sale returns",
                 icon: <CurrencyExchangeRoundedIcon className="icon"/>,
                 amount:amount,
-                // link:"/salesReturn",
+                link:"/sale/sale_return/",
               };
               break;
+              case "cashIn":
+              cardData = {
+                title: "Cash In Balance",
+                isMoney: false,
+                // linkName: "See all cash in balance",
+                icon: <CurrencyExchangeRoundedIcon className="icon"/>,
+                amount:amount,
+                link:"/sale/sale_return/",
+              };
+              break;
+              case "cashOut":
+                cardData = {
+                  title: "Cash Out Balance",
+                  isMoney: false,
+                  // linkName: "See all cash out balance",
+                  icon: <CurrencyExchangeRoundedIcon className="icon"/>,
+                  amount:amount,
+                  link:"/sale/sale_return/",
+                };
+                break;
+                case "count":
+                cardData = {
+                  title: "Count",
+                  isMoney: false,
+                  // linkName: "See all cash out balance",
+                  icon: <CurrencyExchangeRoundedIcon className="icon"/>,
+                  amount:amount,
+                  // link:"/sale/sale_return/",
+                };
+                break;
+                case "currentBalance":
+                cardData = {
+                  title: "Current Balance",
+                  isMoney: false,
+                  // linkName: "See all current balance",
+                  icon: <CurrencyExchangeRoundedIcon className="icon"/>,
+                  amount:amount,
+                  link:"/sale/sale_return/",
+                };
+                break;
     default:
       break;
   }

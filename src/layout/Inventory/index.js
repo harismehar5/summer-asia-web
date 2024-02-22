@@ -190,17 +190,22 @@ export default function GetProductStock() {
           setStockOutOpenPopup(false);
         } else {
           setOpen(true);
+          setOpen(true);
           setMessage(response.data.message);
           setSeverity("success");
-          setQuantity("confrim");
-          setStockOutOpenPopup(false);
+          setQuantity("");
+          setBatchCode("");
+          setExpiryDate("");
+          setStockInOpenPopup(false);
         }
       })
       .catch(function (error) {
         setOpen(true);
-        setMessage(error);
+        setMessage("error: " + error.response?.data?.message || error.message);
         setSeverity("error");
+        console.error(error.stack); // Log the stack trace
       });
+      
   };
   const fetchAllProductOptions = () => {
     axios
