@@ -9,11 +9,10 @@ import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { areaColumns } from "../../dataTableColumns";
-import {
-  GET_AREA_LIST,
-} from "../../utils/config";
+import { GET_AREA_LIST } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetAreaList() {
   const [data, setData] = useState([]);
@@ -125,7 +124,7 @@ export default function GetAreaList() {
     axios
       .post(GET_AREA_LIST, newExpense)
       .then(function (response) {
-        console.log("AREA List :",response.data);
+        console.log("AREA List :", response.data);
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
@@ -150,7 +149,11 @@ export default function GetAreaList() {
   };
 
   const validation = () => {
-    if (abbreviation.length === 0 || code.length === 0 || description.length === 0) {
+    if (
+      abbreviation.length === 0 ||
+      code.length === 0 ||
+      description.length === 0
+    ) {
       handleSnackbar("error", "Some fields are missing");
     } else {
       if (id) {
@@ -187,12 +190,22 @@ export default function GetAreaList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <ListHeader
+          header={"Area List"}
+          firstButton={true}
+          firstButtonText={"Add New Area"}
+          firstLink={"add"}
+        />
         <DataTable
           data={data}
           columns={areaColumns.concat(actionColumn)}
           isForTransaction={false}
         />
-        <Popup title="Area Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <Popup
+          title="Area Form"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+        >
           <Grid container spacing={3}>
             {/* Form fields... */}
             <Grid item xs={4} sm={3}>
@@ -232,14 +245,29 @@ export default function GetAreaList() {
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
-              <Grid container spacing={1} direction="row" justifyContent="flex-end">
+              <Grid
+                container
+                spacing={1}
+                direction="row"
+                justifyContent="flex-end"
+              >
                 <Grid item>
-                  <Button variant="contained" size="medium" color="success" onClick={validation}>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="success"
+                    onClick={validation}
+                  >
                     {id ? "Update" : "Add"}
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error" onClick={() => setOpenPopup(false)}>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    color="error"
+                    onClick={() => setOpenPopup(false)}
+                  >
                     Cancel
                   </Button>
                 </Grid>
@@ -247,7 +275,12 @@ export default function GetAreaList() {
             </Grid>
           </Grid>
         </Popup>
-        <SnackBar open={open} severity={severity} message={message} handleClose={handleClose} />
+        <SnackBar
+          open={open}
+          severity={severity}
+          message={message}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

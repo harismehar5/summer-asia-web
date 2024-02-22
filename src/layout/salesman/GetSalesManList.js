@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { IconButton, Grid, TextField, Button, InputLabel, Select, MenuItem, FormControl } from "@mui/material";
+import {
+  IconButton,
+  Grid,
+  TextField,
+  Button,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
@@ -12,6 +21,7 @@ import { salesmanColumns } from "../../dataTableColumns";
 import { GET_AREA_LIST, GET_salesman_LIST } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetSalesManList() {
   const [data, setData] = useState([]);
@@ -51,7 +61,7 @@ export default function GetSalesManList() {
     axios
       .get(GET_salesman_LIST)
       .then(function (response) {
-        console.log("salesman list:",JSON.stringify(response,null,2));
+        console.log("salesman list:", JSON.stringify(response, null, 2));
         if (response.data.error) {
           handleSnackbar("error", response.data.error_msg);
         } else {
@@ -276,7 +286,6 @@ export default function GetSalesManList() {
     setDescription(salesman.description);
   };
 
-
   const refreshData = () => {
     console.log("Refreshing data...");
     axios
@@ -306,12 +315,22 @@ export default function GetSalesManList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <ListHeader
+          header={"Salesman List"}
+          firstButton={true}
+          firstButtonText={"Add New Salesman"}
+          firstLink={"add"}
+        />
         <DataTable
           data={data}
           columns={salesmanColumns.concat(actionColumn)}
           isForTransaction={false}
         />
-        <Popup title="salesman Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <Popup
+          title="salesman Form"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+        >
           {/* Form fields... */}
           <Grid container spacing={3}>
             {/* Form fields... */}

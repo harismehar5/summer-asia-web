@@ -26,6 +26,7 @@ import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
 import Popup from "../../components/popup/Popup";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function AddSale() {
   const componentRef = useRef();
@@ -368,6 +369,7 @@ export default function AddSale() {
       <SideBar />
       <div className="box-container">
         <Navbar />
+        <ListHeader header={"Add Sale"} />
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>

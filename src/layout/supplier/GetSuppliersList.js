@@ -26,7 +26,7 @@ export default function GetSuppliersList() {
   const [data, setData] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
   const [id, setId] = useState("");
-  const [code, setCode] = useState("")
+  const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [personName, setPersonName] = useState("");
   const [phone, setPhone] = useState("");
@@ -97,11 +97,11 @@ export default function GetSuppliersList() {
       .get(GET_ALL_COMPANIES)
       .then(function (response) {
         // if (response.data.error) {
-          // setOpen(true);
-          // setMessage(response.data.error_msg);
-          // setSeverity("error");
+        // setOpen(true);
+        // setMessage(response.data.error_msg);
+        // setSeverity("error");
         // } else {
-          setData(response.data.data);
+        setData(response.data.data);
         // }
       })
       .catch(function (error) {
@@ -197,7 +197,7 @@ export default function GetSuppliersList() {
       <div className="list-container">
         <Navbar />
         <ListHeader
-          header={"Suppliers List"}
+          header={"Company List"}
           firstButton={true}
           firstButtonText={"Add New Supplier"}
           firstLink={"/supplier/add"}

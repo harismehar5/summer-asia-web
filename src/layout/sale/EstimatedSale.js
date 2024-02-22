@@ -15,17 +15,13 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
   ESTIMATE_SALE,
-  ADD_PURCHASE,
   GET_ALL_COMPANIES,
-  GET_PRODUCTS_LIST,
-  ADD_STOCK_LOG,
-  ADD_QUANTITY,
-  ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_BATCH_LIST,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function EstimateSale() {
   const componentRef = useRef();
@@ -241,6 +237,7 @@ export default function EstimateSale() {
       <SideBar />
       <div className="box-container">
         <Navbar />
+        <ListHeader header={"Estimated Sale"} />
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>

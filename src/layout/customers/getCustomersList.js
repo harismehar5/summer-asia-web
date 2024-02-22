@@ -25,6 +25,7 @@ import {
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetCustomersList() {
   const [data, setData] = useState([]);
@@ -136,7 +137,7 @@ export default function GetCustomersList() {
       phone: phone,
       address: address,
       // gender: gender,
-      ntn:ntn,
+      ntn: ntn,
       email: email,
       license: license,
       // Format the date for the server (assuming it expects a standard format)
@@ -172,7 +173,7 @@ export default function GetCustomersList() {
       phone: phone,
       address: address,
       // gender: gender,
-      ntn:ntn,
+      ntn: ntn,
       email: email,
       license: license,
       licenseExpiryDate: licenseExpiryDate,
@@ -289,6 +290,12 @@ export default function GetCustomersList() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <ListHeader
+          header={"Customer List"}
+          firstButton={true}
+          firstButtonText={"Add New Customer"}
+          firstLink={"add"}
+        />
         <DataTable
           data={data}
           columns={customersColumns.concat(actionColumn)}
@@ -318,7 +325,7 @@ export default function GetCustomersList() {
                 </Select>
               </FormControl>
             </Grid> */}
-                        <Grid item xs={4} sm={3}>
+            <Grid item xs={4} sm={3}>
               <TextField
                 required
                 id="ntn"

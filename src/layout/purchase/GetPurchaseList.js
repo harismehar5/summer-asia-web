@@ -93,6 +93,7 @@ export default function GetPurchaseList() {
           header={"Purchase List"}
           firstButton={true}
           firstButtonText={"Add New Purchase"}
+          firstLink={"add"}
         />
         <DataTable
           data={data}

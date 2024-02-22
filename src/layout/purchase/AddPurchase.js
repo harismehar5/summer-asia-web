@@ -27,6 +27,7 @@ import {
 import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
 import { FormControlLabel, Radio } from "@material-ui/core";
+import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function AddPurchase() {
   const componentRef = useRef();
@@ -319,6 +320,7 @@ export default function AddPurchase() {
       <SideBar />
       <div className="box-container">
         <Navbar />
+        <ListHeader header={"Add Purchase"} />
         {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
