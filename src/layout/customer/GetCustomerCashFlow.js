@@ -38,10 +38,10 @@ export default function GetCustomerCashFlow() {
           console.log("data:", response.data);
 
           // Log the specific values you want
-          console.log("count:", response.data.count);
-          console.log("currentBalance:", response.data.currentBalance);
-          console.log("cashInBalance:", response.data.cashInBalance);
-          console.log("cashOutBalance:", response.data.cashOutBalance);
+          // console.log("count:", response.data.count);
+          // console.log("currentBalance:", response.data.currentBalance);
+          // console.log("cashInBalance:", response.data.cashInBalance);
+          // console.log("cashOutBalance:", response.data.cashOutBalance);
         }
       })
       .catch(function (error) {

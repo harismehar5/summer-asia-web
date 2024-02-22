@@ -48,10 +48,10 @@ export default function Dashboard() {
           <Widgets type={"salesReturn"}amount={data.saleReturnCount}/>
           
         </div>
-        <div className='charts'>
+        {/* <div className='charts'>
           <Featured/>
           <Charts/>
-        </div>
+        </div> */}
       </div>
     </div>
   )

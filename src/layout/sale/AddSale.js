@@ -14,7 +14,7 @@ import { produce } from "immer";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
-  GET_ALL_PRODUCTS,
+  GET_PRODUCT_OF_INVENTORY,
   GET_BATCH_LIST,
   GET_salesman_LIST,
   GET_QUANTITY_AND_EXPIRY_LIST,
@@ -142,7 +142,7 @@ export default function AddSale() {
 
   const getStockList = () => {
     axios
-      .get(GET_ALL_PRODUCTS)
+      .get(GET_PRODUCT_OF_INVENTORY)
       .then(function (response) {
         setProductList(response.data.data);
       })

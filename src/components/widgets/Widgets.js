@@ -112,7 +112,7 @@ export default function Widgets({ type,amount }) {
                 // linkName: "See all cash in balance",
                 icon: <CurrencyExchangeRoundedIcon className="icon"/>,
                 amount:amount,
-                link:"/sale/sale_return/",
+                // link:"/sale/sale_return/",
               };
               break;
               case "cashOut":
@@ -122,7 +122,7 @@ export default function Widgets({ type,amount }) {
                   // linkName: "See all cash out balance",
                   icon: <CurrencyExchangeRoundedIcon className="icon"/>,
                   amount:amount,
-                  link:"/sale/sale_return/",
+                  // link:"/sale/sale_return/",
                 };
                 break;
                 case "count":
@@ -142,7 +142,7 @@ export default function Widgets({ type,amount }) {
                   // linkName: "See all current balance",
                   icon: <CurrencyExchangeRoundedIcon className="icon"/>,
                   amount:amount,
-                  link:"/sale/sale_return/",
+                  // link:"/sale/sale_return/",
                 };
                 break;
     default:
@@ -152,9 +152,9 @@ export default function Widgets({ type,amount }) {
   return (
     <div className="widget">
       <div className="left">
-        <span className="title">{cardData.title}</span>
-        <span className="counter">{cardData.isMoney && "$"}{cardData.amount}</span>
-        <span className="link"><Link to={cardData.link}>{cardData.linkName}</Link></span>
+        <span className="title">{cardData.title || "NA"}</span>
+        <span className="counter">{cardData.isMoney && "$"}{cardData.amount || "NA"}</span>
+        <span className="link"><Link to={cardData.link}>{cardData.linkName }</Link></span>
       </div>
       <div className="right">
         <div className="percentage negative">
