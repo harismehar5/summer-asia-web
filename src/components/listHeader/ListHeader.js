@@ -14,6 +14,7 @@ export default function ListHeader({
   thirdLink,
   header,
   handle,
+  handle2,
 }) {
   return (
     <Box
@@ -50,6 +51,7 @@ export default function ListHeader({
             component={Link}
             to={secondLink}
             sx={{ marginX: 1 }}
+            onClick={handle2}
           >
             {secondButtonText}
           </Button>
@@ -61,7 +63,7 @@ export default function ListHeader({
             color="success"
             component={Link}
             to={thirdLink}
-            sx={{ marginX: 1  }}
+            sx={{ marginX: 1 }}
           >
             {thirdButtonText}
           </Button>

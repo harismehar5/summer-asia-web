@@ -156,6 +156,60 @@ export const inventoryListColumns = [
     field: "status",
     headerName: "Status",
     width: 180,
+    renderCell: (params) => {
+      return (
+        <>
+          <div
+            style={{
+              color: params.row.status === "Short Expiry" ? "red" : "inherit",
+            }}
+          >
+            {params.row.status}
+          </div>
+        </>
+      );
+    },
+  },
+];
+
+export const expiredInventoryListColumns = [
+  {
+    field: "productCode",
+    headerName: "Product Code",
+    width: 220,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>
+            {(params.row.productCode && params.row.productCode.code) || "N/A"}
+          </div>
+        </>
+      );
+    },
+  },
+
+  {
+    field: "batchCode",
+    headerName: "Batch Code",
+    width: 220,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    width: 180,
+  },
+
+  {
+    field: "expiryDate",
+    headerName: "Expiry Date",
+    width: 220,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{formatDate(params.row.expiryDate)}</div>
+        </>
+      );
+    },
   },
 ];
 
@@ -340,7 +394,7 @@ export const saleColumn = [
 ];
 
 export const saleReturnColumn = [
-  { field: "_id", headerName: "ID", width: 230 },
+  // { field: "_id", headerName: "ID", width: 230 },
   {
     field: "createdAt",
     headerName: "Date",
@@ -364,6 +418,11 @@ export const saleReturnColumn = [
     headerName: "Payment Method",
     width: 230,
   },
+  {
+    field: "customerCode",
+    headerName: "Customer Code",
+    width: 230,
+  },
 ];
 
 export const saleDetailsColumn = [
@@ -373,11 +432,10 @@ export const saleDetailsColumn = [
     headerName: "expiry date",
     width: 230,
     renderCell: (params) => {
-      return (
-        <>
-          <div>{formatDate(params.row.expiryDate)}</div>
-        </>
-      );
+      const formattedDate = params?.row?.expiryDate
+        ? formatDate(params?.row?.expiryDate)
+        : "N/A";
+      return <div>{formattedDate}</div>;
     },
   },
   {

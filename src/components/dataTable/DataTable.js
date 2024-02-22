@@ -84,7 +84,6 @@ const DataTable = ({
   onCellEditCommit,
   editMode,
 }) => {
-  
   const [pageSize, setPageSize] = useState(10);
   return (
     <div className="data-table">
@@ -104,7 +103,7 @@ const DataTable = ({
         onCellEditCommit={onCellEditCommit}
         loading={loading}
         pagination
-      />  
+      />
     </div>
   );
 };

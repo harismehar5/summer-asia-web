@@ -35,7 +35,7 @@ export default function SalesReturnDetails() {
           <>
             <Link
               to={{
-                pathname: "sale_return_details/" + params.row._id,
+                pathname: "_details/" + params.row._id,
                 state: { list: params.row._id },
               }}
             >
@@ -64,7 +64,7 @@ export default function SalesReturnDetails() {
     await axios
       .get(GET_SALE_RETURN_LIST)
       .then(function (response) {
-     
+        console.log(response.data.data);
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);

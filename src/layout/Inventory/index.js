@@ -22,6 +22,7 @@ import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
 import produce from "immer";
+import { Link } from "react-router-dom";
 
 export default function GetProductStock() {
   const [data, setData] = useState([]);
@@ -282,6 +283,9 @@ export default function GetProductStock() {
           firstButton={true}
           firstButtonText={"Add Inventory Item"}
           handle={() => setOpenAddInventoryPopup(true)}
+          secondButton={true}
+          secondButtonText={"Expired Inventory"}
+          secondLink={"expired"}
         />
 
         <Popup
