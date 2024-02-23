@@ -53,6 +53,8 @@ export default function AddSale() {
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
+  const [batchObject, setBatchObject] = useState({});
+  const [DateAndQuantityObject, setDateAndQuantityObject] = useState([]);
   const [openInvoicePopup, setOpenInvoicePopup] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
@@ -65,7 +67,7 @@ export default function AddSale() {
   const [invoiceDiscount, setInvoiceDiscount] = useState("");
   const [IsExpired, setIsExpired] = useState(true);
   const [isWarranted, setisWarranted] = useState(false);
-  const [isEstimated, setIsEstimated] = useState(false);
+  const [isEstimated, setIsEstimated] = useState(true);
   const [quantityValues, setQuantityValues] = useState({});
   const [expiryDateValues, setExpiryDateValues] = useState({});
   const [tradeRateValues, setTradeRateValues] = useState({});
@@ -158,6 +160,7 @@ export default function AddSale() {
         productCode: productCode,
       })
       .then(function (response) {
+        console.log("batchlist =", response.data);
         const filteredBatchList = response.data.data.filter(
           (entry) => entry.quantity !== 0 && entry.quantity !== null
         );
@@ -174,6 +177,7 @@ export default function AddSale() {
             return 0; // no change in order
           }
         });
+        console.log(sortedBatchList);
         setBatchList(sortedBatchList);
       })
       .catch(function (error) {
@@ -723,10 +727,10 @@ export default function AddSale() {
                         }}
                         disabled
                       />
-                      {console.log(
+                      {/* {console.log(
                         "total",
                         quantityValues[index] * tradeRateValues[index]
-                      )}
+                      )} */}
                     </Grid>
                     <Grid item md={0.5} px={1}>
                       <IconButton
@@ -968,13 +972,17 @@ export default function AddSale() {
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
                   name="radio-buttons-group"
+                  defaultValue={"Estimated"}
                 >
                   <Grid container direction={"row"}>
                     <FormControlLabel
                       value="Estimated"
                       control={<Radio />}
                       label="Estimated"
-                      onClick={() => setIsEstimated(true)}
+                      onClick={() => {
+                        setisWarranted(false);
+                        setIsEstimated(true);
+                      }}
                     />
                     <FormControlLabel
                       style={{ marginLeft: 20 }}
@@ -982,8 +990,8 @@ export default function AddSale() {
                       control={<Radio />}
                       label="With Warranty"
                       onClick={() => {
-                        setisWarranted(true);
                         setIsEstimated(false);
+                        setisWarranted(true);
                       }}
                     />
                     <FormControlLabel
@@ -992,8 +1000,8 @@ export default function AddSale() {
                       control={<Radio />}
                       label="Without Warranty"
                       onClick={() => {
-                        setisWarranted(false);
                         setIsEstimated(false);
+                        setisWarranted(false);
                       }}
                     />
                   </Grid>
