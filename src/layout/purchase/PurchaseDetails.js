@@ -4,30 +4,19 @@ import Navbar from "../../components/navbar/Navbar";
 import ListHeader from "../../components/listHeader/ListHeader";
 import DataTable from "../../components/dataTable/DataTable";
 import SnackBar from "../../components/alert/SnackBar";
-import { json, useLocation, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { purchaseDetailsColumn } from "../../dataTableColumns";
-import { IconButton } from "@mui/material";
 import { GET_PURCHASE_LIST } from "../../utils/config";
 import axios from "axios";
 
 const PurchaseDetails = () => {
   const { id } = useParams();
-  const location = useLocation();
+
 
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 250,
-      renderCell: (params) => {
-        return <div className="cell-action"></div>;
-      },
-    },
-  ];
   useEffect(() => {
     getPurchaseDetailsList();
   }, []);
@@ -57,13 +46,10 @@ const PurchaseDetails = () => {
         <Navbar />
         <ListHeader
           header={"Purchase Details"}
-          // firstButton={true}
-          // firstButtonText={"Add New Purchase"}
         />
         <DataTable
           data={data}
           columns={purchaseDetailsColumn}
-          //  loading={loading}
           isForTransaction={false}
         />
       </div>
@@ -71,7 +57,6 @@ const PurchaseDetails = () => {
         open={open}
         severity={severity}
         message={message}
-        //  handleClose={handleClose}
       />
     </div>
   );

@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Box, Button, IconButton, RadioGroup } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import axios from "axios";
@@ -18,16 +18,11 @@ import SideBar from "../../components/sidebar/SideBar";
 import {
   ADD_PURCHASE,
   GET_ALL_COMPANIES,
-  GET_PRODUCTS_LIST,
-  ADD_STOCK_LOG,
-  ADD_QUANTITY,
-  ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   COMPANY_PRODUCTS,
 } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
 import { useReactToPrint } from "react-to-print";
-import { FormControlLabel, Radio } from "@material-ui/core";
 
 export default function AddPurchase() {
   const componentRef = useRef();
@@ -87,31 +82,6 @@ export default function AddPurchase() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const date = new Date();
-
-  // var purchaseObject = {
-  //   total_amount: "",
-  //   total_quantity: "",
-  //   supplier: "",
-  //   submit_date: "",
-  //   order_details: "",
-  // };
-  var cashOut = {
-    amount: "",
-    description: "",
-    payment_medium: "",
-    submit_date: "",
-    cash_type: "",
-  };
-  // var purchaseDetail = [];
-  // var stockLog = [];
-  // var productArray = [];
-
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-
-  let currentDate = `${day}/${month}/${year}`;
 
   useEffect(() => {
     getStockList();
@@ -124,7 +94,6 @@ export default function AddPurchase() {
     axios
       .post(ADD_PURCHASE, data)
       .then((response) => {
-        console.log("Response", response);
         setOpen(true);
         setMessage("Succefully created purchase");
       })
@@ -192,7 +161,7 @@ export default function AddPurchase() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject);
+    // console.log("Product Object", productObject);
 
     var obj = {};
     var array = data;
@@ -212,27 +181,6 @@ export default function AddPurchase() {
     };
     array = [...array, obj];
     setData(array);
-    // } else if (foundIndex === -1) {
-    //   obj = {
-    //     _id: productObject._id,
-    //     name: productObject.name,
-    //     tradeRate: productObject.tradeRate,
-    //     quantity: 1,
-    //     netTotal: productObject.tradeRate,
-    //     status: productObject.status,
-    //   };
-    //   array = [...array, obj];
-    //   setData(array);
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Already existed");
-    //   setSeverity("error");
-    // }
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Please select any product");
-    //   setSeverity("error");
-    // }
   };
   const calculateAmountAndBags = (array) => {
     let sum = 0;
@@ -282,27 +230,8 @@ export default function AddPurchase() {
       additionalDiscount: parseFloat(invoiceDiscount),
       payedAmount: parseFloat(invoiceAmount),
     };
-    console.log("Data", purchaseObject);
-
-    // if (data.length === 0) {
-    //   setOpen(true);
-    //   setMessage("Please select any product to purchase");
-    //   setSeverity("error");
-    // } else if (
-    //   supplierObject._id === "" ||
-    //   supplierObject._id === null ||
-    //   supplierObject._id === undefined
-    // ) {
-    //   setOpen(true);
-    //   setMessage("Please select any supplier");
-    //   setSeverity("error");
-    // } else if (submittedDate === "") {
-    //   setOpen(true);
-    //   setMessage("Please select date");
-    //   setSeverity("error");
-    // } else {
+    // console.log("Data", purchaseObject);
     dataEntry(purchaseObject);
-    // }
   };
 
   const calculateTotalAmount = () => {
@@ -320,7 +249,6 @@ export default function AddPurchase() {
       <SideBar />
       <div className="box-container">
         <Navbar />
-        {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
@@ -335,7 +263,6 @@ export default function AddPurchase() {
                 onChange={(event, newInputValue) => {
                   if (newInputValue !== null) {
                     setSupplierObject(newInputValue);
-                    // getStockList(newInputValue.name);
                     getCompanyProduts(newInputValue._id);
                   }
                 }}
@@ -377,7 +304,6 @@ export default function AddPurchase() {
                   <Grid
                     container
                     flexDirection={"row"}
-                    // justifyContent={"center"}
                     alignItems={"center"}
                     key={index}
                     mt={2}
@@ -581,9 +507,6 @@ export default function AddPurchase() {
             >
               Save
             </Button>
-            {/* <Button riant="contained" size="medium" color="error">
-              Save & Print
-            </Button> */}
           </Box>
         </Grid>
 
@@ -739,78 +662,6 @@ export default function AddPurchase() {
                 </Typography>
               </Typography>
             </Grid>
-
-            {/* <Grid
-              justifyContent={"center"}
-              container
-              spacing={1}
-              style={{ marginTop: 20 }}
-              direction={"row"}
-            >
-              {IsExpired ? (
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="Estimated"
-                  name="radio-buttons-group"
-                >
-                  <Grid container direction={"row"}>
-                    <FormControlLabel
-                      value="Estimated"
-                      control={<Radio />}
-                      label="Estimated"
-                    />
-                    <FormControlLabel
-                      style={{ marginLeft: 20 }}
-                      value="With Warranty"
-                      disabled
-                      control={<Radio />}
-                      label="With Warranty"
-                    />
-                    <FormControlLabel
-                      value="Without Warranty"
-                      style={{ marginLeft: 20 }}
-                      disabled
-                      control={<Radio />}
-                      label="Without Warranty"
-                    />
-                  </Grid>
-                </RadioGroup>
-              ) : (
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  name="radio-buttons-group"
-                >
-                  <Grid container direction={"row"}>
-                    <FormControlLabel
-                      value="Estimated"
-                      control={<Radio />}
-                      label="Estimated"
-                      onClick={() => setIsEstimated(true)}
-                    />
-                    <FormControlLabel
-                      style={{ marginLeft: 20 }}
-                      value="With Warranty"
-                      control={<Radio />}
-                      label="With Warranty"
-                      onClick={() => {
-                        setisWarranted(true);
-                        setIsEstimated(false);
-                      }}
-                    />
-                    <FormControlLabel
-                      value="Without Warranty"
-                      style={{ marginLeft: 20 }}
-                      control={<Radio />}
-                      label="Without Warranty"
-                      onClick={() => {
-                        setisWarranted(false);
-                        setIsEstimated(false);
-                      }}
-                    />
-                  </Grid>
-                </RadioGroup>
-              )}
-            </Grid> */}
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
@@ -852,154 +703,3 @@ export default function AddPurchase() {
     </div>
   );
 }
-
-// const ComponentToPrint = React.forwardRef(({ data }, ref) => {
-//   let totalQuantity = 0;
-//   let totalBonus = 0;
-//   let totalDiscount = 0;
-//   let totalSalesTax = 0;
-//   let totalTradeRate = 0;
-
-//   data.map((item) => (totalQuantity += Number(item.quantity)));
-//   data.map((item) => (totalBonus += Number(item.bonus)));
-//   data.map((item) => (totalDiscount += Number(item.discount)));
-//   data.map((item) => (totalSalesTax += Number(item.salesTax)));
-//   data.map((item) => (totalTradeRate += Number(item.tradeRate)));
-
-//   return (
-//     <div ref={ref}>
-//       <header class="header">
-//         <h1>PHARMA NET</h1>
-//         <p>
-//           Jamia Farqania Road Sarfaraz Colony Opp. SK Products Factory
-//           Gujranwala
-//         </p>
-//         <p>
-//           PH:-055-4294521-2-0300-7492093-0302-6162633 E-mail pharmanet@yahoo.com
-//         </p>
-//         <p>License No. = 09-341-0135-010397 D NTN = 7351343-8</p>
-//       </header>
-
-//       <div class="flex evenly">
-//         <div>
-//           <p>M/S</p>
-//           <p>005 0034</p>
-//           <p>Azhar M/S</p>
-//           <p>FREED TOWN (PASROOR ROAD GRW)</p>
-//           <p>FREED TOWN (PASROOR ROAD GRW)</p>
-//         </div>
-//         <div>
-//           <p>INVOICE</p>
-//           <p>License No = 843/GRW</p>
-//           <p>NTN NO : 34101-2610040-5</p>
-//           <p>CNIC NO:</p>
-//           <p>S/TAX No:</p>
-//         </div>
-//         <div>
-//           <p>Inv No: 1327</p>
-//           <p>Inv Date: 07/02/2024</p>
-//           <p>Page No: 1 of 1</p>
-//           <p>Salesman: 1 sohail tahir</p>
-//           <p>Sales Type: 1 Supply Sale</p>
-//         </div>
-//       </div>
-
-//       <div class="gap">
-//         <table>
-//           <thead>
-//             <tr>
-//               <th>QTY</th>
-//               <th>Name of Item</th>
-//               <th>Packing</th>
-//               <th>Batch No</th>
-//               <th>Rate</th>
-//               <th>Gross Amount</th>
-//               <th>Discount %</th>
-//               <th>Sales Tax</th>
-//               <th>Additional Tax</th>
-//               <th>Advace Tax</th>
-//               <th>Total Amount</th>
-//             </tr>
-//           </thead>
-
-//           <tbody>
-//             {data.map((item) => {
-//               return (
-//                 <tr>
-//                   <td>{item.quantity}</td>
-//                   <td>{item.productCode}</td>
-//                   <td>{item.bonus}</td>
-//                   <td>{item.batchCode}</td>
-//                   <td>{item.tradeRate}</td>
-//                   <td>{item.status}</td>
-//                   <td>{item.discount}</td>
-//                   <td>{item.expiryDate}</td>
-//                   <td>{item.salesTax}</td>
-//                   <td>{item.netTotal}</td>
-//                 </tr>
-//               );
-//             })}
-//           </tbody>
-//         </table>
-
-//         <table>
-//           <thead>
-//             <tr>
-//               <th>Total of STAR LABORATORIES</th>
-//               <th></th>
-//               <th></th>
-//               <th></th>
-//               <th>Gross</th>
-//               <th>4,267.00</th>
-//               <th>Dis.%</th>
-//               <th>0.90 S/Tax</th>
-//               <th>0.00 AdS/Tax</th>
-//               <th>0.00</th>
-//               <th>4,267.6</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             <tr>
-//               <td>No of ltems: 4</td>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//               <td>Gross</td>
-//               <td>4,267.00</td>
-//               <td>Dis.%</td>
-//               <td>0.00 S/Tax</td>
-//               <td>0.00 AdS/Tax</td>
-//               <td>0.00</td>
-//               <td>4,267.0</td>
-//             </tr>
-//             <tr>
-//               <td>Total Qty: 53</td>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//             </tr>
-//           </tbody>
-//         </table>
-
-//         <table class="last">
-//           <thead>
-//             <tr>
-//               <td></td>
-//               <td>Add Tax US 236-H @ 0.50</td>
-//               <td>21.34</td>
-//             </tr>
-//             <tr>
-//               <td>Four Thousand Two Hundred Eighty Eight</td>
-//               <td>Total Net Value</td>
-//               <td>4,288.0</td>
-//             </tr>
-//           </thead>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// });

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import "./style.css";
 import "./styles.scss";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box, Button, IconButton } from "@mui/material";
@@ -15,12 +14,7 @@ import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
   ESTIMATE_SALE,
-  ADD_PURCHASE,
   GET_ALL_COMPANIES,
-  GET_PRODUCTS_LIST,
-  ADD_STOCK_LOG,
-  ADD_QUANTITY,
-  ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_BATCH_LIST,
 } from "../../utils/config";
@@ -51,14 +45,9 @@ export default function EstimateSale() {
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
-  const [batchObject, setBatchObject] = useState({});
-
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [amount, setAmount] = useState("");
-  const [submittedDate, setSubmittedDate] = useState("");
-  const [code, setCode] = useState("");
   const paymentMediumList = [
     {
       id: 1,
@@ -117,7 +106,7 @@ export default function EstimateSale() {
     axios
       .post(ESTIMATE_SALE, data)
       .then((response) => {
-        console.log("Response", response);
+        // console.log("Response", response);
       })
       .catch((error) => {
         setOpen(true);
@@ -140,13 +129,13 @@ export default function EstimateSale() {
   };
 
   const getBatchList = (productCode) => {
-    console.log("Product Code", productCode);
+    // console.log("Product Code", productCode);
     axios
       .post(GET_BATCH_LIST, {
         productCode: productCode,
       })
       .then(function (response) {
-        console.log("Response", response);
+        // console.log("Response", response);
         setBatchList(response.data.data);
       })
       .catch(function (error) {
@@ -168,7 +157,7 @@ export default function EstimateSale() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject);
+    // console.log("Product Object", productObject);
     var obj = {};
     var array = data;
     var foundIndex = data.findIndex((item) => item._id === productObject._id);
@@ -232,7 +221,7 @@ export default function EstimateSale() {
       paymentMode: paymentMode,
       total: totalAmount,
     };
-    console.log("Data", purchaseObject);
+    // console.log("Data", purchaseObject);
 
     dataEntry(purchaseObject);
   };
@@ -509,125 +498,6 @@ export default function EstimateSale() {
             </Button>
           </Box>
         </Grid>
-        {/* <Grid item md={4} sx={{ height: "90vh" }}>
-            <Grid container item md={12} px={2}>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-              // mt={2}
-              >
-                <Autocomplete
-                  options={supplierList}
-                  getOptionLabel={(supplier, index) => supplier.name}
-                  disablePortal
-                  fullWidth
-                  isOptionEqualToValue={(option, value) =>
-                    option._id === value._id
-                  }
-                  onChange={(event, newInputValue) => {
-                    setSupplierObject(newInputValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select Supplier" />
-                  )}
-                  renderOption={(props, supplier) => (
-                    <Box component="li" {...props} key={supplier._id}>
-                      {supplier.name}
-                    </Box>
-                  )}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  label="Select Date"
-                  type="date"
-                  defaultValue={currentDate}
-                  onChange={(event) => {
-                    setSubmittedDate(event.target.value);
-                  }}
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  id="amount"
-                  name="amount"
-                  label="Enter Amount"
-                  fullWidth
-                  variant="outlined"
-                  value={amount}
-                  onChange={(event) => setAmount(event.target.value)}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Amount</Typography>
-                <Typography>RS {totalAmount}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Bags</Typography>
-                <Typography>{totalBags}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Products</Typography>
-                <Typography>{totalProducts}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"end"}
-                sx={{ width: "100%" }}
-                mt={2}
-                alignItems={"end"}
-              >
-                <Button
-                  variant="contained"
-                  size="medium"
-                  color="success"
-                  onClick={() => validate()}
-                  sx={{ marginX: "10px" }}
-                >
-                  Save
-                </Button>
-                <Button
-                  // sx={{ marginLeft: "10px" }}
-                  variant="contained"
-                  size="medium"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Grid>
-          </Grid> */}
-        {/* </Grid> */}
         <SnackBar
           open={open}
           severity={severity}
@@ -656,11 +526,11 @@ const ComponentToPrint = React.forwardRef(({ data }, ref) => {
   data.map((item) => (totalSalesTax += Number(item.salesTax)));
   data.map((item) => (totalTradeRate += Number(item.tradeRate)));
 
-  console.log("total Quantity ", totalQuantity);
-  console.log("total Bonus ", totalBonus);
-  console.log("total Discount ", totalDiscount);
-  console.log("total Sales Tax ", totalSalesTax);
-  console.log("total Trade Rate ", totalTradeRate);
+  // console.log("total Quantity ", totalQuantity);
+  // console.log("total Bonus ", totalBonus);
+  // console.log("total Discount ", totalDiscount);
+  // console.log("total Sales Tax ", totalSalesTax);
+  // console.log("total Trade Rate ", totalTradeRate);
   return (
     <div ref={ref}>
       <header class="header">

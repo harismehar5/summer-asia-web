@@ -3,8 +3,6 @@ import './dashboard.scss'
 import SideBar from '../../components/sidebar/SideBar'
 import Navbar from '../../components/navbar/Navbar'
 import Widgets from '../../components/widgets/Widgets'
-import Featured from '../../components/featured/Featured'
-import Charts from '../../components/charts/Charts'
 import axios from 'axios'
 import { GET_DASHBOARD_COUNT } from '../../utils/config'
 
@@ -19,10 +17,10 @@ export default function Dashboard() {
       .get(GET_DASHBOARD_COUNT)
       .then((response) => {
         setData(response.data);
-        console.log("data", response.data);
+        // console.log("data", response.data);
       })
       .catch((error) => {
-        console.error("Error fetching areas:", error);
+        // console.error("Error fetching areas:", error);
       });
   }, []);
 

@@ -15,9 +15,6 @@ import { expenseColumns } from "../../dataTableColumns";
 
 import {
   EXPENSE_BASE_URL,
-  DELETE_EXPENSE,
-  GET_EXPENSES_LIST,
-  UPDATE_EXPENSE_BY_ID,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
@@ -73,13 +70,13 @@ export default function GetExpensesList() {
     axios
       .get(EXPENSE_BASE_URL)
       .then(function (response) {
-        console.log(JSON.stringify(response, null, 2));
+        // console.log(JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setData(response.data.data);
         }
       })

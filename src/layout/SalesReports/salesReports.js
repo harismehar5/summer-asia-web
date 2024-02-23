@@ -33,7 +33,7 @@ export default function SalesReports() {
     axios
       .get(GET_Sales_Reports)
       .then(function (response) {
-        console.log("purchaseDetail:", response.data);
+        // console.log("purchaseDetail:", response.data);
         setOriginalData(response.data); // Save the original data
         setData(response.data); // Set data to the original data
       })

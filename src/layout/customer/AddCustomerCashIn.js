@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Paper } from "@material-ui/core";
-import Alert from "@mui/material/Alert";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { Autocomplete, Box, Button, FormHelperText } from "@mui/material";
@@ -52,7 +51,7 @@ const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
       [selectedRadio === "customer" ? "customerId" : "companyId"]:
         customerObject._id,
     };
-    console.log("payload", cashIn);
+    // console.log("payload", cashIn);
     axios
       .post(GET_CUSTOMERS_CASH_IN, cashIn)
       .then(function (response) {
@@ -146,7 +145,7 @@ const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.message);
           setSeverity("error");
         } else {
           setCompanyList(response.data.data);

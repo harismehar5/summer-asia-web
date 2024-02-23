@@ -62,7 +62,7 @@ export default function AddProduct() {
     axios
       .post(ADD_PRODUCT, product)
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
@@ -200,14 +200,6 @@ export default function AddProduct() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8}>
-              {/* <TextField
-                required
-                label="Company Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -232,8 +224,6 @@ export default function AddProduct() {
                 onChange={(event, newInputValue) => {
                   if (newInputValue !== null) {
                     setCompanyObject(newInputValue);
-                    // getStockList(newInputValue.name);
-                    // getCompanyProduts(newInputValue._id);
                   }
                 }}
                 renderInput={(params) => (

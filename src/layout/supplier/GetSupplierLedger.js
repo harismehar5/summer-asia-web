@@ -4,14 +4,12 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/material";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { supplierLedgerColumns } from "../../dataTableColumns";
-
-import { GET_ALL_COMPANIES, GET_All_LEDGER, GET_SUPPLIER_LEDGER } from "../../utils/config";
+import { GET_ALL_COMPANIES, GET_All_LEDGER, } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Widgets from "../../components/widgets/Widgets";

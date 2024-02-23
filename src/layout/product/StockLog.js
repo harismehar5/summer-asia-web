@@ -5,7 +5,6 @@ import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { stockLogColumns } from "../../dataTableColumns";
 import axios from "axios";
-
 import { GET_STOCK_LOG } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";

@@ -4,13 +4,11 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/material";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { salesmanLedgerColumns } from "../../dataTableColumns";
-
 import {
   GET_All_LEDGER,
   GET_salesman_LIST,

@@ -4,31 +4,20 @@ import Navbar from "../../components/navbar/Navbar";
 import ListHeader from "../../components/listHeader/ListHeader";
 import DataTable from "../../components/dataTable/DataTable";
 import SnackBar from "../../components/alert/SnackBar";
-import { json, useLocation, useParams } from "react-router-dom";
-import { purchaseDetailsColumn, saleDetailsColumn } from "../../dataTableColumns";
-import { IconButton } from "@mui/material";
-import { GET_PURCHASE_LIST, GET_SALE_LIST } from "../../utils/config";
+import { useParams } from "react-router-dom";
+import { saleDetailsColumn } from "../../dataTableColumns";
+import { GET_SALE_LIST } from "../../utils/config";
 import axios from "axios";
 
 const SalesDetails = () => {
   const { id } = useParams();
-  const location = useLocation();
+
 
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  console.log("params id =",id)
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 250,
-      renderCell: (params) => {
-        return <div className="cell-action"></div>;
-      },
-    },
-  ];
+  // console.log("params id =",id)
   useEffect(() => {
     getSaleDetailsList();
   }, []);
@@ -36,7 +25,7 @@ const SalesDetails = () => {
     await axios
       .get(GET_SALE_LIST+"/"+id)
       .then(function (response) {
-        console.log(JSON.stringify(response,null,2))
+        // console.log(JSON.stringify(response,null,2))
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);

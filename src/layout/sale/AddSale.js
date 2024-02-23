@@ -10,7 +10,6 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import axios from "axios";
 import { produce } from "immer";
-
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
@@ -51,14 +50,12 @@ export default function AddSale() {
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
-  const [batchObject, setBatchObject] = useState({});
   const [openInvoicePopup, setOpenInvoicePopup] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [SalesManList, setSalesManList] = useState([]);
   const [ProductId, setProductId] = useState(null);
-  const [DateAndQuantityObject, setDateAndQuantityObject] = useState([]);
   const [SaleManObject, setSaleManObject] = useState({});
   const [invoiceSalesTax, setInvoiceSalesTax] = useState("");
   const [invoiceAmount, setInvoiceAmount] = useState(null);
@@ -123,7 +120,7 @@ export default function AddSale() {
     axios
       .post(ADD_SALES_SERVICES, data)
       .then((response) => {
-        console.log(JSON.stringify(response, null, 2));
+        // console.log(JSON.stringify(response, null, 2));
         if (response.status == 200) {
           setOpen(true);
           setSeverity("success");
@@ -244,7 +241,7 @@ export default function AddSale() {
         setSalesManList(response.data.data);
       })
       .catch(function (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       });
   };
 
@@ -257,7 +254,7 @@ export default function AddSale() {
     axios
       .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
       .then(function (response) {
-        console.log("quatity and expiry date ", response.data);
+        // console.log("quatity and expiry date ", response.data);
 
         setData((currentData) =>
           produce(currentData, (v) => {
@@ -280,7 +277,7 @@ export default function AddSale() {
         }));
       })
       .catch(function (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       });
   };
 
@@ -338,7 +335,7 @@ export default function AddSale() {
       receivedAmount: parseFloat(invoiceAmount),
     };
 
-    console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
+    // console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
     dataEntry(purchaseObject);
   };
   // Function to format date to "yyyy-MM-dd" format

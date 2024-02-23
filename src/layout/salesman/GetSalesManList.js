@@ -3,7 +3,6 @@ import { IconButton, Grid, TextField, Button, InputLabel, Select, MenuItem, Form
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
@@ -44,14 +43,14 @@ export default function GetSalesManList() {
         setAreas(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching areas:", error);
+        // console.error("Error fetching areas:", error);
       });
 
     // Fetch salesman data
     axios
       .get(GET_salesman_LIST)
       .then(function (response) {
-        console.log("salesman list:",JSON.stringify(response,null,2));
+        // console.log("salesman list:",JSON.stringify(response,null,2));
         if (response.data.error) {
           handleSnackbar("error", response.data.error_msg);
         } else {
@@ -65,7 +64,7 @@ export default function GetSalesManList() {
         }
       })
       .catch(function (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
         handleSnackbar("error", "Error: " + error);
       });
   }, []);
@@ -278,11 +277,11 @@ export default function GetSalesManList() {
 
 
   const refreshData = () => {
-    console.log("Refreshing data...");
+    // console.log("Refreshing data...");
     axios
       .get(GET_salesman_LIST)
       .then(function (response) {
-        console.log("salesman list:", response.data);
+        // console.log("salesman list:", response.data);
         if (response.data.error) {
           handleSnackbar("error", response.data.error_msg);
         } else {
@@ -296,7 +295,7 @@ export default function GetSalesManList() {
         }
       })
       .catch(function (error) {
-        console.error("Error refreshing data:", error);
+        // console.error("Error refreshing data:", error);
         handleSnackbar("error", "Error: " + error);
       });
   };

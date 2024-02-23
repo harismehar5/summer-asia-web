@@ -1,26 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import Dashboard from "./layout/dashboard/Dashboard";
-
 import GetCustomerList from "./layout/customer/GetCustomersList";
 import AddCustomer from "./layout/customer/AddCustomer";
 import EditCustomer from "./layout/customer/EditCustomer";
 import GetCustomerCashIn from "./layout/customer/GetCustomerCashIn";
 import GetCustomerCashOut from "./layout/customer/GetCustomerCashOut";
-
 import GetSuppliersList from "./layout/supplier/GetSuppliersList";
 import AddSupplier from "./layout/supplier/AddSupplier";
 import EditSupplier from "./layout/supplier/EditSupplier";
 import GetSupplierCashIn from "./layout/supplier/GetSupplierCashIn";
 import GetSupplierCashOut from "./layout/supplier/GetSupplierCashOut";
-
 import GetProductStock from "./layout/product/GetProductStock";
 import AddProduct from "./layout/product/AddProduct";
-
 import GetExpensesList from "./layout/expense/GetExpensesList";
 import AddExpense from "./layout/expense/AddExpense";
 import EditExpense from "./layout/expense/EditExpense";
-
 import "./App.scss";
 import AddSale from "./layout/sale/AddSale";
 import GetSaleList from "./layout/sale/GetSaleList";
@@ -46,7 +40,6 @@ import AddSalesMan from "./layout/salesman/AddSalesMan";
 import PurchaseDetails from "./layout/purchase/PurchaseDetails";
 import SalesDetails from "./layout/sale/SalesDetails";
 import SalesReturn from "./layout/sale/SalesReturn";
-
 import PurchaseReturn from "./layout/purchaseReturn/addPurchaseReturn";
 import AddSalesReturn from "./layout/saleReturn/addSalesReturn";
 import Inventory from "./layout/Inventory";

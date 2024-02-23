@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, IconButton } from "@mui/material";
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import {
   expiredInventoryListColumns,
-  inventoryListColumns,
-  productColumns,
 } from "../../dataTableColumns";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import { Button, Stack } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
 import {
   GET_ALL_PRODUCTS,
   GET_EXPIRED_INVENTORY,
-  GET_INVENTORY_LIST,
   GET_INVENTORY_StockIn,
   GET_INVENTORY_StockOut,
 } from "../../utils/config";
@@ -46,66 +36,6 @@ export default function ExpiredInventory() {
     fetchAllProductOptions();
   }, []);
 
-  //   const actionColumn = [
-  //     {
-  //       field: "stock",
-  //       headerName: "Stock",
-  //       width: 290,
-  //       renderCell: (params) => {
-  //         return (
-  //           <Stack direction={"row"} spacing={1}>
-  //             <Button
-  //               variant="contained"
-  //               size="medium"
-  //               color="success"
-  //               onClick={() => {
-  //                 setCode(params?.row?.productCode?.code);
-  //                 setBatchCode(params?.row?.batchCode);
-  //                 formatDate(params?.row?.expiryDate);
-  //                 setProductId(params?.row?.productCode?._id);
-  //                 setQuantity(params?.row?.quantity);
-  //                 setStockInData(params?.row);
-  //                 setID(params?.row?._id);
-
-  //                 setStockInOpenPopup(true);
-  //               }}
-  //             >
-  //               Stock AAAAAAAAAAA
-  //             </Button>
-  //             <Button
-  //               variant="contained"
-  //               size="medium"
-  //               color="success"
-  //               onClick={() => {
-  //                 setCode(params?.row?.productCode?.code);
-  //                 setBatchCode(params?.row?.batchCode);
-  //                 formatDate(params?.row?.expiryDate);
-  //                 setProductId(params?.row?.productCode?._id);
-  //                 setQuantity(params?.row?.quantity);
-  //                 setStockInData(params?.row);
-  //                 setID(params?.row?._id);
-  //                 setStockOutOpenPopup(true);
-  //               }}
-  //             >
-  //               Stock Out
-  //             </Button>
-  //           </Stack>
-  //         );
-  //       },
-  //     },
-  //   ];
-  //   function formatDate(date) {
-  //     const d = new Date(date);
-  //     let month = "" + (d.getMonth() + 1);
-  //     let day = "" + d.getDate();
-  //     const year = d.getFullYear();
-
-  //     if (month.length < 2) month = "0" + month;
-  //     if (day.length < 2) day = "0" + day;
-  //     let ConvertedDate = [year, month, day].join("-");
-  //     setExpiryDate(ConvertedDate);
-  //     return [year, month, day].join("-");
-  //   }
 
   const getInventoryList = () => {
     axios
@@ -117,7 +47,7 @@ export default function ExpiredInventory() {
         //   setSeverity("error");
         // } else {
         setData(response.data.data);
-        console.log("data :", response.data?.data);
+        // console.log("data :", response.data?.data);
 
         // }
       })
@@ -135,11 +65,11 @@ export default function ExpiredInventory() {
       quantity: parseInt(quantity),
       expiryDate: expiryDate,
     };
-    console.log(JSON.stringify(stock_in, null, 2));
+    // console.log(JSON.stringify(stock_in, null, 2));
     axios
       .post(GET_INVENTORY_StockIn, stock_in)
       .then(function (response) {
-        console.log("stockIn response", JSON.stringify(response, null, 2));
+        // console.log("stockIn response", JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error);
@@ -169,7 +99,7 @@ export default function ExpiredInventory() {
       batchCode: batchCode,
       expiryDate: expiryDate,
     };
-    console.log(JSON.stringify(stock_out, null, 2));
+    // console.log(JSON.stringify(stock_out, null, 2));
     axios
       .post(GET_INVENTORY_StockOut, stock_out)
       .then(function (response) {
@@ -199,7 +129,7 @@ export default function ExpiredInventory() {
         setProductOptions(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching products:", error);
+        // console.error("Error fetching products:", error);
       });
   };
 
@@ -253,15 +183,6 @@ export default function ExpiredInventory() {
         });
     }
   };
-
-  //   <Button
-  //     variant="contained"
-  //     size="medium"
-  //     color="success"
-  //     onClick={handleSave}
-  //   >
-  //     Save
-  //   </Button>;
 
   return (
     <div className="list">

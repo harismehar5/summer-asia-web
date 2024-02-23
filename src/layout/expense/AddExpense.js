@@ -38,7 +38,7 @@ export default function AddExpense() {
     axios
       .get(EXPENSE_CATAGORY_BASE_URL)
       .then(function (response) {
-        console.log("response ==", JSON.stringify(response, null, 2));
+        // console.log("response ==", JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
@@ -127,15 +127,13 @@ export default function AddExpense() {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setName(event.target.value);
-    // You can perform additional actions with the selected value if needed
-    // For example, you can find the corresponding item in your data array and do something with it
     const selectedItem = catagoryName.find(
       (item) => item.name === selectedValue
     );
     if (selectedItem) {
       // Do something with the selected item or its _id
       const selectedId = selectedItem._id;
-      console.log("Selected ID:", selectedId);
+      // console.log("Selected ID:", selectedId);
       setSelectedId(selectedId);
     }
   };
@@ -150,17 +148,6 @@ export default function AddExpense() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              {/* <TextField
-                required
-                id="name"
-                name="name"
-                label="Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              /> */}
-
               <FormControl fullWidth variant="outlined" required>
                 <InputLabel id="name-label">Name</InputLabel>
                 <Select
@@ -173,8 +160,6 @@ export default function AddExpense() {
                   {catagoryName.map((item) => (
                     <MenuItem value={item.name}>{item.name}</MenuItem>
                   ))}
-
-                  {/* Add more MenuItem components as needed */}
                 </Select>
               </FormControl>
            

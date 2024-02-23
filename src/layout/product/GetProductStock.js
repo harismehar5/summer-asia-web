@@ -10,17 +10,13 @@ import Navbar from "../../components/navbar/Navbar";
 import { productColumns } from "../../dataTableColumns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { Button, Stack } from "@mui/material";
-
+import { Button } from "@mui/material";
 import {
   ADD_PRODUCT,
-  DELETE_PRODUCT,
   GET_ALL_COMPANIES,
   GET_ALL_PRODUCTS,
-  GET_PRODUCTS_LIST,
   STOCK_IN,
   STOCK_OUT,
-  UPDATE_PRODUCT_BY_ID,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
@@ -99,41 +95,6 @@ export default function GetProductStock() {
       });
   };
   const actionColumn = [
-      // {
-      //   field: "stock",
-      //   headerName: "Stock",
-      //   width: 250,
-      //   renderCell: (params) => {
-      //     return (
-      //       <Stack direction={"row"} spacing={1}>
-      //         <Button
-      //           variant="contained"
-      //           size="medium"
-      //           color="success"
-      //           onClick={() => {
-      //             setID(params.row._id);
-      //             setQuantity("");
-      //             setStockInOpenPopup(true);
-      //           }}
-      //         >
-      //           Stock In
-      //         </Button>
-      //         <Button
-      //           variant="contained"
-      //           size="medium"
-      //           color="success"
-      //           onClick={() => {
-      //             setID(params.row._id);
-      //             setQuantity("");
-      //             setStockOutOpenPopup(true);
-      //           }}
-      //         >
-      //           Stock Out
-      //         </Button>
-      //       </Stack>
-      //     );
-      //   },
-      // },
     {
       field: "action",
       headerName: "Action",
@@ -331,14 +292,6 @@ export default function GetProductStock() {
         >
             <Grid container spacing={3}>
             <Grid item xs={12} sm={8}>
-              {/* <TextField
-                required
-                label="Company Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField

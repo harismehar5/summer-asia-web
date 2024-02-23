@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
-
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import { EXPENSE_CATAGORY_BASE_URL } from "../../utils/config";
@@ -84,30 +83,6 @@ export default function AddExpenseCatagory() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="amount"
-                name="amount"
-                label="Amount"
-                fullWidth
-                variant="outlined"
-                value={amount}
-                onChange={(event) => setAmount(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                id="description"
-                name="description"
-                label="Description"
-                fullWidth
-                variant="outlined"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={6}></Grid> */}
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}

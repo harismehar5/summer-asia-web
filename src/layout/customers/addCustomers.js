@@ -50,7 +50,7 @@ export default function AddCustomers() {
         setAreas(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching areas:", error);
+        // console.error("Error fetching areas:", error);
       });
   }, []);
 
@@ -79,7 +79,7 @@ export default function AddCustomers() {
         }
       })
       .catch(function (error) {
-        console.error("Error adding customer:", error);
+        // console.error("Error adding customer:", error);
         handleSnackbar("error",  error.response.data.error);
       });
   };

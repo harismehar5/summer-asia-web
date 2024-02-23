@@ -8,16 +8,11 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import axios from "axios";
 import { produce } from "immer";
-
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
   GET_SALESRETURN_LIST,
   GET_CUSTOMERS_LIST,
-  GET_PRODUCTS_LIST,
-  ADD_STOCK_LOG,
-  ADD_QUANTITY,
-  ADD_SUPPLIER_CASH_OUT,
   GET_ALL_PRODUCTS,
   GET_salesman_LIST,
 } from "../../utils/config";
@@ -47,9 +42,7 @@ export default function AddSalesReturn() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [amount, setAmount] = useState("");
-  const [submittedDate, setSubmittedDate] = useState("");
-  const [code, setCode] = useState("")
+
   const paymentMediumList = [
     {
       id: 1,
@@ -79,30 +72,6 @@ export default function AddSalesReturn() {
     const [salesmanError, setSalesmanError] = useState("");
     const [productError, setProductError] = useState("");
 
-  var purchaseObject = {
-    total_amount: "",
-    total_quantity: "",
-    supplier: "",
-    submit_date: "",
-    order_details: "",
-  };
-  var cashOut = {
-    amount: "",
-    description: "",
-    payment_medium: "",
-    submit_date: "",
-    cash_type: "",
-  };
-  var purchaseDetail = [];
-  var stockLog = [];
-  var productArray = [];
-
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-
-  let currentDate = `${day}/${month}/${year}`;
-
   useEffect(() => {
     getStockList();
     getCustomerList();
@@ -115,7 +84,7 @@ export default function AddSalesReturn() {
     axios
       .post(GET_SALESRETURN_LIST, data)
       .then(response => {
-        console.log("Response", response)
+        // console.log("Response", response)
       }
       )
       .catch((error) => {
@@ -179,7 +148,7 @@ export default function AddSalesReturn() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject)
+    // console.log("Product Object", productObject)
     // if (productObject._id !== "") {
     var obj = {};
     var array = data;
@@ -301,27 +270,7 @@ export default function AddSalesReturn() {
       paymentMode: paymentMode,
       total: totalAmount
     }
-    console.log("Data", purchaseObject)
-
-    // if (data.length === 0) {
-    //   setOpen(true);
-    //   setMessage("Please select any product to purchase");
-    //   setSeverity("error");
-    // } else if (
-    //   supplierObject._id === "" ||
-    //   supplierObject._id === null ||
-    //   supplierObject._id === undefined
-    // ) {
-    //   setOpen(true);
-    //   setMessage("Please select any supplier");
-    //   setSeverity("error");
-    // } else if (submittedDate === "") {
-    //   setOpen(true);
-    //   setMessage("Please select date");
-    //   setSeverity("error");
-    // } else {
-    // dataEntry(purchaseObject);
-    // }
+    // console.log("Data", purchaseObject)
     if (isValid) {
       dataEntry(purchaseObject);
     } else {
@@ -340,7 +289,6 @@ export default function AddSalesReturn() {
       <div className="box-container">
         <Navbar />
         <Typography variant="h6" gutterBottom style={{marginLeft:"2%", marginTop:"2%"}}>Add Sale Return</Typography>
-        {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
@@ -620,125 +568,6 @@ export default function AddSalesReturn() {
             </Button>
           </Box>
         </Grid>
-        {/* <Grid item md={4} sx={{ height: "90vh" }}>
-            <Grid container item md={12} px={2}>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-              // mt={2}
-              >
-                <Autocomplete
-                  options={customerCode}
-                  getOptionLabel={(supplier, index) => supplier.name}
-                  disablePortal
-                  fullWidth
-                  isOptionEqualToValue={(option, value) =>
-                    option._id === value._id
-                  }
-                  onChange={(event, newInputValue) => {
-                    setSupplierObject(newInputValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select Supplier" />
-                  )}
-                  renderOption={(props, supplier) => (
-                    <Box component="li" {...props} key={supplier._id}>
-                      {supplier.name}
-                    </Box>
-                  )}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  label="Select Date"
-                  type="date"
-                  defaultValue={currentDate}
-                  onChange={(event) => {
-                    setSubmittedDate(event.target.value);
-                  }}
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  id="amount"
-                  name="amount"
-                  label="Enter Amount"
-                  fullWidth
-                  variant="outlined"
-                  value={amount}
-                  onChange={(event) => setAmount(event.target.value)}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Amount</Typography>
-                <Typography>RS {totalAmount}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Bags</Typography>
-                <Typography>{totalBags}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Products</Typography>
-                <Typography>{totalProducts}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"end"}
-                sx={{ width: "100%" }}
-                mt={2}
-                alignItems={"end"}
-              >
-                <Button
-                  variant="contained"
-                  size="medium"
-                  color="success"
-                  onClick={() => validate()}
-                  sx={{ marginX: "10px" }}
-                >
-                  Save
-                </Button>
-                <Button
-                  // sx={{ marginLeft: "10px" }}
-                  variant="contained"
-                  size="medium"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Grid>
-          </Grid> */}
-        {/* </Grid> */}
         <SnackBar
           open={open}
           severity={severity}

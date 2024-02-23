@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./widget.scss";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
 import CurrencyExchangeRoundedIcon from '@mui/icons-material/CurrencyExchangeRounded';
-import axios from "axios";
-
 import { Link } from "react-router-dom";
 
 export default function Widgets({ type,amount }) {
     
   let cardData;
-
-  let diff = 20;
+  // let diff = 20;
 
   switch (type) {
     case "area":

@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import { IconButton } from "@mui/material";
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
-import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { saleColumn, saleReturnColumn } from "../../dataTableColumns";
+import { saleReturnColumn } from "../../dataTableColumns";
 import SnackBar from "../../components/alert/SnackBar";
-
-import { GET_SALE_LIST, GET_SALE_RETURN_LIST } from "../../utils/config";
+import { GET_SALE_RETURN_LIST } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import { Link } from "react-router-dom";
 import SideBar from "../../components/sidebar/SideBar";
