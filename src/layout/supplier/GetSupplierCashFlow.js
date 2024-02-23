@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import "./styles.scss";
-import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { supplierCashFlowColumn } from "../../dataTableColumns";
 
 import { GET_SUPPLIERS_CASH_FLOW } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetSupplierCashFlow() {
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -23,7 +19,7 @@ export default function GetSupplierCashFlow() {
     axios
       .get(GET_SUPPLIERS_CASH_FLOW)
       .then(function (response) {
-        console.log(JSON.stringify(response, null, 2));
+        // console.log(JSON.stringify(response, null, 2));
         if (response.data.error) {
           //   setLoading(false);
         } else {
@@ -49,9 +45,6 @@ export default function GetSupplierCashFlow() {
           secondButtonText="Cash Out"
           secondLink={"/supplier/add_cash_out"}
         />
-        {/* {data.length !== 0 ? (
-          <DataTable data={data} columns={supplierCashFlowColumn} loading={loading} isForTransaction={false} />
-        ) : null} */}
       </div>
     </div>
   );

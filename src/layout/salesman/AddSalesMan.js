@@ -44,7 +44,7 @@ export default function AddSalesMan() {
         setAreas(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching areas:", error);
+        // console.error("Error fetching areas:", error);
       });
   }, []);
 
@@ -77,7 +77,7 @@ export default function AddSalesMan() {
         }
       })
       .catch(function (error) {
-        console.error("Error adding sales man:", error);
+        // console.error("Error adding sales man:", error);
         handleSnackbar("error", error.response.data.error);
       });
   };
@@ -85,6 +85,13 @@ export default function AddSalesMan() {
   const validation = () => {
     let isValid = true;
   
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    }else {
+      setCodeError("");
+    }
+
     if (name.trim() === "") {
       setNameError("Enter name");
       isValid = false;
@@ -127,13 +134,6 @@ export default function AddSalesMan() {
     } else {
       setDateOfJoinError("");
     }
-  
-    // if (description.trim() === "") {
-    //   setDescriptionError("Enter description");
-    //   isValid = false;
-    // } else {
-    //   setDescriptionError("");
-    // }
   
     if (fatherName.trim() === "") {
       setFatherNameError("Enter father's name");
@@ -180,7 +180,7 @@ export default function AddSalesMan() {
     if (isValid) {
       addSalesMan();
     } else {
-      handleSnackbar("error", "Enter valid values in all fields!");
+      handleSnackbar("error", "Enter valid values!");
     }
   };
   

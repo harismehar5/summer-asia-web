@@ -64,32 +64,6 @@ export default function AddPurchase() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const date = new Date();
-
-  var purchaseObject = {
-    total_amount: "",
-    total_quantity: "",
-    supplier: "",
-    submit_date: "",
-    order_details: "",
-  };
-  var cashOut = {
-    amount: "",
-    description: "",
-    payment_medium: "",
-    submit_date: "",
-    cash_type: "",
-  };
-  var purchaseDetail = [];
-  var stockLog = [];
-  var productArray = [];
-
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-
-  let currentDate = `${day}/${month}/${year}`;
-
   useEffect(() => {
     getStockList();
     getSupplierList();
@@ -101,7 +75,7 @@ export default function AddPurchase() {
     axios
       .post(GET_PURCHASERETURN, data)
       .then(response => {
-        console.log("Response", response)
+        // console.log("Response", response)
       }
       )
       .catch((error) => {
@@ -148,7 +122,7 @@ export default function AddPurchase() {
       });
   };
   const addProductIntoList = () => {
-    console.log("Product Object", productObject)
+    // console.log("Product Object", productObject)
     // if (productObject._id !== "") {
     var obj = {};
     var array = data;
@@ -168,27 +142,6 @@ export default function AddPurchase() {
     };
     array = [...array, obj];
     setData(array);
-    // } else if (foundIndex === -1) {
-    //   obj = {
-    //     _id: productObject._id,
-    //     name: productObject.name,
-    //     tradeRate: productObject.tradeRate,
-    //     quantity: 1,
-    //     netTotal: productObject.tradeRate,
-    //     status: productObject.status,
-    //   };
-    //   array = [...array, obj];
-    //   setData(array);
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Already existed");
-    //   setSeverity("error");
-    // }
-    // } else {
-    //   setOpen(true);
-    //   setMessage("Please select any product");
-    //   setSeverity("error");
-    // }
   };
   const calculateAmountAndBags = (array) => {
     let sum = 0;
@@ -235,27 +188,8 @@ export default function AddPurchase() {
       paymentMode: paymentMode,
       total: totalAmount
     }
-    console.log("Data", purchaseObject)
-
-    // if (data.length === 0) {
-    //   setOpen(true);
-    //   setMessage("Please select any product to purchase");
-    //   setSeverity("error");
-    // } else if (
-    //   supplierObject._id === "" ||
-    //   supplierObject._id === null ||
-    //   supplierObject._id === undefined
-    // ) {
-    //   setOpen(true);
-    //   setMessage("Please select any supplier");
-    //   setSeverity("error");
-    // } else if (submittedDate === "") {
-    //   setOpen(true);
-    //   setMessage("Please select date");
-    //   setSeverity("error");
-    // } else {
+    // console.log("Data", purchaseObject)
     dataEntry(purchaseObject);
-    // }
   };
   return (
     <div className="box">
@@ -263,7 +197,6 @@ export default function AddPurchase() {
       <div className="box-container">
         <Navbar />
         <Typography variant="h6" gutterBottom style={{marginLeft:"2%", marginTop:"2%"}}>Add Purchase Return</Typography>
-        {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
@@ -518,125 +451,6 @@ export default function AddPurchase() {
             </Button>
           </Box>
         </Grid>
-        {/* <Grid item md={4} sx={{ height: "90vh" }}>
-            <Grid container item md={12} px={2}>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-              // mt={2}
-              >
-                <Autocomplete
-                  options={supplierList}
-                  getOptionLabel={(supplier, index) => supplier.name}
-                  disablePortal
-                  fullWidth
-                  isOptionEqualToValue={(option, value) =>
-                    option._id === value._id
-                  }
-                  onChange={(event, newInputValue) => {
-                    setSupplierObject(newInputValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select Supplier" />
-                  )}
-                  renderOption={(props, supplier) => (
-                    <Box component="li" {...props} key={supplier._id}>
-                      {supplier.name}
-                    </Box>
-                  )}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  label="Select Date"
-                  type="date"
-                  defaultValue={currentDate}
-                  onChange={(event) => {
-                    setSubmittedDate(event.target.value);
-                  }}
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <TextField
-                  id="amount"
-                  name="amount"
-                  label="Enter Amount"
-                  fullWidth
-                  variant="outlined"
-                  value={amount}
-                  onChange={(event) => setAmount(event.target.value)}
-                />
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Amount</Typography>
-                <Typography>RS {totalAmount}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Bags</Typography>
-                <Typography>{totalBags}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ width: "100%" }}
-                mt={2}
-              >
-                <Typography>Total Products</Typography>
-                <Typography>{totalProducts}</Typography>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"end"}
-                sx={{ width: "100%" }}
-                mt={2}
-                alignItems={"end"}
-              >
-                <Button
-                  variant="contained"
-                  size="medium"
-                  color="success"
-                  onClick={() => validate()}
-                  sx={{ marginX: "10px" }}
-                >
-                  Save
-                </Button>
-                <Button
-                  // sx={{ marginLeft: "10px" }}
-                  variant="contained"
-                  size="medium"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Grid>
-          </Grid> */}
-        {/* </Grid> */}
         <SnackBar
           open={open}
           severity={severity}

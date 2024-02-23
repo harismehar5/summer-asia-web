@@ -34,12 +34,12 @@ export default function AddArea() {
         if (response.data.error) {
           handleSnackbar("error", response.data.error);
         } else {
-          handleSnackbar("success", response.data.success);
+          handleSnackbar("success", response.data.message);
           resetForm();
         }
       })
       .catch(function (error) {
-        console.error("Error adding area:", error.response.data.error);
+        // console.error("Error adding area:", error.response.data.error);
         handleSnackbar("error", error.response.data.error);
       });
   };

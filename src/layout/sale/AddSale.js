@@ -10,11 +10,10 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import axios from "axios";
 import { produce } from "immer";
-
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
 import {
-  GET_ALL_PRODUCTS,
+  GET_PRODUCT_OF_INVENTORY,
   GET_BATCH_LIST,
   GET_salesman_LIST,
   GET_QUANTITY_AND_EXPIRY_LIST,
@@ -124,7 +123,7 @@ export default function AddSale() {
     axios
       .post(ADD_SALES_SERVICES, data)
       .then((response) => {
-        console.log(JSON.stringify(response, null, 2));
+        // console.log(JSON.stringify(response, null, 2));
         if (response.status == 200) {
           setOpen(true);
           setSeverity("success");
@@ -143,7 +142,7 @@ export default function AddSale() {
 
   const getStockList = () => {
     axios
-      .get(GET_ALL_PRODUCTS)
+      .get(GET_PRODUCT_OF_INVENTORY)
       .then(function (response) {
         setProductList(response.data.data);
       })
@@ -271,7 +270,7 @@ export default function AddSale() {
         setSalesManList(response.data.data);
       })
       .catch(function (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       });
   };
 
@@ -284,7 +283,7 @@ export default function AddSale() {
     axios
       .post(GET_QUANTITY_AND_EXPIRY_LIST, payload)
       .then(function (response) {
-        console.log("quatity and expiry date ", response.data);
+        // console.log("quatity and expiry date ", response.data);
 
         setData((currentData) =>
           produce(currentData, (v) => {
@@ -307,7 +306,7 @@ export default function AddSale() {
         }));
       })
       .catch(function (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       });
   };
 
@@ -361,7 +360,7 @@ export default function AddSale() {
       receivedAmount: parseFloat(invoiceAmount),
     };
 
-    console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
+    // console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
     dataEntry(purchaseObject);
   };
   // Function to format date to "yyyy-MM-dd" format

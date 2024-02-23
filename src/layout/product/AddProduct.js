@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Paper } from "@material-ui/core";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
-import { Button, FormHelperText } from "@mui/material";
+import { Autocomplete, Button, FormHelperText } from "@mui/material";
 import axios from "axios";
-import { ADD_PRODUCT } from "../../utils/config";
+import { ADD_PRODUCT, GET_ALL_COMPANIES } from "../../utils/config";
 import SnackBar from "../../components/alert/SnackBar";
+import { Box } from "@mui/system";
 
 export default function AddProduct() {
   const [name, setName] = useState("");
@@ -19,7 +20,8 @@ export default function AddProduct() {
   const [purchaseRate, setPurchaseRate] = useState("");
   const [maximumRetailPrice, setMaximumRetailPrice] = useState("");
   const [distributerPrice, setDistributerPrice] = useState("");
-
+  const [companyList, setCompanyList] = useState("");
+  const [companyObject, setCompanyObject] = useState({});
   // error states
   const [nameError, setNameError] = useState("");
   const [codeError, setCodeError] = useState("");
@@ -48,6 +50,7 @@ export default function AddProduct() {
   const addProduct = () => {
     product = {
       code: code,
+      companyCode:companyObject._id,
       name: name,
       packing: packing,
       strength: strength,
@@ -59,7 +62,7 @@ export default function AddProduct() {
     axios
       .post(ADD_PRODUCT, product)
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         // if (response.data.error) {
         //   setOpen(true);
         //   setMessage(response.data.error_msg);
@@ -70,6 +73,7 @@ export default function AddProduct() {
         setSeverity("success");
         setName("");
         setCode("");
+        setCompanyObject("");
         setName("");
         setPacking("");
         setStrength("");
@@ -85,7 +89,32 @@ export default function AddProduct() {
         setSeverity("error");
       });
   };
+  const getSupplierList = () => {
+    axios
+      .get(GET_ALL_COMPANIES)
+      .then(function (response) {
+        // if (response.data.error) {
+        //   setOpen(true);
+        //   setMessage(response.data.error_msg);
+        //   setSeverity("error");
+        // } else {
+        setCompanyList(response.data.data);
+        // }
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+  useEffect(() => {
+    getSupplierList();
+  }, []);
   const validation = () => {
+
+    var companyCode = companyObject._id;
+
+
     setNameError("");
     setCodeError("");
     setPackingError("");
@@ -97,6 +126,10 @@ export default function AddProduct() {
 
 
     let isValid = true;
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    }
 
     if (name.trim() === "") {
       setNameError("Enter name");
@@ -167,14 +200,6 @@ export default function AddProduct() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8}>
-              {/* <TextField
-                required
-                label="Company Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -185,8 +210,33 @@ export default function AddProduct() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
+               <FormHelperText style={{ color: "red" }}>{codeError}</FormHelperText>
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} sm={6} >
+              <Autocomplete
+                options={companyList}
+                getOptionLabel={(supplier, index) => supplier.name}
+                disablePortal
+                fullWidth
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value._id
+                }
+                onChange={(event, newInputValue) => {
+                  if (newInputValue !== null) {
+                    setCompanyObject(newInputValue);
+                  }
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Company" />
+                )}
+                renderOption={(props, supplier) => (
+                  <Box component="li" {...props} key={supplier._id}>
+                    {supplier.name}
+                  </Box>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
                 required
                 label="Name"
@@ -224,6 +274,7 @@ export default function AddProduct() {
                 required
                 label="Trade Rate"
                 fullWidth
+                type="number"
                 variant="outlined"
                 value={tradeRate}
                 onChange={(event) => setTradeRate(event.target.value)}
@@ -236,6 +287,7 @@ export default function AddProduct() {
                 label="Purchase Rate"
                 fullWidth
                 variant="outlined"
+                type="number"
                 value={purchaseRate}
                 onChange={(event) => setPurchaseRate(event.target.value)}
               />
@@ -246,6 +298,7 @@ export default function AddProduct() {
                 required
                 label="Retail Price (Max)"
                 fullWidth
+                type="number"
                 variant="outlined"
                 value={maximumRetailPrice}
                 onChange={(event) => setMaximumRetailPrice(event.target.value)}
@@ -257,6 +310,8 @@ export default function AddProduct() {
                 required
                 label="Distributer Price"
                 fullWidth
+                type="number"
+
                 variant="outlined"
                 value={distributerPrice}
                 onChange={(event) => setDistributerPrice(event.target.value)}

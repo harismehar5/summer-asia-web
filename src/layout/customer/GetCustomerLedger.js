@@ -18,7 +18,7 @@ import {
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
-import { json } from "react-router-dom";
+import Widgets from "../../components/widgets/Widgets";
 
 export default function GetCustomerLedger() {
   const [data, setData] = useState([]);
@@ -27,10 +27,28 @@ export default function GetCustomerLedger() {
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const [customerObject, setCustomerObject] = useState({});
-
+  const [amount, setAmount] = useState({
+    cashInBalance: 0,
+    cashOutBalance: 0,
+    currentBalance: 0,
+  });
+  const [cashInBalance, setCashInBalance] = useState(0);
+  const [cashOutBalance, setCashOutBalance] = useState(0);
+  const [currentBalance, setCurrentBalance] = useState(0);
+  
   useEffect(() => {
     getCustomersList();
   }, [data]);
+
+  useEffect(() => {
+    updateWidgetValues();
+  }, [data, amount]);
+
+  const updateWidgetValues = () => {
+    setCashInBalance(amount.cashInBalance || 0);
+    setCashOutBalance(amount.cashOutBalance || 0);
+    setCurrentBalance(amount.currentBalance || 0);
+  };
 
   const getCustomersList = () => {
     axios
@@ -50,39 +68,68 @@ export default function GetCustomerLedger() {
         setSeverity("error");
       });
   };
-  const getCustomerLedgerList = (id) => {
-    // setLoading(true);
 
+  const getCustomerLedgerList = (id) => {
     axios
       .get(GET_All_LEDGER + id)
       .then(function (response) {
-        console.log(JSON.stringify(response, null, 2));
-        if (response.message == "Cash data not found") {
-          //   setLoading(false);
+        if (response.data.message === "Cash data not found") {
           setData([]);
+          setAmount({
+            cashInBalance: 0,
+            cashOutBalance: 0,
+            currentBalance: 0,
+          });
+          handleSnackbar("error", "Cash data not found");
         } else {
           setData(response.data.data);
-
-          //   setLoading(false);
+          setAmount(response.data);
         }
       })
       .catch(function (error) {
-        // setLoading(false);
+        if (error.response && error.response.status === 404) {
+          setData([]);
+          setAmount({
+            cashInBalance: 0,
+            cashOutBalance: 0,
+            currentBalance: 0,
+          });
+          handleSnackbar("error", " Data not found");
+        } else {
+          handleSnackbar("error", error.message);
+        }
       });
   };
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
+  };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+
   return (
     <div className="list">
       <Sidebar />
       <div className="list-container">
         <Navbar />
-        <ListHeader header={"Customer Ledger"} />
 
+        <div className='dashboard'>
+          <div className='dashboard-container'>
+            <div className='widgets'>
+              <Widgets type={"cashIn"} amount={cashInBalance || ""} />
+              <Widgets type={"cashOut"} amount={cashOutBalance || ""} />
+              <Widgets type={"currentBalance"} amount={currentBalance || ""} />
+            </div>
+          </div>
+        </div>
+        <ListHeader header={"Customer Ledger"} />
         <Grid container item md={12} px={4}>
           <Autocomplete
             options={customerList}
@@ -113,7 +160,6 @@ export default function GetCustomerLedger() {
         <DataTable
           data={data}
           columns={customerLedgerColumns}
-          // loading={loading}
           isForTransaction={false}
         />
 

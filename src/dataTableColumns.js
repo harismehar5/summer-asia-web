@@ -1,5 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
-
 function formatDate(dateStr) {
   const date = new Date(dateStr);
   const year = date.getFullYear();
@@ -594,11 +592,8 @@ export const supplierCashFlowColumn = [
 ];
 
 export const customerCashFlowColumn = [
-  { field: "_id", headerName: "ID", width: 230 },
-  { field: "purchaseId", headerName: "Purchase Id", width: 230 },
-  { field: "purchaseReturnId", headerName: "Purchase return Id", width: 230 },
-  { field: "saleId", headerName: "Sale Id", width: 230 },
-  { field: "saleReturnId", headerName: "Purchase return Id", width: 230 },
+
+
   {
     field: "customerId",
     headerName: "Customer",
@@ -623,9 +618,10 @@ export const customerCashFlowColumn = [
       );
     },
   },
-
+  { field: "description", headerName: "Description", width: 230 },
   { field: "debit", headerName: "Debit", width: 230 },
   { field: "credit", headerName: "Credit", width: 230 },
+  { field: "expenseId", headerName: "Expense", width: 230 },
   { field: "balance", headerName: "Balance", width: 230 },
   {
     field: "createdAt",
@@ -639,6 +635,10 @@ export const customerCashFlowColumn = [
       );
     },
   },
+  { field: "purchaseId", headerName: "Purchase Id", width: 230 },
+  { field: "purchaseReturnId", headerName: "Purchase return Id", width: 230 },
+  { field: "saleId", headerName: "Sale Id", width: 230 },
+  { field: "saleReturnId", headerName: "Purchase return Id", width: 230 },
 ];
 
 export const stockLogColumns = [

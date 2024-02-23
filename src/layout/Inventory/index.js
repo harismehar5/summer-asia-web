@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { inventoryListColumns, productColumns } from "../../dataTableColumns";
+import { inventoryListColumns,} from "../../dataTableColumns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Button, Stack } from "@mui/material";
@@ -21,25 +19,15 @@ import {
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
-import produce from "immer";
-import { Link } from "react-router-dom";
 
 export default function GetProductStock() {
   const [data, setData] = useState([]);
-  const [name, setName] = useState("");
   const [code, setCode] = useState("");
-  const [packing, setPacking] = useState("");
-  const [strength, setStrength] = useState("");
-  const [tradeRate, setTradeRate] = useState("");
-  const [purchaseRate, setPurchaseRate] = useState("");
-  const [maximumRetailPrice, setMaximumRetailPrice] = useState("");
-  const [distributerPrice, setDistributerPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [id, setID] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const [openEditPopup, setEditOpenPopup] = useState(false);
   const [openStockInPopup, setStockInOpenPopup] = useState(false);
   const [openStockOutPopup, setStockOutOpenPopup] = useState(false);
   const [batchCode, setBatchCode] = useState("");
@@ -47,7 +35,6 @@ export default function GetProductStock() {
   const [stockInData, setStockInData] = useState({});
   const [ProductId, setProductId] = useState(null);
   const [openAddInventoryPopup, setOpenAddInventoryPopup] = useState(false);
-  const [newInventoryItem, setNewInventoryItem] = useState({});
   const [productOptions, setProductOptions] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState({});
 
@@ -127,7 +114,7 @@ export default function GetProductStock() {
         //   setSeverity("error");
         // } else {
         setData(response.data.data);
-        console.log("data :", response.data?.data);
+        // console.log("data :", response.data?.data);
 
         // }
       })
@@ -145,7 +132,7 @@ export default function GetProductStock() {
       quantity: parseInt(quantity),
       expiryDate: expiryDate,
     };
-    console.log(JSON.stringify(stock_in, null, 2));
+    // console.log(JSON.stringify(stock_in, null, 2));
     axios
       .post(GET_INVENTORY_StockIn, stock_in)
       .then(function (response) {
@@ -179,7 +166,7 @@ export default function GetProductStock() {
       batchCode: batchCode,
       expiryDate: expiryDate,
     };
-    console.log(JSON.stringify(stock_out, null, 2));
+    // console.log(JSON.stringify(stock_out, null, 2));
     axios
       .post(GET_INVENTORY_StockOut, stock_out)
       .then(function (response) {
@@ -190,17 +177,22 @@ export default function GetProductStock() {
           setStockOutOpenPopup(false);
         } else {
           setOpen(true);
+          setOpen(true);
           setMessage(response.data.message);
           setSeverity("success");
-          setQuantity("confrim");
-          setStockOutOpenPopup(false);
+          setQuantity("");
+          setBatchCode("");
+          setExpiryDate("");
+          setStockInOpenPopup(false);
         }
       })
       .catch(function (error) {
         setOpen(true);
-        setMessage(error);
+        setMessage("error: " + error.response?.data?.message || error.message);
         setSeverity("error");
+        // console.error(error.stack); // Log the stack trace
       });
+      
   };
   const fetchAllProductOptions = () => {
     axios
@@ -209,7 +201,7 @@ export default function GetProductStock() {
         setProductOptions(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching products:", error);
+        // console.error("Error fetching products:", error);
       });
   };
 

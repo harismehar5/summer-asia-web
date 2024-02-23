@@ -3,7 +3,6 @@ import { IconButton, Grid, TextField, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
@@ -124,7 +123,7 @@ export default function GetAreaList() {
     axios
       .post(GET_AREA_LIST, newExpense)
       .then(function (response) {
-        console.log("AREA List :", response.data);
+        // console.log("AREA List :",response.data);
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error

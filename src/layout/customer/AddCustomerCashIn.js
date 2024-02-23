@@ -3,10 +3,9 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Paper } from "@material-ui/core";
-import Alert from "@mui/material/Alert";
 import Navbar from "../../components/navbar/Navbar";
 import SideBar from "../../components/sidebar/SideBar";
-import { Autocomplete, Box, Button } from "@mui/material";
+import { Autocomplete, Box, Button, FormHelperText } from "@mui/material";
 import axios from "axios";
 import {
   GET_ALL_COMPANIES,
@@ -20,10 +19,18 @@ export default function AddCustomerCashIn() {
   const [companyList, setCompanyList] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState("customer");
   const [selectedList, setSelectedList] = useState([]);
+
   const [customerObject, setCustomerObject] = useState({});
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [paymentMediumObject, setPaymentMediumObject] = useState({});
+
+// Error States
+const [customerObjectError, setCustomerObjectError] = useState("");
+const [amountError, setAmountError] = useState("");
+const [descriptionError, setDescriptionError] = useState("");
+const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
@@ -44,7 +51,7 @@ export default function AddCustomerCashIn() {
       [selectedRadio === "customer" ? "customerId" : "companyId"]:
         customerObject._id,
     };
-    console.log("payload", cashIn);
+    // console.log("payload", cashIn);
     axios
       .post(GET_CUSTOMERS_CASH_IN, cashIn)
       .then(function (response) {
@@ -65,14 +72,51 @@ export default function AddCustomerCashIn() {
       });
   };
 
+  // const validation = () => {
+  //   if (amount.trim() === "" || !paymentMediumObject || !customerObject) {
+  //     return <Alert severity="error">Some Fields are missing</Alert>;
+  //   } else if (parseInt(amount) <= 0) {
+  //     return <Alert severity="error">Amount should be greater than 0</Alert>;
+  //   } else {
+  //     addCashIn();
+  //   }
+  // };
   const validation = () => {
-    if (amount.trim() === "" || !paymentMediumObject || !customerObject) {
-      return <Alert severity="error">Some Fields are missing</Alert>;
-    } else if (parseInt(amount) <= 0) {
-      return <Alert severity="error">Amount should be greater than 0</Alert>;
-    } else {
-      addCashIn();
+    setCustomerObjectError("");
+    setAmountError("");
+    setDescriptionError("");
+    setPaymentMediumObjectError("");
+    let isValid = true;
+  
+    if (!customerObject || !customerObject.name || customerObject.name.trim() === "") {
+      setCustomerObjectError("Enter customer/company");
+      isValid = false;
     }
+    if (!amount || amount.trim() === "") {
+      setAmountError("Enter debit/credit");
+      isValid = false;
+    }
+    if (!description || description.trim() === "") {
+      setDescriptionError("Enter description");
+      isValid = false;
+    }
+    if (!paymentMediumObject || !paymentMediumObject.name || paymentMediumObject.name.trim() === "") {
+      setPaymentMediumObjectError("Enter payment medium");
+      isValid = false;
+    }
+  
+    if (isValid) {
+      addCashIn();
+    } else {
+      handleSnackbar("error", "Enter valid values!");
+    }
+  };
+  
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
   };
 
   const getCustomersList = () => {
@@ -101,7 +145,7 @@ export default function AddCustomerCashIn() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.message);
           setSeverity("error");
         } else {
           setCompanyList(response.data.data);
@@ -163,6 +207,7 @@ export default function AddCustomerCashIn() {
 
             <Grid item xs={12} sm={12}>
               {selectedList && selectedList.length > 0 ? (
+                <>
                 <Autocomplete
                   options={selectedList}
                   getOptionLabel={(item) => item.name}
@@ -190,6 +235,8 @@ export default function AddCustomerCashIn() {
                     </Box>
                   )}
                 />
+                <FormHelperText style={{ color: "red" }}>{customerObjectError}</FormHelperText>
+                </>
               ) : (
                 <Typography variant="body2">
                   No {selectedRadio} data available.
@@ -207,6 +254,7 @@ export default function AddCustomerCashIn() {
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
               />
+               <FormHelperText style={{ color: "red" }}>{amountError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Autocomplete
@@ -232,6 +280,7 @@ export default function AddCustomerCashIn() {
                   </Box>
                 )}
               />
+                <FormHelperText style={{ color: "red" }}>{paymentMediumObjectError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -242,6 +291,7 @@ export default function AddCustomerCashIn() {
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
+                <FormHelperText style={{ color: "red" }}>{descriptionError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12}>
               <Grid

@@ -6,7 +6,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
@@ -17,7 +16,6 @@ import {
   GET_ALL_COMPANIES,
   UPDATE_SUPPLIER_BY_ID,
 } from "../../utils/config";
-
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
@@ -57,16 +55,6 @@ export default function GetSuppliersList() {
       renderCell: (params) => {
         return (
           <div className="cell-action">
-            {/* <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="view-button">View</div>
-            </Link> */}
-            {/* <Button
-              size="small"
-              variant="contained"
-              startIcon={<RemoveRedEyeOutlinedIcon />}
-            >
-              View
-            </Button> */}
             <IconButton
               aria-label="delete"
               size="medium"
@@ -81,12 +69,6 @@ export default function GetSuppliersList() {
             >
               <DeleteIcon fontSize="inherit" />
             </IconButton>
-            {/* <div
-              className="delete-button"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div> */}
           </div>
         );
       },
@@ -152,7 +134,6 @@ export default function GetSuppliersList() {
           setId("");
           setName("");
           setPhone("");
-          // setAddress("");
           setOpeningBalance("");
         }
       })
@@ -167,7 +148,6 @@ export default function GetSuppliersList() {
     if (
       name.length === 0 ||
       phone.length === 0 ||
-      // address.length === 0 ||
       openingBalance.length === 0
     ) {
       setOpen(true);
@@ -188,7 +168,6 @@ export default function GetSuppliersList() {
     setId(customer._id);
     setName(customer.name);
     setPhone(customer.phone);
-    // setAddress(customer.address);
     setOpeningBalance(customer.opening_balance);
   };
   return (
@@ -214,14 +193,6 @@ export default function GetSuppliersList() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8}>
-              {/* <TextField
-                required
-                label="Company Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -309,14 +280,6 @@ export default function GetSuppliersList() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox color="secondary" name="status" value="false" />
-                }
-                label="Status"
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid

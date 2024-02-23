@@ -4,16 +4,15 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/material";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { supplierLedgerColumns } from "../../dataTableColumns";
-
-import { GET_ALL_COMPANIES, GET_All_LEDGER, GET_SUPPLIER_LEDGER } from "../../utils/config";
+import { GET_ALL_COMPANIES, GET_All_LEDGER, } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
+import Widgets from "../../components/widgets/Widgets";
 
 export default function GetSupplierLedger() {
   const [data, setData] = useState([]);
@@ -22,10 +21,28 @@ export default function GetSupplierLedger() {
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const [supplierObject, setSupplierObject] = useState({});
-
+  const [amount, setAmount] = useState({
+    cashInBalance: 0,
+    cashOutBalance: 0,
+    currentBalance: 0,
+  });
+  const [cashInBalance, setCashInBalance] = useState(0);
+  const [cashOutBalance, setCashOutBalance] = useState(0);
+  const [currentBalance, setCurrentBalance] = useState(0);
+  
   useEffect(() => {
     getSupplierList();
   }, []);
+
+  useEffect(() => {
+    updateWidgetValues();
+  }, [data, amount]);
+
+  const updateWidgetValues = () => {
+    setCashInBalance(amount.cashInBalance || 0);
+    setCashOutBalance(amount.cashOutBalance || 0);
+    setCurrentBalance(amount.currentBalance || 0);
+  };
 
   const getSupplierList = () => {
     axios
@@ -44,20 +61,40 @@ export default function GetSupplierLedger() {
     axios
       .get(GET_All_LEDGER + id)
       .then(function (response) {
-        setData(response?.data?.data || []); // Set data to empty array if there is no data
+        if (response.data.message === "Cash data not found") {
+          setData([]);
+          setAmount({
+            cashInBalance: 0,
+            cashOutBalance: 0,
+            currentBalance: 0,
+          });
+          handleSnackbar("error", "Cash data not found");
+        } else {
+          setData(response.data.data);
+          setAmount(response.data);
+        }
       })
       .catch(function (error) {
-        if (data.length === 0) { // Check if data array is empty
-          setOpen(true);
-          setMessage("Something went wrong");
-          setSeverity("error");
+        if (error.response && error.response.status === 404) {
+          setData([]);
+          setAmount({
+            cashInBalance: 0,
+            cashOutBalance: 0,
+            currentBalance: 0,
+          });
+          handleSnackbar("error", " Data not found");
+        } else {
+          handleSnackbar("error", error.message);
         }
-        setData([]);
-        console.error("Error fetching supplier ledger:", error);
       });
   };
-  
-  
+
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
+  };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -70,6 +107,15 @@ export default function GetSupplierLedger() {
       <Sidebar />
       <div className="list-container">
         <Navbar />
+        <div className='dashboard'>
+          <div className='dashboard-container'>
+            <div className='widgets'>
+              <Widgets type={"cashIn"} amount={cashInBalance || ""} />
+              <Widgets type={"cashOut"} amount={cashOutBalance || ""} />
+              <Widgets type={"currentBalance"} amount={currentBalance || ""} />
+            </div>
+          </div>
+        </div>
         <ListHeader header={"Supplier Ledger"} />
         <Grid container item md={12} px={4}>
           <Autocomplete

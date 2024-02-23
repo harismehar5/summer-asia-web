@@ -68,7 +68,7 @@ export default function GetPurchaseList() {
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
-          console.log("data", JSON.stringify(response, null, 2));
+          // console.log("data", JSON.stringify(response, null, 2));
           setData(response.data.data);
         }
       })
@@ -98,7 +98,6 @@ export default function GetPurchaseList() {
         <DataTable
           data={data}
           columns={purchaseColumn.concat(actionColumn)}
-          // loading={loading}
           isForTransaction={false}
         />
       </div>

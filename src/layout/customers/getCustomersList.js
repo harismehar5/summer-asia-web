@@ -12,7 +12,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
@@ -54,7 +53,7 @@ export default function GetCustomersList() {
         setAreas(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching areas:", error);
+        // console.error("Error fetching areas:", error);
       });
     GetCustomerService();
   }, []); // Empty dependency array ensures the effect runs only once on mount
@@ -64,7 +63,7 @@ export default function GetCustomersList() {
     axios
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
-        console.log("Customers list:", response.data);
+        // console.log("Customers list:", response.data);
         if (response.data.error) {
           handleSnackbar("error", response.data.error_msg);
         } else {
@@ -79,7 +78,7 @@ export default function GetCustomersList() {
         }
       })
       .catch(function (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
         handleSnackbar("error", "Error: " + error);
       });
   };
@@ -266,7 +265,7 @@ export default function GetCustomersList() {
   const editCustomer = (customer) => {
     setOpenPopup(true);
     // Log the area code to the console for debugging
-    console.log("Area Code:", customer.areaCode);
+    // console.log("Area Code:", customer.areaCode);
 
     // Set state values
     setName(customer.name);

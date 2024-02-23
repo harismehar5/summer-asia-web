@@ -96,11 +96,13 @@ export default function GetExpensesList() {
     axios
       .get(EXPENSE_BASE_URL)
       .then(function (response) {
+        // console.log(JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error_msg);
           setSeverity("error");
         } else {
+          // console.log(response.data.data);
           setData(response.data.data);
         }
       })

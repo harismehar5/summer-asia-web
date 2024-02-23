@@ -26,11 +26,7 @@ export default function GetCustomerCashOut() {
         if (response.data.error) {
           setLoading(false);
         } else {
-          console.log(JSON.stringify(response, null, 2));
-          // for (var i = 0; i < response.data.data.length; i++) {
-          //   for (var k = 0; k < response.data.data[i].cash.length; k++)
-          //     data.push(response.data.data[i].cash[k]);
-          // }
+          // console.log(JSON.stringify(response, null, 2));
           setLoading(false);
         }
       })

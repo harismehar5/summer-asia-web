@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
 import { cashColumns } from "../../dataTableColumns";
-
 import { GET_ALL_SUPPLIER_CASH_IN } from "../../utils/config";
-import { Button } from "@mui/material";
 import ListHeader from "../../components/listHeader/ListHeader";
 
 export default function GetSupplierCashIn() {

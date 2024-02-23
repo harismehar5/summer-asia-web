@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IconButton } from "@mui/material";
+import { Autocomplete, IconButton } from "@mui/material";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -10,30 +10,29 @@ import Navbar from "../../components/navbar/Navbar";
 import { productColumns } from "../../dataTableColumns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { Button, Stack } from "@mui/material";
-
+import { Button } from "@mui/material";
 import {
-  DELETE_PRODUCT,
+  ADD_PRODUCT,
+  GET_ALL_COMPANIES,
   GET_ALL_PRODUCTS,
-  GET_PRODUCTS_LIST,
   STOCK_IN,
   STOCK_OUT,
-  UPDATE_PRODUCT_BY_ID,
 } from "../../utils/config";
 import ListHeader from "../../components/listHeader/ListHeader";
 import SnackBar from "../../components/alert/SnackBar";
 import Popup from "../../components/popup/Popup";
+import { Box } from "@mui/system";
 
 export default function GetProductStock() {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
-  const [code, setCode] = useState("")
-  const [packing, setPacking] = useState("")
-  const [strength, setStrength] = useState("")
-  const [tradeRate, setTradeRate] = useState("")
-  const [PurchaseRate, setPurchaseRate] = useState("")
-  const [maximumRetailPrice, setMaximumRetailPrice] = useState("")
-  const [distributerPrice, setDistributerPrice] = useState("")
+  const [code, setCode] = useState("");
+  const [packing, setPacking] = useState("");
+  const [strength, setStrength] = useState("");
+  const [tradeRate, setTradeRate] = useState("");
+  const [PurchaseRate, setPurchaseRate] = useState("");
+  const [maximumRetailPrice, setMaximumRetailPrice] = useState("");
+  const [distributerPrice, setDistributerPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [id, setID] = useState("");
   const [open, setOpen] = useState(false);
@@ -42,47 +41,60 @@ export default function GetProductStock() {
   const [openEditPopup, setEditOpenPopup] = useState(false);
   const [openStockInPopup, setStockInOpenPopup] = useState(false);
   const [openStockOutPopup, setStockOutOpenPopup] = useState(false);
+  const [companyObject, setCompanyObject] = useState(null); // Change from {} to null
+  const [companyList, setCompanyList] = useState([]);
+  const [selectedCompanyName, setSelectedCompanyName] = useState("");
 
   useEffect(() => {
     getStockList();
+    getSupplierList();
   }, []);
 
+  useEffect(() => {
+    if (id) {
+      const selectedProduct = data.find((product) => product._id === id);
+  
+      if (selectedProduct) {
+        setName(selectedProduct.name || "");
+        setCode(selectedProduct.code || "");
+        setCompanyObject(selectedProduct.companyObject || "");
+        setPacking(selectedProduct.packing || "");
+        setStrength(selectedProduct.strength || "");
+        setTradeRate(selectedProduct.tradeRate || "");
+        setPurchaseRate(selectedProduct.purchaseRate || "");
+        setMaximumRetailPrice(selectedProduct.maximumRetailPrice || "");
+        setDistributerPrice(selectedProduct.distributerPrice || "");
+  
+        // Set the selected company name for display
+        setSelectedCompanyName(selectedProduct.companyObject?.name || "");
+      }
+    }
+  }, [id, data]);
+  
+  useEffect(() => {
+    // Set the initial value for Autocomplete
+    if (companyObject && companyList) {
+      const selectedCompany = companyList.find((company) => company._id === companyObject._id);
+      if (selectedCompany) {
+        setSelectedCompanyName(selectedCompany.name);
+      }
+    }
+  }, [companyObject, companyList]);
+  
+
+  const getSupplierList = () => {
+    axios
+      .get(GET_ALL_COMPANIES)
+      .then(function (response) {
+        setCompanyList(response.data.data);
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
   const actionColumn = [
-      // {
-      //   field: "stock",
-      //   headerName: "Stock",
-      //   width: 250,
-      //   renderCell: (params) => {
-      //     return (
-      //       <Stack direction={"row"} spacing={1}>
-      //         <Button
-      //           variant="contained"
-      //           size="medium"
-      //           color="success"
-      //           onClick={() => {
-      //             setID(params.row._id);
-      //             setQuantity("");
-      //             setStockInOpenPopup(true);
-      //           }}
-      //         >
-      //           Stock In
-      //         </Button>
-      //         <Button
-      //           variant="contained"
-      //           size="medium"
-      //           color="success"
-      //           onClick={() => {
-      //             setID(params.row._id);
-      //             setQuantity("");
-      //             setStockOutOpenPopup(true);
-      //           }}
-      //         >
-      //           Stock Out
-      //         </Button>
-      //       </Stack>
-      //     );
-      //   },
-      // },
     {
       field: "action",
       headerName: "Action",
@@ -134,16 +146,18 @@ export default function GetProductStock() {
   };
   const deleteProduct = (id) => {
     axios
-      .delete(DELETE_PRODUCT + id)
+      .delete(GET_ALL_PRODUCTS + '/' + id)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage(response.data.message);
           setSeverity("success");
+          // Assuming you want to refresh the product list after successful deletion
+          getStockList();
         }
       })
       .catch(function (error) {
@@ -152,14 +166,21 @@ export default function GetProductStock() {
         setSeverity("error");
       });
   };
+  
   const updateProduct = () => {
-    var product = {
+    var     product = {
+      code: code,
+      companyCode:companyObject._id,
       name: name,
-      price: 0,
-      quantity: 0,
+      packing: packing,
+      strength: strength,
+      tradeRate: tradeRate,
+      purchaseRate: PurchaseRate,
+      maximumRetailPrice: maximumRetailPrice,
+      distributerPrice: distributerPrice,
     };
     axios
-      .patch(UPDATE_PRODUCT_BY_ID + id, product)
+      .put(ADD_PRODUCT + '/' + id, product)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -271,14 +292,6 @@ export default function GetProductStock() {
         >
             <Grid container spacing={3}>
             <Grid item xs={12} sm={8}>
-              {/* <TextField
-                required
-                label="Company Name"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              /> */}
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -290,7 +303,30 @@ export default function GetProductStock() {
                 onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} sm={6}>
+            <Autocomplete
+        options={companyList}
+        getOptionLabel={(supplier) => supplier.name || ''}
+        getOptionSelected={(option, value) => option._id === value._id}
+        disablePortal
+        fullWidth
+        value={companyObject} // Use companyObject as the value
+        onChange={(event, newInputValue) => {
+          if (newInputValue !== null) {
+            setCompanyObject(newInputValue);
+            // Set the selected company name for display
+            setSelectedCompanyName(newInputValue.name);
+          }
+        }}
+        renderInput={(params) => <TextField {...params} label="Select Company" />}
+        renderOption={(props, supplier) => (
+          <Box component="li" {...props} key={supplier._id}>
+            {supplier.name}
+          </Box>
+        )}
+      />
+            </Grid>
+            <Grid xs={12} sm={6}>
               <TextField
                 required
                 label="Name"
