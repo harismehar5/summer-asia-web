@@ -85,6 +85,8 @@ export const GET_SALE_RETURN_LIST = BASE_URL + "salereturns";
 export const PURCHASE_BASE_URL = BASE_URL + "purchases";
 // export const ADD_PURCHASE = PURCHASE_BASE_URL + "add_purchase";
 export const GET_PURCHASE_LIST = BASE_URL + "purchases";
+//purchase return
+export const GET_PURCHASE_RETURN_LIST = BASE_URL + "purchasereturns";
 
 //Stock URL
 export const STOCK_BASE_URL = BASE_URL + "stock/";
@@ -139,10 +141,10 @@ export const GET_INVENTORY_StockIn = BASE_URL + "inventories/stockin";
 //Inventory StockOut URL
 export const GET_INVENTORY_StockOut = BASE_URL + "inventories/stockout";
 
-// Dashboard Count URL           
+// Dashboard Count URL
 export const GET_DASHBOARD_COUNT = BASE_URL + "dashboard/counts";
 
-// Dashboard Today URL           
+// Dashboard Today URL
 export const GET_DASHBOARD_TODAY = BASE_URL + "dashboard/balance";
 //Purchase Report Detail URL
 export const GET_Purchase_Reports = BASE_URL + "purchases/detail";

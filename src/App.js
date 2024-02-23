@@ -49,6 +49,8 @@ import ExpiredInventory from "./layout/Inventory/ExpiredInventory";
 import AddExpenseCatagory from "./layout/expenseCatagory/AddExpenseCatagory";
 import ExpenseCatagoryList from "./layout/expenseCatagory/ExpenseCatagory";
 import SalesReturnDetails from "./layout/sale/SalesReturnDetails";
+import PurchaseReturnList from "./layout/purchaseReturn/PurchaseReturnList";
+import PurchaseReturnDetails from "./layout/purchaseReturn/PurchaseReturnDetails";
 
 function App() {
   return (
@@ -135,14 +137,14 @@ function App() {
             <Route path="ledger" element={<GetSalesManLedger />} />
           </Route>
 
-          <Route path="purchase-return/">   
-          <Route 
-          //  index element={
-          //  <Protected Component={GetsalesmanList}/>
-          // }
-          />
-            <Route path="add" element={<PurchaseReturn/>} />
-            </Route>
+          <Route path="purchase-return/">
+            <Route
+            //  index element={
+            //  <Protected Component={GetsalesmanList}/>
+            // }
+            />
+            <Route path="add" element={<PurchaseReturn />} />
+          </Route>
           <Route path="salesReports">
             <Route index element={<SalesReports />} />
           </Route>
@@ -151,7 +153,9 @@ function App() {
             <Route index element={<PurchaseReports />} />
           </Route>
           <Route path="purchase-return">
+            <Route index element={<PurchaseReturnList />} />
             <Route path="add" element={<PurchaseReturn />} />
+            <Route path="_details/:id" element={<PurchaseReturnDetails />} />
           </Route>
           <Route path="sale-return">
             <Route path="adds" element={<AddSalesReturn />} />

@@ -25,10 +25,10 @@ export default function SideBar() {
         <ul>
           <p className="title">Main</p>
           <Link to="/" style={{ textDecoration: "none" }}>
-          <li>
-            <DashboardIcon className="icon" />                  
-              <span>Dashboard</span>         
-          </li>
+            <li>
+              <DashboardIcon className="icon" />
+              <span>Dashboard</span>
+            </li>
           </Link>
           <p className="title">Cash Flow</p>
           <Link to="/customer/cash_flow" style={{ textDecoration: "none" }}>
@@ -163,7 +163,7 @@ export default function SideBar() {
               <span>Sale List</span>
             </li>
           </Link>
-          
+
           <p className="title">Inventory</p>
           <Link to="/inventory" style={{ textDecoration: "none" }}>
             <li>
@@ -177,6 +177,12 @@ export default function SideBar() {
             <li>
               <FormatListBulletedIcon className="icon" />
               <span>Add Purchase Return</span>
+            </li>
+          </Link>
+          <Link to="/purchase-return/" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Purchase Return List</span>
             </li>
           </Link>
 
@@ -201,14 +207,14 @@ export default function SideBar() {
               <span>Estimated Sale</span>
             </li>
           </Link>
-        
+
           {/* <Link to="/product/stock_log" style={{ textDecoration: "none" }}>
             <li>
               <BookIcon className="icon" />
               <span>Stock Log</span>
             </li>
           </Link> */}
-          
+
           <p className="title">Ledger</p>
           <Link to="/customer/ledger" style={{ textDecoration: "none" }}>
             <li>
