@@ -660,7 +660,7 @@ export const supplierCashFlowColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{formatDate(params.row.submit_date)}</div>
+          <div>{formatDate(params.row.submit_date) || "-"}</div>
         </>
       );
     },
@@ -700,7 +700,7 @@ export const customerCashFlowColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{params.value && params.value.name}</div>
+          <div>{(params.value && params.value.name) || "-"}</div>
         </>
       );
     },
@@ -712,16 +712,57 @@ export const customerCashFlowColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{params.value && params.value.name}</div>
+          <div>{(params.value && params.value.name) || "-"}</div>
         </>
       );
     },
   },
-  { field: "description", headerName: "Description", width: 230 },
-  { field: "debit", headerName: "Debit", width: 230 },
-  { field: "credit", headerName: "Credit", width: 230 },
-  { field: "expenseId", headerName: "Expense", width: 230 },
-  { field: "balance", headerName: "Balance", width: 230 },
+  {
+    field: "expenseCategory",
+    headerName: "Expense Catagory",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>
+            {params.row?.expenseId?.expenseCategory?.name || "-"} <br />{" "}
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
+  {
+    field: "debit",
+    headerName: "Debit",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
+  {
+    field: "credit",
+    headerName: "Credit",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
+  {
+    field: "balance",
+    headerName: "Balance",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
   {
     field: "createdAt",
     headerName: "Date",
@@ -729,15 +770,56 @@ export const customerCashFlowColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{formatDate(params.value)}</div>
+          <div>{formatDate(params.value) || "-"}</div>
         </>
       );
     },
   },
-  { field: "purchaseId", headerName: "Purchase Id", width: 230 },
-  { field: "purchaseReturnId", headerName: "Purchase return Id", width: 230 },
-  { field: "saleId", headerName: "Sale Id", width: 230 },
-  { field: "saleReturnId", headerName: "Purchase return Id", width: 230 },
+  {
+    field: "expenseId",
+    headerName: "Expense Id",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{(params.value && params.value._id) || "-"}</div>
+        </>
+      );
+    },
+  },
+
+  {
+    field: "purchaseId",
+    headerName: "Purchase Id",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
+  {
+    field: "saleId",
+    headerName: "Sale Id",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
+  {
+    field: "purchaseReturnId",
+    headerName: "Purchase return Id",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
+  {
+    field: "saleReturnId",
+    headerName: "Purchase return Id",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
+    },
+  },
 ];
 
 export const stockLogColumns = [
