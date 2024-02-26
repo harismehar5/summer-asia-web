@@ -70,6 +70,10 @@ export default function AddSale() {
   const [quantityValues, setQuantityValues] = useState({});
   const [expiryDateValues, setExpiryDateValues] = useState({});
   const [tradeRateValues, setTradeRateValues] = useState({});
+  const [bonusValues, setBonusValues] = useState({});
+  const [discountValues, setDiscountValues] = useState({});
+  const [salesTaxValues, setSalesTaxValues] = useState({});
+  const [totalValues, setTotalValues] = useState(0);
 
   const paymentMediumList = [
     {
@@ -118,6 +122,47 @@ export default function AddSale() {
     getCustomerList();
     calculateAmountAndBags(data);
   }, []);
+
+  useEffect(() => {
+    // Iterate through the data array and calculate the total value for each item
+    const calculatedValues = data.map((item, i) => {
+      // Check for NaN values and empty strings in each individual value
+      const isBonusValid = !isNaN(parseFloat(item.bonus)) && item.bonus !== "";
+      const isDiscountValid =
+        !isNaN(parseFloat(item.discount)) && item.discount !== "";
+      const isSalesTaxValid =
+        !isNaN(parseFloat(item.salesTax)) && item.salesTax !== "";
+
+      // Perform calculations based on conditions
+      let totalValue = 0;
+
+      if (isBonusValid) {
+        // If bonus is valid, include it in the calculation
+        totalValue += quantityValues[i] - parseFloat(item.bonus);
+      } else {
+        // If bonus is not valid, use quantity directly
+        totalValue += quantityValues[i];
+      }
+
+      // Always include trade rate in the calculation
+      totalValue *= tradeRateValues[i];
+
+      if (isDiscountValid) {
+        // If discount is valid, subtract it from the total value
+        totalValue -= (parseFloat(item.discount) / 100) * totalValue;
+      }
+
+      if (isSalesTaxValid) {
+        // If sales tax is valid, add it to the total value
+        totalValue += (parseFloat(item.salesTax) / 100) * totalValue;
+      }
+
+      return totalValue;
+    });
+
+    // Update the totalValues state
+    setTotalValues(calculatedValues);
+  }, [quantityValues, tradeRateValues, data]);
 
   const dataEntry = (data) => {
     axios
@@ -629,6 +674,36 @@ export default function AddSale() {
                       <TextField
                         label="Discount"
                         variant="outlined"
+                        value={discountValues[index] || ""}
+                        onChange={(e) => {
+                          var discount = e.target.value;
+                          // Update discountValues state
+                          setDiscountValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: discount,
+                          }));
+                          // Update data array
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].discount = discount;
+                              // Update netTotal based on quantity, tradeRate, and discount
+                              v[index].netTotal =
+                                parseFloat(v[index].quantity) *
+                                  parseFloat(v[index].tradeRate) -
+                                (isNaN(parseFloat(discount))
+                                  ? 0
+                                  : parseFloat(discount));
+                            })
+                          );
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+
+                    {/* <Grid item md={1} px={1}>
+                      <TextField
+                        label="Discount"
+                        variant="outlined"
                         value={product.discount}
                         onChange={(e) => {
                           var discount = e.target.value;
@@ -640,8 +715,32 @@ export default function AddSale() {
                         }}
                         fullWidth
                       />
-                    </Grid>
+                    </Grid> */}
+
                     <Grid item md={1} px={1}>
+                      <TextField
+                        label="Bonus"
+                        variant="outlined"
+                        value={bonusValues[index] || ""}
+                        onChange={(e) => {
+                          var bonus = e.target.value;
+                          // Update bonusValues state
+                          setBonusValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: bonus,
+                          }));
+                          // Update data array
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].bonus = bonus;
+                            })
+                          );
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+
+                    {/* <Grid item md={1} px={1}>
                       <TextField
                         label="Bonus"
                         variant="outlined"
@@ -656,8 +755,41 @@ export default function AddSale() {
                         }}
                         fullWidth
                       />
-                    </Grid>
+                    </Grid> */}
+
                     <Grid item md={1} px={1}>
+                      <TextField
+                        label="Sales Tax"
+                        variant="outlined"
+                        value={salesTaxValues[index] || ""}
+                        onChange={(e) => {
+                          var salesTax = e.target.value;
+                          // Update salesTaxValues state
+                          setSalesTaxValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: salesTax,
+                          }));
+                          // Update data array
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].salesTax = salesTax;
+                              // Update netTotal based on quantity, tradeRate, discount, and salesTax
+                              v[index].netTotal =
+                                parseFloat(v[index].quantity) *
+                                  parseFloat(v[index].tradeRate) -
+                                (isNaN(parseFloat(v[index].discount))
+                                  ? 0
+                                  : parseFloat(v[index].discount)) +
+                                (isNaN(parseFloat(salesTax))
+                                  ? 0
+                                  : parseFloat(salesTax));
+                            })
+                          );
+                        }}
+                      />
+                    </Grid>
+
+                    {/* <Grid item md={1} px={1}>
                       <TextField
                         label="Sales Tax"
                         variant="outlined"
@@ -671,7 +803,7 @@ export default function AddSale() {
                           );
                         }}
                       />
-                    </Grid>
+                    </Grid> */}
 
                     <Grid item md={1.2} px={1}>
                       <TextField
@@ -700,36 +832,21 @@ export default function AddSale() {
                       />
                     </Grid>
 
-                    {/* <Grid item md={1.2} px={1}>
-                      <TextField
-                        label="Trade Rate"
-                        variant="outlined"
-                        value={tradeRateValues[index] || ""}
-                        onChange={(e) => {
-                          // Assuming you want to handle trade rate changes
-                          var tradeRate = e.target.value;
-                          setTradeRateValues((prevValues) => ({
-                            ...prevValues,
-                            [index]: tradeRate,
-                          }));
-                        }}
-                        fullWidth
-                      />
-                    </Grid> */}
                     <Grid item md={1} px={1}>
                       <TextField
                         label="Sub Total"
                         variant="outlined"
-                        value={quantityValues[index] * tradeRateValues[index]}
-                        onChange={(e) => {
-                          // var tradeRate = e.target.value;
-                        }}
+                        // value={
+                        //   isNaN(parseFloat(data[index].bonus))
+                        //     ? quantityValues[index] * tradeRateValues[index]
+                        //     : (quantityValues[index] -
+                        //         parseFloat(data[index].bonus)) *
+                        //       tradeRateValues[index]
+                        // }
+
+                        value={totalValues}
                         disabled
                       />
-                      {/* {console.log(
-                        "total",
-                        quantityValues[index] * tradeRateValues[index]
-                      )} */}
                     </Grid>
                     <Grid item md={0.5} px={1}>
                       <IconButton
