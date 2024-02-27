@@ -125,7 +125,7 @@ const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           setCustomerList(response.data.data);

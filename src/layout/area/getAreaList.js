@@ -59,7 +59,7 @@ export default function GetAreaList() {
       .get(GET_AREA_LIST)
       .then(function (response) {
         if (response.data.error) {
-          handleSnackbar("error", response.data.error_msg);
+          handleSnackbar("error", response.data.error);
         } else {
           setData(response.data.data);
         }
@@ -76,8 +76,8 @@ export default function GetAreaList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           refreshData();
@@ -100,8 +100,8 @@ export default function GetAreaList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           resetForm();
@@ -127,8 +127,8 @@ export default function GetAreaList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           resetForm();

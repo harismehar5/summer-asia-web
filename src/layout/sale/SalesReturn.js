@@ -64,7 +64,7 @@ export default function SalesReturnDetails() {
         console.log(response.data.data);
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           setData(response.data.data);

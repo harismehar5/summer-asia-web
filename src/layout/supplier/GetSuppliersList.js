@@ -84,7 +84,7 @@ export default function GetSuppliersList() {
         // console.log(response.data.data);
         // if (response.data.error) {
         // setOpen(true);
-        // setMessage(response.data.error_msg);
+        // setMessage(response.data.error);
         // setSeverity("error");
         // } else {
         setData(response.data.data);
@@ -102,11 +102,11 @@ export default function GetSuppliersList() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage(response.data.message);
           setSeverity("success");
         }
       })
@@ -133,11 +133,11 @@ export default function GetSuppliersList() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage(response.data.message);
           setSeverity("success");
           setOpenPopup(false);
           setId("");

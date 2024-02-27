@@ -62,7 +62,7 @@ export default function GetSalesManList() {
       .then(function (response) {
         // console.log("salesman list:",JSON.stringify(response,null,2));
         if (response.data.error) {
-          handleSnackbar("error", response.data.error_msg);
+          handleSnackbar("error", response.data.error);
         } else {
           const formattedData = response.data.data.map((salesman) => ({
             ...salesman,
@@ -112,8 +112,8 @@ export default function GetSalesManList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           refreshData();
@@ -148,8 +148,8 @@ export default function GetSalesManList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           refreshData();
@@ -185,8 +185,8 @@ export default function GetSalesManList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           setOpenPopup(false);
@@ -292,7 +292,7 @@ export default function GetSalesManList() {
       .then(function (response) {
         // console.log("salesman list:", response.data);
         if (response.data.error) {
-          handleSnackbar("error", response.data.error_msg);
+          handleSnackbar("error", response.data.error);
         } else {
           const formattedData = response.data.data.map((salesman) => ({
             ...salesman,

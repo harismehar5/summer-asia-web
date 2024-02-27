@@ -92,7 +92,7 @@ export default function AddCustomers() {
         if (response.data.error) {
           handleSnackbar("error", response.data.error);
         } else {
-          handleSnackbar("success", response.data.success);
+          handleSnackbar("success", response.data.message);
           resetForm();
         }
       })

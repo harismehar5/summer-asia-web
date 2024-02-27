@@ -1,5 +1,9 @@
 // export const BASE_URL = "https://summer-asia.herokuapp.com/";
-export const BASE_URL = "https://medical-app-backend-v2.vercel.app/api/";
+//  Original DataBase
+// export const BASE_URL = "https://medical-app-backend-v2.vercel.app/api/";
+// Testing DataBase
+export const BASE_URL = "https://medical-pos-testing.vercel.app/api/";
+
 
 //Supplier URL
 export const SUPPLIER_BASE_URL = BASE_URL + "companies/";

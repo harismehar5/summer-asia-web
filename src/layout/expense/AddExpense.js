@@ -41,7 +41,7 @@ export default function AddExpense() {
         // console.log("response ==", JSON.stringify(response, null, 2));
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           // console.log(response.data.data);
@@ -73,7 +73,7 @@ export default function AddExpense() {
           setDescription("");
         } else {
           setOpen(true);
-          setMessage(response.error_msg);
+          setMessage(response.error);
           setSeverity("error");
         }
       })
