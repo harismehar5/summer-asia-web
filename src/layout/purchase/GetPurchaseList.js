@@ -65,7 +65,7 @@ export default function GetPurchaseList() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
         } else {
           // console.log("data", JSON.stringify(response, null, 2));

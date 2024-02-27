@@ -65,7 +65,7 @@ export default function GetCustomersList() {
       .then(function (response) {
         // console.log("Customers list:", response.data);
         if (response.data.error) {
-          handleSnackbar("error", response.data.error_msg);
+          handleSnackbar("error", response.data.error);
         } else {
           // Map through the response data and format the date
           const formattedData = response.data.data.map((customer) => ({
@@ -115,8 +115,8 @@ export default function GetCustomersList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           // Remove refreshData call
@@ -152,8 +152,8 @@ export default function GetCustomersList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           GetCustomerService();
@@ -186,8 +186,8 @@ export default function GetCustomersList() {
         handleSnackbar(
           response.data.error ? "error" : "success",
           response.data.error
-            ? response.data.error_msg
-            : response.data.success_msg
+            ? response.data.error
+            : response.data.message
         );
         if (!response.data.error) {
           setOpenPopup(false);

@@ -78,13 +78,17 @@ export default function AddSalesReturn() {
     getsalesmanList();
     calculateAmountAndBags(data);
   }, []);
-
+//
 
   const dataEntry = (data) => {
     axios
       .post(GET_SALESRETURN_LIST, data)
       .then(response => {
-        // console.log("Response", response)
+        if (response.data.error) {
+          handleSnackbar("error", response.data.error);
+        } else {
+          handleSnackbar("success", response.data.message);
+        }
       }
       )
       .catch((error) => {
@@ -98,12 +102,7 @@ export default function AddSalesReturn() {
     axios
       .get(GET_ALL_PRODUCTS)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setProductList(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -115,13 +114,7 @@ export default function AddSalesReturn() {
     axios
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
         setCustomerCode(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -135,7 +128,7 @@ export default function AddSalesReturn() {
       .then(function (response) {
         // if (response.data.error) {
         //   setOpen(true);
-        //   setMessage(response.data.error_msg);
+        //   setMessage(response.data.error);
         //   setSeverity("error");
         // } else {
         setsalesman(response.data.data);

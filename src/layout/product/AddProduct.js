@@ -62,14 +62,14 @@ export default function AddProduct() {
     axios
       .post(ADD_PRODUCT, product)
       .then(function (response) {
-        // console.log(response);
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
+        console.log(response);
+        if (response.data.error) {
+          setOpen(true);
+          setMessage(response.data.error);
+          setSeverity("error");
+        } else {
         setOpen(true);
-        // setMessage(response.data.success_msg);
+        setMessage(response.data.message);
         setSeverity("success");
         setName("");
         setCode("");
@@ -81,7 +81,7 @@ export default function AddProduct() {
         setPurchaseRate("");
         setMaximumRetailPrice("");
         setDistributerPrice("");
-        // }
+        }
       })
       .catch(function (error) {
         setOpen(true);
@@ -95,7 +95,7 @@ export default function AddProduct() {
       .then(function (response) {
         // if (response.data.error) {
         //   setOpen(true);
-        //   setMessage(response.data.error_msg);
+        //   setMessage(response.data.error);
         //   setSeverity("error");
         // } else {
         setCompanyList(response.data.data);

@@ -67,13 +67,13 @@ export default function AddSupplier() {
       .post(ADD_COMPANY, supplier)
       .then(function (response) {
         console.log(response);
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error_msg);
-        //   setSeverity("error");
-        // } else {
+        if (response.data.error) {
+          setOpen(true);
+          setMessage(response.data.error);
+          setSeverity("error");
+        } else {
         setOpen(true);
-        // setMessage(response.data.success_msg);
+        setMessage(response.data.message);
         setSeverity("success");
         setCode("");
         setName("");
@@ -84,7 +84,7 @@ export default function AddSupplier() {
         setAddress("");
         setLicense("");
         setEmail("");
-        // }
+        }
       })
       .catch(function (error) {
         setOpen(true);

@@ -132,7 +132,7 @@ export default function GetProductStock() {
       .then(function (response) {
         // if (response.data.error) {
         //   setOpen(true);
-        //   setMessage(response.data.error_msg);
+        //   setMessage(response.data.error);
         //   setSeverity("error");
         // } else {
           setData(response.data.data);
@@ -184,12 +184,12 @@ export default function GetProductStock() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
           setEditOpenPopup(false);
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage(response.data.message);
           setSeverity("success");
           setName("");
           setEditOpenPopup(false);
@@ -210,12 +210,12 @@ export default function GetProductStock() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
           setStockInOpenPopup(false);
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage(response.data.message);
           setSeverity("success");
           setQuantity("");
           setStockInOpenPopup(false);
@@ -236,12 +236,12 @@ export default function GetProductStock() {
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
-          setMessage(response.data.error_msg);
+          setMessage(response.data.error);
           setSeverity("error");
           setStockOutOpenPopup(false);
         } else {
           setOpen(true);
-          setMessage(response.data.success_msg);
+          setMessage(response.data.message);
           setSeverity("success");
           setQuantity("");
           setStockOutOpenPopup(false);

@@ -75,7 +75,12 @@ export default function AddPurchase() {
     axios
       .post(GET_PURCHASERETURN, data)
       .then(response => {
-        // console.log("Response", response)
+        if (response.data.error) {
+          handleSnackbar("error", response.data.error);
+        } else {
+          handleSnackbar("success", response.data.message);
+        }
+      
       }
       )
       .catch((error) => {
@@ -84,14 +89,18 @@ export default function AddPurchase() {
         setSeverity("error");
       });
   };
-
+  const handleSnackbar = (severity, message) => {
+    setOpen(true);
+    setSeverity(severity);
+    setMessage(message);
+  };
   const getStockList = () => {
     axios
       .get(GET_ALL_PRODUCTS)
       .then(function (response) {
         // if (response.data.error) {
         //   setOpen(true);
-        //   setMessage(response.data.error_msg);
+        //   setMessage(response.data.error);
         //   setSeverity("error");
         // } else {
         setProductList(response.data.data);
@@ -109,7 +118,7 @@ export default function AddPurchase() {
       .then(function (response) {
         // if (response.data.error) {
         //   setOpen(true);
-        //   setMessage(response.data.error_msg);
+        //   setMessage(response.data.error);
         //   setSeverity("error");
         // } else {
         setSupplierList(response.data.data);
