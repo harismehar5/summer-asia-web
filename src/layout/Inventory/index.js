@@ -579,7 +579,7 @@ export default function GetProductStock() {
                     onClick={() => {
                       setQuantity("");
                       setID("");
-                      setStockInOpenPopup(false);
+                      setStockOutOpenPopup(false);
                     }}
                   >
                     Cancel
