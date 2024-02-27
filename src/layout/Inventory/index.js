@@ -400,6 +400,7 @@ export default function GetProductStock() {
                 required
                 label={"Product Code"}
                 fullWidth
+                disabled
                 variant="outlined"
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
@@ -410,6 +411,7 @@ export default function GetProductStock() {
                 required
                 label="Batch Code"
                 fullWidth
+                disabled
                 variant="outlined"
                 value={batchCode}
                 onChange={(event) => setBatchCode(event.target.value)}
@@ -420,6 +422,7 @@ export default function GetProductStock() {
                 required
                 label="Expiry Date"
                 fullWidth
+                disabled
                 variant="outlined"
                 type="date"
                 value={expiryDate}
@@ -501,6 +504,7 @@ export default function GetProductStock() {
                 required
                 label="Product Code"
                 fullWidth
+                 disabled
                 variant="outlined"
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
@@ -511,6 +515,7 @@ export default function GetProductStock() {
                 required
                 label="Batch Code"
                 fullWidth
+                disabled
                 variant="outlined"
                 value={batchCode}
                 onChange={(event) => setBatchCode(event.target.value)}
@@ -521,6 +526,7 @@ export default function GetProductStock() {
                 required
                 label="Expiry Date"
                 fullWidth
+                disabled
                 variant="outlined"
                 type="date"
                 value={expiryDate}
