@@ -4,7 +4,6 @@
 // Testing DataBase
 export const BASE_URL = "https://medical-pos-testing.vercel.app/api/";
 
-
 //Supplier URL
 export const SUPPLIER_BASE_URL = BASE_URL + "companies/";
 export const ADD_SUPPLIER = SUPPLIER_BASE_URL + "add_supplier";

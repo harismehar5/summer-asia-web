@@ -108,6 +108,7 @@ export default function GetSuppliersList() {
           setOpen(true);
           setMessage(response.data.message);
           setSeverity("success");
+          getSuppliersList();
         }
       })
       .catch(function (error) {
@@ -143,6 +144,7 @@ export default function GetSuppliersList() {
           setId("");
           setName("");
           setPhone("");
+          getSuppliersList();
           // setOpeningBalance("");
         }
       })
