@@ -1,3 +1,5 @@
+//GetSupplierList
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { IconButton } from "@mui/material";
@@ -37,6 +39,7 @@ export default function GetSuppliersList() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+  // const [code, setCode] = useState("");
   var supplier = {
     name: "",
     phone: "",
@@ -78,6 +81,7 @@ export default function GetSuppliersList() {
     axios
       .get(GET_ALL_COMPANIES)
       .then(function (response) {
+        // console.log(response.data.data);
         // if (response.data.error) {
         // setOpen(true);
         // setMessage(response.data.error_msg);
@@ -113,14 +117,19 @@ export default function GetSuppliersList() {
       });
   };
   const updateSupplier = () => {
-    supplier = {
+    let supplier = {
+      code: code,
       name: name,
-      phone: phone,
+      person: personName,
+      email: email,
+      phoneNumber: phone,
       address: address,
-      opening_balance: openingBalance,
+      license: license,
+      accountNumber: accountNumber,
+      description: description,
     };
     axios
-      .patch(UPDATE_SUPPLIER_BY_ID + id, supplier)
+      .put(UPDATE_SUPPLIER_BY_ID + id, supplier)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -134,7 +143,7 @@ export default function GetSuppliersList() {
           setId("");
           setName("");
           setPhone("");
-          setOpeningBalance("");
+          // setOpeningBalance("");
         }
       })
       .catch(function (error) {
@@ -147,8 +156,8 @@ export default function GetSuppliersList() {
   const validation = () => {
     if (
       name.length === 0 ||
-      phone.length === 0 ||
-      openingBalance.length === 0
+      phone.length === 0
+      // openingBalance.length === 0
     ) {
       setOpen(true);
       setMessage("Some fields are missing");
@@ -166,9 +175,17 @@ export default function GetSuppliersList() {
   const editSupplier = (customer) => {
     setOpenPopup(true);
     setId(customer._id);
+    setCode(customer.code);
     setName(customer.name);
-    setPhone(customer.phone);
-    setOpeningBalance(customer.opening_balance);
+    setPersonName(customer.person);
+    setEmail(customer.email);
+    setPhone(customer.phoneNumber);
+    setAddress(customer.address);
+    setLicense(customer.license);
+    setAccountNumber(customer.accountNumber);
+    setDescription(customer.description);
+
+    // setOpeningBalance(customer.opening_balance);
   };
   return (
     <div className="list">
@@ -187,13 +204,12 @@ export default function GetSuppliersList() {
           isForTransaction={false}
         />
         <Popup
-          title="Customer Form"
+          title="Company Form"
           openPopup={openPopup}
           setOpenPopup={setOpenPopup}
         >
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={8}>
-            </Grid>
+            <Grid item xs={12} sm={8}></Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 required
@@ -279,8 +295,7 @@ export default function GetSuppliersList() {
                 onChange={(event) => setDescription(event.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}
@@ -306,7 +321,7 @@ export default function GetSuppliersList() {
                     onClick={() => {
                       setName("");
                       setPhone("");
-                      setOpeningBalance("");
+                      setOpenPopup(false);
                     }}
                   >
                     Cancel

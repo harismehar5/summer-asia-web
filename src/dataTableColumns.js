@@ -40,6 +40,11 @@ export const supplierColumn = [
     width: 150,
   },
   {
+    field: "email",
+    headerName: "Email",
+    width: 150,
+  },
+  {
     field: "phoneNumber",
     headerName: "Phone Number",
     width: 150,
@@ -52,6 +57,16 @@ export const supplierColumn = [
   {
     field: "license",
     headerName: "License Number",
+    width: 150,
+  },
+  {
+    field: "accountNumber",
+    headerName: "Account Number",
+    width: 150,
+  },
+  {
+    field: "description",
+    headerName: "Description",
     width: 150,
   },
 ];
@@ -731,14 +746,7 @@ export const customerCashFlowColumn = [
       );
     },
   },
-  {
-    field: "description",
-    headerName: "Description",
-    width: 230,
-    renderCell: (params) => {
-      return <span>{params.value || "-"}</span>;
-    },
-  },
+
   {
     field: "debit",
     headerName: "Debit",
@@ -773,6 +781,14 @@ export const customerCashFlowColumn = [
           <div>{formatDate(params.value) || "-"}</div>
         </>
       );
+    },
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 230,
+    renderCell: (params) => {
+      return <span>{params.value || "-"}</span>;
     },
   },
   {
@@ -814,7 +830,7 @@ export const customerCashFlowColumn = [
   },
   {
     field: "saleReturnId",
-    headerName: "Purchase return Id",
+    headerName: "Sale return Id",
     width: 230,
     renderCell: (params) => {
       return <span>{params.value || "-"}</span>;
