@@ -54,6 +54,24 @@ export default function AddCustomers() {
       });
   }, []);
 
+  const handleExpiryDateChange = (event) => {
+    const selectedDate = new Date(event.target.value);
+    const currentDate = new Date();
+
+    // Check if the selected date is before the current date
+    if (selectedDate < currentDate) {
+      // Provide feedback to the user, for example:
+      alert("Please select a future date.");
+
+      // Set the input value back to the current date
+      // setExpiryDate(currentDate.toISOString().split("T")[0]);
+      return;
+    } else {
+      // Update the state if the selected date is valid
+      setLicenseExpiryDate(event.target.value);
+    }
+  };
+
   const addCustomer = () => {
     const customerData = {
       name: name,
@@ -80,7 +98,7 @@ export default function AddCustomers() {
       })
       .catch(function (error) {
         // console.error("Error adding customer:", error);
-        handleSnackbar("error",  error.response.data.error);
+        handleSnackbar("error", error.response.data.error);
       });
   };
 
@@ -148,7 +166,6 @@ export default function AddCustomers() {
       isValid = false;
     }
 
-
     if (isValid) {
       addCustomer();
     } else {
@@ -203,7 +220,9 @@ export default function AddCustomers() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{codeError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {codeError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -216,7 +235,9 @@ export default function AddCustomers() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{nameError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {nameError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -230,7 +251,9 @@ export default function AddCustomers() {
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{phoneError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {phoneError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -243,7 +266,9 @@ export default function AddCustomers() {
                 value={ntn}
                 onChange={(event) => setNtn(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{ntnError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {ntnError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -256,7 +281,9 @@ export default function AddCustomers() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{emailError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {emailError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -269,7 +296,9 @@ export default function AddCustomers() {
                 value={license}
                 onChange={(event) => setLicense(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{licenseError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {licenseError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <TextField
@@ -281,12 +310,15 @@ export default function AddCustomers() {
                 fullWidth
                 variant="outlined"
                 value={licenseExpiryDate}
-                onChange={(event) => setLicenseExpiryDate(event.target.value)}
+                // onChange={(event) => setLicenseExpiryDate(event.target.value)}
+                onChange={handleExpiryDateChange}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
-              <FormHelperText style={{ color: "red" }}>{licenseExpiryDateError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {licenseExpiryDateError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               <FormControl fullWidth variant="outlined" required>
@@ -305,7 +337,9 @@ export default function AddCustomers() {
                   ))}
                 </Select>
               </FormControl>
-              <FormHelperText style={{ color: "red" }}>{areaCodeError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {areaCodeError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={4} sm={3}>
               <TextField
@@ -318,7 +352,9 @@ export default function AddCustomers() {
                 value={bankAccount}
                 onChange={(event) => setBankAccount(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{bankAccountError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {bankAccountError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -331,7 +367,9 @@ export default function AddCustomers() {
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
               />
-              <FormHelperText style={{ color: "red" }}>{addressError}</FormHelperText>
+              <FormHelperText style={{ color: "red" }}>
+                {addressError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}></Grid>
             <Grid item xs={6} sm={6} md={6}>

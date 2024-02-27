@@ -1,3 +1,5 @@
+// addPurchaseReturn
+
 import React, { useEffect, useRef, useState } from "react";
 //
 import "./style.css";
@@ -62,6 +64,8 @@ export default function AddPurchase() {
   const [IsExpired, setIsExpired] = useState(true);
   const [isWarranted, setisWarranted] = useState(false);
   const [isEstimated, setIsEstimated] = useState(false);
+  const [subTotalValues, setSubTotalValues] = useState({});
+  const [invoiceTotal, setinvoiceTotal] = useState();
   const paymentMediumList = [
     {
       id: 1,
@@ -362,7 +366,41 @@ export default function AddPurchase() {
                         fullWidth
                       />
                     </Grid>
+
                     <Grid item md={1.5} px={1}>
+                      <TextField
+                        label="Expiry Date"
+                        type="date"
+                        onChange={(e) => {
+                          var selectedDate = new Date(e.target.value);
+                          var currentDate = new Date();
+
+                          // Check if the selected date is before the current date
+                          if (selectedDate < currentDate) {
+                            // Provide feedback to the user, for example:
+                            alert("Please select a future date.");
+
+                            // Set the input value back to the current date
+                            e.target.valueAsDate = currentDate;
+                            // return;
+                          } else {
+                            // Update the data if the selected date is valid
+                            var expiryDate = e.target.value;
+                            setData((currentData) =>
+                              produce(currentData, (v) => {
+                                v[index].expiryDate = expiryDate;
+                              })
+                            );
+                          }
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+
+                    {/* <Grid item md={1.5} px={1}>
                       <TextField
                         label="Expiry Date"
                         type="date"
@@ -380,7 +418,7 @@ export default function AddPurchase() {
                         }}
                         fullWidth
                       />
-                    </Grid>
+                    </Grid> */}
                     <Grid item md={1} px={1}>
                       <TextField
                         label="Quantity"
@@ -464,10 +502,27 @@ export default function AddPurchase() {
                       <TextField
                         label="Sub Total"
                         variant="outlined"
-                        value={product.quantity * product.tradeRate}
-                        disabled
+                        value={subTotalValues[index] || ""}
+                        onChange={(e) => {
+                          var subtotal = e.target.value;
+
+                          // Update the subtotal state
+                          setSubTotalValues((prevValues) => ({
+                            ...prevValues,
+                            [index]: subtotal,
+                          }));
+                        }}
                       />
                     </Grid>
+                    {/* <Grid item md={1} px={1}>
+                      <TextField
+                        label="Sub Total"
+                        variant="outlined"
+                        value={product.quantity * product.tradeRate}
+                        // value={}
+                        disabled
+                      />
+                    </Grid> */}
                     <Grid item md={0.5} px={1}>
                       <IconButton
                         className="delete-icon-button"
@@ -556,6 +611,16 @@ export default function AddPurchase() {
                 variant="outlined"
                 value={invoiceAmount}
                 onChange={(event) => setInvoiceAmount(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                label="Total Amount"
+                fullWidth
+                variant="outlined"
+                value={invoiceTotal}
+                onChange={(event) => setinvoiceTotal(event.target.value)}
               />
             </Grid>
             <Grid
@@ -662,7 +727,7 @@ export default function AddPurchase() {
                     right: 50,
                   }}
                 >
-                  {calculateTotalAmount() - invoiceDiscount}
+                  {invoiceTotal}
                 </Typography>
               </Typography>
             </Grid>

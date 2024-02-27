@@ -1,3 +1,5 @@
+//index.js inventory
+
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import axios from "axios";
@@ -5,7 +7,7 @@ import "./styles.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Sidebar from "../../components/sidebar/SideBar";
 import Navbar from "../../components/navbar/Navbar";
-import { inventoryListColumns,} from "../../dataTableColumns";
+import { inventoryListColumns } from "../../dataTableColumns";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Button, Stack } from "@mui/material";
@@ -91,6 +93,25 @@ export default function GetProductStock() {
       },
     },
   ];
+
+  const handleExpiryDateChange = (event) => {
+    const selectedDate = new Date(event.target.value);
+    const currentDate = new Date();
+
+    // Check if the selected date is before the current date
+    if (selectedDate < currentDate) {
+      // Provide feedback to the user, for example:
+      alert("Please select a future date.");
+
+      // Set the input value back to the current date
+      // setExpiryDate(currentDate.toISOString().split("T")[0]);
+      return;
+    } else {
+      // Update the state if the selected date is valid
+      setExpiryDate(event.target.value);
+    }
+  };
+
   function formatDate(date) {
     const d = new Date(date);
     let month = "" + (d.getMonth() + 1);
@@ -192,7 +213,6 @@ export default function GetProductStock() {
         setSeverity("error");
         // console.error(error.stack); // Log the stack trace
       });
-      
   };
   const fetchAllProductOptions = () => {
     axios
@@ -327,7 +347,7 @@ export default function GetProductStock() {
                 variant="outlined"
                 type="date"
                 value={expiryDate}
-                onChange={(event) => setExpiryDate(event.target.value)}
+                onChange={handleExpiryDateChange}
                 InputLabelProps={{
                   shrink: true,
                 }}
