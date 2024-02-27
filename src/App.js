@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Protected from "./utils/protectedRoute";
 import Dashboard from "./layout/dashboard/Dashboard";
 import GetCustomerList from "./layout/customer/GetCustomersList";
 import AddCustomer from "./layout/customer/AddCustomer";
@@ -51,115 +52,191 @@ import ExpenseCatagoryList from "./layout/expenseCatagory/ExpenseCatagory";
 import SalesReturnDetails from "./layout/sale/SalesReturnDetails";
 import PurchaseReturnList from "./layout/purchaseReturn/PurchaseReturnList";
 import PurchaseReturnDetails from "./layout/purchaseReturn/PurchaseReturnDetails";
+import Login from "./layout/login/login";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/">
-          <Route index element={<Dashboard />} />
-          <Route path="customer">
-            <Route index element={<GetCustomerList />} />
-            <Route path="add" element={<AddCustomer />} />
-            <Route path="edit/:id" element={<EditCustomer />} />
-            <Route path="add_cash_in" element={<AddCustomerCashIn />} />
-            <Route path="add_cash_out" element={<AddCustomerCashOut />} />
-            <Route path="get_cash_in" element={<GetCustomerCashIn />} />
-            <Route path="get_cash_out" element={<GetCustomerCashOut />} />
-            <Route path="cash_flow" element={<GetCustomerCashFlow />} />
-            <Route path="ledger" element={<GetCustomerLedger />} />
-          </Route>
-          <Route path="supplier">
-            <Route index element={<GetSuppliersList />} />
-            <Route path="add" element={<AddSupplier />} />
-            <Route path="edit/:id" element={<EditSupplier />} />
-            <Route path="add_cash_in" element={<AddSupplierCashIn />} />
-            <Route path="add_cash_out" element={<AddSupplierCashOut />} />
-            <Route path="get_cash_in" element={<GetSupplierCashIn />} />
-            <Route path="get_cash_out" element={<GetSupplierCashOut />} />
-            <Route path="cash_flow" element={<GetSupplierCashFlow />} />
-            <Route path="ledger" element={<GetSupplierLedger />} />
-          </Route>
-          <Route path="expense">
-            <Route index element={<GetExpensesList />} />
-            <Route path="add" element={<AddExpense />} />
-            <Route path="edit/:id" element={<EditExpense />} />
-          </Route>
-          <Route path="expense/catagory">
-            <Route index element={<GetExpensesList />} />
-            <Route path="add" element={<AddExpenseCatagory />} />
-            <Route path="list" element={<ExpenseCatagoryList />} />
-          </Route>
-          <Route path="product">
-            <Route index element={<GetProductStock />} />
-            <Route path="add" element={<AddProduct />} />
-            <Route path="stock_log" element={<StockLog />} />
-          </Route>
+        <Route path="/" element={<Protected Component={Dashboard} />} />
+        <Route path="login" element={<Login/>} />
 
-          <Route path="inventory">
-            <Route index element={<Inventory />} />
-            <Route path="expired" element={<ExpiredInventory />} />
-            {/* <Route path="add" element={<AddProduct />} />
-            <Route path="stock_log" element={<StockLog />} /> */}
-          </Route>
+        <Route
+          path="customer/"
+          element={<Protected Component={GetCustomerList} />}
+        >
+          <Route path="add" element={<Protected Component={AddCustomer} />} />
+          <Route
+            path="edit/:id"
+            element={<Protected Component={EditCustomer} />}
+          />
+          <Route
+            path="add_cash_in"
+            element={<Protected Component={AddCustomerCashIn} />}
+          />
+          <Route
+            path="add_cash_out"
+            element={<Protected Component={AddCustomerCashOut} />}
+          />
+          <Route
+            path="get_cash_in"
+            element={<Protected Component={GetCustomerCashIn} />}
+          />
+          <Route
+            path="get_cash_out"
+            element={<Protected Component={GetCustomerCashOut} />}
+          />
+          <Route
+            path="cash_flow"
+            element={<Protected Component={GetCustomerCashFlow} />}
+          />
+          <Route
+            path="ledger"
+            element={<Protected Component={GetCustomerLedger} />}
+          />
+        </Route>
 
-          <Route path="sale">
-            <Route index element={<GetSaleList />} />
-            <Route path="sale_details/:id" element={<SalesDetails />} />
-            <Route path="add" element={<AddSale />} />
+        <Route path="supplier/">
+          <Route
+            index
+            element={<Protected Component={GetSuppliersList} />}
+          />
+          <Route path="add" element={<Protected Component={AddSupplier} />} />
+          <Route
+            path="edit/:id"
+            element={<Protected Component={EditSupplier} />}
+          />
+          <Route
+            path="add_cash_in"
+            element={<Protected Component={AddSupplierCashIn} />}
+          />
+          <Route
+            path="add_cash_out"
+            element={<Protected Component={AddSupplierCashOut} />}
+          />
+          <Route
+            path="get_cash_in"
+            element={<Protected Component={GetSupplierCashIn} />}
+          />
+          <Route
+            path="get_cash_out"
+            element={<Protected Component={GetSupplierCashOut} />}
+          />
+          <Route
+            path="cash_flow"
+            element={<Protected Component={GetSupplierCashFlow} />}
+          />
+          <Route
+            path="ledger"
+            element={<Protected Component={GetSupplierLedger} />}
+          />
+        </Route>
+
+        <Route path="expense/">
+          <Route
+            index
+            element={<Protected Component={GetExpensesList} />}
+          />
+          <Route path="add" element={<Protected Component={AddExpense} />} />
+          <Route
+            path="edit/:id"
+            element={<Protected Component={EditExpense} />}
+          />
+        </Route>
+
+        <Route path="expense/catagory">
+          <Route
+            index
+            element={<Protected Component={GetExpensesList} />}
+          />
+          <Route path="add" element={<Protected Component={AddExpenseCatagory} />} />
+          <Route path="list" element={<Protected Component={ExpenseCatagoryList} />} />
+        </Route>
+
+        <Route path="product/">
+          <Route
+            index
+            element={<Protected Component={GetProductStock} />}
+          />
+          <Route path="add" element={<Protected Component={AddProduct} />} />
+          <Route path="stock_log" element={<Protected Component={StockLog} />} />
+        </Route>
+
+        <Route path="inventory/">
+          <Route index element={<Protected Component={Inventory} />} />
+          <Route path="expired" element={<Protected Component={ExpiredInventory} />} />
+        </Route>
+
+        <Route path="sale/">
+          <Route index element={<Protected Component={GetSaleList} />} />
+          <Route
+            path="sale_details/:id"
+            element={<Protected Component={SalesDetails} />}
+          />
+          <Route path="add" element={<Protected Component={AddSale} />} />
+
+          <Route path="sale_return">
+            <Route index element={<Protected Component={SalesReturn} />} />
             <Route
-              path="sale_return_details/:id"
-              element={<SalesReturnDetails />}
+              path="_details/:id"
+              element={<Protected Component={SalesReturnDetails} />}
             />
+          </Route>
+          <Route path="sale_estimated" element={<Protected Component={EstimatedSale} />} />
+        </Route>
 
-            <Route path="sale_return">
-              <Route index element={<SalesReturn />} />
-              <Route path="_details/:id" element={<SalesReturnDetails />} />
-            </Route>
-            <Route path="sale_estimated" element={<EstimatedSale />} />
-          </Route>
-          <Route path="purchase">
-            <Route index element={<GetPurchaseList />} />
-            <Route path="add" element={<AddPurchase />} />
-            <Route path="purchase_details/:id" element={<PurchaseDetails />} />
-          </Route>
-          <Route path="area">
-            <Route index element={<GetAreaList />} />
-            <Route path="add" element={<AddArea />} />
-          </Route>
-          <Route path="customers">
-            <Route index element={<GetCustomersList />} />
-            <Route path="add" element={<AddCustomers />} />
-          </Route>
-          <Route path="salesman">
-            <Route index element={<GetSalesManList />} />
-            <Route path="add" element={<AddSalesMan />} />
-            <Route path="ledger" element={<GetSalesManLedger />} />
-          </Route>
+        <Route path="purchase/">
+          <Route index element={<Protected Component={GetPurchaseList} />} />
+          <Route path="add" element={<Protected Component={AddPurchase} />} />
+          <Route
+            path="purchase_details/:id"
+            element={<Protected Component={PurchaseDetails} />}
+          />
+        </Route>
 
-          <Route path="purchase-return/">
-            <Route
-            //  index element={
-            //  <Protected Component={GetsalesmanList}/>
-            // }
-            />
-            <Route path="add" element={<PurchaseReturn />} />
-          </Route>
-          <Route path="salesReports">
-            <Route index element={<SalesReports />} />
-          </Route>
+        <Route path="area/">
+          <Route index element={<Protected Component={GetAreaList} />} />
+          <Route path="add" element={<Protected Component={AddArea} />} />
+        </Route>
 
-          <Route path="purchaseReposts">
-            <Route index element={<PurchaseReports />} />
-          </Route>
-          <Route path="purchase-return">
-            <Route index element={<PurchaseReturnList />} />
-            <Route path="add" element={<PurchaseReturn />} />
-            <Route path="_details/:id" element={<PurchaseReturnDetails />} />
-          </Route>
-          <Route path="sale-return">
-            <Route path="adds" element={<AddSalesReturn />} />
-          </Route>
+        <Route path="customers/">
+          <Route index element={<Protected Component={GetCustomersList} />} />
+          <Route path="add" element={<Protected Component={AddCustomers} />} />
+        </Route>
+
+        <Route path="salesman/">
+          <Route index element={<Protected Component={GetSalesManList} />} />
+          <Route path="add" element={<Protected Component={AddSalesMan} />} />
+          <Route path="ledger" element={<Protected Component={GetSalesManLedger} />} />
+        </Route>
+
+        <Route path="purchase-return/">
+          {/* Add Protected Component for this route if needed */}
+          <Route path="add" element={<Protected Component={PurchaseReturn} />} />
+        </Route>
+
+        <Route path="salesReports">
+          <Route index element={<Protected Component={SalesReports} />} />
+        </Route>
+
+        <Route path="purchaseReposts">
+          <Route index element={<Protected Component={PurchaseReports} />} />
+        </Route>
+
+        <Route path="purchase-return">
+          <Route index element={<Protected Component={PurchaseReturnList} />} />
+          <Route
+            path="add"
+            element={<Protected Component={PurchaseReturn} />}
+          />
+          <Route
+            path="_details/:id"
+            element={<Protected Component={PurchaseReturnDetails} />}
+          />
+        </Route>
+
+        <Route path="sale-return">
+          <Route path="adds" element={<Protected Component={AddSalesReturn} />} />
         </Route>
       </Routes>
     </Router>
