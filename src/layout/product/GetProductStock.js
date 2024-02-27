@@ -136,6 +136,8 @@ export default function GetProductStock() {
         //   setSeverity("error");
         // } else {
           setData(response.data.data);
+
+          console.log("data :",response.data.data);
         // }
       })
       .catch(function (error) {

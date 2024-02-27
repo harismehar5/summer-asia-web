@@ -77,6 +77,20 @@ export const productColumns = [
     width: 100,
   },
   {
+    field: "companyCode",
+    headerName: "Company",
+    width: 250,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>
+            {(params.row.companyCode && params.row.companyCode.name) || "-"}
+          </div>
+        </>
+      );
+    },
+  },
+  {
     field: "name",
     headerName: "Name",
     width: 230,

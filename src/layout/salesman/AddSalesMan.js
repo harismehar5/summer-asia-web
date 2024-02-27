@@ -169,7 +169,12 @@ export default function AddSalesMan() {
     } else {
       setRefPersonNumberError("");
     }
-  
+    if (descriptionError.trim() === "") {
+      setDescriptionError("Enter Description");
+      isValid = false;
+    } else {
+      setDescriptionError("");
+    }
     if (target.trim() === "") {
       setTargetError("Enter target");
       isValid = false;
@@ -425,6 +430,19 @@ export default function AddSalesMan() {
                 onChange={(event) => setTarget(event.target.value)}
               />
               <FormHelperText style={{ color: 'red' }}>{targetError}</FormHelperText>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                id="description"
+                name="description"
+                label="Description"
+                fullWidth
+                variant="outlined"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+              />
+              <FormHelperText style={{ color: 'red' }}>{descriptionError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>

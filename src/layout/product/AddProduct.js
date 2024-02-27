@@ -31,6 +31,7 @@ export default function AddProduct() {
   const [purchaseRateError, setPurchaseRateError] = useState("");
   const [maximumRetailPriceError, setMaximumRetailPriceError] = useState("");
   const [distributerPriceError, setDistributerPriceError] = useState("");
+  const [companyError, setCompanyError] = useState("");
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -114,7 +115,7 @@ export default function AddProduct() {
 
     var companyCode = companyObject._id;
 
-
+    setCompanyError("");
     setNameError("");
     setCodeError("");
     setPackingError("");
@@ -126,6 +127,11 @@ export default function AddProduct() {
 
 
     let isValid = true;
+
+    if (companyObject === "") {
+      setCompanyError("Enter Company");
+      isValid = false;
+    }
     if (code.trim() === "") {
       setCodeError("Enter code");
       isValid = false;
@@ -235,6 +241,7 @@ export default function AddProduct() {
                   </Box>
                 )}
               />
+                <FormHelperText style={{ color: "red" }}>{companyError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
