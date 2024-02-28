@@ -124,6 +124,9 @@ export default function GetExpensesList() {
           setOpen(true);
           setMessage(response.data.message);
           setSeverity("success");
+       
+          // Update the data state after successful deletion
+          setData((prevData) => prevData.filter(item => item._id !== id));
         }
       })
       .catch(function (error) {
@@ -155,6 +158,11 @@ export default function GetExpensesList() {
           setId("");
           setOpenPopup(false);
           getExpensesList();
+
+            // Update the data state after successful update
+            setData((prevData) =>
+            prevData.map(item => (item._id === id ? { ...item, ...expense } : item))
+          );
         }
       })
       .catch(function (error) {
@@ -238,8 +246,8 @@ export default function GetExpensesList() {
             </FormControl>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="amount"
                 name="amount"
                 label="Amount"
@@ -250,7 +258,8 @@ export default function GetExpensesList() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
+              <TextField  
+  required
                 id="description"
                 name="description"
                 label="Description"
@@ -276,11 +285,6 @@ export default function GetExpensesList() {
                     onClick={() => validation()}
                   >
                     Update
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="contained" size="medium" color="error">
-                    Cancel
                   </Button>
                 </Grid>
               </Grid>

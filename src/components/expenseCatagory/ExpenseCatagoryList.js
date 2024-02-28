@@ -173,7 +173,8 @@ export default function ExpenseCatagoryList() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 required
                 id="name"
                 name="name"
@@ -185,7 +186,8 @@ export default function ExpenseCatagoryList() {
               />
             </Grid>
             {/* <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 required
                 id="amount"
                 name="amount"
@@ -197,7 +199,8 @@ export default function ExpenseCatagoryList() {
               />
             </Grid> */}
             {/* <Grid item xs={12} sm={12}>
-              <TextField
+              <TextField  
+  required
                 id="description"
                 name="description"
                 label="Description"

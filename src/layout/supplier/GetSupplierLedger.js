@@ -129,7 +129,8 @@ export default function GetSupplierLedger() {
               getSupplierLedgerList(newInputValue?._id)
             }}
             renderInput={(params) => (
-              <TextField {...params} label="Select Supplier" />
+              <TextField  
+  required {...params} label="Select Supplier" />
             )}
             renderOption={(props, supplier) => (
               <Box component="li" {...props} key={supplier._id}>

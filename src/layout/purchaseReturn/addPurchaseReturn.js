@@ -227,7 +227,8 @@ export default function AddPurchase() {
                   setSupplierObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Company" />
+                  <TextField  
+  required {...params} label="Select Company" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -247,7 +248,8 @@ export default function AddPurchase() {
                   setPaymentMediumObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Payment Medium" />
+                  <TextField  
+  required {...params} label="Select Payment Medium" />
                 )}
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id}>
@@ -288,7 +290,8 @@ export default function AddPurchase() {
                           );
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Select Product" />
+                          <TextField  
+  required {...params} label="Select Product" />
                         )}
                         renderOption={(props, product) => (
                           <Box component="li" {...props} key={product._id}>
@@ -299,7 +302,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1.5} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Batch Code"
                         variant="outlined"
                         value={product.batchCode}
@@ -315,7 +319,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1.5} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Expiry Date"
                         type="date"
                         // defaultValue={currentDate}
@@ -334,7 +339,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Quantity"
                         variant="outlined"
                         value={product.quantity}
@@ -350,7 +356,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Bonus"
                         variant="outlined"
                         value={product.bonus}
@@ -366,7 +373,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1.2} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Trade Rate"
                         variant="outlined"
                         value={product.tradeRate}
@@ -381,7 +389,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Discount"
                         variant="outlined"
                         value={product.discount}
@@ -397,7 +406,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sales Tax"
                         variant="outlined"
                         value={product.salesTax}
@@ -412,7 +422,8 @@ export default function AddPurchase() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sub Total"
                         variant="outlined"
                         value={product.quantity * product.tradeRate}

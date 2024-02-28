@@ -334,8 +334,8 @@ export default function GetSalesManList() {
           <Grid container spacing={3}>
             {/* Form fields... */}
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="name"
                 name="name"
                 label="Name"
@@ -346,8 +346,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="fatherName"
                 name="fatherName"
                 label="Father's Name"
@@ -358,8 +358,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="phoneNo"
                 type="number"
                 name="phoneNo"
@@ -371,8 +371,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="cnic"
                 name="cnic"
                 type="number"
@@ -384,8 +384,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="qualification"
                 name="qualification"
                 label="Qualification"
@@ -397,8 +397,8 @@ export default function GetSalesManList() {
             </Grid>
 
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="dateOfJoin"
                 name="dateOfJoin"
                 label="Date of Join"
@@ -413,8 +413,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="refPerson"
                 name="refPerson"
                 label="Reference Person"
@@ -425,8 +425,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="refPersonNumber"
                 name="refPersonNumber"
                 label="Reference Person Number"
@@ -438,8 +438,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="address"
                 name="address"
                 label="Address"
@@ -469,8 +469,8 @@ export default function GetSalesManList() {
               </FormControl>
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="code"
                 name="code"
                 label="Code"
@@ -481,8 +481,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="areaCommission"
                 name="areaCommission"
                 label="Area Commission"
@@ -494,8 +494,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="target"
                 name="target"
                 type="number"
@@ -507,8 +507,8 @@ export default function GetSalesManList() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="description"
                 name="description"
                 label="Description"
@@ -528,16 +528,6 @@ export default function GetSalesManList() {
                 onClick={validation}
               >
                 {id ? "Update" : "Add"}
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                size="medium"
-                color="error"
-                onClick={() => setOpenPopup(false)}
-              >
-                Cancel
               </Button>
             </Grid>
           </Grid>

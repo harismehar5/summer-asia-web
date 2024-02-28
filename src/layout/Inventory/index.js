@@ -322,7 +322,8 @@ export default function GetProductStock() {
                   setSelectedProduct(newValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Product Code" />
+                  <TextField  
+  required {...params} label="Product Code" />
                 )}
                 renderOption={(props, item) => (
                   <Box component="li" {...props} key={item._id}>
@@ -332,8 +333,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Batch Code"
                 fullWidth
                 variant="outlined"
@@ -342,8 +343,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Expiry Date"
                 fullWidth
                 variant="outlined"
@@ -357,8 +358,8 @@ export default function GetProductStock() {
             </Grid>
 
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Quantity"
                 fullWidth
                 variant="outlined"
@@ -418,8 +419,8 @@ export default function GetProductStock() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label={"Product Code"}
                 fullWidth
                 disabled
@@ -429,8 +430,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Batch Code"
                 fullWidth
                 disabled
@@ -440,8 +441,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Expiry Date"
                 fullWidth
                 disabled
@@ -456,8 +457,8 @@ export default function GetProductStock() {
             </Grid>
 
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Quantity"
                 fullWidth
                 variant="outlined"
@@ -522,8 +523,8 @@ export default function GetProductStock() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Product Code"
                 fullWidth
                 disabled
@@ -533,8 +534,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Batch Code"
                 fullWidth
                 disabled
@@ -544,8 +545,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Expiry Date"
                 fullWidth
                 disabled
@@ -560,8 +561,8 @@ export default function GetProductStock() {
             </Grid>
 
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Quantity"
                 fullWidth
                 variant="outlined"

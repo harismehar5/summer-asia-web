@@ -74,8 +74,8 @@ export default function AddExpenseCatagory() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="name"
                 name="name"
                 label="Name"

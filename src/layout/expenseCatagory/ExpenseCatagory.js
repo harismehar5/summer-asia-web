@@ -181,8 +181,8 @@ export default function ExpenseCatagoryList() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="name"
                 name="name"
                 label="Name"
@@ -207,11 +207,6 @@ export default function ExpenseCatagoryList() {
                     onClick={() => validation()}
                   >
                     Update
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="contained" size="medium" color="error" >
-                    Cancel
                   </Button>
                 </Grid>
               </Grid>

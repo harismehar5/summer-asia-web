@@ -107,6 +107,9 @@ export default function GetAreaList() {
           resetForm();
           setOpenPopup(false);
           refreshData();
+          setData((prevData) =>
+          prevData.map(item => (item._id === id ? { ...item, ...updatedExpense } : item))
+        );
         }
       })
       .catch(function (error) {
@@ -134,6 +137,11 @@ export default function GetAreaList() {
           resetForm();
           setOpenPopup(false);
           refreshData();
+
+          setData((prevData) =>
+          prevData.map(item => (item._id === id ? { ...item, ...newExpense } : item))
+        );
+
         }
       })
       .catch(function (error) {
@@ -208,7 +216,7 @@ export default function GetAreaList() {
           <Grid container spacing={3}>
             {/* Form fields... */}
             <Grid item xs={4} sm={3}>
-              <TextField
+              <TextField  
                 required
                 id="code"
                 name="code"
@@ -220,8 +228,9 @@ export default function GetAreaList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+              required
+
                 id="abbreviation"
                 name="abbreviation"
                 label="Area"
@@ -232,7 +241,8 @@ export default function GetAreaList() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
+              <TextField  
+                required
                 id="description"
                 name="description"
                 label="Description"
@@ -260,16 +270,8 @@ export default function GetAreaList() {
                     {id ? "Update" : "Add"}
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => setOpenPopup(false)}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
+
+
               </Grid>
             </Grid>
           </Grid>

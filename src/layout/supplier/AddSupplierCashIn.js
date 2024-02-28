@@ -149,7 +149,8 @@ export default function AddSupplierCashIn() {
                   setSupplierObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Supplier" />
+                  <TextField  
+  required {...params} label="Select Supplier" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -159,8 +160,8 @@ export default function AddSupplierCashIn() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 name="amount"
                 label="Amount"
                 fullWidth
@@ -180,7 +181,8 @@ export default function AddSupplierCashIn() {
                   setPaymentMediumObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Payment Medium" />
+                  <TextField  
+  required {...params} label="Select Payment Medium" />
                 )}
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id}>
@@ -190,7 +192,8 @@ export default function AddSupplierCashIn() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 label="Select Date"
                 type="date"
                 defaultValue={currentDate}
@@ -204,7 +207,8 @@ export default function AddSupplierCashIn() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 name="description"
                 label="Description"
                 fullWidth
