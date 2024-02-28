@@ -325,8 +325,8 @@ export default function GetCustomersList() {
               </FormControl>
             </Grid> */}
            <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="code"
                 name="code"
                 label="Code"
@@ -337,8 +337,8 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="name"
                 name="name"
                 label="Name"
@@ -349,8 +349,8 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="phone"
                 name="phone"
                 label="Phone"
@@ -362,8 +362,8 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="ntn"
                 name="ntn"
                 label="Ntn"
@@ -374,8 +374,8 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="email"
                 name="email"
                 label="Email"
@@ -386,8 +386,8 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="license"
                 name="license"
                 label="License"
@@ -398,8 +398,8 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="licenseExpiryDate"
                 name="licenseExpiryDate"
                 label="License Expiry Date"
@@ -435,8 +435,8 @@ export default function GetCustomersList() {
             </Grid>
 
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="bankAccount"
                 name="bankAccount"
                 label="Bank Account"
@@ -447,8 +447,8 @@ export default function GetCustomersList() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="address"
                 name="address"
                 label="Address"

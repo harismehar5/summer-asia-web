@@ -247,7 +247,8 @@ export default function EstimateSale() {
                   setSupplierObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Company" />
+                  <TextField  
+  required {...params} label="Select Company" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -267,7 +268,8 @@ export default function EstimateSale() {
                   setPaymentMediumObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Payment Medium" />
+                  <TextField  
+  required {...params} label="Select Payment Medium" />
                 )}
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id}>
@@ -308,7 +310,8 @@ export default function EstimateSale() {
                           getBatchList(productObject._id);
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Select Product" />
+                          <TextField  
+  required {...params} label="Select Product" />
                         )}
                         renderOption={(props, product) => (
                           <Box component="li" {...props} key={product._id}>
@@ -337,7 +340,8 @@ export default function EstimateSale() {
                           );
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Select Batch" />
+                          <TextField  
+  required {...params} label="Select Batch" />
                         )}
                         renderOption={(props, batch) => (
                           <Box component="li" {...props} key={batch._id}>
@@ -348,7 +352,8 @@ export default function EstimateSale() {
                       />
                     </Grid>
                     <Grid item md={1.5} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Select Date"
                         type="date"
                         // defaultValue={currentDate}
@@ -367,7 +372,8 @@ export default function EstimateSale() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Quantity"
                         variant="outlined"
                         value={product.quantity}
@@ -383,7 +389,8 @@ export default function EstimateSale() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Discount"
                         variant="outlined"
                         value={product.discount}
@@ -399,7 +406,8 @@ export default function EstimateSale() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Bonus"
                         variant="outlined"
                         value={product.bonus}
@@ -415,7 +423,8 @@ export default function EstimateSale() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sales Tax"
                         variant="outlined"
                         value={product.salesTax}
@@ -430,7 +439,8 @@ export default function EstimateSale() {
                       />
                     </Grid>
                     <Grid item md={1.2} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Trade Rate"
                         variant="outlined"
                         value={product.tradeRate}
@@ -445,7 +455,8 @@ export default function EstimateSale() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sub Total"
                         variant="outlined"
                         value={product.quantity * product.tradeRate}

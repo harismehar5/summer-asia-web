@@ -86,8 +86,9 @@ export default function AddCustomer() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
+
                 label="Name"
                 fullWidth
                 variant="outlined"
@@ -96,8 +97,9 @@ export default function AddCustomer() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
+           
                 label="Phone"
                 fullWidth
                 variant="outlined"
@@ -106,7 +108,8 @@ export default function AddCustomer() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
+              <TextField  
+  required
                 label="Opening Balance"
                 fullWidth
                 variant="outlined"

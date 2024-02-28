@@ -143,7 +143,8 @@ export default function GetsalesmanLedger() {
             }}
             value={customerObject.name}
             renderInput={(params) => (
-              <TextField {...params} label={"Select Salesman"} />
+              <TextField  
+  required {...params} label={"Select Salesman"} />
             )}
             renderOption={(props, customer) => (
               <Box component="li" {...props} key={customer ? customer._id : ""}>

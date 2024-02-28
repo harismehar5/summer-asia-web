@@ -422,7 +422,25 @@ export default function AddSale() {
 
     // console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
     dataEntry(purchaseObject);
+
+    handleAddSale();
   };
+
+  const handleAddSale = () => {
+
+    // Reset the state variables to empty values
+    setPaymentMediumObject("");
+    setQuantityValues([""]);
+    setBonusValues([""]);
+    setTradeRateValues([""]);  
+    setSalesTaxValues([""]);
+    setTotalValues([""]);
+    setTradeRateValues([""]);
+    setInvoiceSalesTax("");
+    setInvoiceDiscount("");
+    setInvoiceAmount("");
+  };
+  
   // Function to format date to "yyyy-MM-dd" format
   function formatDate(date) {
     const d = new Date(date);
@@ -498,7 +516,8 @@ export default function AddSale() {
                   setSupplierObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Customer" />
+                  <TextField  
+  required {...params} label="Select Customer" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -516,11 +535,13 @@ export default function AddSale() {
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={(event, newInputValue) => {
                   if (newInputValue !== null) {
+                    // 
                     setPaymentMediumObject(newInputValue);
                   }
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Payment Medium" />
+                  <TextField  
+  required {...params} label="Select Payment Medium" />
                 )}
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id || ""}>
@@ -542,7 +563,8 @@ export default function AddSale() {
                   setSaleManObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select salesman" />
+                  <TextField  
+  required {...params} label="Select salesman" />
                 )}
                 renderOption={(props, saleMan) => (
                   <Box component="li" {...props} key={saleMan._id}>
@@ -587,7 +609,8 @@ export default function AddSale() {
                           }
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Select Product" />
+                          <TextField  
+  required {...params} label="Select Product" />
                         )}
                         renderOption={(props, product) => (
                           <Box
@@ -625,7 +648,8 @@ export default function AddSale() {
                           }
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Select Batch" />
+                          <TextField  
+  required {...params} label="Select Batch" />
                         )}
                         renderOption={(props, batch) => (
                           <Box
@@ -648,7 +672,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1.5} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         // label="Expiry Date"
                         variant="outlined"
                         type="date"
@@ -671,7 +696,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Quantity"
                         variant="outlined"
                         value={quantityValues[index] || ""}
@@ -693,7 +719,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Discount"
                         variant="outlined"
                         value={discountValues[index] || ""}
@@ -723,7 +750,8 @@ export default function AddSale() {
                     </Grid>
 
                     {/* <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Discount"
                         variant="outlined"
                         value={product.discount}
@@ -740,7 +768,8 @@ export default function AddSale() {
                     </Grid> */}
 
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Bonus"
                         variant="outlined"
                         value={bonusValues[index] || ""}
@@ -763,7 +792,8 @@ export default function AddSale() {
                     </Grid>
 
                     {/* <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Bonus"
                         variant="outlined"
                         value={product.bonus}
@@ -780,7 +810,8 @@ export default function AddSale() {
                     </Grid> */}
 
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sales Tax"
                         variant="outlined"
                         value={salesTaxValues[index] || ""}
@@ -812,7 +843,8 @@ export default function AddSale() {
                     </Grid>
 
                     {/* <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sales Tax"
                         variant="outlined"
                         value={product.salesTax}
@@ -828,7 +860,8 @@ export default function AddSale() {
                     </Grid> */}
 
                     <Grid item md={1.2} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Trade Rate"
                         variant="outlined"
                         value={tradeRateValues[index] || ""}
@@ -855,7 +888,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sub Total"
                         variant="outlined"
                         // value={
@@ -931,8 +965,8 @@ export default function AddSale() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label={"Additional Sales Tax %"}
                 fullWidth
                 variant="outlined"
@@ -941,8 +975,8 @@ export default function AddSale() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Discount"
                 fullWidth
                 variant="outlined"
@@ -952,8 +986,8 @@ export default function AddSale() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Amount Recieved"
                 fullWidth
                 variant="outlined"

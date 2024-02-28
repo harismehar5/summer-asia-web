@@ -106,8 +106,8 @@ export default function AddArea() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="code"
                 name="code"
                 label="Code"
@@ -119,8 +119,8 @@ export default function AddArea() {
                <FormHelperText style={{ color: 'red' }}>{codeError}</FormHelperText>
             </Grid>
             <Grid item xs={4} sm={3}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="area"
                 name="area"
                 label="Area"
@@ -132,7 +132,8 @@ export default function AddArea() {
                <FormHelperText style={{ color: 'red' }}>{areaError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12   }>
-              <TextField
+              <TextField  
+  required
                 id="description"
                 name="description"
                 label="Description"
@@ -166,7 +167,11 @@ export default function AddArea() {
                     variant="contained"
                     size="medium"
                     color="error"
-                    // onClick={() => setOpenPopup(false)}
+                    onClick={() => {
+                      setArea("");
+                      setCode("");
+                      setDescription("");
+                    }}
                   >
                     Cancel
                   </Button>

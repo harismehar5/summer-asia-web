@@ -58,19 +58,20 @@ const Login = () => {
           Login
         </Typography>
         <StyledForm onSubmit={handleLogin}>
-          <TextField
+          <TextField  
+  required
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             label="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <TextField
+          <TextField  
+  required
             variant="outlined"
             margin="normal"
-            required
+
             fullWidth
             label="Password"
             type="password"

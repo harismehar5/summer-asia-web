@@ -67,8 +67,8 @@ export default function StockIn() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Quantity"
                 fullWidth
                 variant="outlined"

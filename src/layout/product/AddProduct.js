@@ -208,8 +208,8 @@ export default function AddProduct() {
             <Grid item xs={12} sm={8}>
             </Grid>
             <Grid item xs={12} sm={4}>
-  <TextField
-    required
+  <TextField  
+  required
     label="Code"
     fullWidth
     variant="outlined"
@@ -237,7 +237,8 @@ export default function AddProduct() {
                   }
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Company" />
+                  <TextField  
+  required {...params} label="Select Company" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -248,8 +249,8 @@ export default function AddProduct() {
                 <FormHelperText style={{ color: "red" }}>{companyError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Name"
                 fullWidth
                 variant="outlined"
@@ -261,8 +262,8 @@ export default function AddProduct() {
               <FormHelperText style={{ color: "red" }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Packing"
                 fullWidth
                 variant="outlined"
@@ -274,8 +275,8 @@ export default function AddProduct() {
               <FormHelperText style={{ color: "red" }}>{packingError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-  <TextField
-    required
+  <TextField  
+  required
     label="Strength"
     fullWidth
     variant="outlined"
@@ -289,8 +290,9 @@ export default function AddProduct() {
 </Grid>
 
 <Grid item xs={12} sm={6}>
-  <TextField
-    required
+  <TextField  
+  required
+
     label="Trade Rate"
     fullWidth
     type="number"
@@ -305,8 +307,9 @@ export default function AddProduct() {
 </Grid>
 
 <Grid item xs={12} sm={6}>
-  <TextField
-    required
+  <TextField  
+  required
+
     label="Purchase Rate"
     fullWidth
     variant="outlined"
@@ -321,8 +324,9 @@ export default function AddProduct() {
 </Grid>
 
 <Grid item xs={12} sm={6}>
-  <TextField
-    required
+  <TextField  
+  required
+
     label="Retail Price (Max)"
     fullWidth
     type="number"
@@ -337,8 +341,9 @@ export default function AddProduct() {
 </Grid>
 
 <Grid item xs={12} sm={6}>
-  <TextField
-    required
+  <TextField  
+  required
+
     label="Distributer Price"
     fullWidth
     type="number"

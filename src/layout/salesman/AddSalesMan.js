@@ -124,9 +124,13 @@ export default function AddSalesMan() {
     if (cnic.trim() === "") {
       setCnicError("Enter CNIC");
       isValid = false;
+    } else if (cnic.trim().length !== 13) {
+      setCnicError("Enter CNIC with exactly 13 characters");
+      isValid = false;
     } else {
       setCnicError("");
     }
+    
   
     if (dateOfJoin.trim() === "") {
       setDateOfJoinError("Select date of join");
@@ -169,7 +173,7 @@ export default function AddSalesMan() {
     } else {
       setRefPersonNumberError("");
     }
-    if (descriptionError.trim() === "") {
+    if (description.trim() === "") {
       setDescriptionError("Enter Description");
       isValid = false;
     } else {
@@ -248,202 +252,252 @@ export default function AddSalesMan() {
           <Grid container spacing={3}>
             <Grid xs={6} sm={6} md={6} />
             <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="code"
                 name="code"
                 label="Code"
                 fullWidth
                 variant="outlined"
                 value={code}
-                onChange={(event) => setCode(event.target.value)}
+                onChange={(event) => {setCode(event.target.value) 
+                  setCodeError("")
+                }}
               />
               <FormHelperText style={{ color: 'red' }}>{codeError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="name"
                 name="name"
                 label="Name"
                 fullWidth
                 variant="outlined"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                  onChange={(event) => {setName(event.target.value)
+                  setNameError("");
+                  }}
               />
               <FormHelperText style={{ color: 'red' }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="fatherName"
                 name="fatherName"
                 label="Father's Name"
                 fullWidth
                 variant="outlined"
                 value={fatherName}
-                onChange={(event) => setFatherName(event.target.value)}
+                onChange={(event) => {setFatherName(event.target.value)
+                setFatherNameError("");
+                }}
               />
               <FormHelperText style={{ color: 'red' }}>{fatherNameError}</FormHelperText>
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="phoneNo"
-                name="phoneNo"
-                label="Phone No"
-                fullWidth
-                type="number"
-                variant="outlined"
-                value={phoneNo}
-                onChange={(event) => setPhoneNo(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{phoneNoError}</FormHelperText>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="cnic"
-                name="cnic"
-                label="CNIC"
-                fullWidth
-                type="number"
-                variant="outlined"
-                value={cnic}
-                onChange={(event) => setCnic(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{cnicError}</FormHelperText>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="qualification"
-                name="qualification"
-                label="Qualification"
-                fullWidth
-                variant="outlined"
-                value={qualification}
-                onChange={(event) => setQualification(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{qualificationError}</FormHelperText>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="dateOfJoin"
-                name="dateOfJoin"
-                label="Date of Join"
-                type="date"
-                fullWidth
-                variant="outlined"
-                value={dateOfJoin}
-                onChange={(event) => setDateOfJoin(event.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <FormHelperText style={{ color: 'red' }}>{dateOfJoinError}</FormHelperText>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="refPerson"
-                name="refPerson"
-                label="Reference Person"
-                fullWidth
-                variant="outlined"
-                value={refPerson}
-                onChange={(event) => setRefPerson(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{refPersonError}</FormHelperText>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <TextField
-                required
-                id="refPersonNumber"
-                name="refPersonNumber"
-                label="Reference Person Number"
-                fullWidth
-                type="number"
-                variant="outlined"
-                value={refPersonNumber}
-                onChange={(event) => setRefPersonNumber(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{refPersonNumberError}</FormHelperText>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                required
-                id="address"
-                name="address"
-                label="Address"
-                fullWidth
-                variant="outlined"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{addressError}</FormHelperText>
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <FormControl fullWidth variant="outlined" required>
-                <InputLabel id="areaCode-label">Area Code</InputLabel>
-                <Select
-                  labelId="areaCode-label"
-                  id="areaCode"
-                  value={areaCode}
-                  onChange={(event) => setAreaCode(event.target.value)}
-                  label="Area Code"
-                >
-                  {areas.map((area) => (
-                    <MenuItem key={area._id} value={area._id}>
-                      {area.code}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormHelperText style={{ color: 'red' }}>{areaCodeError}</FormHelperText>
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <TextField
-                required
-                id="areaCommission"
-                name="areaCommission"
-                label="Area Commission"
-                fullWidth
-                type="number"
-                variant="outlined"
-                value={areaCommission}
-                onChange={(event) => setAreaCommission(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{areaCommissionError}</FormHelperText>
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <TextField
-                required
-                id="target"
-                name="target"
-                label="Target"
-                fullWidth
-                type="number"
-                variant="outlined"
-                value={target}
-                onChange={(event) => setTarget(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{targetError}</FormHelperText>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                required
-                id="description"
-                name="description"
-                label="Description"
-                fullWidth
-                variant="outlined"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              />
-              <FormHelperText style={{ color: 'red' }}>{descriptionError}</FormHelperText>
-            </Grid>
+  <TextField
+    required
+    id="phoneNo"
+    name="phoneNo"
+    label="Phone No"
+    fullWidth
+    type="number"
+    variant="outlined"
+    value={phoneNo}
+    onChange={(event) => {
+      setPhoneNo(event.target.value);
+      setPhoneNoError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{phoneNoError}</FormHelperText>
+</Grid>
+
+<Grid item xs={6} sm={6} md={6}>
+  <TextField
+    required
+    id="cnic"
+    name="cnic"
+    label="CNIC"
+    fullWidth
+    type="number"
+    variant="outlined"
+    value={cnic}
+    onChange={(event) => {
+      setCnic(event.target.value);
+      setCnicError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{cnicError}</FormHelperText>
+</Grid>
+
+<Grid item xs={6} sm={6} md={6}>
+  <TextField
+    required
+    id="qualification"
+    name="qualification"
+    label="Qualification"
+    fullWidth
+    variant="outlined"
+    value={qualification}
+    onChange={(event) => {
+      setQualification(event.target.value);
+      setQualificationError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{qualificationError}</FormHelperText>
+</Grid>
+
+<Grid item xs={6} sm={6} md={6}>
+  <TextField
+    required
+    id="dateOfJoin"
+    name="dateOfJoin"
+    label="Date of Join"
+    type="date"
+    fullWidth
+    variant="outlined"
+    value={dateOfJoin}
+    onChange={(event) => {
+      setDateOfJoin(event.target.value);
+      setDateOfJoinError("");
+    }}
+    InputLabelProps={{
+      shrink: true,
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{dateOfJoinError}</FormHelperText>
+</Grid>
+
+<Grid item xs={6} sm={6} md={6}>
+  <TextField
+    required
+    id="refPerson"
+    name="refPerson"
+    label="Reference Person"
+    fullWidth
+    variant="outlined"
+    value={refPerson}
+    onChange={(event) => {
+      setRefPerson(event.target.value);
+      setRefPersonError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{refPersonError}</FormHelperText>
+</Grid>
+
+<Grid item xs={6} sm={6} md={6}>
+  <TextField
+    required
+    id="refPersonNumber"
+    name="refPersonNumber"
+    label="Reference Person Number"
+    fullWidth
+    type="number"
+    variant="outlined"
+    value={refPersonNumber}
+    onChange={(event) => {
+      setRefPersonNumber(event.target.value);
+      setRefPersonNumberError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{refPersonNumberError}</FormHelperText>
+</Grid>
+
+<Grid item xs={12} sm={12}>
+  <TextField
+    required
+    id="address"
+    name="address"
+    label="Address"
+    fullWidth
+    variant="outlined"
+    value={address}
+    onChange={(event) => {
+      setAddress(event.target.value);
+      setAddressError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{addressError}</FormHelperText>
+</Grid>
+
+<Grid item xs={4} sm={4} md={4}>
+  <FormControl fullWidth variant="outlined" required>
+    <InputLabel id="areaCode-label">Area Code</InputLabel>
+    <Select
+      labelId="areaCode-label"
+      id="areaCode"
+      value={areaCode}
+      onChange={(event) => {
+        setAreaCode(event.target.value);
+        setAreaCodeError("");
+      }}
+      label="Area Code"
+    >
+      {areas.map((area) => (
+        <MenuItem key={area._id} value={area._id}>
+          {area.code}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+  <FormHelperText style={{ color: 'red' }}>{areaCodeError}</FormHelperText>
+</Grid>
+
+<Grid item xs={4} sm={4} md={4}>
+  <TextField
+    required
+    id="areaCommission"
+    name="areaCommission"
+    label="Area Commission"
+    fullWidth
+    type="number"
+    variant="outlined"
+    value={areaCommission}
+    onChange={(event) => {
+      setAreaCommission(event.target.value);
+      setAreaCommissionError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{areaCommissionError}</FormHelperText>
+</Grid>
+
+<Grid item xs={4} sm={4} md={4}>
+  <TextField
+    required
+    id="target"
+    name="target"
+    label="Target"
+    fullWidth
+    type="number"
+    variant="outlined"
+    value={target}
+    onChange={(event) => {
+      setTarget(event.target.value);
+      setTargetError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{targetError}</FormHelperText>
+</Grid>
+
+<Grid item xs={12} sm={12}>
+  <TextField
+    required
+    id="description"
+    name="description"
+    label="Description"
+    fullWidth
+    variant="outlined"
+    value={description}
+    onChange={(event) => {
+      setDescription(event.target.value);
+      setDescriptionError("");
+    }}
+  />
+  <FormHelperText style={{ color: 'red' }}>{descriptionError}</FormHelperText>
+</Grid>
+
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Grid

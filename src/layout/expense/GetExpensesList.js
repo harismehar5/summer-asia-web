@@ -246,8 +246,8 @@ export default function GetExpensesList() {
             </FormControl>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 id="amount"
                 name="amount"
                 label="Amount"
@@ -258,7 +258,8 @@ export default function GetExpensesList() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
+              <TextField  
+  required
                 id="description"
                 name="description"
                 label="Description"

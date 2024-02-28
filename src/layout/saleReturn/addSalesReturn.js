@@ -297,7 +297,8 @@ export default function AddSalesReturn() {
                   setCustomerObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Customer" />
+                  <TextField  
+  required {...params} label="Select Customer" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -320,7 +321,8 @@ export default function AddSalesReturn() {
                   setSupplierObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Salesman" />
+                  <TextField  
+  required {...params} label="Select Salesman" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -341,7 +343,8 @@ export default function AddSalesReturn() {
                   setPaymentMediumObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Payment Medium" />
+                  <TextField  
+  required {...params} label="Select Payment Medium" />
                 )}
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id}>
@@ -383,7 +386,8 @@ export default function AddSalesReturn() {
                           );
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Select Product" />
+                          <TextField  
+  required {...params} label="Select Product" />
                         )}
                         renderOption={(props, product) => (
                           <Box component="li" {...props} key={product._id}>
@@ -394,7 +398,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                     <Grid item md={1.5} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Batch Code"
                         variant="outlined"
                         value={product.batchCode}
@@ -410,7 +415,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                     <Grid item md={1.5} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Select Date"
                         type="date"
                         // defaultValue={currentDate}
@@ -429,7 +435,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                       <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Quantity"
                         variant="outlined"
                         value={product.quantity}
@@ -445,7 +452,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Bonus"
                         variant="outlined"
                         value={product.bonus}
@@ -461,7 +469,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                     <Grid item md={1.2} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Trade Rate"
                         variant="outlined"
                         value={product.tradeRate}
@@ -476,7 +485,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Discount"
                         variant="outlined"
                         value={product.discount}
@@ -492,7 +502,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sales Tax"
                         variant="outlined"
                         value={product.salesTax}
@@ -507,7 +518,8 @@ export default function AddSalesReturn() {
                       />
                     </Grid>
                     <Grid item md={1} px={1}>
-                      <TextField
+                      <TextField  
+  required
                         label="Sub Total"
                         variant="outlined"
                         value={product.quantity * product.tradeRate}

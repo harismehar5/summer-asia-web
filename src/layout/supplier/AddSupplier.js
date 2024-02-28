@@ -200,7 +200,8 @@ export default function AddSupplier() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8}>
-              {/* <TextField
+              {/* <TextField  
+  required
                 required
                 label="Company Name"
                 fullWidth
@@ -210,8 +211,8 @@ export default function AddSupplier() {
               /> */}
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Code"
                 fullWidth
                 variant="outlined"
@@ -223,8 +224,8 @@ export default function AddSupplier() {
               </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Company Name"
                 fullWidth
                 variant="outlined"
@@ -236,8 +237,8 @@ export default function AddSupplier() {
               </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Contacted Person Name"
                 fullWidth
                 variant="outlined"
@@ -250,8 +251,8 @@ export default function AddSupplier() {
             </Grid>
 
             <Grid item xs={12} sm={4}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Email"
                 fullWidth
                 variant="outlined"
@@ -263,7 +264,8 @@ export default function AddSupplier() {
               </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 label="Address"
                 fullWidth
                 variant="outlined"
@@ -275,7 +277,8 @@ export default function AddSupplier() {
               </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 label="Phone Number"
                 fullWidth
                 type="number"
@@ -288,7 +291,8 @@ export default function AddSupplier() {
               </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 label="License Number"
                 fullWidth
                 variant="outlined"
@@ -300,7 +304,8 @@ export default function AddSupplier() {
               </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 label="Account Number"
                 fullWidth
                 variant="outlined"
@@ -312,7 +317,8 @@ export default function AddSupplier() {
               </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
+              <TextField  
+  required
                 label="Description"
                 fullWidth
                 variant="outlined"

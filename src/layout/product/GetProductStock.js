@@ -294,8 +294,8 @@ export default function GetProductStock() {
             <Grid item xs={12} sm={8}>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Code"
                 fullWidth
                 variant="outlined"
@@ -317,7 +317,8 @@ export default function GetProductStock() {
       setSelectedCompanyName(newInputValue.name);
     }
   }}
-  renderInput={(params) => <TextField {...params} label="Select Company" />}
+  renderInput={(params) => <TextField  
+  required {...params} label="Select Company" />}
   renderOption={(props, supplier) => (
     <Box component="li" {...props} key={supplier._id}>
       {supplier.name}
@@ -326,8 +327,8 @@ export default function GetProductStock() {
 />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Name"
                 fullWidth
                 variant="outlined"
@@ -336,8 +337,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Packing"
                 fullWidth
                 type="number"
@@ -347,8 +348,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Strength"
                 fullWidth
                 type="number"
@@ -358,8 +359,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Trade Rate"
                 fullWidth
                 type="number"
@@ -369,8 +370,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Purchase Rate"
                 fullWidth
                 type="number"
@@ -380,8 +381,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Retail Price (Max)"
                 fullWidth
                 type="number"
@@ -391,8 +392,8 @@ export default function GetProductStock() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Distributer Price"
                 fullWidth
                 type="number"
@@ -430,8 +431,8 @@ export default function GetProductStock() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Quantity"
                 fullWidth
                 variant="outlined"
@@ -480,8 +481,8 @@ export default function GetProductStock() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField
-                required
+              <TextField  
+  required
                 label="Quantity"
                 fullWidth
                 variant="outlined"

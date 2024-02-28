@@ -220,7 +220,8 @@ const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
                     setCustomerObject(newInputValue);
                   }}
                   renderInput={(params) => (
-                    <TextField
+                    <TextField  
+  required
                       {...params}
                       label={
                         selectedRadio === "customer"
@@ -244,8 +245,8 @@ const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
               )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
+              <TextField  
+  required                       
                 name={selectedRadio === "customer" ? "debit" : "credit"}
                 label={selectedRadio === "customer" ? "Debit" : "Credit"}
                 fullWidth
@@ -272,7 +273,8 @@ const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
                   setPaymentMediumObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Select Payment Medium" />
+                  <TextField  
+  required {...params} label="Select Payment Medium" />
                 )}
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id}>
@@ -283,7 +285,8 @@ const [paymentMediumObjectError, setPaymentMediumObjectError] = useState("");
                 <FormHelperText style={{ color: "red" }}>{paymentMediumObjectError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextField  
+  required
                 name="description"
                 label="Description"
                 fullWidth
