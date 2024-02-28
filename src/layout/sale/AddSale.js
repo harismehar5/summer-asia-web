@@ -166,8 +166,8 @@ export default function AddSale() {
     );
 
     const additionalSaleAmount = (calAmount * invoiceSalesTax) / 100;
-    console.log("additonal sales amount = ", additionalSaleAmount);
-    console.log("invoice amount = ", invoiceSalesTax);
+    // console.log("additonal sales amount = ", additionalSaleAmount);
+    // console.log("invoice amount = ", invoiceSalesTax);
     // const additionalSaleAmount = (totalValues * additionalSalePercentage) / 100;
     const finalTotal = calAmount + additionalSaleAmount;
 
@@ -182,7 +182,7 @@ export default function AddSale() {
     axios
       .post(ADD_SALES_SERVICES, data)
       .then((response) => {
-        console.log(data);
+        // console.log(data);
         // console.log(JSON.stringify(response, null, 2));
         if (response.status == 200) {
           setOpen(true);
@@ -219,7 +219,7 @@ export default function AddSale() {
         productCode: productCode,
       })
       .then(function (response) {
-        console.log("batchlist =", response.data);
+        // console.log("batchlist =", response.data);
         const filteredBatchList = response.data.data.filter(
           (entry) => entry.quantity !== 0 && entry.quantity !== null
         );
@@ -236,7 +236,7 @@ export default function AddSale() {
             return 0; // no change in order
           }
         });
-        console.log(sortedBatchList);
+        // console.log(sortedBatchList);
         setBatchList(sortedBatchList);
       })
       .catch(function (error) {
