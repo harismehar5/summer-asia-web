@@ -48,6 +48,8 @@ export default function AddSale() {
     netTotal: "",
     status: "",
     productCode: "",
+    productPacking: "",
+    productStrength: "",
   });
   const [data, setData] = useState([productObject]);
   const [supplierObject, setSupplierObject] = useState({});
@@ -205,6 +207,7 @@ export default function AddSale() {
       .get(GET_PRODUCT_OF_INVENTORY)
       .then(function (response) {
         setProductList(response.data.data);
+        console.log("product = ", response.data.data);
       })
       .catch(function (error) {
         setOpen(true);
@@ -579,7 +582,10 @@ export default function AddSale() {
                             var productObject = newInputValue;
                             setData((currentData) =>
                               produce(currentData, (v) => {
-                                v[index].productCode = productObject._id;
+                                v[index].productCode = productObject.code;
+                                v[index].productPacking = productObject.packing;
+                                v[index].productStrength =
+                                  productObject.strength;
                               })
                             );
                             getBatchList(productObject._id, index);
@@ -1211,15 +1217,14 @@ const ComponentToPrint = React.forwardRef(
     data.map((item) => (totalSalesTax += Number(item.salesTax)));
     data.map((item) => (totalTradeRate += Number(item.tradeRate)));
 
+    console.log("data = ", data);
+
     return (
       <div ref={ref}>
         {isEstimated ? null : (
           <header class="header">
-            <h1>PHARMA NET</h1>
-            <p>
-              Jamia Farqania Road Sarfaraz Colony Opp. SK Products Factory
-              Gujranwala
-            </p>
+            <h1>BHC PHARMA</h1>
+            <p>Opposite Medicare Hospital Gill Road, Gujranwala</p>
             <p>
               PH:-055-4294521-2-0300-7492093-0302-6162633 E-mail
               pharmanet@yahoo.com
@@ -1254,16 +1259,16 @@ const ComponentToPrint = React.forwardRef(
           <table>
             <thead>
               <tr>
-                <th>QTY</th>
-                <th>Name of Item</th>
-                <th>Packing</th>
+                <th>Product Code</th>
                 <th>Batch No</th>
-                <th>Rate</th>
-                <th>Gross Amount</th>
-                <th>Discount %</th>
+                <th>Packing</th>
+                <th>Strength</th>
+                <th>Expiry Date</th>
+                <th>QTY</th>
+                <th>Dis %</th>
+                <th>Bonus</th>
                 <th>Sales Tax</th>
-                <th>Additional Tax</th>
-                <th>Advace Tax</th>
+                <th>Trade Rate</th>
                 <th>Total Amount</th>
               </tr>
             </thead>
@@ -1272,15 +1277,16 @@ const ComponentToPrint = React.forwardRef(
               {data.map((item, index) => {
                 return (
                   <tr key={index}>
-                    <td>{item.quantity}</td>
                     <td>{item.productCode}</td>
-                    <td>{item.bonus}</td>
                     <td>{item.batchCode}</td>
-                    <td>{item.tradeRate}</td>
-                    <td>{item.status}</td>
-                    <td>{item.discount}</td>
+                    <td>{item.productPacking}</td>
+                    <td>{item.productStrength}</td>
                     <td>{item.expiryDate}</td>
+                    <td>{item.quantity}</td>
+                    <td>{item.discount}</td>
+                    <td>{item.bonus}</td>
                     <td>{item.salesTax}</td>
+                    <td>{item.tradeRate}</td>
                     <td>{item.netTotal}</td>
                   </tr>
                 );
