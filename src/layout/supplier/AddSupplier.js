@@ -106,6 +106,7 @@ export default function AddSupplier() {
   // };
 
   const validation = () => {
+    setCodeError("");
     setNameError("");
     setPhoneError("");
     setAddressError("");
@@ -118,16 +119,23 @@ export default function AddSupplier() {
 
     let isValid = true;
 
+    if (code.trim() === "") {
+      setCodeError("Enter code");
+      isValid = false;
+    }
     if (name.trim() === "") {
-      setNameError("Enter name");
+      setNameError("Enter company name");
       isValid = false;
     }
 
     if (phone.trim() === "") {
       setPhoneError("Enter phone");
       isValid = false;
+    } else if (phone.trim().length < 11 || phone.trim().length > 13) {
+      setPhoneError("Phone number must be between 11 and 13 characters");
+      isValid = false;
     }
-
+    
     if (address.trim() === "") {
       setAddressError("Enter address");
       isValid = false;
@@ -136,7 +144,11 @@ export default function AddSupplier() {
     if (email.trim() === "") {
       setEmailError("Enter email");
       isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Enter a valid email address");
+      isValid = false;
     }
+    
 
     if (license.trim() === "") {
       setLicenseError("Enter license");
@@ -144,17 +156,17 @@ export default function AddSupplier() {
     }
 
     if (description.trim() === "") {
-      setDescriptionError("Enter Descrption");
+      setDescriptionError("Enter descrption");
       isValid = false;
     }
 
     if (accountNumber.trim() === "") {
-      setAccountNumberError("Enter Descrption");
+      setAccountNumberError("Enter descrption");
       isValid = false;
     }
 
     if (personName.trim() === "") {
-      setPersonNameError("Enter Account Number");
+      setPersonNameError("Enter person name");
       isValid = false;
     }
 
@@ -206,6 +218,9 @@ export default function AddSupplier() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
+              <FormHelperText style={{ color: "red" }}>
+                {codeError}
+              </FormHelperText>
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -263,6 +278,7 @@ export default function AddSupplier() {
               <TextField
                 label="Phone Number"
                 fullWidth
+                type="number"
                 variant="outlined"
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}

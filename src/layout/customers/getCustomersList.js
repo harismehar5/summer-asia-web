@@ -324,16 +324,16 @@ export default function GetCustomersList() {
                 </Select>
               </FormControl>
             </Grid> */}
-            <Grid item xs={4} sm={3}>
+           <Grid item xs={4} sm={3}>
               <TextField
                 required
-                id="ntn"
-                name="ntn"
-                label="Ntn"
+                id="code"
+                name="code"
+                label="Code"
                 fullWidth
                 variant="outlined"
-                value={ntn}
-                onChange={(event) => setNtn(event.target.value)}
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
             <Grid item xs={4} sm={3}>
@@ -361,7 +361,18 @@ export default function GetCustomersList() {
                 onChange={(event) => setPhone(event.target.value)}
               />
             </Grid>
-
+            <Grid item xs={4} sm={3}>
+              <TextField
+                required
+                id="ntn"
+                name="ntn"
+                label="Ntn"
+                fullWidth
+                variant="outlined"
+                value={ntn}
+                onChange={(event) => setNtn(event.target.value)}
+              />
+            </Grid>
             <Grid item xs={4} sm={3}>
               <TextField
                 required
@@ -445,18 +456,6 @@ export default function GetCustomersList() {
                 variant="outlined"
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                required
-                id="code"
-                name="code"
-                label="Code"
-                fullWidth
-                variant="outlined"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}></Grid>

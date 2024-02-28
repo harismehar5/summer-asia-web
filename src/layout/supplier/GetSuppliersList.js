@@ -197,7 +197,7 @@ export default function GetSuppliersList() {
         <ListHeader
           header={"Company List"}
           firstButton={true}
-          firstButtonText={"Add New Supplier"}
+          firstButtonText={"Add New Company"}
           firstLink={"/supplier/add"}
         />
         <DataTable

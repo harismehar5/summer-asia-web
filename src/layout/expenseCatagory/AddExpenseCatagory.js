@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, FormHelperText } from "@mui/material";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
@@ -15,6 +15,9 @@ export default function AddExpenseCatagory() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+
+    // error states
+    const [nameError, setNameError] = useState("");
 
   var expenseCatagory = {
     name: "",
@@ -46,10 +49,9 @@ export default function AddExpenseCatagory() {
       });
   };
   const validation = () => {
-    if (name.length === 0) {
-      setOpen(true);
-      setMessage("Amount should be greater then 0");
-      setSeverity("success");
+   
+    if (name.trim() === "") {
+      setNameError("Enter expense catagory");
     } else {
       addExpenseCatagory();
     }
@@ -80,8 +82,11 @@ export default function AddExpenseCatagory() {
                 fullWidth
                 variant="outlined"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                onChange={(event) => {setName(event.target.value)
+                setNameError("");
+                }}
               />
+            <FormHelperText style={{ color: "red" }}>{nameError}</FormHelperText>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid
@@ -101,7 +106,7 @@ export default function AddExpenseCatagory() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button variant="contained" size="medium" color="error" onClick={() => setName("")}>
                     Cancel
                   </Button>
                 </Grid>

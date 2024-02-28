@@ -93,6 +93,9 @@ export default function ExpenseCatagoryList() {
           setOpen(true);
           setMessage(response.data.message);
           setSeverity("success");
+
+          // Update the data state after successful deletion
+          setData((prevData) => prevData.filter(item => item._id !== id));
         }
       })
       .catch(function (error) {
@@ -102,13 +105,12 @@ export default function ExpenseCatagoryList() {
       });
   };
   const updateExpense = () => {
-    expense = {
+    const updatedExpense = {
       name: name,
-      // amount: amount,
-      // description: description,
     };
+  
     axios
-      .put(EXPENSE_CATAGORY_BASE_URL + id, expense)
+      .put(EXPENSE_CATAGORY_BASE_URL + id, updatedExpense)
       .then(function (response) {
         if (response.data.error) {
           setOpen(true);
@@ -118,6 +120,12 @@ export default function ExpenseCatagoryList() {
           setOpen(true);
           setMessage(response.data.message);
           setSeverity("success");
+  
+          // Update the data state after successful update
+          setData((prevData) =>
+            prevData.map(item => (item._id === id ? { ...item, ...updatedExpense } : item))
+          );
+  
           setName("");
           setId("");
           setOpenPopup(false);
@@ -184,30 +192,6 @@ export default function ExpenseCatagoryList() {
                 onChange={(event) => setName(event.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="amount"
-                name="amount"
-                label="Amount"
-                fullWidth
-                variant="outlined"
-                value={amount}
-                onChange={(event) => setAmount(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={12}>
-              <TextField
-                id="description"
-                name="description"
-                label="Description"
-                fullWidth
-                variant="outlined"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={6}></Grid> */}
             <Grid item xs={12} sm={6}>
               <Grid
                 justifyContent={"flex-end"}
@@ -226,7 +210,7 @@ export default function ExpenseCatagoryList() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button variant="contained" size="medium" color="error" >
                     Cancel
                   </Button>
                 </Grid>

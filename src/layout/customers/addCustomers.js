@@ -129,6 +129,9 @@ export default function AddCustomers() {
     if (phone.trim() === "") {
       setPhoneError("Enter phone");
       isValid = false;
+    } else if (phone.trim().length < 11 || phone.trim().length > 13) {
+      setPhoneError("Phone number must be between 11 and 13 characters");
+      isValid = false;
     }
 
     if (address.trim() === "") {
@@ -139,15 +142,25 @@ export default function AddCustomers() {
     if (ntn.trim() === "") {
       setNtnError("Enter NTN");
       isValid = false;
+    } else if (/\s/.test(ntn)) {
+      setNtnError("NTN cannot contain spaces");
+      isValid = false;
     }
+    
 
     if (email.trim() === "") {
       setEmailError("Enter email");
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Enter a valid email address");
       isValid = false;
     }
 
     if (license.trim() === "") {
       setLicenseError("Enter license");
+      isValid = false;
+    } else if (/\s/.test(ntn)) {
+      setLicenseError("license cannot contain spaces");
       isValid = false;
     }
 
@@ -161,8 +174,12 @@ export default function AddCustomers() {
       isValid = false;
     }
 
+
     if (bankAccount.trim() === "") {
       setBankAccountError("Enter bank account");
+      isValid = false;
+    } else if (/\s/.test(ntn)) {
+      setBankAccountError("bank account cannot be only spaces");
       isValid = false;
     }
 
