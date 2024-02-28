@@ -171,6 +171,7 @@ export default function GetProductStock() {
           setBatchCode("");
           setExpiryDate("");
           setStockInOpenPopup(false);
+          getInventoryList();
         }
       })
       .catch(function (error) {
@@ -204,7 +205,8 @@ export default function GetProductStock() {
           setQuantity("");
           setBatchCode("");
           setExpiryDate("");
-          setStockInOpenPopup(false);
+          setStockOutOpenPopup(false);
+          getInventoryList();
         }
       })
       .catch(function (error) {
@@ -524,7 +526,7 @@ export default function GetProductStock() {
                 required
                 label="Product Code"
                 fullWidth
-                 disabled
+                disabled
                 variant="outlined"
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
