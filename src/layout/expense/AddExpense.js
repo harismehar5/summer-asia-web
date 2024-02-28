@@ -83,6 +83,7 @@ export default function AddExpense() {
         setSeverity("error");
       });
   };
+  // 
   const validation = () => {
     setNameError("");
     setDescriptionError("");
@@ -209,7 +210,15 @@ export default function AddExpense() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="medium" color="error">
+                  <Button 
+                  variant="contained"
+                   size="medium"
+                    color="error"
+                    onClick={() => {
+                      setName("");
+                      setAmount("");
+                      setDescription("");
+                    }}>
                     Cancel
                   </Button>
                 </Grid>

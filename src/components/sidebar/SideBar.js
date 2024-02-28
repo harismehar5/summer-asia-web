@@ -103,7 +103,7 @@ export default function SideBar() {
           </Link>
           <Link to="/product" style={{ textDecoration: "none" }}>
             <li>
-              <Inventory2OutlinedIcon className="icon" />
+            <FormatListBulletedIcon className="icon" />
               <span>Product List</span>
             </li>
           </Link>

@@ -209,7 +209,7 @@ export default function GetExpensesList() {
           header={"Expenses List"}
           firstButton={true}
           firstButtonText={"Add Expense"}
-          firstLink={"add"}
+          firstLink={"/expense/add"}
         />
         <DataTable
           data={data}
