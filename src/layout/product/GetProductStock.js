@@ -135,7 +135,7 @@ export default function GetProductStock() {
         // } else {
           setData(response.data.data);
 
-          console.log("data :",response.data.data);
+      
         // }
       })
       .catch(function (error) {
@@ -419,16 +419,6 @@ export default function GetProductStock() {
                     Save
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => setName("")}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -479,20 +469,6 @@ export default function GetProductStock() {
                     Save
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => {
-                      setQuantity("");
-                      setID("");
-                      setStockInOpenPopup(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -541,20 +517,6 @@ export default function GetProductStock() {
                     }}
                   >
                     Save
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => {
-                      setQuantity("");
-                      setID("");
-                      setStockOutOpenPopup(false);
-                    }}
-                  >
-                    Cancel
                   </Button>
                 </Grid>
               </Grid>

@@ -107,6 +107,9 @@ export default function GetAreaList() {
           resetForm();
           setOpenPopup(false);
           refreshData();
+          setData((prevData) =>
+          prevData.map(item => (item._id === id ? { ...item, ...updatedExpense } : item))
+        );
         }
       })
       .catch(function (error) {
@@ -134,6 +137,11 @@ export default function GetAreaList() {
           resetForm();
           setOpenPopup(false);
           refreshData();
+
+          setData((prevData) =>
+          prevData.map(item => (item._id === id ? { ...item, ...newExpense } : item))
+        );
+
         }
       })
       .catch(function (error) {
@@ -260,16 +268,8 @@ export default function GetAreaList() {
                     {id ? "Update" : "Add"}
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => setOpenPopup(false)}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
+
+
               </Grid>
             </Grid>
           </Grid>

@@ -63,7 +63,7 @@ export default function AddProduct() {
     axios
       .post(ADD_PRODUCT, product)
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         if (response.data.error) {
           setOpen(true);
           setMessage(response.data.error);

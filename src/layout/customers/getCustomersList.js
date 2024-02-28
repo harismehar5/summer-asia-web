@@ -476,16 +476,6 @@ export default function GetCustomersList() {
                     {id ? "Update" : "Add"}
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => setOpenPopup(false)}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>

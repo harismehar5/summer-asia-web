@@ -315,20 +315,6 @@ export default function GetSuppliersList() {
                     Save
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    color="error"
-                    onClick={() => {
-                      setName("");
-                      setPhone("");
-                      setOpenPopup(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>

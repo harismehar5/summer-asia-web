@@ -209,11 +209,6 @@ export default function ExpenseCatagoryList() {
                     Update
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button variant="contained" size="medium" color="error" >
-                    Cancel
-                  </Button>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>
