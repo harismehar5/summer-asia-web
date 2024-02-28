@@ -26,7 +26,6 @@ import { useReactToPrint } from "react-to-print";
 import Popup from "../../components/popup/Popup";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import ListHeader from "../../components/listHeader/ListHeader";
-import { index } from "d3-array";
 
 export default function AddSale() {
   const componentRef = useRef();
@@ -55,7 +54,7 @@ export default function AddSale() {
   const [batchObject, setBatchObject] = useState({});
   const [DateAndQuantityObject, setDateAndQuantityObject] = useState([]);
   const [openInvoicePopup, setOpenInvoicePopup] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState([]);
   const [totalBags, setTotalBags] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [SalesManList, setSalesManList] = useState([]);
@@ -74,6 +73,7 @@ export default function AddSale() {
   const [discountValues, setDiscountValues] = useState({});
   const [salesTaxValues, setSalesTaxValues] = useState({});
   const [totalValues, setTotalValues] = useState(0);
+  const [finalTotal, setFinalTotal] = useState([]);
 
   const paymentMediumList = [
     {
@@ -160,14 +160,29 @@ export default function AddSale() {
       return totalValue;
     });
 
+    const calAmount = calculatedValues.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+
+    const additionalSaleAmount = (calAmount * invoiceSalesTax) / 100;
+    console.log("additonal sales amount = ", additionalSaleAmount);
+    console.log("invoice amount = ", invoiceSalesTax);
+    // const additionalSaleAmount = (totalValues * additionalSalePercentage) / 100;
+    const finalTotal = calAmount + additionalSaleAmount;
+
     // Update the totalValues state
     setTotalValues(calculatedValues);
-  }, [quantityValues, tradeRateValues, data]);
+    // console.log("calculated values = ", calculatedValues);
+    // console.log("Toal values = ", totalValues);
+    setFinalTotal(finalTotal);
+  }, [quantityValues, tradeRateValues, data, invoiceSalesTax]);
 
   const dataEntry = (data) => {
     axios
       .post(ADD_SALES_SERVICES, data)
       .then((response) => {
+        console.log(data);
         // console.log(JSON.stringify(response, null, 2));
         if (response.status == 200) {
           setOpen(true);
@@ -425,9 +440,16 @@ export default function AddSale() {
     var totalAmount = 0;
     for (let i = 0; i < data.length; i++) {
       totalAmount = totalAmount + data[i].tradeRate * data[i].quantity;
+      // totalAmount =
+      //   totalAmount + isNaN(parseFloat(data[i].bonus))
+      //     ? quantityValues[i] * tradeRateValues[i]
+      //     : (quantityValues[i] - parseFloat(data[i].bonus)) *
+      //       tradeRateValues[i];
     }
     const additionalSaleAmount = (totalAmount * additionalSalePercentage) / 100;
+    // const additionalSaleAmount = (totalValues * additionalSalePercentage) / 100;
     const calAmount = totalAmount + additionalSaleAmount;
+    // const calAmount = totalValues + additionalSaleAmount;
     return calAmount;
   };
 
@@ -843,8 +865,7 @@ export default function AddSale() {
                         //         parseFloat(data[index].bonus)) *
                         //       tradeRateValues[index]
                         // }
-
-                        value={totalValues}
+                        value={totalValues[index]}
                         disabled
                       />
                     </Grid>
@@ -1044,7 +1065,8 @@ export default function AddSale() {
                     right: 50,
                   }}
                 >
-                  {calculateTotalAmount() - invoiceDiscount}
+                  {/* {calculateTotalAmount() - invoiceDiscount} */}
+                  {finalTotal - invoiceDiscount || 0}
                 </Typography>
               </Typography>
             </Grid>
