@@ -599,7 +599,7 @@ export const purchaseDetailsColumn = [
     renderCell: (params) => {
       return (
         <>
-          <div>{params.row.productCode || "N/A"}</div>
+          <div>{params.row.productCode.code || "N/A"}</div>
         </>
       );
     },

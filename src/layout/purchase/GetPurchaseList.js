@@ -44,20 +44,20 @@ export default function GetPurchaseList() {
         );
       },
     },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 250,
-      renderCell: (params) => {
-        return (
-          <div className="cell-action">
-            <IconButton aria-label="view" size="medium">
-              <VisibilityIcon fontSize="inherit" />
-            </IconButton>
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "action",
+    //   headerName: "Action",
+    //   width: 250,
+    //   renderCell: (params) => {
+    //     return (
+    //       <div className="cell-action">
+    //         <IconButton aria-label="view" size="medium">
+    //           <VisibilityIcon fontSize="inherit" />
+    //         </IconButton>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
   const getPurchaseList = async () => {
     await axios
@@ -70,6 +70,7 @@ export default function GetPurchaseList() {
         } else {
           // console.log("data", JSON.stringify(response, null, 2));
           setData(response.data.data);
+          // console.log(response.data.data);
         }
       })
       .catch(function (error) {

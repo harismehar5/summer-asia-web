@@ -240,7 +240,8 @@ export default function AddPurchase() {
       purchaseDetail: data,
       companyCode: companyCode,
       paymentMode: paymentMode,
-      total: calculateTotalAmount() - invoiceDiscount,
+      // total: calculateTotalAmount() - invoiceDiscount,
+      total: invoiceTotal - invoiceDiscount,
       additionalTax: parseFloat(invoiceSalesTax),
       additionalDiscount: parseFloat(invoiceDiscount),
       payedAmount: parseFloat(invoiceAmount),
@@ -249,16 +250,16 @@ export default function AddPurchase() {
     dataEntry(purchaseObject);
   };
 
-  const calculateTotalAmount = () => {
-    const additionalSalePercentage = invoiceSalesTax;
-    var totalAmount = 0;
-    for (let i = 0; i < data.length; i++) {
-      totalAmount = totalAmount + data[i].netTotal;
-    }
-    const additionalSaleAmount = (totalAmount * additionalSalePercentage) / 100;
-    const calAmount = totalAmount + additionalSaleAmount;
-    return calAmount;
-  };
+  // const calculateTotalAmount = () => {
+  //   const additionalSalePercentage = invoiceSalesTax;
+  //   var totalAmount = 0;
+  //   for (let i = 0; i < data.length; i++) {
+  //     totalAmount = totalAmount + data[i].netTotal;
+  //   }
+  //   const additionalSaleAmount = (totalAmount * additionalSalePercentage) / 100;
+  //   const calAmount = totalAmount + additionalSaleAmount;
+  //   return calAmount;
+  // };
   return (
     <div className="box">
       <SideBar />
