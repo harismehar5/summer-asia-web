@@ -66,6 +66,7 @@ export default function AddPurchase() {
   const [isEstimated, setIsEstimated] = useState(false);
   const [subTotalValues, setSubTotalValues] = useState({});
   const [invoiceTotal, setinvoiceTotal] = useState();
+  const [selectedDate, setSelectedDate] = useState("");
   const paymentMediumList = [
     {
       id: 1,
@@ -91,20 +92,37 @@ export default function AddPurchase() {
 
   useEffect(() => {
     getStockList();
-    getCompanyProduts();
+    // getCompanyProduts();
     getSupplierList();
     calculateAmountAndBags(data);
   }, []);
+
+  function clearForm() {
+    setinvoiceTotal("");
+    setInvoiceAmount("");
+    setInvoiceDiscount("");
+    setInvoiceSalesTax("");
+    setSupplierObject({});
+    setPaymentMediumObject({});
+    setProductObject({});
+  }
 
   const dataEntry = (data) => {
     axios
       .post(ADD_PURCHASE, data)
       .then((response) => {
         setOpen(true);
+        clearForm();
+        // setinvoiceTotal("");
+        // setInvoiceAmount("");
+        // setInvoiceDiscount("");
+        // setInvoiceSalesTax("");
         if (response.data.error) {
           handleSnackbar("error", response.data.error);
+          setSupplierObject({});
         } else {
           handleSnackbar("success", response.data.message);
+          setSupplierObject({});
         }
       })
       .catch((error) => {
@@ -148,6 +166,7 @@ export default function AddPurchase() {
       .then((response) => {
         // Handle the response data here
         setProductList(response.data.data);
+        console.log(response.data.data);
         // You can use response.data to access the data returned from the server
       })
       .catch(function (error) {
@@ -282,6 +301,7 @@ export default function AddPurchase() {
                   if (newInputValue !== null) {
                     setSupplierObject(newInputValue);
                     getCompanyProduts(newInputValue._id);
+                    setSupplierObject({});
                   }
                 }}
                 renderInput={(params) => (
@@ -381,26 +401,23 @@ export default function AddPurchase() {
                       <TextField
                         label="Expiry Date"
                         type="date"
+                        value={selectedDate}
                         onChange={(e) => {
                           var selectedDate = new Date(e.target.value);
                           var currentDate = new Date();
 
                           // Check if the selected date is before the current date
-                          if (selectedDate < currentDate) {
+                          if (selectedDate > currentDate) {
                             // Provide feedback to the user, for example:
-                            alert("Please select a future date.");
-
-                            // Set the input value back to the current date
-                            e.target.valueAsDate = currentDate;
-                            // return;
-                          } else {
-                            // Update the data if the selected date is valid
+                            setSelectedDate(e.target.value);
                             var expiryDate = e.target.value;
                             setData((currentData) =>
                               produce(currentData, (v) => {
                                 v[index].expiryDate = expiryDate;
                               })
                             );
+                          } else {
+                            alert("Please select a future date.");
                           }
                         }}
                         InputLabelProps={{
@@ -595,7 +612,7 @@ export default function AddPurchase() {
             <Grid item xs={12} sm={12}>
               <TextField
                 required
-                label={"Additional Sales Tax %"}
+                label={"Additional Tax %"}
                 fullWidth
                 variant="outlined"
                 value={invoiceSalesTax}
@@ -605,7 +622,7 @@ export default function AddPurchase() {
             <Grid item xs={12} sm={12}>
               <TextField
                 required
-                label="Discount"
+                label="Additional Discount"
                 fullWidth
                 variant="outlined"
                 type="number"
@@ -616,7 +633,7 @@ export default function AddPurchase() {
             <Grid item xs={12} sm={12}>
               <TextField
                 required
-                label="Amount Recieved"
+                label="Amount Payed"
                 fullWidth
                 variant="outlined"
                 value={invoiceAmount}

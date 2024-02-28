@@ -495,7 +495,7 @@ export const purchaseColumn = [
   },
   {
     field: "name",
-    headerName: "Supplier Name",
+    headerName: "Company Name",
     renderCell: (params) => {
       return (
         <>
