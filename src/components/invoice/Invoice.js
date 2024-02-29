@@ -125,7 +125,7 @@ const Invoice = React.forwardRef(
               {saleData?.map((item, index) => {
                 return (
                   <tr key={index}>
-                    <td>{item?.productCode?.code}</td>
+                    <td>{item?.productCode?.name}</td>
                     <td>{item?.batchCode}</td>
                     <td>{item?.productCode?.packing}</td>
                     <td>{item?.productCode?.strength}</td>
