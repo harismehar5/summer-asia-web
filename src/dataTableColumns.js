@@ -431,6 +431,14 @@ export const saleReturnColumn = [
 export const saleDetailsColumn = [
   { field: "_id", headerName: "ID", width: 250 },
   {
+    field: "productCode",
+    headerName: "Product Code",
+    width: 230,
+    renderCell: (params) => {
+      return <div>{params?.row?.productCode.code}</div>;
+    },
+  },
+  {
     field: "expiryDate",
     headerName: "expiry date",
     width: 230,
