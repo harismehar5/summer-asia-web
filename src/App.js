@@ -63,8 +63,8 @@ function App() {
 
         <Route
           path="customer/"
-          element={<Protected Component={GetCustomerList} />}
         >
+           <Route index element={<Protected Component={GetCustomerList} />} />
           <Route path="add" element={<Protected Component={AddCustomer} />} />
           <Route
             path="edit/:id"

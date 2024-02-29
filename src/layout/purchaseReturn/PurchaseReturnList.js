@@ -94,7 +94,8 @@ export default function PurchaseReturnList() {
         <ListHeader
           header={"Purchase Return List"}
           firstButton={true}
-          firstButtonText={"Add New Sale"}
+          firstButtonText={"Add New Purchase Return"}
+          firstLink={"/purchase-return/add"}
         />
         <DataTable
           data={data}

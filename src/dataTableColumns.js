@@ -130,13 +130,13 @@ export const productColumns = [
 export const inventoryListColumns = [
   {
     field: "productCode",
-    headerName: "Product Code",
+    headerName: "Product",
     width: 220,
     renderCell: (params) => {
       return (
         <>
           <div>
-            {(params.row.productCode && params.row.productCode.code) || "N/A"}
+            {(params.row.productCode && params.row.productCode.name) || "N/A"}
           </div>
         </>
       );
@@ -528,7 +528,31 @@ export const purchaseColumn = [
 ];
 
 export const purchaseDetailsColumn = [
-  { field: "_id", headerName: "ID", width: 230 },
+  { field: "_id", headerName: "ID", width: 100 }, 
+  {
+    field: "productCode",
+    headerName: "Product",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.productCode.name || "N/A"}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "company",
+    headerName: "Company",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.company || "N/A"}</div>
+        </>
+      );
+    },
+  },
   {
     field: "batchCode",
     headerName: "Batch Code",
@@ -538,31 +562,6 @@ export const purchaseDetailsColumn = [
       return (
         <>
           <div>{params.row.batchCode || "N/A"}</div>
-        </>
-      );
-    },
-  },
-  {
-    field: "bonus",
-    headerName: "Bonus",
-    width: 230,
-
-    renderCell: (params) => {
-      return (
-        <>
-          <div>{params.row.bonus || "N/A"}</div>
-        </>
-      );
-    },
-  },
-  {
-    field: "damage",
-    headerName: "Damage",
-    width: 230,
-    renderCell: (params) => {
-      return (
-        <>
-          <div>{params.row.damage || "N/A"}</div>
         </>
       );
     },
@@ -579,31 +578,6 @@ export const purchaseDetailsColumn = [
       );
     },
   },
-
-  {
-    field: "total",
-    headerName: "Net Total",
-    width: 230,
-    renderCell: (params) => {
-      return (
-        <>
-          <div>{params.row.netTotal || "N/A"}</div>
-        </>
-      );
-    },
-  },
-  {
-    field: "productCode",
-    headerName: "Product Code",
-    width: 230,
-    renderCell: (params) => {
-      return (
-        <>
-          <div>{params.row.productCode.code || "N/A"}</div>
-        </>
-      );
-    },
-  },
   {
     field: "quantity",
     headerName: "Quantity",
@@ -612,6 +586,19 @@ export const purchaseDetailsColumn = [
       return (
         <>
           <div>{params.row.quantity || "N/A"}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "bonus",
+    headerName: "Bonus",
+    width: 230,
+
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.bonus || "N/A"}</div>
         </>
       );
     },
@@ -636,6 +623,19 @@ export const purchaseDetailsColumn = [
       return (
         <>
           <div>{params.row.tradeRate || "N/A"}</div>
+        </>
+      );
+    },
+  },
+  
+  {
+    field: "total",
+    headerName: "Sub Total",
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <>
+          <div>{params.row.netTotal || "N/A"}</div>
         </>
       );
     },

@@ -1,14 +1,11 @@
-// addPurchaseReturn
-
 import React, { useEffect, useRef, useState } from "react";
-//
 import "./style.css";
 import "./styles.scss";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, FormHelperText, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import axios from "axios";
@@ -67,6 +64,10 @@ export default function AddPurchase() {
   const [subTotalValues, setSubTotalValues] = useState({});
   const [invoiceTotal, setinvoiceTotal] = useState();
   const [selectedDate, setSelectedDate] = useState("");
+
+  //error states
+  const[companyError,setCompanyError]=useState("");
+  const[paymentMediumError,setPaymentMediumError]=useState("");
   const paymentMediumList = [
     {
       id: 1,
@@ -80,10 +81,10 @@ export default function AddPurchase() {
       id: 3,
       name: "Cheque",
     },
-    {
-      id: 4,
-      name: "Other",
-    },
+    // {
+    //   id: 4,
+    //   name: "Other",
+    // },
   ];
   const [paymentMediumObject, setPaymentMediumObject] = useState({});
   const [open, setOpen] = useState(false);
@@ -143,13 +144,6 @@ export default function AddPurchase() {
     axios
       .get(GET_ALL_PRODUCTS)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error);
-        //   setSeverity("error");
-        // } else {
-        // setProductList(response.data.data);
-        // }
       })
       .catch(function (error) {
         setOpen(true);
@@ -180,13 +174,7 @@ export default function AddPurchase() {
     axios
       .get(GET_ALL_COMPANIES)
       .then(function (response) {
-        // if (response.data.error) {
-        //   setOpen(true);
-        //   setMessage(response.data.error);
-        //   setSeverity("error");
-        // } else {
-        setSupplierList(response.data.data);
-        // }
+       setSupplierList(response.data.data);
       })
       .catch(function (error) {
         setOpen(true);
@@ -268,24 +256,39 @@ export default function AddPurchase() {
     // console.log("Data", purchaseObject);
     dataEntry(purchaseObject);
   };
-
-  // const calculateTotalAmount = () => {
-  //   const additionalSalePercentage = invoiceSalesTax;
-  //   var totalAmount = 0;
-  //   for (let i = 0; i < data.length; i++) {
-  //     totalAmount = totalAmount + data[i].netTotal;
-  //   }
-  //   const additionalSaleAmount = (totalAmount * additionalSalePercentage) / 100;
-  //   const calAmount = totalAmount + additionalSaleAmount;
-  //   return calAmount;
-  // };
+  const validation = () => {
+  
+  
+    let isValid = true;
+  
+    if (!supplierObject._id) {
+      setCompanyError("Select a company");
+      isValid = false;
+    }else{
+      setCompanyError("");
+    }
+    if (!paymentMediumObject.id) {
+      setPaymentMediumError("Select a payment medium");
+      isValid = false;
+    }else{  
+    setPaymentMediumError("");
+    }
+  
+    // Additional validation for other fields if needed
+  
+    if (isValid) {
+      setOpenInvoicePopup(true);
+    } else {
+      handleSnackbar("error", "Enter valid values!");
+    }
+  };
+  
   return (
     <div className="box">
       <SideBar />
       <div className="box-container">
         <Navbar />
         <ListHeader header={"Add Purchase"} />
-        {/* <Grid container item md={12} mt={3} px={2} sx={{ height: "90vh" }}> */}
         <Grid item md={12}>
           <Grid item container md={12} mt={3} px={2}>
             <Grid item md={12} px={2} py={1}>
@@ -301,9 +304,13 @@ export default function AddPurchase() {
                   if (newInputValue !== null) {
                     setSupplierObject(newInputValue);
                     getCompanyProduts(newInputValue._id);
+                  } else {
+                    // Handle the case where the user clears the selection
                     setSupplierObject({});
                   }
+                  setCompanyError("");
                 }}
+                
                 renderInput={(params) => (
                   <TextField required {...params} label="Select Company" />
                 )}
@@ -313,6 +320,7 @@ export default function AddPurchase() {
                   </Box>
                 )}
               />
+              <FormHelperText style={{ color: "red" }}>{companyError}</FormHelperText>
             </Grid>
             <Grid item md={12} px={2} py={1}>
               <Autocomplete
@@ -323,6 +331,7 @@ export default function AddPurchase() {
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={(event, newInputValue) => {
                   setPaymentMediumObject(newInputValue);
+                  setPaymentMediumError("");
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -337,6 +346,7 @@ export default function AddPurchase() {
                   </Box>
                 )}
               />
+              <FormHelperText style={{ color: "red" }}>{paymentMediumError}</FormHelperText>
             </Grid>
           </Grid>
           <Grid item md={12} mt={2} ml={4}>
@@ -436,33 +446,12 @@ export default function AddPurchase() {
                         fullWidth
                       />
                     </Grid>
-
-                    {/* <Grid item md={1.5} px={1}>
-                      <TextField  
-  required
-                        label="Expiry Date"
-                        type="date"
-                        // defaultValue={currentDate}
-                        onChange={(e) => {
-                          var expiryDate = e.target.value;
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].expiryDate = expiryDate;
-                            })
-                          );
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        fullWidth
-                      />
-                    </Grid> */}
                     <Grid item md={1} px={1}>
                       <TextField
                         required
                         label="Quantity"
                         variant="outlined"
-                        value={product.quantity}
+                        type="number"
                         onChange={(e) => {
                           var quantity = e.target.value;
                           setData((currentData) =>
@@ -478,6 +467,7 @@ export default function AddPurchase() {
                       <TextField
                         required
                         label="Bonus"
+                        type="number"
                         variant="outlined"
                         value={product.bonus}
                         onChange={(e) => {
@@ -491,26 +481,11 @@ export default function AddPurchase() {
                         fullWidth
                       />
                     </Grid>
-                    <Grid item md={1.2} px={1}>
-                      <TextField
-                        required
-                        label="Trade Rate"
-                        variant="outlined"
-                        value={product.tradeRate}
-                        onChange={(e) => {
-                          setData((currentData) =>
-                            produce(currentData, (v) => {
-                              v[index].tradeRate = e.target.value;
-                              v[index].netTotal =
-                                product.quantity * e.target.value;
-                            })
-                          );
-                        }}
-                      />
-                    </Grid>
+                   
                     <Grid item md={1} px={1}>
                       <TextField
                         required
+                        type="number"
                         label="Discount"
                         variant="outlined"
                         value={product.discount}
@@ -528,6 +503,7 @@ export default function AddPurchase() {
                     <Grid item md={1} px={1}>
                       <TextField
                         required
+                        type="number"
                         label="Sales Tax"
                         variant="outlined"
                         value={product.salesTax}
@@ -541,9 +517,28 @@ export default function AddPurchase() {
                         }}
                       />
                     </Grid>
+                    <Grid item md={1.2} px={1}>
+                      <TextField
+                        required
+                        type="number"
+                        label="Trade Rate"
+                        variant="outlined"
+                        value={product.tradeRate}
+                        onChange={(e) => {
+                          setData((currentData) =>
+                            produce(currentData, (v) => {
+                              v[index].tradeRate = e.target.value;
+                              v[index].netTotal =
+                                product.quantity * e.target.value;
+                            })
+                          );
+                        }}
+                      />
+                    </Grid>
                     <Grid item md={1} px={1}>
                       <TextField
                         required
+                        type="number"
                         label="Sub Total"
                         variant="outlined"
                         value={subTotalValues[index] || ""}
@@ -558,16 +553,6 @@ export default function AddPurchase() {
                         }}
                       />
                     </Grid>
-                    {/* <Grid item md={1} px={1}>
-                      <TextField  
-  required
-                        label="Sub Total"
-                        variant="outlined"
-                        value={product.quantity * product.tradeRate}
-                        // value={}
-                        disabled
-                      />
-                    </Grid> */}
                     <Grid item md={0.5} px={1}>
                       <IconButton
                         className="delete-icon-button"
@@ -596,17 +581,11 @@ export default function AddPurchase() {
             mr={4}
             alignItems={"end"}
           >
-            {/* ////// */}
-            {/* <div style={{ display: "none" }}>
-              <ComponentToPrint data={data} ref={componentRef} />
-            </div> */}
-            {/* ////////////////// */}
-
             <Button
               variant="contained"
               size="medium"
               color="success"
-              onClick={() => setOpenInvoicePopup(true)}
+              onClick={() => validation()}
               sx={{ marginX: "10px" }}
             >
               Save
@@ -794,7 +773,7 @@ export default function AddPurchase() {
                       setOpenInvoicePopup(false);
                     }}
                   >
-                    Save
+                    Saves
                   </Button>
                 </Grid>
                 <Grid item>
