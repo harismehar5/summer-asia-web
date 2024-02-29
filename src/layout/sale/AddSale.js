@@ -26,6 +26,7 @@ import { useReactToPrint } from "react-to-print";
 import Popup from "../../components/popup/Popup";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import ListHeader from "../../components/listHeader/ListHeader";
+import Invoice from "../../components/invoice/Invoice";
 
 export default function AddSale() {
   const componentRef = useRef();
@@ -76,6 +77,9 @@ export default function AddSale() {
   const [salesTaxValues, setSalesTaxValues] = useState({});
   const [totalValues, setTotalValues] = useState(0);
   const [finalTotal, setFinalTotal] = useState([]);
+  const [customerId, setCustomerId] = useState();
+  const [customerData, setCustomerData] = useState([]);
+  const [salesmanData, setSalesmanData] = useState([]);
 
   const paymentMediumList = [
     {
@@ -137,30 +141,49 @@ export default function AddSale() {
 
       // Perform calculations based on conditions
       let totalValue = 0;
+      let netValue = 0;
 
       if (isBonusValid) {
         // If bonus is valid, include it in the calculation
         totalValue += quantityValues[i] - parseFloat(item.bonus);
+        netValue += quantityValues[i] - parseFloat(item.bonus);
       } else {
         // If bonus is not valid, use quantity directly
         totalValue += quantityValues[i];
+        netValue += quantityValues[i];
       }
 
       // Always include trade rate in the calculation
       totalValue *= tradeRateValues[i];
+      netValue *= tradeRateValues[i];
 
       if (isDiscountValid) {
         // If discount is valid, subtract it from the total value
         totalValue -= (parseFloat(item.discount) / 100) * totalValue;
+        netValue -= (parseFloat(item.discount) / 100) * netValue;
       }
 
       if (isSalesTaxValid) {
         // If sales tax is valid, add it to the total value
         totalValue += (parseFloat(item.salesTax) / 100) * totalValue;
+        netValue += (parseFloat(item.salesTax) / 100) * netValue;
       }
+
+      setData((currentData) =>
+        produce(currentData, (v) => {
+          //  v[index].tradeRate = tradeRate;
+          // Update netTotal based on quantity and tradeRate
+          v[i].netTotal = netValue;
+          //  v[index].netTotal = 5;
+        })
+      );
+
+      // netValue = 0;
 
       return totalValue;
     });
+
+    console.log(calculatedValues);
 
     const calAmount = calculatedValues.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
@@ -298,6 +321,21 @@ export default function AddSale() {
       .get(GET_CUSTOMERS_LIST)
       .then(function (response) {
         setSupplierList(response.data.data);
+        // console.log(response.data.data);
+        setCustomerId(response.data);
+      })
+      .catch(function (error) {
+        setOpen(true);
+        setMessage("error: " + error);
+        setSeverity("error");
+      });
+  };
+
+  const getCustomerData = () => {
+    axios
+      .get(GET_CUSTOMERS_LIST)
+      .then(function (response) {
+        setSupplierList(response.data.data);
       })
       .catch(function (error) {
         setOpen(true);
@@ -426,16 +464,15 @@ export default function AddSale() {
     // console.log("purchase object ", JSON.stringify(purchaseObject, null, 2));
     dataEntry(purchaseObject);
 
-    handleAddSale();
+    // handleAddSale();
   };
 
   const handleAddSale = () => {
-
     // Reset the state variables to empty values
     setPaymentMediumObject("");
     setQuantityValues([""]);
     setBonusValues([""]);
-    setTradeRateValues([""]);  
+    setTradeRateValues([""]);
     setSalesTaxValues([""]);
     setTotalValues([""]);
     setTradeRateValues([""]);
@@ -443,7 +480,7 @@ export default function AddSale() {
     setInvoiceDiscount("");
     setInvoiceAmount("");
   };
-  
+
   // Function to format date to "yyyy-MM-dd" format
   function formatDate(date) {
     const d = new Date(date);
@@ -496,6 +533,9 @@ export default function AddSale() {
                   const licenseExpiryDate = new Date(
                     newInputValue?.licenseExpiryDate
                   );
+                  console.log("newInputValue", newInputValue);
+                  // getCustomerData(newInputValue._id);
+                  setCustomerData(newInputValue);
 
                   // Check if licenseExpiryDate is a valid date
                   if (isNaN(licenseExpiryDate)) {
@@ -519,8 +559,7 @@ export default function AddSale() {
                   setSupplierObject(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField  
-  required {...params} label="Select Customer" />
+                  <TextField required {...params} label="Select Customer" />
                 )}
                 renderOption={(props, supplier) => (
                   <Box component="li" {...props} key={supplier._id}>
@@ -538,13 +577,16 @@ export default function AddSale() {
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={(event, newInputValue) => {
                   if (newInputValue !== null) {
-                    // 
+                    //
                     setPaymentMediumObject(newInputValue);
                   }
                 }}
                 renderInput={(params) => (
-                  <TextField  
-  required {...params} label="Select Payment Medium" />
+                  <TextField
+                    required
+                    {...params}
+                    label="Select Payment Medium"
+                  />
                 )}
                 renderOption={(props, payment) => (
                   <Box component="li" {...props} key={payment.id || ""}>
@@ -564,10 +606,10 @@ export default function AddSale() {
                 }
                 onChange={(event, newInputValue) => {
                   setSaleManObject(newInputValue);
+                  setSalesmanData(newInputValue);
                 }}
                 renderInput={(params) => (
-                  <TextField  
-  required {...params} label="Select salesman" />
+                  <TextField required {...params} label="Select salesman" />
                 )}
                 renderOption={(props, saleMan) => (
                   <Box component="li" {...props} key={saleMan._id}>
@@ -604,7 +646,7 @@ export default function AddSale() {
                             var productObject = newInputValue;
                             setData((currentData) =>
                               produce(currentData, (v) => {
-                                v[index].productCode = productObject.code;
+                                v[index].productCode = productObject._id;
                                 v[index].productPacking = productObject.packing;
                                 v[index].productStrength =
                                   productObject.strength;
@@ -615,8 +657,11 @@ export default function AddSale() {
                           }
                         }}
                         renderInput={(params) => (
-                          <TextField  
-  required {...params} label="Select Product" />
+                          <TextField
+                            required
+                            {...params}
+                            label="Select Product"
+                          />
                         )}
                         renderOption={(props, product) => (
                           <Box
@@ -654,8 +699,11 @@ export default function AddSale() {
                           }
                         }}
                         renderInput={(params) => (
-                          <TextField  
-  required {...params} label="Select Batch" />
+                          <TextField
+                            required
+                            {...params}
+                            label="Select Batch"
+                          />
                         )}
                         renderOption={(props, batch) => (
                           <Box
@@ -678,8 +726,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1.5} px={1}>
-                      <TextField  
-  required
+                      <TextField
+                        required
                         // label="Expiry Date"
                         variant="outlined"
                         type="date"
@@ -702,8 +750,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1} px={1}>
-                      <TextField  
-  required
+                      <TextField
+                        required
                         label="Quantity"
                         variant="outlined"
                         value={quantityValues[index] || ""}
@@ -725,8 +773,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1} px={1}>
-                      <TextField  
-  required
+                      <TextField
+                        required
                         label="Discount"
                         variant="outlined"
                         value={discountValues[index] || ""}
@@ -742,12 +790,12 @@ export default function AddSale() {
                             produce(currentData, (v) => {
                               v[index].discount = discount;
                               // Update netTotal based on quantity, tradeRate, and discount
-                              v[index].netTotal =
-                                parseFloat(v[index].quantity) *
-                                  parseFloat(v[index].tradeRate) -
-                                (isNaN(parseFloat(discount))
-                                  ? 0
-                                  : parseFloat(discount));
+                              // v[index].netTotal =
+                              //   parseFloat(v[index].quantity) *
+                              //     parseFloat(v[index].tradeRate) -
+                              //   (isNaN(parseFloat(discount))
+                              //     ? 0
+                              //     : parseFloat(discount));
                             })
                           );
                         }}
@@ -774,8 +822,8 @@ export default function AddSale() {
                     </Grid> */}
 
                     <Grid item md={1} px={1}>
-                      <TextField  
-  required
+                      <TextField
+                        required
                         label="Bonus"
                         variant="outlined"
                         value={bonusValues[index] || ""}
@@ -816,8 +864,8 @@ export default function AddSale() {
                     </Grid> */}
 
                     <Grid item md={1} px={1}>
-                      <TextField  
-  required
+                      <TextField
+                        required
                         label="Sales Tax"
                         variant="outlined"
                         value={salesTaxValues[index] || ""}
@@ -833,15 +881,15 @@ export default function AddSale() {
                             produce(currentData, (v) => {
                               v[index].salesTax = salesTax;
                               // Update netTotal based on quantity, tradeRate, discount, and salesTax
-                              v[index].netTotal =
-                                parseFloat(v[index].quantity) *
-                                  parseFloat(v[index].tradeRate) -
-                                (isNaN(parseFloat(v[index].discount))
-                                  ? 0
-                                  : parseFloat(v[index].discount)) +
-                                (isNaN(parseFloat(salesTax))
-                                  ? 0
-                                  : parseFloat(salesTax));
+                              // v[index].netTotal =
+                              //   parseFloat(v[index].quantity) *
+                              //     parseFloat(v[index].tradeRate) -
+                              //   (isNaN(parseFloat(v[index].discount))
+                              //     ? 0
+                              //     : parseFloat(v[index].discount)) +
+                              //   (isNaN(parseFloat(salesTax))
+                              //     ? 0
+                              //     : parseFloat(salesTax));
                             })
                           );
                         }}
@@ -866,8 +914,8 @@ export default function AddSale() {
                     </Grid> */}
 
                     <Grid item md={1.2} px={1}>
-                      <TextField  
-  required
+                      <TextField
+                        required
                         label="Trade Rate"
                         variant="outlined"
                         value={tradeRateValues[index] || ""}
@@ -883,9 +931,8 @@ export default function AddSale() {
                             produce(currentData, (v) => {
                               v[index].tradeRate = tradeRate;
                               // Update netTotal based on quantity and tradeRate
-                              v[index].netTotal =
-                                parseFloat(v[index].quantity) *
-                                parseFloat(tradeRate);
+                              // v[index].netTotal = totalValues[index];
+                              v[index].netTotal = 5;
                             })
                           );
                         }}
@@ -894,8 +941,8 @@ export default function AddSale() {
                     </Grid>
 
                     <Grid item md={1} px={1}>
-                      <TextField  
-  required
+                      <TextField
+                        required
                         label="Sub Total"
                         variant="outlined"
                         // value={
@@ -947,7 +994,17 @@ export default function AddSale() {
               Save
             </Button> */}
             <Button
-              onClick={() => setOpenInvoicePopup(true)}
+              onClick={() => {
+                setOpenInvoicePopup(true);
+                setData((currentData) =>
+                  produce(currentData, (v) => {
+                    //  v[index].tradeRate = tradeRate;
+                    // Update netTotal based on quantity and tradeRate
+                    // v[index].netTotal = totalValues[index];
+                    //  v[index].netTotal = 5;
+                  })
+                );
+              }}
               variant="contained"
               size="medium"
               color="success"
@@ -971,8 +1028,8 @@ export default function AddSale() {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
-              <TextField  
-  required
+              <TextField
+                required
                 label={"Additional Sales Tax %"}
                 fullWidth
                 variant="outlined"
@@ -981,8 +1038,8 @@ export default function AddSale() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField  
-  required
+              <TextField
+                required
                 label="Discount"
                 fullWidth
                 variant="outlined"
@@ -992,8 +1049,8 @@ export default function AddSale() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField  
-  required
+              <TextField
+                required
                 label="Amount Recieved"
                 fullWidth
                 variant="outlined"
@@ -1223,12 +1280,22 @@ export default function AddSale() {
           </Grid>
         </Popup>
 
+        {/* <Invoice
+          isExpired={IsExpired}
+          isWarranted={isWarranted}
+          isEstimated={isEstimated}
+          data={data}
+          ref={componentRef}
+        /> */}
+
         <div style={{ display: "none" }}>
           <ComponentToPrint
             isExpired={IsExpired}
             isWarranted={isWarranted}
             isEstimated={isEstimated}
             data={data}
+            customerData={customerData}
+            salesmanData={salesmanData}
             ref={componentRef}
           />
         </div>
@@ -1238,57 +1305,105 @@ export default function AddSale() {
 }
 
 const ComponentToPrint = React.forwardRef(
-  ({ data, isExpired, isWarranted, isEstimated }, ref) => {
-    let totalQuantity = 0;
-    let totalBonus = 0;
-    let totalDiscount = 0;
-    let totalSalesTax = 0;
-    let totalTradeRate = 0;
+  (
+    { data, isExpired, isWarranted, isEstimated, customerData, salesmanData },
+    ref
+  ) => {
+    function getFormattedDate() {
+      const today = new Date();
 
-    data.map((item) => (totalQuantity += Number(item.quantity)));
-    data.map((item) => (totalBonus += Number(item.bonus)));
-    data.map((item) => (totalDiscount += Number(item.discount)));
-    data.map((item) => (totalSalesTax += Number(item.salesTax)));
-    data.map((item) => (totalTradeRate += Number(item.tradeRate)));
+      const day = today.getDate();
+      const month = today.getMonth() + 1; // Months are zero-indexed, so add 1
+      const year = today.getFullYear().toString().slice(-2); // Extract the last two digits
 
-    console.log("data = ", data);
+      // Pad single-digit day and month with leading zeros
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+
+      // Combine components into the desired format
+      const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+
+      return formattedDate;
+    }
+
+    function formatDate(dateString) {
+      // Convert the given date string to a Date object
+      const date = new Date(dateString);
+
+      // Extract day, month, and year components
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-indexed, so we add 1
+      const year = date.getFullYear().toString().slice(-2); // Extract the last two digits
+
+      // Pad single-digit day and month with leading zeros
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+
+      // Combine components into the desired format
+      const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+
+      return formattedDate;
+    }
+    const createdDate = data.createdAt;
+    // console.log("created date", createdDate);
+    // const customerData = [data?.customerCode];
+    // const saleData = data?.saleDetail;
+    // const salemanData = [data?.salesman];
+    // let totalQuantity = 0;
+    // let totalBonus = 0;
+    // let totalDiscount = 0;
+    // let totalSalesTax = 0;
+    // let totalTradeRate = 0;
+
+    // data.map((item) => (totalQuantity += Number(item.quantity)));
+    // data.map((item) => (totalBonus += Number(item.bonus)));
+    // data.map((item) => (totalDiscount += Number(item.discount)));
+    // data.map((item) => (totalSalesTax += Number(item.salesTax)));
+    // data.map((item) => (totalTradeRate += Number(item.tradeRate)));
+
+    // console.log("data = ", data);
 
     return (
       <div ref={ref}>
-        {isEstimated ? null : (
-          <header class="header">
-            <h1>BHC PHARMA</h1>
+        {isEstimated ? (
+          <h1 style={{ textAlign: "center", margin: "3rem", fontSize: "4rem" }}>
+            Estimate Invoice{" "}
+          </h1>
+        ) : (
+          <header class="header ">
+            <h1 style={{ margin: "20px" }}>BHC PHARMA</h1>
             <p>Opposite Medicare Hospital Gill Road, Gujranwala</p>
-            <p>
-              PH:-055-4294521-2-0300-7492093-0302-6162633 E-mail
-              pharmanet@yahoo.com
-            </p>
-            <p>License No. = 09-341-0135-010397 D NTN = 7351343-8</p>
-            <div class="flex evenly">
-              <div>
-                <p>M/S</p>
-                <p>005 0034</p>
-                <p>Azhar M/S</p>
-                <p>FREED TOWN (PASROOR ROAD GRW)</p>
-                <p>FREED TOWN (PASROOR ROAD GRW)</p>
-              </div>
-              <div>
-                <p>INVOICE</p>
-                <p>License No = 843/GRW</p>
-                <p>NTN NO : 34101-2610040-5</p>
-                <p>CNIC NO:</p>
-                <p>S/TAX No:</p>
-              </div>
-              <div>
-                <p>Inv No: 1327</p>
-                <p>Inv Date: 07/02/2024</p>
-                <p>Page No: 1 of 1</p>
-                <p>Salesman: 1 sohail tahir</p>
-                <p>Sales Type: 1 Supply Sale</p>
-              </div>
-            </div>
+            <p>PH:-03338294944 E-mail ehtisham.danone@gmail.com</p>
+            <p>License No. = 09-341-0132-112764 D NTN = </p>
           </header>
         )}
+
+        <div class="flex evenly gap left">
+          <div>
+            <p>{customerData?.name}</p>
+            <p>{customerData?.code}</p>
+            <p>{customerData?.email}</p>
+            <p>{customerData?.address}</p>
+          </div>
+
+          <div>
+            <p>License No: {customerData?.license}</p>
+            <p>NTN :{customerData?.ntn}</p>
+            <p>License Expiry :{formatDate(customerData?.licenseExpiryDate)}</p>
+            <p>Area Code :{customerData?.areaCode?.code}</p>
+          </div>
+
+          {/* {salemanData?.map((item, index) => {
+            return (
+              <div>
+                <p>Inv No: 1327</p>
+                <p>Salesman : {item?.salesman?.name}</p>
+                <p>Salesman Code :{item?.salesman?.code}</p>
+                <p>Invoice Date : {createdDate}</p>
+              </div>
+            );
+          })} */}
+        </div>
         <div class="gap">
           <table>
             <thead>
@@ -1308,43 +1423,40 @@ const ComponentToPrint = React.forwardRef(
             </thead>
 
             <tbody>
-              {data.map((item, index) => {
+              {/* {saleData?.map((item, index) => {
                 return (
                   <tr key={index}>
-                    <td>{item.productCode}</td>
-                    <td>{item.batchCode}</td>
-                    <td>{item.productPacking}</td>
-                    <td>{item.productStrength}</td>
-                    <td>{item.expiryDate}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.discount}</td>
-                    <td>{item.bonus}</td>
-                    <td>{item.salesTax}</td>
-                    <td>{item.tradeRate}</td>
-                    <td>{item.netTotal}</td>
+                    <td>{item?.productCode?.code}</td>
+                    <td>{item?.batchCode}</td>
+                    <td>{item?.productCode?.packing}</td>
+                    <td>{item?.productCode?.strength}</td>
+                    <td>{formatDate(item?.expiryDate)}</td>
+                    <td>{item?.quantity}</td>
+                    <td>{item?.discount}</td>
+                    <td>{item?.bonus}</td>
+                    <td>{item?.salesTax}</td>
+                    <td>{item?.tradeRate}</td>
+                    <td>{item?.netTotal}</td>
                   </tr>
                 );
-              })}
+              })} */}
             </tbody>
           </table>
 
-          <table>
+          <table style={{ marginTop: "2rem" }}>
             <thead>
-              <tr>
-                <th>Total of STAR LABORATORIES</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>Gross</th>
-                <th>4,267.00</th>
-                <th>Dis.%</th>
-                <th>0.90 S/Tax</th>
-                <th>0.00 AdS/Tax</th>
-                <th>0.00</th>
-                <th>4,267.6</th>
+              <tr style={{ padding: "2rem" }}>
+                <th>Additional Discount {data.additionalDiscount || "N/A"}</th>
+                <th>Additional Tax {data.additionalTax || "N/A"}</th>
+                <th>Payment By {data.paymentMode || "N/A"}</th>
+                <th>Received Amount {data.receivedAmount || "N/A"}</th>
+                <th>Total Amount {data.total || "N/A"}</th>
+                <th>
+                  Pending Amount {data.total - data.receivedAmount || "N/A"}
+                </th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               <tr>
                 <td>No of ltems: 4</td>
                 <td></td>
@@ -1368,10 +1480,10 @@ const ComponentToPrint = React.forwardRef(
                 <td></td>
                 <td></td>
               </tr>
-            </tbody>
+            </tbody> */}
           </table>
 
-          <table class="last">
+          {/* <table class="last">
             <thead>
               <tr>
                 <td></td>
@@ -1384,7 +1496,7 @@ const ComponentToPrint = React.forwardRef(
                 <td>4,288.0</td>
               </tr>
             </thead>
-          </table>
+          </table> */}
         </div>
 
         {isWarranted ? (
@@ -1490,5 +1602,243 @@ const ComponentToPrint = React.forwardRef(
         ) : null}
       </div>
     );
+
+    // return (
+    //   <div ref={ref}>
+    //     {isEstimated ? null : (
+    //       <header class="header">
+    //         <h1>BHC PHARMA</h1>
+    //         <p>Opposite Medicare Hospital Gill Road, Gujranwala</p>
+    //         <p>
+    //           PH:-055-4294521-2-0300-7492093-0302-6162633 E-mail
+    //           pharmanet@yahoo.com
+    //         </p>
+    //         <p>License No. = 09-341-0135-010397 D NTN = 7351343-8</p>
+    //         <div class="flex evenly">
+    //           <div>
+    //             <p>M/S</p>
+    //             <p>005 0034</p>
+    //             <p>Azhar M/S</p>
+    //             <p>FREED TOWN (PASROOR ROAD GRW)</p>
+    //             <p>FREED TOWN (PASROOR ROAD GRW)</p>
+    //           </div>
+    //           <div>
+    //             <p>INVOICE</p>
+    //             <p>License No = 843/GRW</p>
+    //             <p>NTN NO : 34101-2610040-5</p>
+    //             <p>CNIC NO:</p>
+    //             <p>S/TAX No:</p>
+    //           </div>
+    //           <div>
+    //             <p>Inv No: 1327</p>
+    //             <p>Inv Date: 07/02/2024</p>
+    //             <p>Page No: 1 of 1</p>
+    //             <p>Salesman: 1 sohail tahir</p>
+    //             <p>Sales Type: 1 Supply Sale</p>
+    //           </div>
+    //         </div>
+    //       </header>
+    //     )}
+    //     <div class="gap">
+    //       <table>
+    //         <thead>
+    //           <tr>
+    //             <th>Product Code</th>
+    //             <th>Batch No</th>
+    //             <th>Packing</th>
+    //             <th>Strength</th>
+    //             <th>Expiry Date</th>
+    //             <th>QTY</th>
+    //             <th>Dis %</th>
+    //             <th>Bonus</th>
+    //             <th>Sales Tax</th>
+    //             <th>Trade Rate</th>
+    //             <th>Total Amount</th>
+    //           </tr>
+    //         </thead>
+
+    //         <tbody>
+    //           {data.map((item, index) => {
+    //             return (
+    //               <tr key={index}>
+    //                 <td>{item.productCode}</td>
+    //                 <td>{item.batchCode}</td>
+    //                 <td>{item.productPacking}</td>
+    //                 <td>{item.productStrength}</td>
+    //                 <td>{item.expiryDate}</td>
+    //                 <td>{item.quantity}</td>
+    //                 <td>{item.discount}</td>
+    //                 <td>{item.bonus}</td>
+    //                 <td>{item.salesTax}</td>
+    //                 <td>{item.tradeRate}</td>
+    //                 <td>{item.netTotal}</td>
+    //               </tr>
+    //             );
+    //           })}
+    //         </tbody>
+    //       </table>
+
+    //       <table>
+    //         <thead>
+    //           <tr>
+    //             <th>Total of STAR LABORATORIES</th>
+    //             <th></th>
+    //             <th></th>
+    //             <th></th>
+    //             <th>Gross</th>
+    //             <th>4,267.00</th>
+    //             <th>Dis.%</th>
+    //             <th>0.90 S/Tax</th>
+    //             <th>0.00 AdS/Tax</th>
+    //             <th>0.00</th>
+    //             <th>4,267.6</th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           <tr>
+    //             <td>No of ltems: 4</td>
+    //             <td></td>
+    //             <td></td>
+    //             <td></td>
+    //             <td>Gross</td>
+    //             <td>4,267.00</td>
+    //             <td>Dis.%</td>
+    //             <td>0.00 S/Tax</td>
+    //             <td>0.00 AdS/Tax</td>
+    //             <td>0.00</td>
+    //             <td>4,267.0</td>
+    //           </tr>
+    //           <tr>
+    //             <td>Total Qty: 53</td>
+    //             <td></td>
+    //             <td></td>
+    //             <td></td>
+    //             <td></td>
+    //             <td></td>
+    //             <td></td>
+    //             <td></td>
+    //           </tr>
+    //         </tbody>
+    //       </table>
+
+    //       <table class="last">
+    //         <thead>
+    //           <tr>
+    //             <td></td>
+    //             <td>Add Tax US 236-H @ 0.50</td>
+    //             <td>21.34</td>
+    //           </tr>
+    //           <tr>
+    //             <td>Four Thousand Two Hundred Eighty Eight</td>
+    //             <td>Total Net Value</td>
+    //             <td>4,288.0</td>
+    //           </tr>
+    //         </thead>
+    //       </table>
+    //     </div>
+
+    //     {isWarranted ? (
+    //       <footer style={{ padding: "2rem", fontSize: "10px" }}>
+    //         <div
+    //           style={{
+    //             marginTop: "10px",
+    //             marginLeft: "10px",
+    //           }}
+    //         >
+    //           <div style={{ fontWeight: "bold" }}>
+    //             FORM 2A (SEE RULES 19 & 30) 34371 Warranty Under Seetion
+    //             23(1)(i) orThe Drugs Act,
+    //           </div>
+    //           <div style={{ marginTop: "5px" }}>
+    //             <span style={{ fontWeight: "bold" }}>I KHALID RASHEED</span>
+    //             ,being a person resident in Pakistan,camying on business at the
+    //             afc'esaid address under the namie of PHARMA NET,
+    //           </div>
+    //           <div>
+    //             having valid license(s) as mentioned above greisstied by
+    //             Licensing Authority. and being importers/Authorized Distr?butors
+    //             of the Manufacturers
+    //           </div>
+    //           <div>
+    //             Principals. do hereby give th warranty that the drugs here above
+    //             described as sold by mie/specified and contain in the cash
+    //             memo/invoicedes
+    //           </div>
+    //           <div>
+    //             describing the goods referred to herein do not contravene in any
+    //             way the provisions of scction 23 ofthe Drugs Act, 1976.
+    //           </div>
+    //           <div style={{ marginTop: "5px", fontWeight: "bold" }}>
+    //             (ii) FORM-5 |see rule 6(2)(i), 6(5(b). 19 (7) and 48(1 )i)|
+    //             Warvanty under MMedical Devices Rules.2017
+    //           </div>
+    //           <div style={{ marginTop: "5px" }}>
+    //             <span style={{ fontWeight: "bold" }}>i KHALID RASHEED</span>
+    //             ,being a person resident in Pakistan. carrying on business ut
+    //             aforesed address under the name of PHARMA NET, holding valid
+    //             license issued by
+    //           </div>
+    //           <div>
+    //             Licensing Authority and having authority or being authorized by
+    //             Manufacturers Principals vide ietters. co hereby give this
+    //             warranty that the medical devices here
+    //           </div>
+    //           <div>
+    //             above described as sold by me and contained in the bill of sale,
+    //             invoice. bill of lading or other document. describing the
+    //             medical devices referred to herein do not
+    //           </div>
+    //           <div>
+    //             Contrwene ', any way the provisions of the DRAPAct, 2012 and the
+    //             rules framed thers-under.
+    //           </div>
+    //           <div>
+    //             Warranty Under Alternative Medicines & Health Products
+    //             (Enlistment) Rules, 2014. |Sce rule 10 (3) & (5)|
+    //           </div>
+    //           <div>
+    //             We,as the authorized distributors/agents and on behalf of
+    //             thePrincipals/Manufacture's / importe:s hereby give warranty
+    //             that the supplied
+    //           </div>
+    //           <div>
+    //             alternative medicine health products mentioned herein do not
+    //             contravene any provision of the prevailing DRAPACT and rules
+    //             framed thereunder{" "}
+    //             <div style={{ fontWeight: "bold" }}>KHALID RASHEED</div>
+    //           </div>
+    //         </div>
+    //         <div style={{ marginTop: "20px", fontWeight: "bold" }}>
+    //           <div dir="rtl">
+    //             (i) کوئی دکاندار ایکسپائری اسٹاک کی رقم میں موجود بل سے منھبا
+    //             کرنے کا مجاز نہیں ہو گا
+    //           </div>
+    //           <div dir="rtl">
+    //             (ii) مال وصول کرتے وقت اچھی طرح چیک کر لیں بعد میں اسٹاک کی کمی
+    //             بیشی کا کوئی کلیم قابل قبول نہیں ہو گا
+    //           </div>
+    //           <div dir="rtl">
+    //             (iii) پر ایکسپائر مال حوالے کریں ورنہ کمپنی کی ذمہ داری نہیں ہو
+    //             گی- Office Form کا کوہی بھی ملازم پر چی دے کر اسٹاک وصول کرنے کا
+    //             مجاز نہیں رکھتا ہمیشہ کمپنی کے PHARMA NET
+    //           </div>
+    //           <div dir="rtl">
+    //             (iv) کی قطی نہیں ہو گی PHARMA NET کا کوئی ملازم کسی دکاندار سے
+    //             ایڈ وانس رقم وصول کرنے کا مجاز نہیں ہے اسکی ذمہ داری PHARMA NET
+    //           </div>
+    //           <div dir="rtl">
+    //             (v) اسٹاک کپمنی کے بل کے مطابق وصول کرہں بعد میں کسی قسم کی کوئی
+    //             ذمہ داری نہیں ہو گی
+    //           </div>
+    //           <div dir="rtl">
+    //             (vi) ماہ کی مدت سے قبل تحریری طور پر کمپنی بذا کے علم میں نہ
+    //             لایا جاے گا 6 کمپنی کسی بھی ایکسپائر کی تبدیلی کی قطعا ذمہ دار
+    //             نہیں ہو گی جب تک کے کم از کم
+    //           </div>
+    //         </div>
+    //       </footer>
+    //     ) : null}
+    //   </div>
+    // );
   }
 );
