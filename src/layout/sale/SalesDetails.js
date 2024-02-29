@@ -53,9 +53,10 @@ const SalesDetails = () => {
       <div className="list-container">
         <Navbar />
         <ListHeader
-          header={"Sales Details"}
-          // firstButton={true}
-          // firstButtonText={"Add New Purchase"}
+          header={"Sale Details"}
+          firstButton={true}
+          firstButtonText={"Sale"}
+          firstLink={"/sale"}
         />
         <DataTable
           data={data}

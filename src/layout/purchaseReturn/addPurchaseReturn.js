@@ -89,6 +89,18 @@ export default function AddPurchase() {
         setSeverity("error");
       });
   };
+  const handleCancel = () => {
+    // Reset state values to their initial state
+    setSupplierObject({});
+    setPaymentMediumObject({});
+    setData([productObject]);
+    setTotalAmount(0);
+    setTotalBags(0);
+    setTotalProducts(0);
+    setAmount("");
+    setSubmittedDate("");
+    setCode("");
+  };
   const handleSnackbar = (severity, message) => {
     setOpen(true);
     setSeverity(severity);
@@ -468,13 +480,14 @@ export default function AddPurchase() {
               Save
             </Button>
             <Button
-              // sx={{ marginLeft: "10px" }}
-              variant="contained"
-              size="medium"
-              color="error"
-            >
-              Cancel
-            </Button>
+  variant="contained"
+  size="medium"
+  color="error"
+  onClick={() => handleCancel()}
+>
+  Cancel
+</Button>
+
           </Box>
         </Grid>
         <SnackBar

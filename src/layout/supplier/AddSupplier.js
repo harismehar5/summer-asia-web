@@ -51,59 +51,32 @@ export default function AddSupplier() {
     accountNumber: "",
   };
   const addSupplier = () => {
-    supplier = {
-      code: code,
-      name: name,
+    const supplier = {
+      code,
+      name,
       person: personName,
       phoneNumber: phone,
-      description: description,
-      license: license,
-      address: address,
-      email: email,
-      accountNumber: accountNumber,
+      description,
+      license,
+      address,
+      email,
+      accountNumber,
     };
 
     axios
       .post(ADD_COMPANY, supplier)
-      .then(function (response) {
-        console.log(response);
+      .then((response) => {
         if (response.data.error) {
-          setOpen(true);
-          setMessage(response.data.error);
-          setSeverity("error");
+          handleSnackbar("error", response.data.error);
         } else {
-        setOpen(true);
-        setMessage(response.data.message);
-        setSeverity("success");
-        setCode("");
-        setName("");
-        setPhone("");
-        setAccountNumber("");
-        setPersonName("");
-        setDescription("");
-        setAddress("");
-        setLicense("");
-        setEmail("");
+          handleSnackbar("success", response.data.message);
+       
         }
       })
-      .catch(function (error) {
-        setOpen(true);
-        setMessage(error);
-        setSeverity("error");
+      .catch((error) => {
+        handleSnackbar("error", error.response.data.error);
       });
   };
-  // const validation = () => {
-  //   if (
-  //     name.length === 0 ||
-  //     phone.length === 0
-  //   ) {
-  //     setOpen(true);
-  //     setMessage("Some fields are missing");
-  //     setSeverity("error");
-  //   } else {
-  //     addSupplier();
-  //   }
-  // };
 
   const validation = () => {
     setCodeError("");
@@ -161,7 +134,7 @@ export default function AddSupplier() {
     }
 
     if (accountNumber.trim() === "") {
-      setAccountNumberError("Enter descrption");
+      setAccountNumberError("Enter account number ");
       isValid = false;
     }
 

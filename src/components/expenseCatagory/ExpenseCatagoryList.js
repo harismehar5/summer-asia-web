@@ -175,7 +175,7 @@ export default function ExpenseCatagoryList() {
             <Grid item xs={12} sm={6}>
               <TextField  
   required
-                required
+              
                 id="name"
                 name="name"
                 label="Name"

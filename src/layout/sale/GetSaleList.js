@@ -196,6 +196,7 @@ export default function GetSaleList() {
           header={"Sale List"}
           firstButton={true}
           firstButtonText={"Add New Sale"}
+          firstLink={"/sale/add/"}
         />
         <DataTable
           data={data}
