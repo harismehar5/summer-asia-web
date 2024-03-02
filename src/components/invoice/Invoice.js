@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 
 const Invoice = React.forwardRef(
-  ({ data, isExpired, isWarranted, isEstimated }, ref) => {
+  (
+    {
+      data,
+      saleData,
+      customerData,
+      salesmanData,
+      isExpired,
+      isWarranted,
+      isEstimated,
+      Adata,
+    },
+    ref
+  ) => {
     function getFormattedDate() {
       const today = new Date();
 
@@ -39,11 +51,14 @@ const Invoice = React.forwardRef(
     }
     const createdDate = data.createdAt;
     console.log("created date", createdDate);
-    const customerData = [data?.customerCode];
-    const saleData = data?.saleDetail;
-    const salemanData = [data?.salesman];
+    console.log("salesman ", salesmanData);
+    console.log("sale data ", saleData);
+    // const customerData = [data?.customerCode];
+    // const saleData = data?.saleDetail;
+    // const salemanData = [data?.salesman];
 
     console.log("data", data);
+    console.log("adata ", Adata);
     // console.log("saledata = ", saleData);
     // console.log("customer data = ", customerData);
     // data.map((item) => (totalQuantity += Number(item.quantity)));
@@ -70,7 +85,14 @@ const Invoice = React.forwardRef(
         )}
 
         <div class="flex evenly gap left">
-          {customerData?.map((item, index) => {
+          <div>
+            <p>{customerData?.name}</p>
+            <p>{customerData?.code}</p>
+            <p>{customerData?.email}</p>
+            <p>{customerData?.address}</p>
+          </div>
+
+          {/* {customerData?.map((item, index) => {
             return (
               <div>
                 <p>{item?.name}</p>
@@ -79,9 +101,16 @@ const Invoice = React.forwardRef(
                 <p>{item?.address}</p>
               </div>
             );
-          })}
+          })} */}
 
-          {customerData?.map((item, index) => {
+          <div>
+            <p>License No: {customerData?.license}</p>
+            <p>NTN :{customerData?.ntn}</p>
+            <p>License Expiry :{formatDate(customerData?.licenseExpiryDate)}</p>
+            <p>Area Code :{customerData?.areaCode?.code}</p>
+          </div>
+
+          {/* {customerData?.map((item, index) => {
             return (
               <div>
                 <p>License No: {item?.license}</p>
@@ -90,9 +119,16 @@ const Invoice = React.forwardRef(
                 <p>Area Code :{item?.areaCode?.code}</p>
               </div>
             );
-          })}
+          })} */}
 
-          {salemanData?.map((item, index) => {
+          <div>
+            <p>Inv No: 1327</p>
+            <p>Salesman : {salesmanData?.name}</p>
+            <p>Salesman Code :{salesmanData?.code}</p>
+            {/* <p>Invoice Date : {createdDate}</p> */}
+          </div>
+
+          {/* {salesmanData?.map((item, index) => {
             return (
               <div>
                 <p>Inv No: 1327</p>
@@ -101,7 +137,7 @@ const Invoice = React.forwardRef(
                 <p>Invoice Date : {createdDate}</p>
               </div>
             );
-          })}
+          })} */}
         </div>
         <div class="gap">
           <table>
@@ -140,6 +176,25 @@ const Invoice = React.forwardRef(
                 );
               })}
             </tbody>
+            {/* <tbody>
+              {saleData?.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{item?.productCode?.name}</td>
+                    <td>{item?.batchCode}</td>
+                    <td>{item?.productCode?.packing}</td>
+                    <td>{item?.productCode?.strength}</td>
+                    <td>{formatDate(item?.expiryDate)}</td>
+                    <td>{item?.quantity}</td>
+                    <td>{item?.discount}</td>
+                    <td>{item?.bonus}</td>
+                    <td>{item?.salesTax}</td>
+                    <td>{item?.tradeRate}</td>
+                    <td>{item?.netTotal}</td>
+                  </tr>
+                );
+              })}
+            </tbody> */}
           </table>
 
           <table style={{ marginTop: "2rem" }}>

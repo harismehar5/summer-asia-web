@@ -38,9 +38,9 @@ export default function GetSaleList() {
   const [invoiceData, setInvoiceData] = useState([]);
   const [isWarranted, setIsWarranted] = useState(false);
   const [isEstimated, setIsEstimated] = useState(true);
-  // const [customerData, setCustomerData] = useState([]);
-  // const [saleData, setSaleData] = useState([]);
-  // const [salesmanData, setSalesmanData] = useState([]);
+  const [customerData, setCustomerData] = useState([]);
+  const [saleData, setSaleData] = useState([]);
+  const [salesmanData, setSalesmanData] = useState([]);
 
   const componentRef = useRef();
 
@@ -77,9 +77,9 @@ export default function GetSaleList() {
           setSeverity("error");
         } else {
           setLicenseExpiryDate(response.data?.customerCode.licenseExpiryDate);
-          // setCustomerData(response.data?.customerCode);
-          // setSaleData(response.data?.saleDetail);
-          // setSalesmanData(response.data?.salesman);
+          setCustomerData(response.data?.customerCode);
+          setSaleData(response.data?.saleDetail);
+          setSalesmanData(response.data?.salesman);
           setInvoiceData(response.data);
 
           // checkExpiration(licenseExpiryDate)
@@ -469,6 +469,9 @@ export default function GetSaleList() {
           isEstimated={isEstimated}
           data={invoiceData}
           ref={componentRef}
+          saleData={saleData}
+          customerData={customerData}
+          salesmanData={salesmanData}
         />
       </div>
     </div>
