@@ -204,9 +204,10 @@ const Invoice = React.forwardRef(
                 <th>Additional Tax {data.additionalTax || "N/A"}</th>
                 <th>Payment By {data.paymentMode || "N/A"}</th>
                 <th>Received Amount {data.receivedAmount || "N/A"}</th>
-                <th>Total Amount {data.total || "N/A"}</th>
+                <th>Total Amount {Math.round(data.total) || "N/A"}</th>
                 <th>
-                  Pending Amount {data.total - data.receivedAmount || "N/A"}
+                  Pending Amount{" "}
+                  {Math.round(data.total - data.receivedAmount) || "N/A"}
                 </th>
               </tr>
             </thead>
