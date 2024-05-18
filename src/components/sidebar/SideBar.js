@@ -79,6 +79,12 @@ export default function SideBar() {
               <span>Customer List</span>
             </li>
           </Link>
+          <Link to="/customers" style={{ textDecoration: "none" }}>
+            <li>
+              <FormatListBulletedIcon className="icon" />
+              <span>Customer List</span>
+            </li>
+          </Link>
 
           <p className="title">Salesman</p>
           <Link to="/salesman/add/" style={{ textDecoration: "none" }}>
@@ -103,7 +109,7 @@ export default function SideBar() {
           </Link>
           <Link to="/product" style={{ textDecoration: "none" }}>
             <li>
-            <FormatListBulletedIcon className="icon" />
+              <FormatListBulletedIcon className="icon" />
               <span>Product List</span>
             </li>
           </Link>
