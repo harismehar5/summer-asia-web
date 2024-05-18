@@ -82,7 +82,7 @@ export default function SideBar() {
           <Link to="/customers" style={{ textDecoration: "none" }}>
             <li>
               <FormatListBulletedIcon className="icon" />
-              <span>Customer List</span>
+              <span>Aaliyan List</span>
             </li>
           </Link>
 
